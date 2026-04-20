@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bioma Caatinga - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: SERTÃO (Ocre, Âmbar e Verde Cacto) */
+            --bg-color: #FFFBEB; /* Fundo Creme */
+            --text-color: #451A03; /* Castanho Terra */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #FEF3C7; /* Âmbar Claro */
+            --theme-medium: #F59E0B; /* Laranja Sol */
+            --theme-dark: #92400E; /* Ocre Profundo */
+            --theme-contrast: #166534; /* Verde Cacto (Destaque) */
+            --theme-accent: #EF4444; /* Vermelho Alerta */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#fde68a 1px, transparent 1px), linear-gradient(90deg, #fde68a 1px, transparent 1px);
+            background-size: 25px 25px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #78350F;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+        }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #92400E;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: #92400E; font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #FEF3C7; 
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #451A03;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #92400E; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: #FEF3C7; color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #FCD34D; line-height: 1.5; color: #451A03; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🌵</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Caatinga: A Mata Branca do Sertão</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Xerófila)">
+            </div>
+            <div id="no-results"><p>😕 Nenhum conceito encontrado. Tenta outra palavra.</p></div>
+
+            <!-- TÓPICO 1: O QUE É? -->
+            <div class="content-group">
+                <div class="section-badge">🏜️ 1. A Identidade da Caatinga</div>
+                <div class="theory-box search-target">
+                    <h3>O Único Bioma Exclusivamente Brasileiro</h3>
+                    <p>A Caatinga ocupa cerca de 11% do território nacional. O nome vem do Tupi (<em>caa</em> = mata, <em>tinga</em> = branca), devido ao aspeto esbranquiçado da vegetação durante a seca severa.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="250" height="120" viewBox="0 0 250 120">
+                            <!-- Brasil -->
+                            <path d="M 50 10 Q 150 10 180 60 Q 150 110 50 110 Q 10 60 50 10" fill="#FEF3C7" stroke="#000" stroke-width="2"/>
+                            <!-- Área Caatinga (Nordeste) -->
+                            <path d="M 120 20 Q 160 30 170 60 Q 150 70 120 60 Z" fill="#F59E0B" stroke="#000" stroke-width="1"/>
+                            <text x="140" y="50" font-size="10" font-weight="bold">CAATINGA</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Localização:</strong> Quase todo o Nordeste e o norte de Minas Gerais.</li>
+                        <li><strong>Exclusividade:</strong> É o único bioma do mundo que só existe num único país (Endemismo total de bioma).</li>
+                        <li><strong>Clima:</strong> Semiárido, com altas temperaturas e chuvas irregulares e escassas.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: ADAPTAÇÕES DA VEGETAÇÃO -->
+            <div class="content-group">
+                <div class="section-badge">🌵 2. Sobrevivência Extrema</div>
+                <div class="theory-box search-target">
+                    <h3>Plantas Xerófilas e Xerofitismo</h3>
+                    <p>Para sobreviver a meses sem chuva, a flora desenvolveu estratégias incríveis para poupar e armazenar água.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="220" height="150" viewBox="0 0 220 150">
+                            <!-- Cacto Mandacaru -->
+                            <rect x="100" y="40" width="20" height="90" fill="#166534" stroke="#000" stroke-width="2" rx="5"/>
+                            <rect x="75" y="60" width="25" height="15" fill="#166534" stroke="#000" stroke-width="2" rx="5"/>
+                            <rect x="120" y="80" width="25" height="15" fill="#166534" stroke="#000" stroke-width="2" rx="5"/>
+                            <!-- Espinhos -->
+                            <line x1="105" y1="50" x2="95" y2="50" stroke="#000"/>
+                            <line x1="115" y1="70" x2="125" y2="70" stroke="#000"/>
+                            <text x="110" y="145" text-anchor="middle" font-size="10" font-weight="bold">Cactos (Xerófilas)</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Caducifólia:</strong> As árvores perdem as folhas na seca para evitar a perda de água pela transpiração.</li>
+                        <li><strong>Espinhos:</strong> Folhas que se transformaram em agulhas para diminuir a superfície de evaporação e proteger contra herbívoros.</li>
+                        <li><strong>Parênquima Aquífero:</strong> Tecidos internos que funcionam como esponjas para guardar água (ex: Mandacaru, Xique-xique).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: O SOLO E O CLIMA -->
+            <div class="content-group">
+                <div class="section-badge">☀️ 3. Chão de Rocha e Sol Forte</div>
+                <div class="theory-box search-target">
+                    <h3>Características Físicas</h3>
+                    <p>O ambiente abiótico da Caatinga é tão desafiador quanto o biótico.</p>
+                    
+                    <div class="visual-area" style="flex-direction:row; gap: 20px;">
+                        <div style="background: white; border: 2px solid black; padding: 10px; border-radius: 8px; width: 45%;">
+                            <h4 style="color:#B45309;">O Solo</h4>
+                            <p style="font-size:0.8rem;">Raso e pedregoso. Rico em minerais, mas pobre em matéria orgânica devido à baixa decomposição na seca.</p>
+                        </div>
+                        <div style="background: white; border: 2px solid black; padding: 10px; border-radius: 8px; width: 45%;">
+                            <h4 style="color:#D97706;">O Clima</h4>
+                            <p style="font-size:0.8rem;">Temperaturas médias anuais entre 25°C e 30°C. O período de seca pode durar até 9 meses.</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box">
+                        <strong>Rios Intermitentes:</strong> São rios que secam completamente durante a estação seca, voltando a correr apenas quando chove. O Rio São Francisco é a grande exceção (Rio Perene).
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: FAUNA E AMEAÇAS -->
+            <div class="content-group">
+                <div class="section-badge">🦎 4. Biodiversidade e Perigo</div>
+                <div class="theory-box search-target">
+                    <h3>Vida Resiliente</h3>
+                    <p>Apesar da aparência seca, a Caatinga abriga centenas de espécies endémicas (que só existem lá).</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:10px;">
+                        <li><strong>Animais:</strong> Ararinha-azul, tatu-bola, sapo-cururu, cascavel e diversos lagartos.</li>
+                        <li><strong>Desertificação:</strong> O maior perigo atual. O uso incorreto do solo e a desflorestação estão a transformar a Caatinga num deserto improdutivo.</li>
+                        <li><strong>Importância:</strong> É um erro chamar à Caatinga um "bioma pobre". É um dos sistemas semiáridos com maior biodiversidade do planeta.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar a Prova do Sertão (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">A Prova de Fogo</h2>
+                <p style="color: #451A03; font-size: 0.95rem; font-weight:600;">
+                    30 questões rigorosas sobre a Caatinga. Acerta <strong>80% (24/30)</strong> para provares que conheces as raízes do Brasil!
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Avaliação Concluída</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS DETALHADOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Definição e Localização (1-7)
+            {
+                id: 1, level: "Fácil",
+                text: "Qual é o significado da palavra 'Caatinga' na língua Tupi-Guarani?",
+                options: ["Mata Fechada", "Mata Branca", "Lugar Seco", "Terra das Pedras"],
+                correct: 1,
+                explanation: {
+                    correct: "Exato! 'Caa' (mata) + 'tinga' (branca). Recebe este nome porque as plantas perdem as folhas e os troncos secos parecem brancos sob o sol forte.",
+                    options: [
+                        "Isto descreveria a Mata Atlântica ou Amazónia.",
+                        "Esta é a alternativa correta.",
+                        "Embora seja seca, não é a tradução literal.",
+                        "O solo é pedregoso, mas o nome foca na cor da mata."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Fácil",
+                text: "A Caatinga possui uma característica geográfica única no mundo. Qual é?",
+                options: ["É o bioma com mais chuvas do planeta.", "É o único bioma cujas fronteiras estão totalmente dentro do território brasileiro.", "É o único bioma onde não existem insetos.", "É o maior deserto de areia do Hemisfério Sul."],
+                correct: 1,
+                explanation: {
+                    correct: "Corretíssimo! É o único bioma exclusivamente brasileiro (bioma endémico do Brasil). Todos os outros (Amazónia, Pantanal, etc.) atravessam fronteiras.",
+                    options: [
+                        "Pelo contrário, é um dos mais secos.",
+                        "Esta é a alternativa correta.",
+                        "A biodiversidade de insetos é enorme.",
+                        "A Caatinga não é um deserto de areia, é uma floresta semiárida."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Fácil",
+                text: "Em que região do Brasil a Caatinga está maioritariamente localizada?",
+                options: ["Norte", "Sudeste", "Nordeste", "Sul"],
+                correct: 2,
+                explanation: {
+                    correct: "Sim! Ocupa cerca de 70% da região Nordeste, além de uma pequena faixa no norte de Minas Gerais.",
+                    options: [
+                        "Lá predomina a Amazónia.",
+                        "Apenas uma pequena parte de Minas Gerais pertence ao Sudeste.",
+                        "Esta é a alternativa correta.",
+                        "Lá predominam os Pampas e Mata de Araucárias."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Médio",
+                text: "O clima predominante na Caatinga, caracterizado por temperaturas elevadas e baixos índices de chuva, chama-se:",
+                options: ["Equatorial Húmido", "Tropical de Altitude", "Semiárido", "Subtropical"],
+                correct: 2,
+                explanation: {
+                    correct: "Perfeito! O clima semiárido é o motor das adaptações biológicas deste bioma.",
+                    options: [
+                        "Lá chove quase todos os dias (Amazónia).",
+                        "Mais frio e húmido (Serras do Sudeste).",
+                        "Esta é a alternativa correta.",
+                        "Sul do Brasil, com invernos rigorosos."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Fácil",
+                text: "Durante a estação seca, as árvores da Caatinga perdem as folhas para evitar a perda de água. Que nome se dá a este tipo de vegetação?",
+                options: ["Perenifólia", "Caducifólia (ou Decídua)", "Conífera", "Aquática"],
+                correct: 1,
+                explanation: {
+                    correct: "Caducifólia vem de 'caduca' (que cai). É uma estratégia de sobrevivência fundamental para não perder água por transpiração.",
+                    options: [
+                        "Estas nunca perdem as folhas (sempre verdes).",
+                        "Esta é a alternativa correta.",
+                        "São os pinheiros, típicos de climas frios.",
+                        "Vivem dentro de água."
+                    ]
+                }
+            },
+            {
+                id: 6, level: "Médio",
+                text: "A Caatinga é frequentemente apelidada de 'Mata Branca'. A que se deve o tom esbranquiçado da paisagem na maior parte do ano?",
+                options: ["À queda de neve frequente.", "À presença de flores brancas em todas as árvores.", "Aos troncos secos das árvores despidas de folhas e à forte reflexão da luz solar.", "Ao solo ser feito de calcário puro."],
+                correct: 2,
+                explanation: {
+                    correct: "Sem folhas, o brilho intenso do sol reflete-se nos troncos e ramos secos, dando esse aspeto de mata clara ou branca.",
+                    options: [
+                        "Não neva no Nordeste brasileiro.",
+                        "As flores são raras na seca.",
+                        "Esta é a alternativa correta.",
+                        "O solo é diverso, não apenas calcário."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Médio",
+                text: "Como se classificam os rios que secam totalmente durante o período de estiagem (seca) na Caatinga?",
+                options: ["Rios Perenes", "Rios Intermitentes (ou Temporários)", "Rios Subterrâneos", "Rios Glaciares"],
+                correct: 1,
+                explanation: {
+                    correct: "Exato! A maioria dos rios da Caatinga só corre quando há chuva. No resto do ano, transformam-se em caminhos de terra/pedra.",
+                    options: [
+                        "Estes nunca secam (ex: Rio São Francisco).",
+                        "Esta é a alternativa correta.",
+                        "Existem aquíferos, mas a pergunta refere-se ao leito visível.",
+                        "Não existem glaciares na região."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Adaptações Biológicas (8-15)
+            {
+                id: 8, level: "Fácil",
+                text: "As plantas adaptadas a ambientes secos, como os cactos, recebem o nome técnico de:",
+                options: ["Hidrófitas", "Xerófitas (ou Xerófilas)", "Epífitas", "Parasitas"],
+                correct: 1,
+                explanation: {
+                    correct: "Correto! 'Xero' vem do grego seco. Xerófitas são especialistas em economizar água.",
+                    options: [
+                        "Adaptadas a excesso de água.",
+                        "Esta é a alternativa correta.",
+                        "Vivem em cima de outras plantas.",
+                        "Roubam nutrientes de outras."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Médio",
+                text: "Porque é que os cactos da Caatinga (como o xique-xique) têm espinhos em vez de folhas largas?",
+                options: ["Para parecerem mais bonitos.", "Para atrair mais insetos polinizadores.", "Para reduzir a perda de água por evapotranspiração e servir de defesa contra animais.", "Para captar o orvalho da manhã."],
+                correct: 2,
+                explanation: {
+                    correct: "Brilhante! Uma folha larga perde muita água para o sol. O espinho é uma 'folha' tão reduzida que quase não perde água, além de picar quem o tentar comer.",
+                    options: [
+                        "Estética não é fator evolutivo primário de sobrevivência aqui.",
+                        "Espinhos costumam afastar animais, não atrair.",
+                        "Esta é a alternativa correta.",
+                        "Pode ajudar, mas a função principal é economia e defesa."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Médio",
+                text: "Certas plantas da Caatinga possuem tecidos internos que funcionam como esponjas, armazenando água no seu interior. Este tecido chama-se:",
+                options: ["Gordura vegetal", "Parênquima Aquífero", "Clorofila sólida", "Raiz aérea"],
+                correct: 1,
+                explanation: {
+                    correct: "Exatamente! É por isso que os cactos são gordinhos e cheios de sumo por dentro, mesmo no meio da seca.",
+                    options: [
+                        "Plantas não armazenam gordura como mamíferos.",
+                        "Esta é a alternativa correta.",
+                        "Clorofila é para fotossíntese.",
+                        "Estrutura externa para respiração ou suporte."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Fácil",
+                text: "A árvore símbolo do sertão, conhecida como 'árvore que dá de beber' por armazenar água na raiz e no tronco, é o:",
+                options: ["Pinheiro", "Eucalipto", "Umbuzeiro", "Carvalho"],
+                correct: 2,
+                explanation: {
+                    correct: "O Umbuzeiro tem batatas nas raízes que guardam litros de água. É uma reserva vital para o sertanejo e para os animais.",
+                    options: [
+                        "Climas frios.",
+                        "Exótica (da Austrália).",
+                        "Esta é a alternativa correta.",
+                        "Hemisfério Norte."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Médio",
+                text: "Qual destas aves é endémica da Caatinga e ficou famosa mundialmente pelo filme 'Rio', apesar de estar criticamente ameaçada de extinção na natureza?",
+                options: ["Pinguim", "Ararinha-azul", "Pardal", "Águia-real"],
+                correct: 1,
+                explanation: {
+                    correct: "Infelizmente, a Ararinha-azul desapareceu da natureza durante anos, restando apenas em cativeiro, devido ao tráfico e perda de habitat na Caatinga.",
+                    options: [
+                        "Antártida.",
+                        "Esta é a alternativa correta.",
+                        "Espécie invasora global.",
+                        "Europa/América do Norte."
+                    ]
+                }
+            },
+            {
+                id: 13, level: "Difícil",
+                text: "A respeito do solo da Caatinga, porque é que ele é considerado 'Rico em Minerais, mas Pobre em Matéria Orgânica'?",
+                options: ["Porque chove ouro na região.", "Porque a seca impede a decomposição rápida das folhas pelas bactérias e fungos, dificultando a formação de húmus.", "Porque as plantas comem a terra.", "Porque o solo é feito de plástico."],
+                correct: 1,
+                explanation: {
+                    correct: "Bactérias e fungos precisam de humidade para trabalhar. Sem chuva, a matéria morta demora muito a virar adubo, deixando o solo pobre em nutrientes orgânicos.",
+                    options: [
+                        "Falso.",
+                        "Esta é a alternativa correta.",
+                        "Plantas absorvem sais, não 'comem' terra.",
+                        "Falso."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Médio",
+                text: "Os animais da Caatinga também têm adaptações. Muitos répteis e pequenos mamíferos têm hábitos noturnos. Qual a vantagem disto?",
+                options: ["Para fugir da luz da lua.", "Para evitar as temperaturas extremas do dia e reduzir a perda de água corporal.", "Porque não conseguem ver de dia.", "Para assustar os turistas."],
+                correct: 1,
+                explanation: {
+                    correct: "Lógica perfeita! O sol do meio-dia no sertão é mortal. Sair à noite permite caçar e mover-se com o mínimo de gasto de água.",
+                    options: [
+                        "Não faz sentido.",
+                        "Esta é a alternativa correta.",
+                        "A maioria vê bem de dia, mas prefere a segurança térmica.",
+                        "Falso."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Difícil",
+                text: "O que significa dizer que uma espécie é 'Endémica' de um bioma?",
+                options: ["Que ela está doente.", "Que ela é muito perigosa.", "Que ela só existe naturalmente naquela região específica e em mais lado nenhum do mundo.", "Que ela vive em todo o planeta."],
+                correct: 2,
+                explanation: {
+                    correct: "Endemismo é exclusividade geográfica. Se a Ararinha-azul é endémica da Caatinga, não a encontrarás nativamente na Amazónia ou em África.",
+                    options: [
+                        "Confusão com epidemia.",
+                        "Não tem relação com agressividade.",
+                        "Esta é a alternativa correta.",
+                        "Isso seria uma espécie cosmopolita."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Ecossistema e Ameaças (16-23)
+            {
+                id: 16, level: "Fácil",
+                text: "Qual é o único rio de grande porte que atravessa a Caatinga e nunca seca (rio perene), sendo vital para a economia e vida da região?",
+                options: ["Rio Amazonas", "Rio Nilo", "Rio São Francisco", "Rio Tejo"],
+                correct: 2,
+                explanation: {
+                    correct: "O 'Velho Chico' nasce em Minas Gerais (húmido) e atravessa o sertão garantindo água para milhões de pessoas e para a agricultura irrigada.",
+                    options: [
+                        "Norte do Brasil.",
+                        "África.",
+                        "Esta é a alternativa correta.",
+                        "Portugal."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Médio",
+                text: "Qual é a principal ameaça ambiental que a Caatinga enfrenta atualmente, podendo levar à perda total da biodiversidade local?",
+                options: ["Excesso de neve.", "Desertificação (causada pela desflorestação e uso incorreto do solo).", "Invasão de ursos polares.", "Tsunamis gigantes."],
+                correct: 1,
+                explanation: {
+                    correct: "A desertificação ocorre quando o solo fica tão degradado que nada mais cresce. É causada principalmente pela retirada da mata nativa para pasto e lenha.",
+                    options: [
+                        "Impossível no clima local.",
+                        "Esta é a alternativa correta.",
+                        "Inexistente.",
+                        "A Caatinga é maioritariamente interiorana."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Fácil",
+                text: "Verdadeiro ou Falso: 'A Caatinga é um bioma pobre em vida e sem importância biológica.'",
+                options: ["Verdadeiro, nada vive lá.", "Falso, é um dos sistemas semiáridos mais biodiversos do mundo, com milhares de espécies adaptadas.", "Verdadeiro, porque é tudo seco.", "Falso, porque lá chove muito."],
+                correct: 1,
+                explanation: {
+                    correct: "Embora pareça castanha e morta na seca, a vida explode em verde e cor mal cai a primeira chuva. A sua biodiversidade é riquíssima e única.",
+                    options: [
+                        "Mito comum desmentido pela ciência.",
+                        "Esta é a alternativa correta.",
+                        "A aparência engana os olhos desatentos.",
+                        "Não chove muito, mas a vida é resiliente."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Médio",
+                text: "Como as populações humanas tradicionais da Caatinga (os Sertanejos) costumam prever a chegada da chuva, observando a natureza?",
+                options: ["Usando satélites privados.", "Observando o comportamento de aves (como a acauã) e o desabrochar de certas plantas.", "Ligando para o Sul do país.", "Adivinhando por sorteio."],
+                correct: 1,
+                explanation: {
+                    correct: "O conhecimento empírico é fortíssimo. O canto da acauã ou a posição do ninho do joão-de-barro são 'avisos' da natureza sobre o clima.",
+                    options: [
+                        "Isso é tecnologia moderna, não tradição.",
+                        "Esta é a alternativa correta.",
+                        "Não há relação direta.",
+                        "Baseia-se em observação rigorosa de gerações."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Difícil",
+                text: "O 'Complexo de Campo Maior' e o 'Raso da Catarina' são exemplos de áreas específicas dentro da Caatinga. O que as torna especiais?",
+                options: ["São locais onde nunca faz sol.", "São sub-regiões com características de solo e relevo muito particulares, abrigando espécies raríssimas.", "São cidades artificiais.", "São rios congelados."],
+                correct: 1,
+                explanation: {
+                    correct: "A Caatinga não é igual em todo o lado. Estas zonas têm canyons, dunas ou vegetações específicas que as tornam santuários ecológicos.",
+                    options: [
+                        "Faz sol o ano todo.",
+                        "Esta é a alternativa correta.",
+                        "Áreas naturais.",
+                        "Impossível."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Casos Analíticos e Síntese (21-30)
+            {
+                id: 21, level: "Fácil",
+                text: "Qual destes vegetais é um cacto típico da Caatinga muito usado para alimentar o gado na seca?",
+                options: ["Samambaia", "Palma forrageira", "Alface", "Pinheiro do Paraná"],
+                correct: 1,
+                explanation: {
+                    correct: "A Palma é um cacto cheio de água e energia, servindo de 'salvação' para as vacas e cabras durante os meses sem chuva.",
+                    options: [
+                        "Precisa de muita sombra e água.",
+                        "Esta é a alternativa correta.",
+                        "Planta de horta húmida.",
+                        "Mata de Araucária (Sul)."
+                    ]
+                }
+            },
+            {
+                id: 22, level: "Médio",
+                text: "Se retirarmos toda a vegetação de uma encosta na Caatinga para plantar capim, o que acontecerá ao solo com o tempo?",
+                options: ["Ficará mais fértil.", "Sofrerá erosão rápida, pois não há raízes para segurar a terra quando chover forte, levando à desertificação.", "Ficará coberto de flores azuis.", "O solo transformará as rochas em água."],
+                correct: 1,
+                explanation: {
+                    correct: "A caatinga protege o solo. Sem ela, a chuva (que cai forte de repente) leva a camada fértil embora, deixando só pedra estéril.",
+                    options: [
+                        "Perde a fertilidade.",
+                        "Esta é a alternativa correta.",
+                        "Impossível.",
+                        "Geologicamente impossível."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Difícil",
+                text: "O Tatu-bola, mascote da Copa de 2014, é um habitante da Caatinga. Qual a sua estratégia defensiva?",
+                options: ["Soltar um gás venenoso.", "Cavar um buraco de 100 metros em segundos.", "Enrolar-se completamente numa esfera rígida e impenetrável.", "Voar distâncias curtas."],
+                correct: 2,
+                explanation: {
+                    correct: "É a sua adaptação física. A carapaça protege-o de predadores como a onça-parda, mas infelizmente não o protege da caça humana.",
+                    options: [
+                        "Isto é a doninha.",
+                        "Cava bem, mas não tanto.",
+                        "Esta é a alternativa correta.",
+                        "Tatus não voam."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Médio",
+                text: "Durante a curta estação chuvosa (inverno sertanejo), a Caatinga sofre uma transformação visual. Qual?",
+                options: ["Fica coberta de gelo.", "Torna-se subitamente verde, com flores e explosão de vida em poucos dias.", "Os animais fogem para o litoral.", "As rochas derretem com a humidade."],
+                correct: 1,
+                explanation: {
+                    correct: "É um espetáculo! As plantas dormentes despertam, as sementes germinam e o 'deserto' vira uma floresta verde vibrante quase num piscar de olhos.",
+                    options: [
+                        "Gelo não existe lá.",
+                        "Esta é a alternativa correta.",
+                        "Os animais aproveitam a abundância local.",
+                        "Rochas não derretem com água."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Fácil",
+                text: "Qual é a principal atividade económica que, se feita sem planeamento, destrói a mata nativa da Caatinga?",
+                options: ["Surf de ondas grandes.", "Pecuária extensiva e extração de lenha para cerâmicas e gesso.", "Extração de petróleo no topo das montanhas.", "Pesca de baleias nos rios."],
+                correct: 1,
+                explanation: {
+                    correct: "O gado solto come os rebentos novos da mata, e as indústrias queimam a madeira nativa para os fornos, impedindo a regeneração da floresta.",
+                    options: [
+                        "Não há mar na Caatinga.",
+                        "Esta é a alternativa correta.",
+                        "Não há extração nestes moldes no bioma.",
+                        "Baleias são marinhas."
+                    ]
+                }
+            },
+            {
+                id: 26, level: "Difícil",
+                text: "Em termos de cadeias alimentares, como se comporta a biomassa na Caatinga durante a seca?",
+                options: ["Aumenta 200%.", "Fica concentrada nas raízes e sementes resistentes, aguardando a chuva para voltar a circular nos consumidores.", "Desaparece do planeta.", "Fica guardada nas nuvens."],
+                correct: 1,
+                explanation: {
+                    correct: "A vida 'esconde-se'. A energia e matéria estão latentes nas sementes no chão e no interior dos troncos e raízes, prontas para explodir quando a água chegar.",
+                    options: [
+                        "Diminui visivelmente.",
+                        "Esta é a alternativa correta.",
+                        "Apenas fica inativa localmente.",
+                        "Nuvens carregam água, não biomassa orgânica."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Médio",
+                text: "O que acontece ao Rio São Francisco quando passa pela Caatinga seca?",
+                options: ["Ele para de correr.", "Ele mantém o seu fluxo (Rio Perene) porque a sua nascente está numa região de muitas chuvas, mas perde muita água por evaporação.", "Ele vira um rio de areia.", "Ele corre no sentido contrário devido ao calor."],
+                correct: 1,
+                explanation: {
+                    correct: "É um milagre geográfico! Como nasce na Serra da Canastra (MG), ele traz água de longe para salvar o sertão, apesar de o sol evaporar parte dele no caminho.",
+                    options: [
+                        "Isso acontece com os intermitentes.",
+                        "Esta é a alternativa correta.",
+                        "O leito tem areia, mas a água corre por cima.",
+                        "Rios não mudam de sentido pelo calor."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Difícil",
+                text: "A caatinga é considerada um bioma de 'clímax' ecológico adaptado. Isto significa que:",
+                options: ["É um bioma que ainda está a nascer.", "É um sistema em equilíbrio estável com as condições severas de clima e solo da região.", "É um bioma que vai desaparecer amanhã.", "É uma floresta que quer ser amazónia mas não consegue."],
+                correct: 1,
+                explanation: {
+                    correct: "As espécies lá estão há milhões de anos. Elas não são 'coitadinhas'; são máquinas perfeitas de sobrevivência desenhadas pela evolução para aquele lugar exato.",
+                    options: [
+                        "É muito antigo.",
+                        "Esta é a alternativa correta.",
+                        "Só desaparece se o homem o destruir.",
+                        "A Caatinga tem o seu próprio valor e identidade."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Fácil",
+                text: "Qual destes animais NÃO é típico da fauna da Caatinga?",
+                options: ["Calango (lagarto)", "Cascavel", "Urso Polar", "Cutia"],
+                correct: 2,
+                explanation: {
+                    correct: "O Urso Polar vive no Ártico, rodeado de gelo. Morreria em minutos sob o sol de 40 graus do Sertão do Ceará ou da Bahia.",
+                    options: [
+                        "Muitíssimo comum.",
+                        "Serpente típica.",
+                        "Esta é a alternativa correta.",
+                        "Roedor muito presente."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "Resumo do Módulo: Qual frase define melhor o desafio da conservação da Caatinga para as futuras gerações?",
+                options: ["'Temos de regar o sertão com mangueiras todos os dias.'", "'A proteção depende de entender que a Caatinga é uma floresta rica e frágil que, uma vez desmatada, vira deserto de pedra quase impossível de recuperar.'", "'Não vale a pena proteger pedras e espinhos.'", "'Basta trazer água do mar para o meio do mato.'"],
+                correct: 1,
+                explanation: {
+                    correct: "É a grande lição! A resiliência da Caatinga tem um limite. Se quebrarmos a proteção das xerófitas, o solo morre e o deserto avança.",
+                    options: [
+                        "Logística impossível.",
+                        "Esta é a alternativa correta.",
+                        "Visão ignorante que ignora a biodiversidade vital.",
+                        "A água salgada mataria o ecossistema."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Visão de Sertanejo! Acertaste!' : '❌ Ops! Cuidado com os espinhos:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>Opção Exata:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#451A03; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #CBD5E0; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Diagnóstico das Erradas:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Chuva de confetes coloridos
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#F59E0B', '#166534', '#92400E', '#FEF3C7']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#F59E0B', '#166534', '#92400E', '#FEF3C7']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Concluir Prova";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Próxima";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Dominaste ${correct} de ${questions.length} segredos da Caatinga.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Solo Árido!</strong> O conhecimento precisa de ser cultivado. Precisas de 80% (24 acertos) para dominares este bioma. Volta à Teoria e tenta outra vez!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Tentar Novamente</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Rei do Sertão!</strong> A tua análise ecológica é letalmente perfeita. Conheces a fundo as riquezas da nossa Mata Branca!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Patrulhar Novamente</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Revisão de Erros:</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed #92400E;">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">Marcaste: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">Certo: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conceitos Ecológicos 9º Ano - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: ECOLOGIA E NATUREZA (Verde Folha & Laranja Terra) */
+            --bg-color: #F0FDF4; /* Fundo Verde muito claro */
+            --text-color: #064E3B; /* Verde Escuro */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #D1FAE5; /* Verde Claro */
+            --theme-medium: #10B981; /* Verde Esmeralda */
+            --theme-dark: #047857; /* Verde Musgo */
+            --theme-contrast: #D97706; /* Laranja Terra (Destaque) */
+            --theme-accent: #0284C7; /* Azul Água (Secundário) */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #475569;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: #888; font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 800; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 1px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #FEF3C7; /* Amarelo suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+            text-transform: uppercase; margin-bottom: 10px; border: 1px solid var(--border-color);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 700;
+            font-size: 0.8rem; color: #64748B; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 1rem; flex-shrink: 0; background: #F8FAFC; color: var(--text-color);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E0; line-height: 1.5; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #4A5568; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 2px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3rem; margin: 10px 0; }
+        .percentage-big { font-size: 4rem; font-weight: 900; color: var(--text-color); line-height: 1; margin: 10px 0; text-shadow: 2px 2px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 2px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 800;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--border-color); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 2px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 700; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🌿</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Ecologia: A Teia da Vida na Terra</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Nicho)">
+            </div>
+            <div id="no-results"><p>😕 Nenhum conceito encontrado.</p></div>
+
+            <!-- TÓPICO 1: HABITAT E NICHO -->
+            <div class="content-group">
+                <div class="section-badge">🏠 1. Onde e Como Vivem</div>
+                <div class="theory-box search-target">
+                    <h3>Habitat e Nicho Ecológico</h3>
+                    <p>Para entender a vida de um animal, precisas de saber duas coisas essenciais: a sua morada e a sua profissão.</p>
+                    
+                    <div class="visual-area">
+                        <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+                            <svg width="100" height="100" viewBox="0 0 100 100">
+                                <!-- Habitat: Árvore/Floresta -->
+                                <rect x="40" y="50" width="20" height="40" fill="#8B4513" stroke="#000" stroke-width="2"/>
+                                <circle cx="50" cy="40" r="30" fill="#10B981" stroke="#000" stroke-width="2"/>
+                                <path d="M 20 90 L 80 90" stroke="#000" stroke-width="2"/>
+                            </svg>
+                            <span style="font-weight:900; color:var(--theme-dark);">HABITAT (A Morada)</span>
+                        </div>
+                        <div style="font-size:2rem; font-weight:900;">VS</div>
+                        <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+                            <svg width="100" height="100" viewBox="0 0 100 100">
+                                <!-- Nicho: Ação (Pássaro comendo inseto) -->
+                                <circle cx="50" cy="50" r="40" fill="#FFFBEB" stroke="#000" stroke-width="2"/>
+                                <!-- Pássaro simplificado -->
+                                <path d="M 40 45 Q 50 30 60 45 L 70 50 L 60 55 Q 50 70 40 55 Z" fill="#3B82F6" stroke="#000" stroke-width="2"/>
+                                <!-- Inseto -->
+                                <circle cx="75" cy="50" r="3" fill="#D97706"/>
+                            </svg>
+                            <span style="font-weight:900; color:var(--theme-contrast);">NICHO (A Profissão)</span>
+                        </div>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Habitat:</strong> É o "endereço" físico do organismo. O local onde ele mora. <em>(Ex: O leão mora na savana africana)</em>.</li>
+                        <li><strong>Nicho Ecológico:</strong> É o papel funcional, a "profissão" do organismo no ecossistema. O que ele come, a que horas caça, quem o come a ele, como se reproduz. <em>(Ex: O leão é um predador de topo de hábitos noturnos/crepusculares)</em>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: NÍVEIS DE ORGANIZAÇÃO -->
+            <div class="content-group">
+                <div class="section-badge">📈 2. Níveis de Organização</div>
+                <div class="theory-box search-target">
+                    <h3>Da População à Biosfera</h3>
+                    <p>A ecologia não estuda órgãos ou células; ela estuda a vida a partir do indivíduo para cima. É como uma boneca Matrioska, onde uma caixa cabe dentro da outra.</p>
+                    
+                    <div class="visual-area" style="flex-direction:column; align-items:flex-start; padding-left:30px;">
+                        <p>🧍 <strong>Organismo:</strong> Um único ser vivo (Ex: Um lobo).</p>
+                        <p>🐺🐺 <strong>População:</strong> Vários organismos da MESMA ESPÉCIE a viver no mesmo local (Ex: Uma alcateia de lobos).</p>
+                        <p>🐺🐇🌲 <strong>Comunidade (Biocenose):</strong> Várias populações de ESPÉCIES DIFERENTES a viver juntas (Ex: Lobos, coelhos e árvores na floresta).</p>
+                        <p>🌧️🏞️🐺 <strong>Ecossistema:</strong> A união da Comunidade (vida/biótico) com o ambiente físico (abiótico: água, solo, luz, temperatura).</p>
+                        <p>🌍 <strong>Biosfera:</strong> O conjunto de todos os ecossistemas da Terra. Onde quer que haja vida no planeta.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: CADEIAS ALIMENTARES -->
+            <div class="content-group">
+                <div class="section-badge">🍽️ 3. Quem Come Quem?</div>
+                <div class="theory-box search-target">
+                    <h3>Cadeias e Teias Alimentares</h3>
+                    <p>A energia entra na natureza através do Sol e viaja de ser vivo em ser vivo.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="280" height="80" viewBox="0 0 280 80">
+                            <!-- Planta -->
+                            <rect x="10" y="30" width="30" height="30" fill="#10B981" stroke="#000" stroke-width="2"/>
+                            <text x="25" y="75" text-anchor="middle" font-size="9" font-weight="bold">Produtor</text>
+                            
+                            <path d="M 45 45 L 65 45" stroke="#D97706" stroke-width="3" marker-end="url(#arrow)"/>
+                            
+                            <!-- Inseto -->
+                            <circle cx="85" cy="45" r="15" fill="#FBBF24" stroke="#000" stroke-width="2"/>
+                            <text x="85" y="75" text-anchor="middle" font-size="9" font-weight="bold">Consumidor 1º</text>
+
+                            <path d="M 105 45 L 125 45" stroke="#D97706" stroke-width="3" marker-end="url(#arrow)"/>
+
+                            <!-- Sapo -->
+                            <rect x="140" y="30" width="30" height="30" rx="5" fill="#34D399" stroke="#000" stroke-width="2"/>
+                            <text x="155" y="75" text-anchor="middle" font-size="9" font-weight="bold">Consumidor 2º</text>
+
+                            <!-- Fluxo de Energia decrescente -->
+                            <path d="M 20 15 L 260 15" stroke="#F59E0B" stroke-width="4" stroke-dasharray="5,5"/>
+                            <text x="140" y="10" text-anchor="middle" font-size="10" font-weight="bold" fill="#D97706">Energia diminui ao longo da cadeia!</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px;">
+                        <li><strong>Produtores:</strong> Plantas e algas. Fazem fotossíntese. São a base de tudo.</li>
+                        <li><strong>Consumidores:</strong> Animais. O Primário come a planta (herbívoro). O Secundário come o primário (carnívoro), e assim por diante.</li>
+                        <li><strong>Decompositores:</strong> Fungos e bactérias. Reciclam a matéria morta para o solo.</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <strong>Teia Alimentar:</strong> Na vida real, o sapo não come apenas um tipo de inseto. A teia é o cruzamento complexo de várias cadeias alimentares misturadas.
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: RELAÇÕES ECOLÓGICAS -->
+            <div class="content-group">
+                <div class="section-badge">🤝 4. Relações Ecológicas</div>
+                <div class="theory-box search-target">
+                    <h3>Harmonia ou Guerra?</h3>
+                    <p>Os seres vivos interagem o tempo todo. Se a relação é boa para todos (ou neutra), é <strong>Harmônica</strong>. Se alguém sai prejudicado, é <strong>Desarmônica</strong>.</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: transparent; border: none; padding: 0;">
+                        <!-- Mutualismo -->
+                        <div style="background:#D1FAE5; border:2px solid #059669; padding:10px; border-radius:8px;">
+                            <strong style="color:#047857;">Mutualismo (+,+)</strong><br>
+                            <span style="font-size:0.8rem;">Ambos ganham e a relação é OBRIGATÓRIA para sobreviverem. (Ex: Líquenes = algas + fungos).</span>
+                        </div>
+                        <!-- Protocooperação -->
+                        <div style="background:#D1FAE5; border:2px solid #059669; padding:10px; border-radius:8px;">
+                            <strong style="color:#047857;">Protocooperação (+,+)</strong><br>
+                            <span style="font-size:0.8rem;">Ambos ganham, mas NÃO É obrigatória. (Ex: Pássaro-palito que limpa os dentes do crocodilo).</span>
+                        </div>
+                        <!-- Comensalismo -->
+                        <div style="background:#E0F2FE; border:2px solid #0284C7; padding:10px; border-radius:8px;">
+                            <strong style="color:#0369A1;">Comensalismo (+, 0)</strong><br>
+                            <span style="font-size:0.8rem;">Um ganha comida, o outro nem nota (é indiferente). (Ex: Rémora que come os restos do tubarão).</span>
+                        </div>
+                        <!-- Parasitismo -->
+                        <div style="background:#FFE4E6; border:2px solid #BE123C; padding:10px; border-radius:8px;">
+                            <strong style="color:#9F1239;">Parasitismo (+, -)</strong><br>
+                            <span style="font-size:0.8rem;">Um ganha roubando os recursos do outro (hospedeiro) sem o querer matar na hora. (Ex: Carraça, lombriga).</span>
+                        </div>
+                        <!-- Predação -->
+                        <div style="background:#FFE4E6; border:2px solid #BE123C; padding:10px; border-radius:8px; grid-column: span 2;">
+                            <strong style="color:#9F1239;">Predação (+, -) e Competição (-, -)</strong><br>
+                            <span style="font-size:0.8rem;">Na Predação, o predador mata a presa. Na Competição, ambos gastam energia a lutar por comida/espaço, logo ambos perdem (-,-).</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Fazer a Avaliação Final (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 2px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--text-color); font-weight:900; margin-bottom: 5px;">A Grande Prova de Ecologia</h2>
+                <p style="color: #475569; font-size: 0.95rem; font-weight:500;">
+                    30 questões vitais. O teu objetivo é atingir <strong>80% de acertos (24/30)</strong>. Lê as análises após cada resposta, são autênticas aulas!
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Avaliação Concluída</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS DETALHADOS) ---
+        const questions = [
+            // Bloco 1: Conceitos Básicos (1-10)
+            {
+                id: 1, level: "Fácil",
+                text: "O que a Ecologia estuda fundamentalmente?",
+                options: ["As partes internas e os órgãos dos animais.", "A interação dos seres vivos entre si e com o ambiente físico em que vivem.", "Apenas o comportamento das plantas aquáticas.", "A formação das estrelas e do clima espacial."],
+                correct: 1,
+                explanation: {
+                    correct: "Exatamente! 'Eco' vem do grego Oikos (casa). É o estudo da 'nossa casa' (a Terra) e de como os moradores interagem com ela e entre si.",
+                    options: [
+                        "Isto seria Anatomia e Fisiologia.",
+                        "Esta é a alternativa correta.",
+                        "Isso seria Botânica marinha restrita.",
+                        "Isso é Astronomia."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Fácil",
+                text: "Na ecologia, quando nos referimos ao 'endereço' de um ser vivo (o local físico onde ele pode ser encontrado na natureza), estamos a falar do seu:",
+                options: ["Nicho Ecológico", "Ecossistema", "Habitat", "Bioma"],
+                correct: 2,
+                explanation: {
+                    correct: "Correto! O Habitat é o lugar onde a espécie vive (ex: a savana, a copa das árvores, o fundo do oceano).",
+                    options: [
+                        "Nicho é o que ele 'faz' (a sua profissão).",
+                        "Ecossistema inclui todos os seres e o ambiente de uma grande área.",
+                        "Esta é a alternativa correta.",
+                        "Bioma é uma vasta área geográfica (ex: Floresta Amazónica)."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Fácil",
+                text: "A forma como uma espécie vive, o que ela come, a que horas caça e as suas estratégias de sobrevivência formam o seu:",
+                options: ["Nicho Ecológico", "Habitat", "Biótopo", "Nível Trófico"],
+                correct: 0,
+                explanation: {
+                    correct: "Perfeito! O Nicho Ecológico é a 'profissão' do animal. A sua rotina diária e função no ecossistema.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Habitat é apenas o lugar (a morada).",
+                        "Biótopo é o ambiente físico sem vida (pedras, água).",
+                        "Nível trófico é a sua posição na cadeia alimentar."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Fácil",
+                text: "Um conjunto de formigas DA MESMA ESPÉCIE que vive num determinado jardim forma uma:",
+                options: ["Biosfera", "Comunidade", "População", "Teia alimentar"],
+                correct: 2,
+                explanation: {
+                    correct: "A regra é clara: Conjunto de indivíduos da mesma espécie no mesmo local = População.",
+                    options: [
+                        "A biosfera é o planeta todo.",
+                        "A comunidade seria se juntássemos as formigas com as aranhas, minhocas e plantas do jardim.",
+                        "Esta é a alternativa correta.",
+                        "Teia alimentar é a relação de alimentação."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Fácil",
+                text: "Se juntares todos os animais, plantas, fungos e bactérias (espécies diferentes) que habitam numa floresta, estarás a analisar uma:",
+                options: ["População", "Comunidade (Biocenose)", "Fatores Abióticos", "Espécie"],
+                correct: 1,
+                explanation: {
+                    correct: "Conjunto de várias populações diferentes interagindo no mesmo local é uma Comunidade Biológica.",
+                    options: [
+                        "População é apenas uma espécie.",
+                        "Esta é a alternativa correta.",
+                        "Fatores abióticos são as coisas sem vida (luz, chuva).",
+                        "Espécie é um tipo único de ser vivo."
+                    ]
+                }
+            },
+            {
+                id: 6, level: "Fácil",
+                text: "O que é que constitui um Ecossistema?",
+                options: ["Apenas os animais maiores que lá vivem.", "A união dos fatores bióticos (seres vivos) com os fatores abióticos (luz, solo, água).", "Apenas a temperatura e o clima do local.", "O grupo de todos os planetas habitáveis."],
+                correct: 1,
+                explanation: {
+                    correct: "O Ecossistema é o sistema completo em funcionamento: a vida (Comunidade) interagindo com a física e química do local (Biótopo).",
+                    options: [
+                        "Ignoraria plantas, fungos e a parte física.",
+                        "Esta é a alternativa correta.",
+                        "Ignoraria a vida.",
+                        "Isso é imaginação astronómica."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Médio",
+                text: "Na ecologia, fatores como a temperatura, a humidade, a salinidade da água e a quantidade de luz solar são classificados como:",
+                options: ["Fatores Bióticos", "Decompositores", "Fatores Abióticos", "Produtores Primários"],
+                correct: 2,
+                explanation: {
+                    correct: "O prefixo 'A-' significa negação. Abióticos são todos os elementos físicos e químicos do ambiente que NÃO têm vida, mas que sustentam a vida.",
+                    options: [
+                        "Bióticos são os seres vivos.",
+                        "Decompositores são bactérias/fungos (vivos).",
+                        "Esta é a alternativa correta.",
+                        "Produtores são as plantas (vivas)."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Fácil",
+                text: "Numa cadeia alimentar, as plantas terrestres e as algas marinhas ocupam sempre a posição de:",
+                options: ["Consumidores Primários", "Decompositores", "Consumidores Terciários", "Produtores"],
+                correct: 3,
+                explanation: {
+                    correct: "Por conseguirem fazer a fotossíntese (criar o seu próprio alimento a partir da luz solar), elas PRODUZEM a base de energia para todo o resto.",
+                    options: [
+                        "Estes são os animais herbívoros.",
+                        "Estes comem as plantas mortas.",
+                        "Estes são grandes carnívoros.",
+                        "Esta é a alternativa correta."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Fácil",
+                text: "Um animal estritamente herbívoro (que apenas come plantas, como a vaca ou a zebra) é classificado na cadeia alimentar como:",
+                options: ["Produtor", "Consumidor Primário (1ª ordem)", "Consumidor Secundário (2ª ordem)", "Decompositor"],
+                correct: 1,
+                explanation: {
+                    correct: "Como é o PRIMEIRO a comer alguma coisa na cadeia (come o Produtor), ele é o Consumidor Primário.",
+                    options: [
+                        "Plantas.",
+                        "Esta é a alternativa correta.",
+                        "Carnívoro que come o herbívoro.",
+                        "Fungos e bactérias."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Fácil",
+                text: "Fungos e certas bactérias têm a importante função de decompor a matéria morta para reciclar nutrientes de volta para o solo. Eles são os:",
+                options: ["Super-predadores", "Autotróficos", "Decompositores", "Herbívoros"],
+                correct: 2,
+                explanation: {
+                    correct: "Eles são a central de reciclagem da natureza. Sem eles, o mundo estaria soterrado em cadáveres e plantas mortas sem nutrientes novos no solo.",
+                    options: [
+                        "Isso seriam os leões, águias, tubarões.",
+                        "Isso são plantas (que fazem o próprio alimento).",
+                        "Esta é a alternativa correta.",
+                        "Isso são animais que comem plantas vivas."
+                    ]
+                }
+            },
+
+            // Bloco 2: Cadeias, Teias e Energia (11-15)
+            {
+                id: 11, level: "Médio",
+                text: "Analisa esta cadeia: Planta → Gafanhoto → Sapo → Cobra. Nesta cadeia, qual é o nível trófico (posição) que o Sapo ocupa?",
+                options: ["Primeiro Nível Trófico", "Consumidor Secundário", "Consumidor Primário", "Decompositor"],
+                correct: 1,
+                explanation: {
+                    correct: "1º nível (Planta/Produtor) → 2º nível (Gafanhoto/Cons. Primário) → Sapo. Como o sapo comeu o 1º consumidor, ele é o Consumidor Secundário.",
+                    options: [
+                        "O 1º Nível é sempre o Produtor.",
+                        "Esta é a alternativa correta.",
+                        "O Cons. Primário é o Gafanhoto.",
+                        "O Sapo não recicla matéria morta desta forma."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Médio",
+                text: "Qual é a principal diferença entre uma CADEIA alimentar e uma TEIA alimentar?",
+                options: ["A teia alimentar não inclui plantas, apenas animais.", "A cadeia alimentar é complexa, a teia é uma linha reta simples.", "A cadeia é uma sequência linear simples; a teia é um conjunto de várias cadeias interligadas, mais realista.", "Não existe diferença."],
+                correct: 2,
+                explanation: {
+                    correct: "Na vida real, um predador não come apenas uma presa, e uma presa é caçada por vários predadores. A teia mostra essa confusão real e cruzada.",
+                    options: [
+                        "Ambas precisam de produtores.",
+                        "É exatamente o inverso.",
+                        "Esta é a alternativa correta.",
+                        "Existe grande diferença de complexidade."
+                    ]
+                }
+            },
+            {
+                id: 13, level: "Médio",
+                text: "O que acontece à ENERGIA ao longo de uma cadeia alimentar (ao passar do Produtor para o Consumidor Secundário, e por aí em diante)?",
+                options: ["A energia aumenta, o último predador recebe mais energia.", "A energia mantém-se exatamente igual para todos.", "A energia flui em ciclo, voltando do predador para o produtor.", "A energia DIMINUI, perdendo-se em forma de calor e metabolismo em cada etapa."],
+                correct: 3,
+                explanation: {
+                    correct: "A regra dos 10%: Apenas cerca de 10% da energia passa para o nível seguinte. O resto o animal gastou a correr, a respirar e a gerar calor corporal. Por isso as cadeias são curtas!",
+                    options: [
+                        "O oposto. Há menos energia no topo.",
+                        "Não, muita é desperdiçada em calor.",
+                        "A matéria (nutrientes) cicla, mas a ENERGIA tem fluxo unidirecional (acaba).",
+                        "Esta é a alternativa correta."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Médio",
+                text: "Numa pirâmide ecológica de ENERGIA, é possível que a base (produtores) seja mais estreita que o topo (consumidores)?",
+                options: ["Sim, se a pirâmide for num oceano.", "Não. A pirâmide de energia NUNCA pode ser invertida.", "Sim, se houver um super-predador muito grande.", "Sim, durante o inverno."],
+                correct: 1,
+                explanation: {
+                    correct: "Pelas leis da termodinâmica, a base tem SEMPRE de ter mais energia. A energia perde-se a cada passo, logo é impossível o topo ter mais energia total que a base.",
+                    options: [
+                        "A pirâmide de *massa* e *número* pode inverter-se, a de energia NUNCA.",
+                        "Esta é a alternativa correta.",
+                        "O tamanho do predador não viola as leis da física.",
+                        "O clima não inverte a perda de energia térmica."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Médio",
+                text: "O conceito de 'Relação Intraespecífica' significa que a interação ocorre:",
+                options: ["Entre indivíduos de espécies diferentes.", "Apenas entre predador e presa.", "Entre indivíduos da MESMA espécie (ex: leão com leão).", "Apenas entre produtores e decompositores."],
+                correct: 2,
+                explanation: {
+                    correct: "O prefixo 'Intra-' significa 'dentro de'. Portanto, interações intraespecíficas acontecem dentro da mesma espécie (ex: sociedade de abelhas, competição entre dois lobos).",
+                    options: [
+                        "Isso é relação INTERespecífica.",
+                        "Isso é interespecífica (predação).",
+                        "Esta é a alternativa correta.",
+                        "Isso é interespecífica."
+                    ]
+                }
+            },
+
+            // Bloco 3: Relações Ecológicas (16-20)
+            {
+                id: 16, level: "Médio",
+                text: "Os líquenes são formados por uma alga e um fungo que vivem intimamente ligados. Se os separarmos, ambos morrem. Que relação harmónica é esta?",
+                options: ["Comensalismo (+, 0)", "Parasitismo (+, -)", "Mutualismo (+, +)", "Competição (-, -)"],
+                correct: 2,
+                explanation: {
+                    correct: "O Mutualismo é uma relação positiva para ambos onde a dependência é obrigatória para a sobrevivência (estão 'casados' para a vida).",
+                    options: [
+                        "Comensalismo não é obrigatório e só um ganha.",
+                        "No parasitismo um perde e não morrem se separados voluntariamente.",
+                        "Esta é a alternativa correta.",
+                        "Nenhum se prejudica."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Médio",
+                text: "O peixe-rémora prende-se ao corpo do tubarão para se deixar transportar e comer os restos de comida que sobram. O tubarão nem é prejudicado nem ajudado. Qual é a relação?",
+                options: ["Protocooperação (+, +)", "Comensalismo (+, 0)", "Amensalismo (-, 0)", "Predação (+, -)"],
+                correct: 1,
+                explanation: {
+                    correct: "O Comensalismo ocorre quando um indivíduo ganha (+) alimento ou proteção, e o outro é totalmente indiferente (0).",
+                    options: [
+                        "A cooperação faria o tubarão ganhar algo também.",
+                        "Esta é a alternativa correta.",
+                        "Amensalismo é quando um prejudica sem querer (ex: elefante a pisar formigas).",
+                        "Ninguém está a ser morto para alimento."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Médio",
+                text: "Carraças e pulgas agarram-se à pele de um cão, sugando o seu sangue e provocando-lhe doenças, mas geralmente não o matam de imediato. Esta é uma relação de:",
+                options: ["Parasitismo", "Inquilinismo", "Competição", "Predação"],
+                correct: 0,
+                explanation: {
+                    correct: "No Parasitismo, o parasita explora os recursos do hospedeiro enfraquecendo-o lentamente. Matá-lo rapidamente seria mau negócio, pois perderia a 'casa'.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Inquilinismo seria apenas procurar abrigo sem prejudicar (como a orquídea na árvore).",
+                        "Eles não competem pela mesma comida.",
+                        "Predador mata imediatamente para comer."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Fácil",
+                text: "O guepardo caça, mata e devora uma gazela na savana africana. Esta interação biológica direta e violenta é a:",
+                options: ["Herbivoria", "Parasitismo", "Amensalismo", "Predação"],
+                correct: 3,
+                explanation: {
+                    correct: "A Predação (+, -) é a morte imediata de um animal (presa) por outro (predador) para fins de alimentação.",
+                    options: [
+                        "A gazela faz herbivoria com a erva.",
+                        "Parasita não devora o corpo na hora.",
+                        "A intenção é clara, não é um acidente como no amensalismo.",
+                        "Esta é a alternativa correta."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Médio",
+                text: "Duas espécies de pássaros tentam construir os ninhos na mesma pequena árvore, disputando os melhores ramos. Que relação desarmônica está a ocorrer?",
+                options: ["Mutualismo", "Comensalismo", "Competição interespecífica", "Predação"],
+                correct: 2,
+                explanation: {
+                    correct: "Sempre que recursos (espaço, água, comida) são limitados, ocorre Competição. Como são duas espécies diferentes, é 'interespecífica'. Ambos perdem energia (-,-).",
+                    options: [
+                        "Não há ganhos mútuos.",
+                        "Não há indiferença.",
+                        "Esta é a alternativa correta.",
+                        "Não se comem um ao outro."
+                    ]
+                }
+            },
+
+            // Bloco 4: Tópicos Avançados (21-30)
+            {
+                id: 21, level: "Difícil",
+                text: "O que é o conceito de 'Sucessão Ecológica'?",
+                options: ["A morte repentina de um ecossistema.", "O processo gradual e direcional de mudanças na comunidade de um local até atingir o estado de 'clímax' (equilíbrio maduro).", "O processo de um animal envelhecer.", "A migração dos pássaros no inverno."],
+                correct: 1,
+                explanation: {
+                    correct: "Se uma floresta arder, primeiro nascem ervas, depois arbustos, até voltar a ser uma floresta madura. A este avanço ordeiro dá-se o nome de Sucessão Ecológica.",
+                    options: [
+                        "A morte seria perturbação ou colapso.",
+                        "Esta é a alternativa correta.",
+                        "Isso é ontogenia/senescência.",
+                        "Isso é migração estacional."
+                    ]
+                }
+            },
+            {
+                id: 22, level: "Difícil",
+                text: "Numa cadeia alimentar aquática contaminada por mercúrio (tóxico), qual animal terá a maior concentração de veneno no corpo devido à Bioacumulação (Magnificação Trófica)?",
+                options: ["As microalgas (Produtor).", "O pequeno crustáceo (Consumidor 1º).", "O pequeno peixe (Consumidor 2º).", "O Tubarão do topo da cadeia (Consumidor Final)."],
+                correct: 3,
+                explanation: {
+                    correct: "Diferente da energia que diminui, os metais pesados e toxinas não são excretados e ACUMULAM-SE. O predador de topo come muitos peixes contaminados, recebendo uma dose maciça.",
+                    options: [
+                        "As algas absorvem pouco, a dose individual é mínima.",
+                        "Concentração intermédia.",
+                        "Concentração elevada.",
+                        "Esta é a alternativa correta."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Difícil",
+                text: "No estudo das populações, o que é a 'Capacidade de Suporte' (ou Capacidade de Carga) de um ambiente?",
+                options: ["O número de predadores num local.", "O tamanho máximo populacional que o ecossistema consegue sustentar indefinidamente sem se degradar.", "O número mínimo de árvores para fazer uma floresta.", "A quantidade de água num lago."],
+                correct: 1,
+                explanation: {
+                    correct: "Se a população de coelhos passar o limite da Capacidade de Carga do pasto, os recursos acabam, e a população entra em fome e colapso demográfico.",
+                    options: [
+                        "Isto é apenas densidade de predadores.",
+                        "Esta é a alternativa correta.",
+                        "Conceito florestal diferente.",
+                        "Fator abiótico."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Difícil",
+                text: "O Princípio de Gause (Princípio da Exclusão Competitiva) dita que se duas espécies têm EXATAMENTE o mesmo Nicho Ecológico:",
+                options: ["Vão reproduzir-se juntas formando uma nova espécie.", "Uma delas acabará por extinguir a outra por competição (ou forçará a outra a migrar/mudar de nicho).", "Passarão a fazer mutualismo.", "Irá ocorrer predação mútua contínua."],
+                correct: 1,
+                explanation: {
+                    correct: "Duas espécies não podem ocupar o mesmo 'emprego' no mesmo sítio por muito tempo. A mais eficiente vai ganhar todos os recursos e eliminar a outra do local.",
+                    options: [
+                        "Espécies diferentes raramente geram híbridos férteis em competição agressiva.",
+                        "Esta é a alternativa correta.",
+                        "Na competição direta isso raramente evolui pacificamente.",
+                        "Vão competir, não necessariamente comer-se mutuamente."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Difícil",
+                text: "O fungo Penicillium liberta uma toxina (penicilina) que mata as bactérias em seu redor sem que o fungo perceba ou beneficie ativamente do seu uso no ecossistema natural. Que relação desarmônica é esta?",
+                options: ["Parasitismo", "Predação", "Amensalismo (Antibiose)", "Comensalismo"],
+                correct: 2,
+                explanation: {
+                    correct: "Amensalismo (-, 0): O fungo afeta severamente a bactéria (-), mas para o fungo original essa segregação química é apenas uma excreção normal neutra (0) no seu metabolismo natural.",
+                    options: [
+                        "O fungo não está a comer a bactéria internamente.",
+                        "O fungo não está a comer ativamente a bactéria para nutrição.",
+                        "Esta é a alternativa correta.",
+                        "Comensalismo seria (+, 0)."
+                    ]
+                }
+            },
+            {
+                id: 26, level: "Difícil",
+                text: "Qual é a diferença entre Mutualismo e Protocooperação?",
+                options: ["Não há diferença.", "No mutualismo, os seres prejudicam-se. Na protocooperação, ajudam-se.", "A Protocooperação é obrigatória para a sobrevivência; o Mutualismo é opcional.", "O Mutualismo é obrigatório para a sobrevivência de ambos; a Protocooperação é apenas uma ajuda opcional e temporária."],
+                correct: 3,
+                explanation: {
+                    correct: "Exatamente! Líquenes (Alga + Fungo) são Mutualismo obrigatório, sem um, o outro morre. O pássaro que come carraças no boi (Protocooperação) ajuda o boi, mas ambos vivem bem separados.",
+                    options: [
+                        "Há diferença na obrigatoriedade.",
+                        "Ambas são relações harmónicas (+,+).",
+                        "É exatamente o inverso.",
+                        "Esta é a alternativa correta."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Difícil",
+                text: "O que é uma 'Espécie-chave' (Keystone species) num ecossistema?",
+                options: ["A espécie que vive nas cavernas.", "Uma espécie com um impacto desproporcionalmente grande no seu ambiente; se for removida, o ecossistema entra em colapso profundo.", "A espécie com o maior número de indivíduos.", "A espécie mais pequena."],
+                correct: 1,
+                explanation: {
+                    correct: "Exemplo clássico: o Lobo em Yellowstone ou a Lontra Marinha. Apesar de serem poucos em número, mantêm toda a teia alimentar controlada. Sem eles, o ecossistema desintegra-se.",
+                    options: [
+                        "Espécie troglóbia.",
+                        "Esta é a alternativa correta.",
+                        "Normalmente os produtores (relva, plâncton) têm o maior número.",
+                        "O tamanho físico não define a importância estrutural."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Difícil",
+                text: "No Ciclo do Carbono, quais são os dois processos biológicos fundamentais que garantem a reciclagem de CO2 entre a atmosfera e os seres vivos?",
+                options: ["Chuva e Evaporação", "Fotossíntese (retira CO2) e Respiração/Decomposição (devolve CO2)", "Transpiração e Congelamento", "Erosão e Sedimentação"],
+                correct: 1,
+                explanation: {
+                    correct: "As plantas absorvem o CO2 na fotossíntese para criar tecidos. Quando nós comemos, digerimos e respiramos (ou quando os seres morrem e decompõem-se), esse CO2 é libertado novamente.",
+                    options: [
+                        "Este é o ciclo da água.",
+                        "Esta é a alternativa correta.",
+                        "Ainda parte do ciclo da água.",
+                        "Ciclo das rochas (pode envolver carbono geológico a longo prazo, mas não é o principal motor biológico rápido)."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Médio",
+                text: "As orquídeas e bromélias apoiam-se nos troncos das grandes árvores das florestas tropicais apenas para apanhar mais luz solar. Elas não sugam a seiva nem magoam a árvore maior. Esta relação é chamada de:",
+                options: ["Parasitismo", "Inquilinismo (um tipo de Comensalismo)", "Competição", "Predação"],
+                correct: 1,
+                explanation: {
+                    correct: "É inquilinismo (+, 0). A orquídea usa a árvore como 'morada' e ganha luz (+). A árvore enorme nem dá pela presença da planta minúscula na sua casca (0).",
+                    options: [
+                        "Se sugasse seiva (como a erva-de-passarinho), seria parasita.",
+                        "Esta é a alternativa correta.",
+                        "Não estão a disputar os mesmos nutrientes de solo.",
+                        "Não há mortes envolvidas."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "Existe uma diferença técnica entre Nicho Fundamental e Nicho Realizado. O Nicho Realizado é:",
+                options: ["Aquele onde o animal sonha viver.", "Todo o potencial teórico que uma espécie poderia explorar se estivesse sozinha no mundo.", "O espaço/recursos que a espécie Efetivamente usa e consegue explorar no mundo real, devido à pressão e competição de outras espécies.", "Um nicho que não existe."],
+                correct: 2,
+                explanation: {
+                    correct: "O Nicho Fundamental é a teoria utópica. O Realizado é a realidade: como há competição e limites no mundo selvagem, os animais são forçados a contentar-se com um papel mais restrito.",
+                    options: [
+                        "Animais não 'sonham' com nichos.",
+                        "Esse é o Nicho Fundamental.",
+                        "Esta é a alternativa correta.",
+                        "Existe, é a realidade atual do organismo."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA (Botões, Navegação, Renderização do Quiz)
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 2px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 700; color: #475569;">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.1rem; margin-top: 5px; color: var(--text-color);">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Visão Ecológica Impecável!' : '❌ Ops! Análise do erro na Natureza:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>Gabarito:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#1E293B; margin-bottom:15px; font-weight:500;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #CBD5E1; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Análise dos Erros (Porquê de não serem as outras opções):</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="color:#4A5568; margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Confetes contínuos (Fogos de artifício)
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#10B981', '#F43F5E', '#0284C7', '#D97706']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#10B981', '#F43F5E', '#0284C7', '#D97706']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                // Tremer APENAS o contentor do Quiz
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth; // Força o reflow do navegador
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            // Scroll automático para a bolinha ativa
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Exame";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Próxima Questão";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Acertaste ${correct} de ${questions.length} questões`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Alerta no Ecossistema!</strong> A natureza não perdoa falhas. Deves atingir no mínimo 80% (24 acertos) para garantires o teu domínio ecológico. Volta à Teoria e tenta outra vez!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Refazer a Avaliação</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Perfeito!</strong> Demonstraste uma compreensão profunda de como a vida interage no nosso planeta. O teu raciocínio ecológico é afiado.
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Praticar Novamente</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Verificação de Erros Cometidos:</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:#FAFAFA; border-radius:8px; border:2px dashed #CBD5E0;">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">O que marcaste: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">Gabarito Exato: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

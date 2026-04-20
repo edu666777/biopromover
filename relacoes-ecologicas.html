@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relações Ecológicas - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-INTERAÇÃO (Roxo Simbiose & Verde Esmeralda) */
+            --bg-color: #F5F3FF; /* Roxo muito claro */
+            --text-color: #2E1065; /* Roxo quase preto */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #DDD6FE; /* Roxo Claro */
+            --theme-medium: #8B5CF6; /* Roxo Vibrante */
+            --theme-dark: #4C1D95; /* Roxo Profundo */
+            --theme-contrast: #10B981; /* Verde Esmeralda (Destaque/Positivo) */
+            --theme-accent: #F59E0B; /* Âmbar / Alerta */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#ddd6fe 1px, transparent 1px), linear-gradient(90deg, #ddd6fe 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #4C1D95;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #6D28D9;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #F0FDF4; /* Verde Água muito claro */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #064E3B;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #4C1D95; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E1; line-height: 1.5; color: #334155; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🤝</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Relações Ecológicas: Amigos e Inimigos na Natureza</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Parasitismo)">
+            </div>
+            <div id="no-results"><p>😕 Nenhum conceito encontrado. Tenta outra palavra.</p></div>
+
+            <!-- TÓPICO 1: O QUE SÃO? -->
+            <div class="content-group">
+                <div class="section-badge">⚖️ 1. As Regras do Jogo</div>
+                <div class="theory-box search-target">
+                    <h3>O que são Relações Ecológicas?</h3>
+                    <p>Na natureza, nenhum ser vivo existe isolado. Todos interagem, seja para cooperar ou para competir. Para classificar estas relações, fazemos duas perguntas principais:</p>
+                    
+                    <div class="visual-area">
+                        <svg width="250" height="120" viewBox="0 0 250 120">
+                            <!-- Intra vs Inter -->
+                            <rect x="10" y="10" width="110" height="100" fill="#E2E8F0" stroke="#000" stroke-width="2" rx="8"/>
+                            <text x="65" y="30" text-anchor="middle" font-size="10" font-weight="bold">Mesma Espécie</text>
+                            <circle cx="45" cy="65" r="12" fill="#4C1D95"/>
+                            <circle cx="85" cy="65" r="12" fill="#4C1D95"/>
+                            <path d="M 55 65 L 75 65" stroke="#000" stroke-width="2" stroke-dasharray="2,2"/>
+                            <text x="65" y="100" text-anchor="middle" font-size="10" font-weight="bold" fill="#4C1D95">INTRAespecíficas</text>
+
+                            <rect x="130" y="10" width="110" height="100" fill="#E2E8F0" stroke="#000" stroke-width="2" rx="8"/>
+                            <text x="185" y="30" text-anchor="middle" font-size="10" font-weight="bold">Espécies Diferentes</text>
+                            <circle cx="165" cy="65" r="12" fill="#4C1D95"/>
+                            <polygon points="205,50 190,75 220,75" fill="#10B981"/>
+                            <path d="M 175 65 L 195 65" stroke="#000" stroke-width="2" stroke-dasharray="2,2"/>
+                            <text x="185" y="100" text-anchor="middle" font-size="10" font-weight="bold" fill="#10B981">INTERespecíficas</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Quem participa?</strong> Se for entre a mesma espécie, é <strong>INTRAespecífica</strong> (ex: dois leões). Se for entre espécies diferentes, é <strong>INTERespecífica</strong> (ex: leão e zebra).</li>
+                        <li><strong>Alguém sai prejudicado?</strong> Se pelo menos um organismo sair prejudicado (-), a relação é <strong>Desarmónica</strong>. Se ninguém se magoar (+,+ ou +,0), é <strong>Harmónica</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: RELAÇÕES HARMÓNICAS -->
+            <div class="content-group">
+                <div class="section-badge">🤝 2. Relações Harmónicas (+,+ ou +,0)</div>
+                <div class="theory-box search-target">
+                    <h3>Cooperação e Paz na Natureza</h3>
+                    <p>Nestas relações, pelo menos um lado ganha, e <strong>ninguém perde</strong>.</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="background:white; border:2px solid #10B981; padding:10px; border-radius:8px;">
+                            <h4 style="color:#047857; font-size:1rem;">Mutualismo (+, +)</h4>
+                            <p style="font-size:0.8rem;">Ambos ganham e a relação é <strong>obrigatória</strong>. Se os separarmos, morrem. <br><em>Ex: Líquenes (Alga + Fungo). A alga dá comida, o fungo dá água.</em></p>
+                        </div>
+                        <div style="background:white; border:2px solid #10B981; padding:10px; border-radius:8px;">
+                            <h4 style="color:#047857; font-size:1rem;">Protocooperação (+, +)</h4>
+                            <p style="font-size:0.8rem;">Ambos ganham, mas é <strong>opcional</strong>. Vivem bem separados. <br><em>Ex: Pássaro-palito e Crocodilo. O pássaro limpa os dentes e come, o crocodilo fica limpo.</em></p>
+                        </div>
+                        <div style="background:white; border:2px solid #3B82F6; padding:10px; border-radius:8px;">
+                            <h4 style="color:#1D4ED8; font-size:1rem;">Comensalismo (+, 0)</h4>
+                            <p style="font-size:0.8rem;">Um ganha comida, o outro fica indiferente. <br><em>Ex: Rémora e Tubarão. A rémora come os restos da boca do tubarão, que nem nota.</em></p>
+                        </div>
+                        <div style="background:white; border:2px solid #3B82F6; padding:10px; border-radius:8px;">
+                            <h4 style="color:#1D4ED8; font-size:1rem;">Inquilinismo (+, 0)</h4>
+                            <p style="font-size:0.8rem;">Um usa o outro apenas como 'casa', sem sugar nada. <br><em>Ex: Orquídeas nas árvores (Epifitismo) para apanhar sol.</em></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: INTRAESPECÍFICAS (GRUPO) -->
+            <div class="content-group">
+                <div class="section-badge">🐝 3. Viver em Grupo (Intraespecíficas)</div>
+                <div class="theory-box search-target">
+                    <h3>Sociedades vs Colónias</h3>
+                    <p>Muitos animais da mesma espécie vivem juntos de forma harmónica (+,+), mas a forma como se organizam muda.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="260" height="120" viewBox="0 0 260 120">
+                            <!-- Sociedade -->
+                            <circle cx="60" cy="60" r="45" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/>
+                            <!-- Abelhas isoladas -->
+                            <circle cx="40" cy="40" r="5" fill="#B45309"/>
+                            <circle cx="80" cy="50" r="5" fill="#B45309"/>
+                            <circle cx="50" cy="80" r="5" fill="#B45309"/>
+                            <text x="60" y="118" text-anchor="middle" font-size="10" font-weight="bold">Sociedade (Separados)</text>
+                            
+                            <!-- Colónia -->
+                            <circle cx="200" cy="60" r="45" fill="#E0F2FE" stroke="#0369A1" stroke-width="2"/>
+                            <!-- Corais unidos -->
+                            <path d="M 180 60 Q 200 30 220 60 Q 200 90 180 60 Z" fill="#0369A1"/>
+                            <circle cx="185" cy="60" r="4" fill="#FFF"/>
+                            <circle cx="200" cy="50" r="4" fill="#FFF"/>
+                            <circle cx="215" cy="60" r="4" fill="#FFF"/>
+                            <circle cx="200" cy="70" r="4" fill="#FFF"/>
+                            <text x="200" y="118" text-anchor="middle" font-size="10" font-weight="bold">Colónia (Unidos)</text>
+                        </svg>
+                    </div>
+
+                    <div class="highlight-box">
+                        <strong>A grande diferença:</strong><br>
+                        Na <strong>Sociedade</strong>, os indivíduos estão fisicamente separados e existe divisão de trabalho (Ex: Abelhas, Formigas, Humanos).<br>
+                        Na <strong>Colónia</strong>, os indivíduos estão <strong>ligados anatomicamente (colados)</strong>, parecendo um único ser vivo (Ex: Corais, Caravela-portuguesa).
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: RELAÇÕES DESARMÓNICAS -->
+            <div class="content-group">
+                <div class="section-badge">☠️ 4. Relações Desarmónicas (+,- ou -,-)</div>
+                <div class="theory-box search-target">
+                    <h3>A Luta pela Sobrevivência</h3>
+                    <p>Na natureza, os recursos são limitados. Por isso, ocorrem conflitos onde pelo menos um ser vivo é prejudicado (-).</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:10px;">
+                        <li><strong>Predação (+, -):</strong> Um animal mata o outro imediatamente para se alimentar. <em>Ex: Leão e Zebra. Urso e Peixe. Herbivoria (Vaca a comer erva) também é predação!</em></li>
+                        <li><strong>Parasitismo (+, -):</strong> Um ser (parasita) vive dentro ou sobre o outro (hospedeiro), roubando-lhe nutrientes lentamente. Matar o hospedeiro logo seria mau, pois perdia a 'casa'. <em>Ex: Carraça no cão, Ténia no intestino humano.</em></li>
+                        <li><strong>Competição (-, -):</strong> A única relação em que <strong>ambos perdem</strong>. Disputam comida, água ou território. Mesmo o vencedor gastou energia e correu risco de vida. Pode ser Interespecífica (Leão vs Hiena) ou Intraespecífica (Dois veados machos a lutar por uma fêmea).</li>
+                        <li><strong>Amensalismo / Antibiose (-, 0):</strong> Um ser vivo liberta toxinas que inibem ou matam outro ser, sem ganhar nada ativamente com isso (não o faz para comer). <em>Ex: O fungo Penicillium liberta penicilina que mata bactérias em redor.</em></li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar Missão Ecológica (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">A Prova de Interação</h2>
+                <p style="color: #475569; font-size: 0.95rem; font-weight:600;">
+                    30 questões sobre aliados e inimigos na natureza. O objetivo é <strong>80% (24/30)</strong>. Lê sempre o diagnóstico após cada tentativa!
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Avaliação Concluída</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS DETALHADOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Conceitos Básicos (1-5)
+            {
+                id: 1, level: "Fácil",
+                text: "O que significa exatamente o termo 'Relação Intraespecífica' na ecologia?",
+                options: ["Uma interação entre seres vivos e o clima.", "Uma interação entre organismos de espécies completamente diferentes.", "Uma interação que ocorre entre indivíduos da MESMA espécie.", "Uma interação onde todos saem prejudicados."],
+                correct: 2,
+                explanation: {
+                    correct: "Exatamente! O prefixo 'Intra' significa 'dentro de'. Portanto, refere-se às interações que acontecem dentro da mesma espécie (ex: dois lobos da mesma alcateia).",
+                    options: [
+                        "Isto seria uma interação com um fator abiótico.",
+                        "Esta é a relação INTERespecífica.",
+                        "Esta é a Opção Certa.",
+                        "Isso define uma relação desarmónica (como a competição), independentemente da espécie."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Fácil",
+                text: "Como classificamos uma relação ecológica em que pelo menos um dos seres vivos envolvidos sai prejudicado (-)?",
+                options: ["Relação Harmónica", "Relação Interespecífica", "Relação Desarmónica (ou Negativa)", "Relação Neutra"],
+                correct: 2,
+                explanation: {
+                    correct: "Sempre que há prejuízo de energia, morte ou roubo de recursos para um dos lados, a harmonia do sistema foi quebrada. Logo, é Desarmónica.",
+                    options: [
+                        "Harmónica é quando ninguém perde (+,+ ou +,0).",
+                        "Interespecífica refere-se a espécies diferentes, não se é boa ou má.",
+                        "Esta é a Opção Certa.",
+                        "Neutra (0,0) na prática é a ausência de relação."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Fácil",
+                text: "Na ecologia, usamos símbolos matemáticos para resumir as relações. O que significa a anotação (+, 0)?",
+                options: ["Ambos os indivíduos são beneficiados.", "Ambos os indivíduos são prejudicados.", "Um indivíduo é beneficiado e o outro é prejudicado.", "Um indivíduo é beneficiado e para o outro a relação é totalmente indiferente (neutra)."],
+                correct: 3,
+                explanation: {
+                    correct: "Correto! O '+' significa vantagem/benefício. O '0' significa neutralidade. É o caso clássico do Comensalismo.",
+                    options: [
+                        "Isto seria (+, +).",
+                        "Isto seria (-, -).",
+                        "Isto seria (+, -).",
+                        "Esta é a Opção Certa."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Médio",
+                text: "O leão e a hiena lutam frequentemente pelos mesmos recursos (comida e água) na savana. Esta relação é classificada biologicamente como:",
+                options: ["Competição Intraespecífica", "Competição Interespecífica Desarmónica", "Predação Harmónica", "Mutualismo"],
+                correct: 1,
+                explanation: {
+                    correct: "Sendo espécies diferentes, é 'Interespecífica'. Como ambos gastam energia e se magoam a lutar (-, -), é Competição Desarmónica.",
+                    options: [
+                        "Teria de ser entre dois leões ou duas hienas.",
+                        "Esta é a Opção Certa.",
+                        "Não existe predação 'harmónica'. A predação é sempre (+,-).",
+                        "Mutualismo é ajuda obrigatória (+,+)."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Fácil",
+                text: "Qual das seguintes opções é o exemplo perfeito de uma relação Intraespecífica Harmónica?",
+                options: ["Um carrapato num cão.", "Um leão a devorar uma zebra.", "Uma colmeia de abelhas a trabalhar em conjunto.", "A orquídea a apoiar-se numa árvore."],
+                correct: 2,
+                explanation: {
+                    correct: "As abelhas são da mesma espécie (Intra) e cooperam para o sucesso da colmeia sem se prejudicarem (Harmónica). Trata-se de uma Sociedade.",
+                    options: [
+                        "Parasitismo: Interespecífica Desarmónica.",
+                        "Predação: Interespecífica Desarmónica.",
+                        "Esta é a Opção Certa.",
+                        "Inquilinismo: Interespecífica Harmónica."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Relações Harmónicas (+,+) e (+,0) (6-15)
+            {
+                id: 6, level: "Médio",
+                text: "Os Líquenes (encontrados nos troncos e rochas) são formados pela união de algas e fungos. A alga faz fotossíntese para alimentar o fungo, e o fungo retém humidade para a alga não secar. Se os separarmos, ambos morrem. Que relação é esta?",
+                options: ["Comensalismo", "Protocooperação", "Mutualismo (Simbiose Obrigatória)", "Parasitismo"],
+                correct: 2,
+                explanation: {
+                    correct: "O Mutualismo é o 'casamento' perfeito da natureza (+,+). É tão profundo que a sobrevivência de um depende absolutamente do outro.",
+                    options: [
+                        "Comensalismo beneficia apenas um.",
+                        "A protocooperação é opcional, eles sobreviveriam separados.",
+                        "Esta é a Opção Certa.",
+                        "No parasitismo, um rouba o outro (+,-)."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Médio",
+                text: "Qual é a principal diferença biológica entre o Mutualismo e a Protocooperação (visto que ambas são +,+)?",
+                options: ["No Mutualismo os seres são da mesma espécie, na Protocooperação não.", "O Mutualismo é obrigatório para a sobrevivência (dependência total); a Protocooperação é apenas uma ajuda opcional (podem viver separados).", "A Protocooperação envolve sempre plantas, o Mutualismo envolve apenas animais.", "Não existe diferença, são sinónimos absolutos."],
+                correct: 1,
+                explanation: {
+                    correct: "A palavra-chave é a OBRIGATORIEDADE. Pássaro-palito e crocodilo (Protocooperação) vivem bem separados. Alga e Fungo num líquen (Mutualismo) morrem se os separarmos.",
+                    options: [
+                        "Ambas são relações interespecíficas (espécies diferentes).",
+                        "Esta é a Opção Certa.",
+                        "As classificações não dependem dos reinos botânico ou zoológico.",
+                        "Embora alguns livros antigos confundam, a distinção pela dependência de sobrevivência é a norma nos exames."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Fácil",
+                text: "O peixe-rémora possui uma ventosa na cabeça que usa para se colar à barriga do tubarão. A rémora viaja de graça e come os restos de carne que caem da boca do tubarão. O tubarão não perde nem ganha nada. Que relação é esta?",
+                options: ["Inquilinismo", "Parasitismo", "Mutualismo", "Comensalismo"],
+                correct: 3,
+                explanation: {
+                    correct: "Comensalismo puro (+, 0). 'Comensal' vem do latim e significa 'partilhar a mesma mesa'. A rémora ganha comida e transporte, ao tubarão é-lhe indiferente.",
+                    options: [
+                        "Inquilinismo foca em ganhar abrigo/casa (sem comer as sobras de alimento).",
+                        "A rémora não chupa o sangue do tubarão.",
+                        "O tubarão não ganha nada (+).",
+                        "Esta é a Opção Certa."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Fácil",
+                text: "As orquídeas e as bromélias instalam-se nos ramos altos das grandes árvores da floresta tropical apenas para conseguirem apanhar mais luz solar. Elas não sugam a seiva da árvore, usando-a apenas como 'poleiro'. Que relação ecológica temos aqui?",
+                options: ["Parasitismo", "Inquilinismo (ou Epifitismo)", "Competição", "Protocooperação"],
+                correct: 1,
+                explanation: {
+                    correct: "Inquilinismo (+,0). A planta menor usa a árvore como 'casa/inquilina' para obter luz, sem a ferir ou roubar nutrientes. Em plantas, este caso específico chama-se Epifitismo.",
+                    options: [
+                        "Se sugasse a seiva seria parasita.",
+                        "Esta é a Opção Certa.",
+                        "As suas raízes nem chegam ao solo para competir por água.",
+                        "A árvore não ganha nada com a orquídea em cima."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Médio",
+                text: "No teu intestino grosso vivem milhões de bactérias boas. Tu forneces-lhes um local quente e com comida; em troca, elas ajudam a digerir fibras e produzem vitaminas (como a vitamina K) essenciais para o teu corpo. Esta relação é:",
+                options: ["Parasitismo", "Comensalismo", "Mutualismo bacteriano", "Amensalismo"],
+                correct: 2,
+                explanation: {
+                    correct: "É um exemplo formidável de Mutualismo (+,+). Precisamos dessa 'flora intestinal' para sermos saudáveis, e elas precisam do nosso intestino para viverem em massa.",
+                    options: [
+                        "As bactérias boas não nos deixam doentes nem nos prejudicam (-).",
+                        "Ambos os lados recebem benefícios cruciais, não é indiferente para ti.",
+                        "Esta é a Opção Certa.",
+                        "Amensalismo é quando um liberta químicos para matar o outro."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Médio",
+                text: "A diferença técnica entre uma SOCIEDADE e uma COLÓNIA (ambas relações intraespecíficas harmónicas) reside essencialmente em quê?",
+                options: ["Na sociedade os animais são burros; na colónia são inteligentes.", "Na Sociedade, os indivíduos estão separados fisicamente e cooperam. Na Colónia, os indivíduos estão ligados (colados) anatomicamente, parecendo um só organismo.", "A sociedade ocorre em peixes e a colónia em mamíferos.", "Não há qualquer diferença estrutural."],
+                correct: 1,
+                explanation: {
+                    correct: "O ponto chave é a ligação física (anatómica). As abelhas (Sociedade) voam separadas. Os corais ou as esponjas (Colónia) estão fundidos num corpo contínuo.",
+                    options: [
+                        "A inteligência individual não define a relação.",
+                        "Esta é a Opção Certa.",
+                        "Os mamíferos (ex: humanos) formam sociedades, mas os peixes não formam colónias anatómicas (formam cardumes, que é agrupamento temporal).",
+                        "A diferença anatómica é a base destas classificações."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Fácil",
+                text: "Qual dos seguintes exemplos representa uma Colónia (ligação anatómica forte)?",
+                options: ["Um formigueiro com milhares de formigas.", "Um bando de andorinhas a voar para sul.", "Uma Caravela-portuguesa (vários pólipos fundidos que flutuam juntos nos oceanos).", "Uma matilha de lobos ibéricos."],
+                correct: 2,
+                explanation: {
+                    correct: "A Caravela-portuguesa parece uma medusa única, mas na verdade é uma Colónia de milhares de pequenos indivíduos grudados, onde uns flutuam, outros caçam e outros reproduzem-se.",
+                    options: [
+                        "Formigas formam Sociedades (andam soltas).",
+                        "Isso é um comportamento de bando/gregário temporário.",
+                        "Esta é a Opção Certa.",
+                        "Lobos formam Sociedades/Alcateias (animais independentes)."
+                    ]
+                }
+            },
+            {
+                id: 13, level: "Médio",
+                text: "As formigas cortadeiras recolhem pedaços de folhas e levam-nas para o ninho. Lá, usam as folhas para 'cultivar' um fungo, do qual se alimentam depois. O fungo ganha folhas mastigadas (o seu alimento ideal) e proteção. Que relação (+,+) ocorre entre as formigas e o fungo?",
+                options: ["Mutualismo", "Comensalismo", "Parasitismo", "Inquilinismo"],
+                correct: 0,
+                explanation: {
+                    correct: "Temos duas espécies (formiga e fungo) que cooperam ativamente para se alimentarem. A dependência é total: a formiga cultiva o fungo e sem ele morre de fome; o fungo sem a formiga não recebe folhas. Logo, é Mutualismo.",
+                    options: [
+                        "Esta é a Opção Certa.",
+                        "Ambos têm benefícios gigantescos, não é indiferente (0).",
+                        "Nenhum deles retira nutrientes enfraquecendo o outro diretamente (como uma doença).",
+                        "Não estão à procura de apenas uma casa."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Difícil",
+                text: "Numa árvore de savana chamada Acácia, certas formigas fazem os seus ninhos nos espinhos ôcos. Quando um herbívoro (como a girafa) tenta comer as folhas da árvore, as formigas saem furiosas e picam o focinho do animal, expulsando-o. Qual é a relação interespecífica entre a formiga e a árvore?",
+                options: ["Amensalismo", "Protocooperação (ou Mutualismo defensivo)", "Parasitismo", "Canibalismo"],
+                correct: 1,
+                explanation: {
+                    correct: "É um mutualismo (+,+). A árvore dá casa e néctar doce (comida) às formigas. Em troca, as formigas atuam como um 'exército privado', protegendo a árvore contra predadores.",
+                    options: [
+                        "Não há inibição química mortífera acidental.",
+                        "Esta é a Opção Certa.",
+                        "As formigas não estão a comer a árvore.",
+                        "Canibalismo é comer a própria espécie."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Fácil",
+                text: "Quando te sentas num banco de jardim coberto por árvores frondosas no verão para aproveitares a sombra fresca, e a árvore não é minimamente afetada por lá estares, ocorre um comportamento muito básico de:",
+                options: ["Parasitismo humano", "Comensalismo ambiental (+, 0)", "Competição por solo", "Predação"],
+                correct: 1,
+                explanation: {
+                    correct: "Tiraste proveito do ambiente (sombra) +, e a árvore não perdeu folhas, ramos nem energia 0. É uma analogia simples de Comensalismo.",
+                    options: [
+                        "Não sugaste a energia da árvore.",
+                        "Esta é a Opção Certa.",
+                        "Não estás a competir por luz/água.",
+                        "Não mataste a árvore para a comer."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Relações Desarmónicas (+,-) e (-,-) (16-25)
+            {
+                id: 16, level: "Fácil",
+                text: "Uma águia mergulha do céu, apanha um rato no campo e devora-o para alimentar as suas crias. Qual é o nome correto desta relação?",
+                options: ["Parasitismo", "Competição", "Predação", "Amensalismo"],
+                correct: 2,
+                explanation: {
+                    correct: "Predação (+,-): o organismo (predador) ataca, mata imediatamente e consome o outro (presa) para obter energia.",
+                    options: [
+                        "Parasitas não costumam matar a presa instantaneamente.",
+                        "Eles não estão a lutar por comida; o rato É a comida.",
+                        "Esta é a Opção Certa.",
+                        "A águia não o fez sem querer, fez para caçar."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Médio",
+                text: "O piolho e a carraça instalam-se no couro cabeludo ou na pele do hospedeiro, sugando o seu sangue e causando irritação, mas raramente causam a morte imediata do animal. Qual é a relação?",
+                options: ["Predação externa", "Parasitismo (Ectoparasitismo)", "Comensalismo", "Esclavagismo"],
+                correct: 1,
+                explanation: {
+                    correct: "Parasitismo (+,-): um ser vive à custa do outro enfraquecendo-o aos poucos. Como vivem POR FORA do corpo, chamam-se Ectoparasitas (Ecto = externo).",
+                    options: [
+                        "Na predação a morte seria o objetivo inicial.",
+                        "Esta é a Opção Certa.",
+                        "O hospedeiro perde sangue, logo sai prejudicado (-).",
+                        "Esclavagismo é roubar o trabalho alheio."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Médio",
+                text: "A ténia solitária (bicha-solitária) e as lombrigas, que vivem dentro do intestino humano absorvendo a comida que nós digerimos, são exemplos de:",
+                options: ["Mutualismo intestinal", "Endoparasitismo", "Inquilinismo digestivo", "Ectoparasitismo"],
+                correct: 1,
+                explanation: {
+                    correct: "Ao contrário das bactérias boas (que são mutualistas), as lombrigas apenas roubam nutrientes e causam doença (+,-). Como habitam DENTRO do corpo, são Endoparasitas (Endo = interno).",
+                    options: [
+                        "Elas não dão nada em troca, só prejudicam.",
+                        "Esta é a Opção Certa.",
+                        "Não usam apenas a casa, roubam a comida (parasitismo).",
+                        "Ecto é para fora do corpo (piolhos, pulgas)."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Médio",
+                text: "Em ecologia, por que razão a Competição (seja por território, água ou parceiras) é classificada com os símbolos (-, -)?",
+                options: ["Porque os animais não gostam um do outro.", "Porque ambos os organismos gastam energia, stress e correm risco de se magoarem ou morrerem durante a disputa, mesmo o que sai vencedor.", "Porque os dois organismos morrem sempre no final.", "Porque as plantas são as únicas que competem, e elas murcham."],
+                correct: 1,
+                explanation: {
+                    correct: "Excelente! Mesmo que o Leão A derrote o Leão B, o Leão A ficou ferido, exausto e perdeu tempo que podia usar a caçar. Em termos energéticos biológicos, ambos perdem.",
+                    options: [
+                        "A ecologia lida com perdas de energia biológica, não sentimentos.",
+                        "Esta é a Opção Certa.",
+                        "O vencedor raramente morre na hora.",
+                        "Animais competem muito mais violentamente a olho nu."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Difícil",
+                text: "O fungo Penicillium produz e liberta naturalmente uma substância chamada penicilina na terra ao seu redor. Essa substância destrói as membranas das bactérias próximas, matando-as. O fungo faz isto passivamente, sem se alimentar das bactérias mortas. Que relação é esta?",
+                options: ["Predação Fúngica", "Competição Ativa", "Amensalismo (ou Antibiose)", "Parasitismo"],
+                correct: 2,
+                explanation: {
+                    correct: "Amensalismo (-, 0): Um indivíduo liberta toxinas ou químicos que matam/inibem outros seres, mas sem receber nenhum ganho nutricional direto (0) com a morte do adversário.",
+                    options: [
+                        "Ele não digere as bactérias para se alimentar.",
+                        "Não há disputa por um recurso comum focada neste ato químico passivo.",
+                        "Esta é a Opção Certa.",
+                        "O fungo não vive dentro ou sugando a bactéria."
+                    ]
+                }
+            },
+            {
+                id: 21, level: "Difícil",
+                text: "A 'Herbivoria' (uma vaca a comer relva e folhas) é ecologicamente classificada como um tipo de:",
+                options: ["Parasitismo, pois a vaca vive na erva.", "Predação, pois a vaca consome uma parte letal ou remove a biomassa da planta.", "Comensalismo, pois a erva volta a crescer.", "Mutualismo, pois a vaca corta a relva."],
+                correct: 1,
+                explanation: {
+                    correct: "Pode parecer estranho, mas o animal que tritura e mata uma planta verde inteira (ou grande parte dela) para se nutrir está a realizar um ato de Predação herbívora (+,-).",
+                    options: [
+                        "A vaca não vive agarrada a sugar lentamente a relva individual.",
+                        "Esta é a Opção Certa.",
+                        "A erva que foi triturada morreu no estômago, logo sofre um prejuízo severo (-).",
+                        "A planta no momento da trituração perde."
+                    ]
+                }
+            },
+            {
+                id: 22, level: "Médio",
+                text: "Certas espécies de aranhas fêmeas, como a Viúva-Negra, e insetos como o Louva-a-Deus, costumam devorar o macho logo após o acasalamento. Que nome se dá a este comportamento desarmónico intraespecífico?",
+                options: ["Parasitismo reprodutivo", "Competição de género", "Canibalismo", "Ato Amensal"],
+                correct: 2,
+                explanation: {
+                    correct: "Canibalismo: ocorre quando um indivíduo mata e come outro da MESMA espécie. A fêmea fá-lo para garantir uma refeição extra rica em proteínas para gerar os ovos.",
+                    options: [
+                        "A fêmea come e digere de imediato, é ato predatório interno.",
+                        "Eles não estão a disputar território.",
+                        "Esta é a Opção Certa.",
+                        "Não há inibição química acidental."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Difícil",
+                text: "A ave conhecida por Cuco não constrói o seu próprio ninho. Em vez disso, a fêmea põe os seus ovos secretamente no ninho de outras aves menores (como toutinegras). As aves donas do ninho acabam por chocar os ovos e alimentar a cria do cuco gigante, desgastando-se até à exaustão. Como se designa esta relação ecológica fascinante?",
+                options: ["Parasitismo de Nidificação (ou Esclavagismo)", "Mutualismo aviário", "Competição de penas", "Comensalismo de voo"],
+                correct: 0,
+                explanation: {
+                    correct: "A ave hospedeira gasta toda a energia da primavera a trabalhar para criar um filho que não é seu (+,-). A isto chamamos Parasitismo de Ninho ou Esclavagismo (escravização do trabalho alheio).",
+                    options: [
+                        "Esta é a Opção Certa.",
+                        "A ave menor sai tremendamente prejudicada.",
+                        "A luta não é direta ou territorial, é uma usurpação astuta de recursos parentais.",
+                        "A ave hospedeira não está indiferente, ela trabalha até ao limite."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Médio",
+                text: "Dois grandes ursos machos enfrentam-se violentamente numa floresta pela oportunidade de acasalar com a única fêmea disponível no território. Esta interação brutal é uma:",
+                options: ["Predação intraespecífica", "Competição Intraespecífica", "Competição Interespecífica", "Protocooperação"],
+                correct: 1,
+                explanation: {
+                    correct: "Competição (-, -) porque vão magoar-se e gastar energia brutal; Intraespecífica porque são dois ursos da mesma espécie.",
+                    options: [
+                        "Eles não pretendem comer a carne do outro, só afastá-lo.",
+                        "Esta é a Opção Certa.",
+                        "Seria interespecífica se um urso lutasse contra um puma.",
+                        "Eles não estão a ajudar-se."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Fácil",
+                text: "A principal diferença tática que a natureza desenhou entre um Bom Predador e um Bom Parasita é que:",
+                options: ["O predador caça plantas; o parasita caça animais.", "O predador mata a sua presa de forma eficiente e rápida; o parasita tenta não matar o seu hospedeiro, ou pelo menos mantê-lo vivo o máximo de tempo possível para explorá-lo.", "O predador é sempre maior que a presa, o parasita é sempre maior que o hospedeiro.", "Não há diferença tática."],
+                correct: 1,
+                explanation: {
+                    correct: "Brilhante! O objetivo do predador é o bife (carne morta). O objetivo do parasita é a vacaria (fonte contínua e viva). Se o vírus ou a lombriga matarem o humano no primeiro dia, eles também ficam sem casa e morrem.",
+                    options: [
+                        "Predadores caçam de tudo.",
+                        "Esta é a Opção Certa.",
+                        "O parasita é que é quase sempre MICROSCÓPICO/menor que a vítima.",
+                        "Estrategicamente são polos opostos de nutrição (-)."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Casos Práticos, Análise e Dinâmica (26-30)
+            {
+                id: 26, level: "Médio",
+                text: "No mundo agrícola, muitas vezes os agricultores lançam pequenas Joaninhas nas plantações para resolver o problema dos Pulgões (praga que destrói as folhas). A Joaninha devora os Pulgões um a um. Como se chama esta técnica e em que relação se baseia?",
+                options: ["Controlo Biológico, baseado na Predação.", "Vacinação Agrícola, baseada no Amensalismo.", "Esterilização do solo, baseada no Parasitismo.", "Defesa Mutualista, baseada no Inquilinismo."],
+                correct: 0,
+                explanation: {
+                    correct: "O Controlo Biológico é o uso de um predador natural da praga para evitar o uso de venenos químicos. A Joaninha é o predador, o Pulgão é a presa deliciosa (+,-).",
+                    options: [
+                        "Esta é a Opção Certa.",
+                        "A Joaninha atua ativamente, não é uma vacina.",
+                        "Eles não são parasitas da planta.",
+                        "A Joaninha não apenas mora lá, ela atua agressivamente contra a praga."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Difícil",
+                text: "O Bicho-pau tem o corpo exatamente igual a um pequeno ramo de árvore. Para os pássaros (predadores) não o comerem, ele fica imóvel e invisível. Que estratégia evolutiva para EVITAR a predação é esta?",
+                options: ["Aposematismo", "Mimetismo", "Camuflagem (Homocromia/Homotipia)", "Mutualismo defensivo"],
+                correct: 2,
+                explanation: {
+                    correct: "Camuflagem! O animal confunde-se com o AMBIENTE físico (parece-se com um pau, uma folha ou areia).",
+                    options: [
+                        "Aposematismo é ter cores super vibrantes (como o sapo venenoso) para AVISAR que é perigoso.",
+                        "Mimetismo é parecer-se com OUTRO animal perigoso (uma mosca que parece uma abelha).",
+                        "Esta é a Opção Certa.",
+                        "Ele não coopera com a árvore, apenas finge ser parte dela."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Difícil",
+                text: "O Princípio da Exclusão Competitiva (Princípio de Gause) estabelece uma regra de ferro na natureza: 'Duas espécies não podem coexistir no mesmo habitat se tiverem EXATAMENTE o mesmo...'",
+                options: ["Tamanho corporal.", "Nicho Ecológico.", "Horário de sono.", "Genoma."],
+                correct: 1,
+                explanation: {
+                    correct: "Se duas espécies comerem a mesma comida, à mesma hora, no mesmo metro quadrado (Nicho Ecológico igual), a competição (-, -) será tão sangrenta que a espécie ligeiramente melhor vai eliminar a outra do território.",
+                    options: [
+                        "O tamanho não dita exclusão (ex: ratos e pássaros).",
+                        "Esta é a Opção Certa.",
+                        "Dormirem à mesma hora não afeta as horas vitais se comerem coisas diferentes.",
+                        "Ter o mesmo genoma faria delas a MESMA espécie (intraespecífica)."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Difícil",
+                text: "Observando o gráfico histórico das populações de Lince (Predador) e de Lebre (Presa) numa floresta remota: Quando o número de Lebres dispara e enche o bosque, o que acontece matematicamente à população de Linces pouco tempo depois?",
+                options: ["A população de linces diminui por medo.", "A população de linces dispara, pois passam a ter comida farta e as suas crias sobrevivem todas; mas em breve comerão tantas lebres que estas acabarão e os linces começarão também a morrer de fome.", "A população de linces fica indiferente, mudam a dieta para bagas.", "Os linces tornam-se herbívoros para acompanhar as lebres."],
+                correct: 1,
+                explanation: {
+                    correct: "É a famosa 'Curva Predador-Presa'. É um ciclo eterno de subidas e descidas! Muita comida = Muitos predadores = Caçam as presas até à rutura = Predadores ficam sem comida e morrem = As presas que restam voltam a ter paz e multiplicam-se de novo.",
+                    options: [
+                        "Tendo comida abundante, eles florescem.",
+                        "Esta é a Opção Certa.",
+                        "São carnívoros estritos.",
+                        "Fisiologicamente impossível."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Fácil",
+                text: "Resumo letal: Qual opção emparelha CORRETAMENTE o Símbolo com o Nome da relação?",
+                options: ["(+ , +) Parasitismo | (+ , -) Mutualismo", "(- , -) Competição | (+ , 0) Comensalismo", "(+ , +) Amensalismo | (- , 0) Inquilinismo", "(0 , 0) Predação | (+ , +) Canibalismo"],
+                correct: 1,
+                explanation: {
+                    correct: "Excelente memória visual! Na competição ambos sofrem o custo energético (-,-). No comensalismo um ganha e para o outro é o prato do dia normal (+,0).",
+                    options: [
+                        "Completamente trocados.",
+                        "Esta é a Opção Certa.",
+                        "Inquilinismo é (+,0) e Amensalismo é (-,0).",
+                        "Predação é (+,-) e Canibalismo é (+,- intraespecífico)."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Biologia em Ação!' : '❌ Lei do Mais Forte:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>Opção Certa:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#1E293B; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #CBD5E0; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Análise dos Erros (Porquê de não serem as outras opções):</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício Mutualistas
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#8B5CF6', '#10B981', '#F59E0B', '#4C1D95']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#8B5CF6', '#10B981', '#F59E0B', '#4C1D95']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Exploração";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Próximo Tópico";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Compreendeste ${correct} de ${questions.length} dinâmicas da natureza.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Presa Fácil!</strong> No mundo animal as regras são duras. Precisas de 80% (24 acertos) para garantires o teu nicho neste teste. Volta à Teoria e fortalece as tuas defesas!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Tentar Sobreviver de Novo</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Predador Intelectual!</strong> A tua análise das relações da natureza é impecável. És sem dúvida um Ás da Biologia.
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Patrulhar Novamente</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Laboratorial de Conflitos:</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">O teu instinto falhou aqui: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">A Lei da Selva: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

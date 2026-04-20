@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxo de Energia - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-ENERGIA (Âmbar Sol & Verde Esmeralda) */
+            --bg-color: #FFFBEB; /* Fundo Âmbar muito claro */
+            --text-color: #451A03; /* Castanho muito escuro */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #FEF3C7; /* Âmbar Claro */
+            --theme-medium: #F59E0B; /* Âmbar Médio */
+            --theme-dark: #B45309; /* Âmbar Escuro / Ferrugem */
+            --theme-contrast: #047857; /* Verde Esmeralda (Destaque Natureza) */
+            --theme-accent: #BE123C; /* Vermelho Escuro (Secundário/Atenção) */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#fde68a 1px, transparent 1px), linear-gradient(90deg, #fde68a 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #78350F;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #92400E;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: #92400E; font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #ECFDF5; /* Verde muito suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #064E3B;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #92400E; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: #FEF3C7; color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #FCD34D; line-height: 1.5; color: #451A03; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">⚡</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Fluxo de Energia nos Ecossistemas</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Produtor)">
+            </div>
+            <div id="no-results"><p>😕 Nenhum conceito encontrado. Tenta outra palavra.</p></div>
+
+            <!-- TÓPICO 1: O MOTOR DA VIDA -->
+            <div class="content-group">
+                <div class="section-badge">☀️ 1. O Motor da Vida</div>
+                <div class="theory-box search-target">
+                    <h3>De onde vem a nossa energia?</h3>
+                    <p>Sem energia, nada no universo se move. Num ecossistema, a fonte primária e absoluta de quase toda a energia é o <strong>Sol</strong>.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="250" height="120" viewBox="0 0 250 120">
+                            <!-- Sol -->
+                            <circle cx="40" cy="60" r="25" fill="#F59E0B" stroke="#000" stroke-width="2"/>
+                            <!-- Raios Solares -->
+                            <path d="M 75 50 L 120 40 M 75 70 L 120 80" stroke="#F59E0B" stroke-width="3" stroke-dasharray="5,5" marker-end="url(#arrow)"/>
+                            <!-- Planta -->
+                            <path d="M 170 100 Q 150 60 170 30 Q 190 60 170 100" fill="#10B981" stroke="#000" stroke-width="2"/>
+                            <line x1="170" y1="100" x2="170" y2="120" stroke="#000" stroke-width="3"/>
+                            <!-- Textos -->
+                            <text x="40" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFF">SOL</text>
+                            <text x="170" y="115" text-anchor="middle" font-size="10" font-weight="bold">Produtor</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>A Fotossíntese:</strong> As plantas, algas e algumas bactérias captam a energia luminosa do Sol e transformam-na em <strong>energia química</strong> (glicose/açúcar).</li>
+                        <li><strong>Produtores:</strong> Como "produzem" a energia orgânica que vai alimentar todo o ecossistema, estão sempre na base de qualquer cadeia alimentar.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: FLUXO UNIDIRECIONAL -->
+            <div class="content-group">
+                <div class="section-badge">🛣️ 2. Sentido Único</div>
+                <div class="theory-box search-target">
+                    <h3>O Fluxo Unidirecional</h3>
+                    <p>Existe uma diferença crucial na Biologia entre como a MATÉRIA (nutrientes, água, carbono) e a ENERGIA se comportam no planeta.</p>
+                    
+                    <div class="visual-area" style="flex-direction:row; gap: 30px;">
+                        <!-- Matéria (Ciclo) -->
+                        <div style="display:flex; flex-direction:column; align-items:center; width:40%;">
+                            <h4 style="color:#047857; margin-bottom:5px;">A Matéria CICLA</h4>
+                            <svg width="80" height="80" viewBox="0 0 100 100">
+                                <path d="M 50 10 A 40 40 0 1 1 10 50" fill="none" stroke="#047857" stroke-width="6" marker-end="url(#arrowGreen)"/>
+                                <path d="M 10 50 A 40 40 0 0 1 50 10" fill="none" stroke="#047857" stroke-width="6" marker-end="url(#arrowGreen)"/>
+                            </svg>
+                            <p style="font-size:0.75rem; text-align:center;">Os nutrientes do solo vão para a planta, depois para o animal, e voltam ao solo (Decomposição).</p>
+                        </div>
+                        
+                        <!-- Energia (Unidirecional) -->
+                        <div style="display:flex; flex-direction:column; align-items:center; width:40%;">
+                            <h4 style="color:#B45309;">A Energia FLUI</h4>
+                            <svg width="100" height="80" viewBox="0 0 100 80">
+                                <path d="M 10 40 L 85 40" stroke="#F59E0B" stroke-width="8" marker-end="url(#arrowOrange)"/>
+                                <!-- Perda de calor -->
+                                <path d="M 40 40 Q 50 20 60 10" stroke="#EF4444" stroke-width="2" stroke-dasharray="3,3"/>
+                                <path d="M 60 40 Q 70 60 80 70" stroke="#EF4444" stroke-width="2" stroke-dasharray="3,3"/>
+                            </svg>
+                            <p style="font-size:0.75rem; text-align:center;">A energia entra pelo Sol, passa pelos animais e perde-se no espaço como calor. <strong>Não volta ao Sol!</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: A REGRA DOS 10% -->
+            <div class="content-group">
+                <div class="section-badge">📉 3. A Regra dos 10%</div>
+                <div class="theory-box search-target">
+                    <h3>Por que as cadeias são curtas?</h3>
+                    <p>Sempre que um animal come outro, ele não absorve 100% da energia da sua presa. De facto, a perda é gigantesca!</p>
+                    
+                    <div class="visual-area">
+                        <svg width="260" height="100" viewBox="0 0 260 100">
+                            <!-- Planta -->
+                            <rect x="10" y="40" width="30" height="30" fill="#10B981" stroke="#000" stroke-width="2"/>
+                            <text x="25" y="85" text-anchor="middle" font-size="10" font-weight="bold">1000 J</text>
+                            
+                            <path d="M 45 55 L 85 55" stroke="#047857" stroke-width="3" marker-end="url(#arrow)"/>
+                            
+                            <!-- Coelho -->
+                            <circle cx="105" cy="55" r="15" fill="#FBBF24" stroke="#000" stroke-width="2"/>
+                            <text x="105" y="85" text-anchor="middle" font-size="10" font-weight="bold">100 J</text>
+                            <!-- Calor perdido -->
+                            <path d="M 105 35 Q 110 20 115 10" stroke="#EF4444" stroke-width="2"/>
+                            <text x="115" y="10" font-size="8" fill="#EF4444">-900J Calor</text>
+
+                            <path d="M 125 55 L 165 55" stroke="#047857" stroke-width="3" marker-end="url(#arrow)"/>
+
+                            <!-- Raposa -->
+                            <rect x="180" y="40" width="30" height="30" rx="5" fill="#F43F5E" stroke="#000" stroke-width="2"/>
+                            <text x="195" y="85" text-anchor="middle" font-size="10" font-weight="bold">10 J</text>
+                            <!-- Calor perdido -->
+                            <path d="M 195 35 Q 200 20 205 10" stroke="#EF4444" stroke-width="2"/>
+                            <text x="205" y="10" font-size="8" fill="#EF4444">-90J Calor</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px;">
+                        <li><strong>Apenas 10%</strong> da energia passa de um nível trófico para o seguinte.</li>
+                        <li>Os outros <strong>90% perdem-se</strong>: a presa gastou energia a correr, a manter o corpo quente (respiração celular) e muita perdeu-se nas fezes não digeridas.</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <strong>Consequência:</strong> É por isto que as cadeias alimentares quase nunca passam do 4º ou 5º nível. A energia simplesmente acaba! Um predador gigante de 6ª ordem morreria de fome.
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: PIRÂMIDES DE ENERGIA -->
+            <div class="content-group">
+                <div class="section-badge">🔺 4. Pirâmides de Energia</div>
+                <div class="theory-box search-target">
+                    <h3>A Representação Gráfica</h3>
+                    <p>Para visualizar a perda de energia, os biólogos usam as <strong>Pirâmides de Energia</strong>.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="200" height="160" viewBox="0 0 200 160">
+                            <!-- Pirâmide -->
+                            <polygon points="100,20 20,140 180,140" fill="none" stroke="#000" stroke-width="3"/>
+                            
+                            <!-- Base (Produtores) -->
+                            <polygon points="25,130 175,130 180,140 20,140" fill="#10B981" stroke="#000"/>
+                            <text x="100" y="137" text-anchor="middle" font-size="9" font-weight="bold">Produtores (Máxima Energia)</text>
+                            
+                            <!-- Meio (Cons. 1º) -->
+                            <polygon points="50,90 150,90 165,120 35,120" fill="#F59E0B" stroke="#000"/>
+                            <text x="100" y="110" text-anchor="middle" font-size="9" font-weight="bold">Consumidores Primários</text>
+
+                            <!-- Topo (Cons. 2º/3º) -->
+                            <polygon points="100,20 50,80 150,80" fill="#F43F5E" stroke="#000"/>
+                            <text x="100" y="65" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFF">Cons. Secundários</text>
+                        </svg>
+                    </div>
+                    
+                    <div class="highlight-box" style="background-color: #FEF2F2; border-color: #BE123C; color: #881337;">
+                        <strong>Aviso Crucial:</strong> Ao contrário das pirâmides de NÚMEROS (que podem ser invertidas, por exemplo, 1 árvore sustenta 1000 insetos), <strong>a Pirâmide de ENERGIA nunca, jamais, em circunstância alguma, pode ser invertida</strong>. A base (produtores) terá sempre mais energia total do que o topo (predadores), pelas leis da física.
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Fazer a Avaliação Final (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">A Prova de Fogo</h2>
+                <p style="color: #451A03; font-size: 0.95rem; font-weight:600;">
+                    30 questões implacáveis sobre o Fluxo de Energia. Acerta <strong>80% (24/30)</strong> para provares que não és o elo mais fraco do ecossistema!
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Avaliação Concluída</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS DETALHADOS) ---
+        const questions = [
+            // BLOCO 1: A Fonte e os Produtores (1-8)
+            {
+                id: 1, level: "Fácil",
+                text: "Qual é a fonte de energia original e primária para praticamente todos os ecossistemas na Terra?",
+                options: ["O calor do núcleo da Terra", "A energia luminosa do Sol", "A água dos oceanos", "O vento"],
+                correct: 1,
+                explanation: {
+                    correct: "Exatamente! O Sol é a grande bateria da Terra. Sem a luz solar, a fotossíntese parava e a cadeia alimentar colapsava.",
+                    options: [
+                        "Sustenta alguns ecossistemas abissais muito raros, mas não a maioria.",
+                        "Esta é a alternativa correta.",
+                        "A água é matéria vital, não a fonte primária de energia calórica/luminosa.",
+                        "O vento é um fator abiótico secundário."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Fácil",
+                text: "Os organismos capazes de captar a energia do Sol e transformá-la em alimento (energia química) são designados por:",
+                options: ["Decompositores", "Consumidores Secundários", "Produtores (Autotróficos)", "Consumidores Terciários"],
+                correct: 2,
+                explanation: {
+                    correct: "Perfeito! As plantas e algas (produtores) fazem a fotossíntese, sendo autotróficas (Auto = próprio, produzem o seu alimento).",
+                    options: [
+                        "Decompositores reciclam matéria morta.",
+                        "Consumidores alimentam-se de outros.",
+                        "Esta é a alternativa correta.",
+                        "Consumidores terciários são predadores."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Fácil",
+                text: "Os animais não conseguem fazer fotossíntese. Como adquirem a energia de que precisam para viver?",
+                options: ["Dormindo muito tempo.", "Bebendo água salgada.", "Alimentando-se de outros seres vivos (plantas ou animais).", "Apanhando banhos de sol diretos."],
+                correct: 2,
+                explanation: {
+                    correct: "Como são seres heterotróficos, a única forma de obter energia é consumindo as ligações químicas (hidratos de carbono, proteínas) presentes noutros seres vivos.",
+                    options: [
+                        "Dormir poupa energia, mas não a cria.",
+                        "A água não tem calorias.",
+                        "Esta é a alternativa correta.",
+                        "Não fazemos fotossíntese pelas células da pele."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Médio",
+                text: "Numa cadeia alimentar simples, o organismo que se alimenta DIRETAMENTE do Produtor recebe a classificação de:",
+                options: ["Consumidor Secundário", "Consumidor Primário (Herbívoro)", "Decompositor Superior", "Superpredador"],
+                correct: 1,
+                explanation: {
+                    correct: "Sendo o primeiro da fila a 'consumir' alguma coisa (as plantas), ele é o Consumidor Primário. Exemplo: um coelho ou uma zebra.",
+                    options: [
+                        "Secundário come o primário.",
+                        "Esta é a alternativa correta.",
+                        "Decompositores atuam sobre a matéria morta de qualquer nível.",
+                        "Superpredador está no topo extremo da cadeia."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Médio",
+                text: "Qual é o nome do processo através do qual as plantas captam a energia luminosa e produzem moléculas orgânicas ricas em energia (glicose)?",
+                options: ["Respiração Celular", "Fotossíntese", "Quimiossíntese", "Transpiração"],
+                correct: 1,
+                explanation: {
+                    correct: "A fotossíntese (Foto = luz, Síntese = criação) é a magia das plantas. Elas juntam CO2 e água com a ajuda da luz para criar açúcar (energia).",
+                    options: [
+                        "Respiração celular GASTA a energia (quebra a glicose).",
+                        "Esta é a alternativa correta.",
+                        "Quimiossíntese usa reações químicas de minerais, não luz.",
+                        "Transpiração é perda de água."
+                    ]
+                }
+            },
+            {
+                id: 6, level: "Médio",
+                text: "A quantidade de energia que uma planta fixa na fotossíntese é TOTALMENTE transferida para o animal que a come?",
+                options: ["Sim, a energia transfere-se a 100%.", "Não. A planta gasta parte dessa energia na sua própria sobrevivência e respiração antes de ser comida.", "Sim, e ainda se multiplica no estômago do animal.", "Não, as plantas não passam energia para animais."],
+                correct: 1,
+                explanation: {
+                    correct: "A planta também tem de 'pagar contas'! Ela gasta energia para crescer, reproduzir-se e respirar. Só a energia que sobra (guardada nas folhas/frutos) passa para o herbívoro.",
+                    options: [
+                        "Impossível segundo as leis da física.",
+                        "Esta é a alternativa correta.",
+                        "A energia não se cria do nada.",
+                        "Passam sim, é a base da vida animal."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Difícil",
+                text: "Em ecologia, a energia total que os produtores capturam e transformam em matéria orgânica num dado período chama-se Produção Primária Bruta (PPB). A energia que realmente sobra após a planta respirar chama-se:",
+                options: ["Energia Terciária Absoluta", "Produção Primária Líquida (PPL)", "Consumo Secundário", "Magnificação Trófica"],
+                correct: 1,
+                explanation: {
+                    correct: "Tal como um salário: O Bruto é o total que ganhas. O Líquido é o que sobra na conta após pagares os impostos (a respiração da planta). A PPL é o que fica disponível para os herbívoros.",
+                    options: [
+                        "Termo inventado.",
+                        "Esta é a alternativa correta.",
+                        "Referente a consumidores, não produtores.",
+                        "Isto refere-se a acumulação de toxinas."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Fácil",
+                text: "As setas numa cadeia alimentar (ex: Alga ➔ Peixe) indicam:",
+                options: ["Que a alga vai comer o peixe.", "A direção para onde flui a energia e a matéria.", "Que são espécies amigas.", "Que ambos estão em competição."],
+                correct: 1,
+                explanation: {
+                    correct: "A seta aponta sempre da presa para o predador. Significa 'serve de alimento para' ou 'dá energia a'.",
+                    options: [
+                        "A seta apontaria ao contrário.",
+                        "Esta é a alternativa correta.",
+                        "A relação é de predação/herbivoria.",
+                        "Não há competição aqui."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Unidirecional vs Cíclico (9-14)
+            {
+                id: 9, level: "Médio",
+                text: "Qual é a diferença fundamental entre o comportamento da Matéria (água, carbono) e o da Energia num ecossistema?",
+                options: ["Não há diferença, ambas são recicladas.", "A matéria dissipa-se para o espaço e a energia é reciclada no solo.", "A Matéria flui em CICLOS fechados, enquanto a Energia tem um fluxo UNIDIRECIONAL (não volta ao início).", "A energia é sólida e a matéria é luz."],
+                correct: 2,
+                explanation: {
+                    correct: "Excelente! O carbono do corpo de um dinossauro morto foi reciclado e pode estar hoje no teu corpo. Mas a energia térmica que ele irradiou perdeu-se no espaço para sempre.",
+                    options: [
+                        "A energia não se recicla nos ecossistemas.",
+                        "Ocorreu exatamente o contrário nesta frase.",
+                        "Esta é a alternativa correta.",
+                        "Conceitos físicos totalmente trocados."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Médio",
+                text: "O que acontece à maior parte da energia que um ser vivo consome, fazendo com que ela 'desapareça' da cadeia alimentar e não passe para o próximo predador?",
+                options: ["Transforma-se em matéria escura.", "É libertada para o ambiente sob a forma de CALOR (resultado do metabolismo e respiração).", "É guardada no DNA da espécie.", "A energia evapora-se sob a forma de água."],
+                correct: 1,
+                explanation: {
+                    correct: "Sempre que as células trabalham (movem músculos, fazem digestão), geram calor. Esse calor dissipa-se para a atmosfera e não pode ser reaproveitado por outro animal.",
+                    options: [
+                        "Conceito astronómico não aplicável aqui.",
+                        "Esta é a alternativa correta.",
+                        "O DNA guarda informação, não energia calórica bruta.",
+                        "Água evapora, não a energia em si."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Fácil",
+                text: "Porque é que se diz que a energia não pode ser reciclada num ecossistema?",
+                options: ["Porque os decompositores recusam-se a comê-la.", "Porque a energia do Sol um dia vai apagar-se.", "Porque após ser transformada em calor pelos seres vivos, não pode ser usada novamente para fotossíntese.", "Porque as plantas não precisam de energia."],
+                correct: 2,
+                explanation: {
+                    correct: "A fotossíntese só capta a luz (energia luminosa). A energia térmica (o calor emitido pelo teu corpo) vai para a atmosfera e escapa para o universo.",
+                    options: [
+                        "Decompositores não têm 'vontade' seletiva desse tipo.",
+                        "Verdadeiro, mas não é a justificação deste fenómeno biológico.",
+                        "Esta é a alternativa correta.",
+                        "Falso, elas precisam de energia luminosa."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Difícil",
+                text: "Os Decompositores (fungos e bactérias) atuam em todos os níveis de um ecossistema. Qual é o papel principal deles?",
+                options: ["Produzir luz solar para o ecossistema noturno.", "Reciclar exclusivamente a ENERGIA, devolvendo-a ao Sol.", "Decompor a matéria orgânica morta, devolvendo MATÉRIA (nutrientes e minerais) ao solo para os produtores.", "Caçar grandes predadores doentes."],
+                correct: 2,
+                explanation: {
+                    correct: "Eles fecham o ciclo da matéria. Sem os decompositores, o mundo estaria soterrado em cadáveres e as plantas ficariam sem nutrientes no solo.",
+                    options: [
+                        "Fungos não emitem luz solar.",
+                        "Eles reciclam a matéria, não a energia.",
+                        "Esta é a alternativa correta.",
+                        "Eles atuam na matéria morta, não caçam ativamente presas grandes."
+                    ]
+                }
+            },
+            {
+                id: 13, level: "Médio",
+                text: "Qual dos seguintes fluxos NUNCA poderá ser representado como um ciclo fechado?",
+                options: ["O Ciclo da Água", "O Ciclo do Carbono", "O Fluxo de Energia", "O Ciclo do Nitrogénio"],
+                correct: 2,
+                explanation: {
+                    correct: "Como vimos, a energia entra pelo Sol e sai como calor. É uma linha unidirecional. A água e o carbono andam em rodas constantes (ciclos).",
+                    options: [
+                        "A água evapora e chove em ciclo contínuo.",
+                        "O carbono recicla-se pela respiração e fotossíntese.",
+                        "Esta é a alternativa correta.",
+                        "O nitrogénio fixa-se no solo e volta ao ar em ciclo."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Fácil",
+                text: "Se o sol desaparecesse repentinamente, por que motivo toda a vida terrestre morreria rapidamente?",
+                options: ["Porque os animais cegariam no escuro.", "Porque o fornecimento de nova energia à base da cadeia (fotossíntese) seria interrompido imediatamente.", "Porque os oceanos transbordariam.", "Porque os insetos fugiriam."],
+                correct: 1,
+                explanation: {
+                    correct: "Sem luz nova a entrar, não há fotossíntese. Sem plantas novas, os herbívoros morrem de fome num instante, arrastando toda a cadeia alimentar para a extinção.",
+                    options: [
+                        "A falta de visão não mata de imediato, a falta de energia (comida) sim.",
+                        "Esta é a alternativa correta.",
+                        "Sem luz, os oceanos congelariam.",
+                        "A base do problema é a ausência de fotossíntese."
+                    ]
+                }
+            },
+
+            // BLOCO 3: A Regra dos 10% (15-21)
+            {
+                id: 15, level: "Médio",
+                text: "A 'Regra dos 10%' (Lei de Lindeman) afirma que, de um nível trófico para o seguinte, apenas 10% da energia é transferida. O que acontece aos outros 90%?",
+                options: ["Ficam armazenados para sempre no DNA.", "São gastos no metabolismo do animal (movimento, respiração) e perdidos como calor.", "São transformados em novos vírus.", "Ficam escondidos no subsolo do ecossistema."],
+                correct: 1,
+                explanation: {
+                    correct: "Viver custa caro! A zebra gasta quase toda a energia que obteve da erva para conseguir correr, manter o corpo quente e não ser apanhada pelo leão.",
+                    options: [
+                        "O DNA guarda informação, não a energia calórica bruta do alimento.",
+                        "Esta é a alternativa correta.",
+                        "Falso.",
+                        "Não vão para o solo, dissipam-se para a atmosfera como calor."
+                    ]
+                }
+            },
+            {
+                id: 16, level: "Difícil",
+                text: "Imagina que num campo, o Capim armazenou 10.000 kcal de energia. Um grupo de Coelhos come esse capim. Seguindo a regra dos 10%, quanta energia os Coelhos vão conseguir incorporar nos seus corpos para o próximo nível?",
+                options: ["10.000 kcal", "1.000 kcal", "100 kcal", "10 kcal"],
+                correct: 1,
+                explanation: {
+                    correct: "A matemática é simples: tira-se um zero (calcula-se 10%). 10% de 10.000 é 1.000 kcal. O restante foi perdido nas fezes e no calor do coelho.",
+                    options: [
+                        "Seria a transferência de 100%.",
+                        "Esta é a alternativa correta.",
+                        "Isso seria o nível a seguir (Consumidor 2º).",
+                        "Isso seria muito pouco."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Difícil",
+                text: "Continuando o cenário anterior: O Capim tinha 10.000 kcal. Os Coelhos ficaram com 1.000 kcal. Se uma Águia comer os Coelhos, quanta energia a Águia conseguirá aproveitar?",
+                options: ["1.000 kcal", "500 kcal", "100 kcal", "1 kcal"],
+                correct: 2,
+                explanation: {
+                    correct: "Aplicamos a regra dos 10% de novo. A Águia come os coelhos, mas só aproveita 10% das 1.000 kcal que eles tinham. 10% de 1.000 = 100 kcal.",
+                    options: [
+                        "Isso implicava transferência total dos coelhos.",
+                        "Isso seria 50%.",
+                        "Esta é a alternativa correta.",
+                        "Isso é o que sobraria para um predador da águia (se existisse)."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Fácil",
+                text: "Devido à Regra dos 10%, porque é muito raro encontrar cadeias alimentares longas (com 6, 7 ou 8 níveis tróficos) na natureza?",
+                options: ["Porque os animais não gostam de comer a presa do outro.", "Porque os produtores morrem de cansaço.", "Porque a energia vai diminuindo tanto a cada salto que não sobra energia suficiente para manter um animal vivo no 6º nível.", "Porque o planeta é muito pequeno."],
+                correct: 2,
+                explanation: {
+                    correct: "Exatamente. Se começares com 1000 J, logo passa a 100, a 10, a 1, a 0.1... Rapidamente não resta energia suficiente no topo para sustentar um animal que gaste muita caloria para caçar.",
+                    options: [
+                        "Isto não dita as regras biológicas.",
+                        "Falso.",
+                        "Esta é a alternativa correta.",
+                        "O tamanho do planeta não condiciona diretamente a perda térmica local."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Médio",
+                text: "Na cadeia alimentar: Planta ➔ Zebra ➔ Leão, qual dos níveis dispõe da MENOR quantidade total de energia livre?",
+                options: ["A Planta", "A Zebra", "O Leão", "Todos têm exatamente a mesma energia."],
+                correct: 2,
+                explanation: {
+                    correct: "O Leão, estando no topo da cadeia (último nível de consumo), é o que recebe a menor fração de energia originada pelo sol, devido às perdas graduais.",
+                    options: [
+                        "As plantas têm a MAIOR energia.",
+                        "As zebras têm energia intermédia.",
+                        "Esta é a alternativa correta.",
+                        "A energia diminui sempre."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Médio",
+                text: "Tendo em conta o fluxo de energia, se um ser humano quiser aproveitar a MAIOR quantidade de energia primária possível do ecossistema, deverá ter uma dieta baseada em:",
+                options: ["Superpredadores, como tubarões e leões.", "Vegetais, frutas e cereais (Produtores).", "Animais herbívoros (vacas e ovelhas).", "Comer apenas sal e água."],
+                correct: 1,
+                explanation: {
+                    correct: "Ao comer plantas diretamente (atuando como Consumidor 1º), o humano corta os intermediários que 'desperdiçariam' a energia em forma de calor. Recebe a energia muito mais pura da base.",
+                    options: [
+                        "São os que menos energia retêm da base.",
+                        "Esta é a alternativa correta.",
+                        "Gasta energia da base, pois a vaca perdeu 90% em calor.",
+                        "Sal e água não fornecem energia orgânica."
+                    ]
+                }
+            },
+            {
+                id: 21, level: "Difícil",
+                text: "A quantidade de matéria seca (excluindo a água) que compõe os seres vivos num determinado nível trófico dá-se o nome de:",
+                options: ["Biomassa", "Aura energética", "Bioacumulação", "Nicho Ecológico"],
+                correct: 0,
+                explanation: {
+                    correct: "A Biomassa é todo o 'corpo' sólido (hidratos, proteínas) produzido. Nas florestas terrestres, a pirâmide de biomassa segue o mesmo formato da de energia: base gigante, topo pequeno.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Termo místico, não científico.",
+                        "Acumulação de toxinas.",
+                        "A profissão do animal."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Pirâmides de Energia e Desafios (22-30)
+            {
+                id: 22, level: "Médio",
+                text: "Uma Pirâmide de Energia é uma representação gráfica do ecossistema. Como é SEMPRE a sua forma visual?",
+                options: ["Uma pirâmide invertida (base muito fina, topo largo).", "Um retângulo (todos os degraus iguais).", "Uma pirâmide normal com a base sempre mais larga que o topo.", "Pode ter qualquer forma, dependendo do clima."],
+                correct: 2,
+                explanation: {
+                    correct: "Como a energia se perde (regra dos 10%), a base tem obrigatoriamente de ter mais energia que o topo. É a representação mais fiel da termodinâmica na ecologia.",
+                    options: [
+                        "Impossível, violaria as leis da física da energia.",
+                        "Implicaria 0% de perda térmica, o que é impossível.",
+                        "Esta é a alternativa correta.",
+                        "O clima não inverte a perda termodinâmica em calor."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Difícil",
+                text: "Ao contrário da Pirâmide de Energia, a Pirâmide de NÚMEROS (que conta quantos seres existem) PODE ser invertida. Qual seria um exemplo prático disto?",
+                options: ["100 zebras alimentam 1 único leão.", "10.000 arbustos alimentam 50 coelhos.", "1 única árvore gigante de carvalho serve de alimento a 5.000 lagartas.", "Milhares de peixes pequenos alimentam 1 tubarão."],
+                correct: 2,
+                explanation: {
+                    correct: "A base da pirâmide (Produtor) é o carvalho. O número na base é '1'. O nível a seguir (Cons. 1º) tem o número '5.000'. Visualmente, a base é estreita e o meio é largo. A pirâmide inverteu-se numericamente!",
+                    options: [
+                        "Isto é uma pirâmide normal (100 -> 1).",
+                        "Isto é uma pirâmide normal (10.000 -> 50).",
+                        "Esta é a alternativa correta.",
+                        "Normal."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Médio",
+                text: "Em certos ecossistemas aquáticos rápidos, é possível que a Pirâmide de BIOMASSA se inverta. Isto ocorre porque:",
+                options: ["O fitoplâncton (produtor) tem um ciclo de vida e reprodução tão rápido que, mesmo com pouca biomassa instantânea, suporta uma grande biomassa de zooplâncton.", "As algas são mais pesadas que os tubarões.", "A água do mar pesa mais que a doce.", "Os animais marinhos não precisam de comer produtores."],
+                correct: 0,
+                explanation: {
+                    correct: "É um caso de exceção notável! A alga pesa menos, mas reproduz-se em horas. O animal demora meses. É como uma padaria pequena que vende pão tão rápido que sustenta uma vila inteira.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "A massa individual não é a razão estrutural.",
+                        "O peso da água ambiente não afeta o cálculo da biomassa dos seres.",
+                        "Os herbívoros aquáticos dependem do plâncton fotossintético."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Difícil",
+                text: "As toxinas e metais pesados (como o Mercúrio) não se perdem em forma de calor. Pelo contrário, elas acumulam-se no corpo. Este fenómeno perigoso chama-se:",
+                options: ["Magnificação Trófica (ou Bioacumulação)", "Produção Primária", "Evolução Radiativa", "Sucessão Trófica"],
+                correct: 0,
+                explanation: {
+                    correct: "O veneno concentra-se a cada nível que sobe. Se o tubarão come 100 atuns envenenados, fica com o veneno todo acumulado no fígado. Predadores do topo sofrem mais.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Termo associado à energia fixada por plantas.",
+                        "Diferenciação rápida de espécies.",
+                        "Termo incorreto para a acumulação."
+                    ]
+                }
+            },
+            {
+                id: 26, level: "Difícil",
+                text: "Devido à Magnificação Trófica (Bioacumulação), num lago poluído por pesticidas, qual das opções de dieta seria a mais TÓXICA e perigosa para a saúde humana a longo prazo?",
+                options: ["Comer as algas marinhas (Produtores).", "Comer os pequenos crustáceos (Consumidores Primários).", "Comer os pequenos peixes (Consumidores Secundários).", "Comer o peixe-grande predador do topo do lago (Consumidor Final)."],
+                correct: 3,
+                explanation: {
+                    correct: "Lógica perfeita! O peixe gigante do topo viveu anos a comer milhares de peixes mais pequenos. O seu corpo atuou como uma esponja para todo o pesticida disperso no lago.",
+                    options: [
+                        "São os que têm menos toxinas por grama.",
+                        "Toxina baixa.",
+                        "Toxina média.",
+                        "Esta é a alternativa correta."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Médio",
+                text: "A Produtividade Secundária de um ecossistema refere-se a quê?",
+                options: ["A quantidade de energia que as plantas fixam pelo Sol.", "A energia que é transformada em nova biomassa animal (pelos consumidores) a partir do que eles ingeriram.", "A energia gerada pelas erupções vulcânicas.", "A quantidade de plantas que morrem por dia."],
+                correct: 1,
+                explanation: {
+                    correct: "Produtividade Primária = Trabalho das plantas (criam a base). Produtividade Secundária = Trabalho dos animais (usam o alimento e ganham músculo/gordura).",
+                    options: [
+                        "Isto é Produtividade Primária Bruta.",
+                        "Esta é a alternativa correta.",
+                        "Sistemas hidrotermais usam quimiossíntese, mas aqui o termo é genérico animal.",
+                        "Não representa a formação construtiva de energia."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Fácil",
+                text: "Verdadeiro ou Falso: Um ecossistema sustentável poderia existir sem nenhum carnívoro, mas nunca sem os Produtores.",
+                options: ["Falso, os carnívoros fornecem a energia ao Sol.", "Verdadeiro. As plantas dão início à entrada de energia no sistema. Se elas morrerem, tudo morre.", "Falso, a energia flui das fezes dos carnívoros para as nuvens.", "Verdadeiro, porque as plantas comem carne no escuro."],
+                correct: 1,
+                explanation: {
+                    correct: "Corretíssimo! Um planeta só com plantas, herbívoros e fungos decompositores poderia existir e fluir energia perfeitamente. Mas sem plantas, é a morte térmica de todo o sistema.",
+                    options: [
+                        "Cientificamente absurdo.",
+                        "Esta é a alternativa correta.",
+                        "Fantasia científica.",
+                        "A fotossíntese carece de luz, não de carne (exceto plantas carnívoras raras, mas mesmo essas fazem fotossíntese)."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Difícil",
+                text: "O que impede que um ecossistema terrestre sustente uma pirâmide com 12 níveis de consumidores seguidos (ex: gafanhoto -> sapo -> cobra -> gavião -> animal X -> animal Y -> animal Z...)?",
+                options: ["O tamanho do planeta dita que animais gigantes não caberiam no nível 12.", "A Regra dos 10%. A dissipação de energia metabólica é tão agressiva que no 6º nível já não resta sequer uma fração de caloria útil para sustentar um organismo.", "As plantas proibiram geneticamente mais de 4 níveis.", "O facto de animais grandes não saberem caçar."],
+                correct: 1,
+                explanation: {
+                    correct: "É a dura lei da Termodinâmica. Uma cadeia longa demais resultaria num 'superpredador' que gastaria muito mais energia à procura das presas super-raras de 11º nível do que a energia que ganharia ao comê-las.",
+                    options: [
+                        "O tamanho físico não é a restrição imediata, mas sim o limite energético vital.",
+                        "Esta é a alternativa correta.",
+                        "Vegetais não controlam estruturas sociais complexas animalizadas.",
+                        "Grandes felinos e orcas provam o contrário."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "Em Ecologia, 'Fluxo de Energia' e 'Ciclo da Matéria' são frequentemente explicados juntos. Numa única frase, como podemos resumir o papel vital dos Decompositores nesta relação conjunta?",
+                options: ["Eles devolvem a energia luminosa para o sol, enquanto engolem o carbono.", "Eles reciclam a Matéria essencial devolvendo nutrientes ao solo para os produtores reutilizarem, mas a Energia orgânica gasta por eles liberta-se como Calor e não volta atrás.", "Eles não influenciam a matéria, apenas bloqueiam o fluxo de energia nos fungos.", "Eles produzem matéria nova do nada, ignorando o Sol."],
+                correct: 1,
+                explanation: {
+                    correct: "Brilhante! É o fechar da 'fábrica'. Eles garantem que os 'tijolos' da vida (Matéria) são reciclados infinitamente. Contudo, a 'eletricidade' (Energia) que usaram no processo perde-se para sempre em forma de calor metabólico.",
+                    options: [
+                        "Nenhum organismo devolve luz ativamente ao Sol.",
+                        "Esta é a alternativa correta.",
+                        "Sem eles o lixo orgânico acumularia até colapsar a natureza.",
+                        "Ninguém cria matéria do nada na biologia clássica."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Genial! Lógica Termodinâmica!' : '❌ Ops! Cuidado com a fuga de energia:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>Opção Exata:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#451A03; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #CBD5E0; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Diagnóstico das Erradas:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício da Natureza
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#10B981', '#047857', '#F59E0B', '#BE123C']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#10B981', '#047857', '#F59E0B', '#BE123C']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Missão";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Próximo Desafio";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Focaste a tua energia em ${correct} de ${questions.length} desafios`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Energia Esgotada!</strong> A natureza não perdoa desperdícios de energia. Precisas de 80% (24 acertos) para provares que dominas este nível trófico. Revê a Teoria e volta à carga!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Recarregar Baterias</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Predador Intelectual!</strong> A tua análise ao fluxo de energia é incrivelmente eficiente. Estás no topo desta pirâmide de conhecimento!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Refazer Desafio</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo de Perdas Energéticas (Erros):</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed #92400E;">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">Marcaste: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">Certo: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

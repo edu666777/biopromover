@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciclos Biogeoquímicos - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-ESFERA (Azul Céu & Verde Terra) */
+            --bg-color: #F0F9FF; /* Azul muito claro */
+            --text-color: #0F172A; /* Slate 900 (Quase preto) */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #BAE6FD; /* Azul Claro */
+            --theme-medium: #0EA5E9; /* Azul Céu */
+            --theme-dark: #0369A1; /* Azul Oceano */
+            --theme-contrast: #10B981; /* Verde Esmeralda (Destaque Natureza) */
+            --theme-accent: #F59E0B; /* Âmbar / Sol */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#bae6fd 1px, transparent 1px), linear-gradient(90deg, #bae6fd 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #334155;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #64748B;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #ECFDF5; 
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #064E3B;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #475569; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E1; line-height: 1.5; color: #334155; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🌍</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Ciclos Biogeoquímicos: A Reciclagem da Natureza</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Nitrogénio)">
+            </div>
+            <div id="no-results"><p>😕 Nenhum conceito encontrado. Tenta outra palavra.</p></div>
+
+            <!-- TÓPICO 1: O QUE SÃO? -->
+            <div class="content-group">
+                <div class="section-badge">♻️ 1. O que são os Ciclos?</div>
+                <div class="theory-box search-target">
+                    <h3>A Máquina de Reciclagem da Terra</h3>
+                    <p>Ao contrário da energia (que se perde como calor), <strong>a matéria não pode ser criada nem destruída</strong> no nosso planeta. Os átomos que compõem o teu corpo hoje já fizeram parte de um dinossauro há milhões de anos!</p>
+                    
+                    <div class="visual-area">
+                        <svg width="220" height="120" viewBox="0 0 220 120">
+                            <!-- Ciclo -->
+                            <path d="M 60 60 A 40 40 0 1 1 160 60 A 40 40 0 1 1 60 60" fill="none" stroke="#10B981" stroke-width="6" stroke-dasharray="15,10"/>
+                            <polygon points="150,20 170,15 160,35" fill="#10B981"/>
+                            <polygon points="70,100 50,105 60,85" fill="#10B981"/>
+                            
+                            <text x="110" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="#0369A1">BIO</text>
+                            <text x="110" y="70" text-anchor="middle" font-size="10" fill="#0F172A">(Vida)</text>
+                            
+                            <text x="30" y="20" font-size="10" font-weight="bold" fill="#F59E0B">GEO</text>
+                            <text x="170" y="110" font-size="10" font-weight="bold" fill="#BE123C">QUÍMICO</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Ciclo Biogeoquímico:</strong> É o trajeto que um elemento químico faz ao passar do ambiente (Geo) para os seres vivos (Bio) e voltar novamente ao ambiente.</li>
+                        <li>Os elementos mais importantes são: <strong>Água, Carbono, Oxigénio e Azoto (Nitrogénio)</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: O CICLO DA ÁGUA -->
+            <div class="content-group">
+                <div class="section-badge">💧 2. Ciclo da Água (Hidrológico)</div>
+                <div class="theory-box search-target">
+                    <h3>Evaporação e Chuva</h3>
+                    <p>A água viaja constantemente entre os oceanos, a atmosfera e a terra, empurrada pelo calor do Sol.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="250" height="150" viewBox="0 0 250 150">
+                            <!-- Sol e Nuvem -->
+                            <circle cx="30" cy="30" r="15" fill="#F59E0B" stroke="#000" stroke-width="2"/>
+                            <path d="M 120 40 Q 130 20 150 20 Q 170 20 180 40 Q 200 40 200 60 Q 200 80 170 80 L 120 80 Q 100 80 100 60 Q 100 40 120 40 Z" fill="#BAE6FD" stroke="#000" stroke-width="2"/>
+                            <!-- Chuva -->
+                            <line x1="120" y1="90" x2="110" y2="110" stroke="#0EA5E9" stroke-width="2" stroke-dasharray="4,2"/>
+                            <line x1="150" y1="90" x2="140" y2="110" stroke="#0EA5E9" stroke-width="2" stroke-dasharray="4,2"/>
+                            <!-- Água/Oceano -->
+                            <path d="M 10 130 Q 50 120 100 130 Q 150 140 240 130 L 240 150 L 10 150 Z" fill="#0369A1"/>
+                            <!-- Árvore -->
+                            <rect x="210" y="100" width="10" height="30" fill="#8B4513"/>
+                            <circle cx="215" cy="90" r="20" fill="#10B981"/>
+                            
+                            <!-- Setas (Evaporação / Transpiração) -->
+                            <path d="M 50 120 L 50 80" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="4,4"/>
+                            <path d="M 200 90 L 190 60" stroke="#10B981" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="4,4"/>
+                            
+                            <text x="30" y="100" font-size="9" font-weight="bold">Evaporação</text>
+                            <text x="210" y="60" font-size="9" font-weight="bold">Transpiração</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Evaporação:</strong> O calor do sol transforma a água líquida (rios, mares) em vapor.</li>
+                        <li><strong>Transpiração:</strong> As plantas perdem água pelas folhas. O conjunto disto com a evaporação chama-se <strong>Evapotranspiração</strong>.</li>
+                        <li><strong>Condensação e Precipitação:</strong> O vapor arrefece, forma nuvens e cai como chuva. Parte dela infiltra-se no solo formando os lençóis freáticos.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: CICLO DO CARBONO -->
+            <div class="content-group">
+                <div class="section-badge">🏭 3. Ciclo do Carbono e Oxigénio</div>
+                <div class="theory-box search-target">
+                    <h3>A Dança da Respiração e Fotossíntese</h3>
+                    <p>O Carbono (C) e o Oxigénio (O) andam quase sempre de mãos dadas, impulsionados por dois processos biológicos opostos.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="260" height="150" viewBox="0 0 260 150">
+                            <!-- Planta -->
+                            <rect x="40" y="100" width="10" height="40" fill="#8B4513"/>
+                            <circle cx="45" cy="80" r="25" fill="#10B981"/>
+                            <!-- Animal -->
+                            <rect x="180" y="110" width="30" height="20" fill="#F59E0B" rx="5"/>
+                            <circle cx="175" cy="115" r="8" fill="#F59E0B"/>
+                            <!-- Fábrica -->
+                            <rect x="100" y="90" width="40" height="50" fill="#64748B"/>
+                            <rect x="110" y="60" width="10" height="30" fill="#475569"/>
+                            
+                            <!-- Setas -->
+                            <!-- Fotossintese -->
+                            <path d="M 100 40 Q 60 40 50 50" fill="none" stroke="#0EA5E9" stroke-width="2" marker-end="url(#arrow)"/>
+                            <text x="80" y="35" font-size="10" font-weight="bold">CO2</text>
+                            <!-- Respiracao -->
+                            <path d="M 170 90 Q 150 50 110 50" fill="none" stroke="#BE123C" stroke-width="2" marker-end="url(#arrow)"/>
+                            <text x="140" y="65" font-size="10" font-weight="bold">CO2</text>
+                            <!-- Combustao -->
+                            <path d="M 115 55 L 115 30" stroke="#334155" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="4,2"/>
+                            <text x="130" y="45" font-size="8">Combustão</text>
+                        </svg>
+                    </div>
+
+                    <div class="highlight-box">
+                        <strong>O Balanço:</strong>
+                        <br>🌿 A <strong>Fotossíntese</strong> TIRA o CO2 do ar e liberta Oxigénio (O2).
+                        <br>🫁 A <strong>Respiração celular</strong> e a <strong>Decomposição</strong> TIRAM Oxigénio e devolvem CO2 ao ar.
+                        <br>🔥 A queima de combustíveis fósseis (petróleo, carvão) liberta carbono que estava escondido há milhões de anos, causando o aumento do <strong>Efeito de Estufa</strong> (Aquecimento Global).
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: CICLO DO AZOTO -->
+            <div class="content-group">
+                <div class="section-badge">🦠 4. Ciclo do Azoto (Nitrogénio)</div>
+                <div class="theory-box search-target">
+                    <h3>O Trabalho Invisível das Bactérias</h3>
+                    <p>O Azoto (ou Nitrogénio - N2) forma 78% do ar que respiramos, mas as plantas e os animais <strong>não o conseguem usar diretamente do ar!</strong> Precisamos da ajuda de bactérias microscópicas no solo.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="240" height="150" viewBox="0 0 240 150">
+                            <!-- Solo -->
+                            <rect x="10" y="100" width="220" height="40" fill="#D97706"/>
+                            <!-- Planta Leguminosa -->
+                            <path d="M 60 100 L 60 50" stroke="#10B981" stroke-width="4"/>
+                            <circle cx="60" cy="40" r="15" fill="#10B981"/>
+                            <!-- Raízes com nódulos -->
+                            <path d="M 60 100 L 40 130 M 60 100 L 80 120" stroke="#451A03" stroke-width="2"/>
+                            <circle cx="50" cy="115" r="4" fill="#FDE047"/>
+                            <circle cx="70" cy="110" r="4" fill="#FDE047"/>
+                            
+                            <text x="120" y="30" font-size="14" font-weight="bold" fill="#0369A1">N2 (No Ar)</text>
+                            
+                            <!-- Setas -->
+                            <path d="M 100 30 Q 40 50 45 105" fill="none" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrow)"/>
+                            <text x="35" y="80" font-size="8" font-weight="bold">Fixação</text>
+                            
+                            <!-- Desnitrificação -->
+                            <path d="M 180 110 Q 180 60 140 40" fill="none" stroke="#0EA5E9" stroke-width="2" marker-end="url(#arrow)"/>
+                            <text x="185" y="80" font-size="8" font-weight="bold">Desnitrificação</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Fixação:</strong> Bactérias (muitas vivem nas raízes das <em>leguminosas</em> como o feijão e a soja) agarram no N2 do ar e transformam-no em amónia.</li>
+                        <li><strong>Nitrificação:</strong> Outras bactérias no solo transformam a amónia em nitratos, que é a forma que as plantas adoram absorver.</li>
+                        <li><strong>Desnitrificação:</strong> Bactérias especiais devolvem o azoto de volta para o ar (em forma de N2), fechando o ciclo.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar a Prova de Ciclos (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">A Prova Bio-Química</h2>
+                <p style="color: #334155; font-size: 0.95rem; font-weight:600;">
+                    30 questões vitais sobre a reciclagem da Terra. Acerta <strong>80% (24/30)</strong> para provares o teu nível! Lê sempre as correções científicas.
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Avaliação Concluída</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS DETALHADOS) ---
+        const questions = [
+            // BLOCO 1: Conceitos Gerais (1-6)
+            {
+                id: 1, level: "Fácil",
+                text: "O que define essencialmente um 'Ciclo Biogeoquímico'?",
+                options: ["O movimento das estações do ano.", "A passagem constante de elementos químicos entre os seres vivos (Bio) e o ambiente físico terrestre (Geo).", "O caminho que os animais fazem durante as migrações anuais.", "O processo de crescimento das raízes das plantas em direção ao centro da Terra."],
+                correct: 1,
+                explanation: {
+                    correct: "Exato! O nome explica tudo: Bio (Vida) + Geo (Terra) + Químico (Elemento). Os átomos viajam das rochas, ar ou água para dentro do teu corpo, e voltam a sair.",
+                    options: [
+                        "Isto resulta do movimento de translação e inclinação da Terra.",
+                        "Esta é a alternativa correta.",
+                        "Isto é uma migração biológica de organismos inteiros.",
+                        "Isto chama-se geotropismo positivo."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Médio",
+                text: "Em Ecologia, qual é a grande diferença entre a passagem da Matéria e a passagem da Energia nos ecossistemas?",
+                options: ["Ambas formam ciclos perfeitos.", "A Energia flui num ciclo fechado, mas a Matéria evapora e perde-se no espaço.", "A Matéria forma ciclos fechados (recicla-se), enquanto a Energia tem um fluxo unidirecional (entra pelo Sol e perde-se como calor).", "A Matéria e a Energia são conceitos exatamente iguais na biologia moderna."],
+                correct: 2,
+                explanation: {
+                    correct: "A regra de ouro da Ecologia: 'A Matéria cicla, a Energia flui'. Nunca te esqueças disto! O calor do teu corpo dissipa-se para sempre, mas o cálcio dos teus ossos voltará à terra.",
+                    options: [
+                        "A energia não forma ciclos num ecossistema.",
+                        "Completamente o inverso. A matéria não se perde no espaço (com exceções mínimas atmosféricas).",
+                        "Esta é a alternativa correta.",
+                        "São conceitos termodinâmicos radicalmente diferentes."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Fácil",
+                text: "Quem são os principais agentes biológicos responsáveis por fechar os ciclos biogeoquímicos, quebrando matéria orgânica morta e devolvendo minerais ao solo?",
+                options: ["Os Produtores Primários", "Os Decompositores (Fungos e Bactérias)", "Os Consumidores de Topo (Superpredadores)", "As Árvores de grande porte"],
+                correct: 1,
+                explanation: {
+                    correct: "Correto! Sem os fungos e as bactérias a reciclar lixo orgânico, os nutrientes ficavam 'presos' nos cadáveres e as plantas morreriam à fome.",
+                    options: [
+                        "Produzem matéria orgânica, não a destroem para mineralizar.",
+                        "Esta é a alternativa correta.",
+                        "Eles apenas transportam a matéria no topo, e eventualmente morrem.",
+                        "As árvores são produtoras."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Fácil",
+                text: "Os elementos químicos que ciclam na natureza são essenciais. Qual é o elemento principal que constitui o esqueleto orgânico de TODAS as moléculas da vida (açúcares, proteínas, gorduras)?",
+                options: ["Oxigénio", "Cálcio", "Carbono", "Ferro"],
+                correct: 2,
+                explanation: {
+                    correct: "Toda a vida na Terra é 'baseada no carbono'. A sua capacidade de fazer quatro ligações químicas permite construir as longas cadeias complexas da biologia.",
+                    options: [
+                        "Importante para respiração, mas não é a espinha dorsal estrutural principal.",
+                        "Importante para ossos, mas não forma açúcares.",
+                        "Esta é a alternativa correta.",
+                        "Presente no sangue, mas não é o bloco base geral."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Médio",
+                text: "Os ciclos biogeoquímicos podem ser divididos em gasosos e sedimentares. O ciclo do Fósforo é puramente sedimentar. O que significa isto?",
+                options: ["Que o seu reservatório principal está nas nuvens.", "Que o fósforo nunca entra nos seres vivos.", "Que o seu principal reservatório são as rochas e a terra, e ele não tem uma fase gasosa significativa na atmosfera.", "Que ele apenas ocorre nos rios congelados."],
+                correct: 2,
+                explanation: {
+                    correct: "Ciclos gasosos (como Nitrogénio e Carbono) têm o ar como grande armazém. Ciclos sedimentares (como o Fósforo) dependem da erosão lenta das rochas.",
+                    options: [
+                        "Isso seria um ciclo gasoso/hídrico.",
+                        "O fósforo é vital para o DNA e o ATP dos seres vivos.",
+                        "Esta é a alternativa correta.",
+                        "Ocorrem em todo o lado."
+                    ]
+                }
+            },
+            {
+                id: 6, level: "Difícil",
+                text: "Por que motivo o Sol é uma peça fundamental para o funcionamento dos ciclos biogeoquímicos, se o Sol não fornece matéria à Terra?",
+                options: ["Porque o Sol liberta carbono durante as erupções solares.", "Porque o Sol fornece a energia que impulsiona os processos (como a evaporação da água e a fotossíntese) que movem a matéria na Terra.", "Porque o Sol destrói os decompositores.", "A premissa está errada, o Sol não influencia a reciclagem da matéria."],
+                correct: 1,
+                explanation: {
+                    correct: "Perfeito! A matéria não se mexe sozinha. A energia solar é o motor que aquece a água para a evaporar (Ciclo da Água) e a luz que permite à planta fixar o CO2 (Ciclo do Carbono).",
+                    options: [
+                        "A matéria que chega do Sol à Terra (vento solar) é irrelevante para a massa orgânica terrestre.",
+                        "Esta é a alternativa correta.",
+                        "Luz excessiva mata algumas bactérias, mas não é o seu papel no ciclo.",
+                        "Influencia de forma absoluta."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Ciclo da Água (7-12)
+            {
+                id: 7, level: "Fácil",
+                text: "No Ciclo da Água (Ciclo Hidrológico), o processo em que a água dos oceanos e rios se transforma em vapor e sobe para a atmosfera chama-se:",
+                options: ["Precipitação", "Evaporação", "Infiltração", "Condensação"],
+                correct: 1,
+                explanation: {
+                    correct: "Evaporação. O calor do sol aumenta a energia das moléculas de água líquida, que passam para o estado gasoso.",
+                    options: [
+                        "Precipitação é a chuva a cair.",
+                        "Esta é a alternativa correta.",
+                        "Infiltração é a água a penetrar no solo.",
+                        "Condensação é o vapor a virar líquido nas nuvens."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Fácil",
+                text: "As plantas também participam ativamente no ciclo da água, perdendo água através dos estomas das suas folhas. Como se chama este processo?",
+                options: ["Gotação a frio", "Fotossíntese hídrica", "Transpiração (ou Evapotranspiração)", "Condensação foliar"],
+                correct: 2,
+                explanation: {
+                    correct: "Tal como nós, as plantas transpiram. Numa floresta como a Amazónia, as árvores libertam autênticos 'rios voadores' de vapor de água para a atmosfera.",
+                    options: [
+                        "A gutação existe, mas é a perda de água líquida em gotas visíveis, não o grosso do vapor.",
+                        "Termo inventado.",
+                        "Esta é a alternativa correta.",
+                        "Ocorre quando a água atmosférica se deposita na folha (orvalho)."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Médio",
+                text: "Quando o vapor de água sobe para as partes mais altas e frias da atmosfera, as moléculas juntam-se e voltam ao estado líquido, formando as nuvens. Como se chama este passo?",
+                options: ["Precipitação", "Condensação", "Infiltração", "Sublimação"],
+                correct: 1,
+                explanation: {
+                    correct: "Condensação é a mudança do gás para líquido. É o mesmo que acontece quando os vidros da casa de banho ficam embaciados durante um banho quente.",
+                    options: [
+                        "Precipitação é a queda (chuva).",
+                        "Esta é a alternativa correta.",
+                        "Infiltração é no solo.",
+                        "Sublimação é a passagem de sólido direto a gás (ou vice-versa nalguns contextos)."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Médio",
+                text: "A água que cai da chuva não escorre toda para os rios. Uma grande parte entra pelo solo, formando enormes reservatórios de água subterrânea. Isto é a:",
+                options: ["Infiltração", "Escoamento superficial", "Evaporação", "Destilação"],
+                correct: 0,
+                explanation: {
+                    correct: "Através da infiltração ou percolação, a água enche os aquíferos subterrâneos. As raízes das árvores ajudam muito neste processo, pois tornam o solo mais permeável.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Escoamento é a água que corre por cima da terra.",
+                        "Passagem a vapor.",
+                        "Processo laboratorial de separação."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Difícil",
+                text: "O abate intensivo de florestas (desflorestação) tem um impacto dramático no ciclo da água local. Qual das afirmações descreve corretamente esse impacto?",
+                options: ["Aumenta a chuva porque o sol bate diretamente no solo.", "Diminui a transpiração vegetal, reduzindo a formação de nuvens e diminuindo as chuvas na região, o que pode levar à desertificação.", "As nuvens ficam presas no topo das árvores mortas.", "Não tem impacto, pois a água evapora apenas dos oceanos."],
+                correct: 1,
+                explanation: {
+                    correct: "Sem a floresta, o 'suor' das árvores (transpiração) desaparece. O ar fica mais seco, chove menos, e o ciclo local colapsa.",
+                    options: [
+                        "O solo exposto compacta-se e fica seco.",
+                        "Esta é a alternativa correta.",
+                        "Nuvens estão na atmosfera.",
+                        "A evapotranspiração terrestre é crucial para as chuvas continentais."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Difícil",
+                text: "Pequeno e grande ciclo da água. Qual é a principal diferença?",
+                options: ["O pequeno ciclo ocorre apenas no inverno.", "O grande ciclo envolve a passagem da água pelo corpo dos seres vivos, enquanto o pequeno ciclo é puramente físico (evapora da água e chove).", "O pequeno ciclo ocorre apenas em poças d'água.", "Não existe diferença na ciência moderna."],
+                correct: 1,
+                explanation: {
+                    correct: "Pequeno ciclo: a água do mar evapora, vira nuvem e chove no mar. Grande ciclo: a água chove na terra, uma vaca bebe, a vaca urina, a água evapora. Passou pela vida!",
+                    options: [
+                        "Ambos ocorrem todo o ano.",
+                        "Esta é a alternativa correta.",
+                        "O tamanho físico não é o fator diferencial, mas a biologia.",
+                        "A distinção é didática e muito utilizada."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Ciclo do Carbono e Oxigénio (13-19)
+            {
+                id: 13, level: "Fácil",
+                text: "Que processo biológico maravilhoso é responsável por RETIRAR o Dióxido de Carbono (CO2) da atmosfera e fixá-lo na forma de moléculas orgânicas (açúcares)?",
+                options: ["Respiração Celular", "Combustão", "Fotossíntese", "Decomposição"],
+                correct: 2,
+                explanation: {
+                    correct: "As plantas, usando a luz do sol, 'sequestram' o gás carbónico do ar para fabricar a própria comida (glicose). Elas são os filtros naturais do planeta.",
+                    options: [
+                        "A respiração liberta CO2.",
+                        "A combustão liberta CO2.",
+                        "Esta é a alternativa correta.",
+                        "A decomposição liberta CO2."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Fácil",
+                text: "Todos os animais e plantas libertam Dióxido de Carbono (CO2) de volta para o ar continuamente, enquanto quebram a comida para gerar energia. A este processo chama-se:",
+                options: ["Respiração Celular", "Fotossíntese", "Condensação", "Transpiração"],
+                correct: 0,
+                explanation: {
+                    correct: "Exato! Na respiração, tu inspiras O2 e queimas o açúcar nas tuas células, expirando CO2 como lixo metabólico. As plantas também fazem isto à noite (e de dia)!",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "A fotossíntese faz o processo oposto.",
+                        "Refere-se ao ciclo da água.",
+                        "Perda de água nas plantas."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Médio",
+                text: "De que forma os organismos Decompositores (fungos e bactérias) participam ativamente no ciclo do Carbono?",
+                options: ["Eles congelam o carbono no solo.", "Ao comerem a matéria morta, eles realizam respiração celular, libertando o carbono de volta para a atmosfera em forma de CO2.", "Eles transformam o carbono em oxigénio puro.", "Eles retiram CO2 do ar para fazer fotossíntese subterrânea."],
+                correct: 1,
+                explanation: {
+                    correct: "Quando a maçã apodrece na terra, as bactérias estão, literalmente, a comê-la e a 'respirar' o carbono contido nela de volta para o ar. Nada se perde!",
+                    options: [
+                        "Isso acontece apenas em locais gelados extremos (permafrost).",
+                        "Esta é a alternativa correta.",
+                        "Apenas reações nucleares mudam um elemento noutro.",
+                        "Eles não fazem fotossíntese."
+                    ]
+                }
+            },
+            {
+                id: 16, level: "Médio",
+                text: "Como é que o Ser Humano tem provocado um grave desequilíbrio no Ciclo do Carbono nos últimos 200 anos?",
+                options: ["Por plantar demasiadas árvores que sugam todo o carbono.", "Pela extração e queima massiva de Combustíveis Fósseis (petróleo, carvão), libertando subitamente CO2 que estava enterrado há milhões de anos.", "Por beber demasiada água gaseificada.", "A ação humana não afeta a atmosfera."],
+                correct: 1,
+                explanation: {
+                    correct: "Os fósseis eram carbono preso no subsolo. Ao queimá-los nos motores e fábricas, atiramos para o ar, num século, o CO2 que a Terra demorou milhões de anos a enterrar.",
+                    options: [
+                        "Isso ajudaria a curar o desequilíbrio.",
+                        "Esta é a alternativa correta.",
+                        "A quantidade de CO2 das bebidas é irrisória a nível global.",
+                        "Afeta dramaticamente."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Médio",
+                text: "Qual é a principal consequência ecológica mundial do aumento desenfreado da concentração de CO2 na atmosfera pelo homem?",
+                options: ["O aumento buracos na camada de ozono.", "A intensificação do Efeito de Estufa, causando o Aquecimento Global.", "A queda de chuva de meteoritos.", "O congelamento dos oceanos tropicais."],
+                correct: 1,
+                explanation: {
+                    correct: "O CO2 é um 'Gás de Estufa'. Ele permite que o calor do sol entre, mas impede que ele fuja para o espaço. Quanto mais CO2, mais a Terra aquece (como um carro fechado ao sol).",
+                    options: [
+                        "O buraco no ozono é causado por gases CFCs, não pelo CO2 principal.",
+                        "Esta é a alternativa correta.",
+                        "Sem relação geológica.",
+                        "Causa exatamente o oposto."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Difícil",
+                text: "O Ciclo do Oxigénio está estritamente ligado ao do Carbono. O Oxigénio gasoso (O2) atmosférico, essencial para a nossa respiração, é originado de onde?",
+                options: ["Do interior dos vulcões em erupção.", "Da transpiração humana durante o exercício.", "Da quebra da molécula de água (H2O) realizada pelas algas e plantas durante a Fotossíntese.", "Da queima de florestas."],
+                correct: 2,
+                explanation: {
+                    correct: "Na fase luminosa da fotossíntese, as plantas partem a molécula de água para roubar os hidrogénios, deitando fora o Oxigénio (O2) como lixo. Sorte a nossa, que vivemos desse 'lixo' botânico!",
+                    options: [
+                        "Vulcões emitem CO2 e enxofre.",
+                        "Transpiramos água.",
+                        "Esta é a alternativa correta.",
+                        "A queima consome O2 e deita CO2."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Difícil",
+                text: "Verdadeiro ou Falso: 'A Floresta Amazónica é o grande pulmão do mundo, sendo a principal responsável pelo oxigénio que respiramos atualmente.'",
+                options: ["Verdadeiro, pois é a maior floresta do mundo.", "Falso, os verdadeiros 'pulmões' do mundo são as microalgas do oceano (fitoplâncton), que produzem a vasta maioria do oxigénio excedente, pois a floresta consome quase tudo o que produz.", "Verdadeiro, porque as árvores são imensas.", "Falso, o oxigénio vem das montanhas geladas."],
+                correct: 1,
+                explanation: {
+                    correct: "A Amazónia é vital para o ciclo da chuva e armazenamento de carbono. Mas a floresta é tão densa em vida que respira (animais e fungos) quase todo o oxigénio que as árvores produzem. O fitoplâncton marinho é o campeão do O2.",
+                    options: [
+                        "Um mito biológico comum.",
+                        "Esta é a alternativa correta.",
+                        "Tamanho não significa excedente líquido de oxigênio.",
+                        "Montanhas têm ar rarefeito, não emitem O2."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Ciclo do Azoto (Nitrogénio) (20-26)
+            {
+                id: 20, level: "Médio",
+                text: "O gás Azoto (ou Nitrogénio - N2) compõe cerca de 78% da atmosfera terrestre. Apesar da abundância, a grande maioria dos animais e plantas não consegue usá-lo respirando. Porquê?",
+                options: ["Porque o N2 tem um cheiro insuportável para os pulmões.", "Porque as plantas são alérgicas a azoto.", "Porque a molécula de N2 é super-resistente (tripla ligação química) e as nossas células não têm enzimas para a partir.", "Porque o azoto está muito alto no céu."],
+                correct: 2,
+                explanation: {
+                    correct: "Estamos rodeados de azoto mas morremos à fome dele! A ligação entre os dois átomos é tão forte que o corpo humano não consegue desfazê-la para fabricar proteínas.",
+                    options: [
+                        "O azoto não tem cheiro.",
+                        "As plantas precisam desesperadamente de azoto para crescer.",
+                        "Esta é a alternativa correta.",
+                        "O azoto está ao nível do chão, respiramo-lo a toda a hora."
+                    ]
+                }
+            },
+            {
+                id: 21, level: "Fácil",
+                text: "Visto que não conseguimos absorver o Azoto do ar, quem são os 'heróis' microscópicos que fazem o trabalho pesado de 'Fixação do Azoto' no solo?",
+                options: ["As minhocas", "Certas espécies de bactérias (ex: Rhizobium)", "Os insetos polinizadores", "Os vírus gigantes"],
+                correct: 1,
+                explanation: {
+                    correct: "As bactérias fixadoras de azoto são os únicos organismos com maquinaria biológica para rasgar a molécula de N2 do ar e transformá-la em compostos úteis para as raízes.",
+                    options: [
+                        "Minhocas revolvem a terra.",
+                        "Esta é a alternativa correta.",
+                        "Insetos fazem polinização.",
+                        "Vírus não fazem metabolismos construtivos."
+                    ]
+                }
+            },
+            {
+                id: 22, level: "Médio",
+                text: "As bactérias fixadoras de azoto mais famosas vivem em 'nódulos' (bolinhas) nas raízes de um grupo específico de plantas, formando uma simbiose perfeita. Que plantas são estas?",
+                options: ["As árvores de fruto (Macieiras)", "As leguminosas (Feijão, Soja, Ervilha, Grão)", "Os cactos e suculentas", "As algas marinhas"],
+                correct: 1,
+                explanation: {
+                    correct: "A agricultura tira proveito disto! Os agricultores plantam leguminosas para enriquecer o solo pobre, pois as bactérias nas raízes destas plantas atiram adubo natural (azoto) para a terra.",
+                    options: [
+                        "Não têm esta associação forte.",
+                        "Esta é a alternativa correta.",
+                        "Vivem em ambientes áridos, não têm esta simbiose comum.",
+                        "Fazem fotossíntese em meio hídrico."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Difícil",
+                text: "No Ciclo do Azoto, a fase em que bactérias especializadas transformam a Amónia, primeiro em Nitritos e depois em Nitratos (a forma favorita de absorção das plantas), chama-se:",
+                options: ["Fixação", "Desnitrificação", "Nitrificação", "Evaporação"],
+                correct: 2,
+                explanation: {
+                    correct: "A Nitrificação é um processo de duas etapas (feito por bactérias Nitrosomonas e Nitrobacter) que torna o veneno (amónia) num banquete (nitrato) para a planta.",
+                    options: [
+                        "Fixação é tirar do ar.",
+                        "Desnitrificação é devolver para o ar.",
+                        "Esta é a alternativa correta.",
+                        "Processo do ciclo da água."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Médio",
+                text: "Como é que os animais (e tu próprio) conseguem obter o Azoto (nitrogénio) vital para a construção de músculos, cabelo e DNA?",
+                options: ["Inspirando fundo quando está a chover.", "Comendo plantas, ou comendo outros animais que comeram plantas.", "Bebendo água engarrafada rica em gás.", "Através de banhos de argila."],
+                correct: 1,
+                explanation: {
+                    correct: "A única forma de conseguirmos Azoto é comendo a matéria orgânica (proteínas) já construída pelos seres que estão abaixo de nós na cadeia alimentar.",
+                    options: [
+                        "Não assimilamos N2 pelos pulmões.",
+                        "Esta é a alternativa correta.",
+                        "Água não nos dá proteínas azotosas estruturais.",
+                        "A pele não absorve nutrientes de base desta forma."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Médio",
+                text: "Se todo o azoto fosse fixado no solo, a atmosfera eventualmente ficaria sem ele. Qual é a etapa que FECHA o ciclo, devolvendo o gás N2 de volta à atmosfera?",
+                options: ["Fotossíntese noturna", "Nitrificação", "Desnitrificação (feita por bactérias desnitrificantes no solo sem oxigénio)", "Evapotranspiração"],
+                correct: 2,
+                explanation: {
+                    correct: "Tal como o nome indica, 'Des-nitrificar' é anular o processo. Algumas bactérias em solos pantanosos usam o nitrato para respirar, libertando N2 gasoso.",
+                    options: [
+                        "Não liberta azoto.",
+                        "Processo de ida para as plantas.",
+                        "Esta é a alternativa correta.",
+                        "Liberta vapor de água."
+                    ]
+                }
+            },
+            {
+                id: 26, level: "Difícil",
+                text: "Quando um animal faz xixi (urina) ou morre, a matéria nitrogenada volta ao solo. As bactérias atacam esses restos e libertam Amónia, que cheira mal. Este passo do ciclo chama-se:",
+                options: ["Amonificação", "Precipitação", "Fixação Gasosa", "Combustão"],
+                correct: 0,
+                explanation: {
+                    correct: "A decomposição de proteínas e urina gera amónia/amónio. Lembras-te do cheiro intenso de uma caixa de areia para gatos suja? Isso é amonificação a acontecer em tempo real!",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Isto é chuva.",
+                        "Isso é do ar para o chão.",
+                        "Isto é fogo."
+                    ]
+                }
+            },
+
+            // BLOCO 5: Impactos Antrópicos e Síntese (27-30)
+            {
+                id: 27, level: "Difícil",
+                text: "Os humanos inventaram os fertilizantes artificiais (com muito azoto e fósforo) para a agricultura crescer mais rápido. No entanto, quando a chuva lava esse excesso de adubo para os rios, causa um desastre ecológico grave chamado:",
+                options: ["Magnificação Trófica", "Eutrofização", "Efeito de Estufa", "Infiltração"],
+                correct: 1,
+                explanation: {
+                    correct: "O adubo vai para o rio. As algas crescem loucamente à superfície (tapando a luz). Quando as algas morrem, as bactérias reproduzem-se tanto a comê-las que gastam todo o Oxigénio da água, asfixiando os peixes.",
+                    options: [
+                        "Acumulação de veneno.",
+                        "Esta é a alternativa correta.",
+                        "Aquecimento pelo ar.",
+                        "Processo da água no solo."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Médio",
+                text: "A respeito dos ciclos da natureza, qual destas afirmações justifica a urgência em promover a separação e compostagem de lixo orgânico caseiro?",
+                options: ["Porque o lixo orgânico na natureza nunca se decompõe.", "A compostagem acelera os ciclos biogeoquímicos (Carbono e Azoto), usando bactérias e minhocas para transformar restos alimentares num excelente adubo natural que regressa à terra.", "Porque atrai meteoritos ricos em carbono.", "Para parar o ciclo da água."],
+                correct: 1,
+                explanation: {
+                    correct: "Fazer compostagem é imitar a natureza! Estamos a ajudar os decompositores a fazer o seu trabalho rápido, gerando terra rica em nutrientes em vez de lixo tóxico num aterro.",
+                    options: [
+                        "Decompõe-se, mas em aterros sem oxigénio liberta muito metano (poluente).",
+                        "Esta é a alternativa correta.",
+                        "Não afeta a gravidade.",
+                        "Não pára a água."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Difícil",
+                text: "No que toca à poluição, porque é que o dióxido de enxofre (SO2) e os óxidos de azoto (NOx) emitidos pelos canos de escape e fábricas constituem uma rutura violenta nos ciclos biogeoquímicos atmosféricos?",
+                options: ["Eles reagem com o vapor de água nas nuvens e caem em forma de Chuvas Ácidas, que destroem folhas e acidificam lagos e solos.", "Eles congelam instantaneamente as árvores.", "Eles impedem que a água evapore dos oceanos.", "Eles transformam o oxigénio em ouro pesado."],
+                correct: 0,
+                explanation: {
+                    correct: "As emissões destes gases (fugas excessivas nos ciclos normais) misturam-se com a chuva. A Chuva Ácida queima florestas inteiras, alterando gravemente os ciclos locais e esterilizando lagos.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Gases de escape são quentes e não congelam folhagem.",
+                        "O sol evapora a água na mesma.",
+                        "Reação nuclear impossível."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "Resumo letal do Módulo: Qual frase define com máxima exatidão os grandes Ciclos Biogeoquímicos estudados?",
+                options: ["A Terra recebe constantemente nova matéria trazida pelas nuvens, e a energia recicla-se nos rios infinitamente.", "Os ciclos dependem apenas da ação do vento para mover os minerais, não havendo participação de animais.", "O sol fornece Energia, que flui e perde-se, enquanto as bactérias, fungos, plantas e animais operam engrenagens gigantes que reciclam e fazem a Matéria andar em roda infinitamente na Terra.", "As plantas constroem carbono novo a partir do sol, descartando todo o azoto para o mar."],
+                correct: 2,
+                explanation: {
+                    correct: "É a síntese perfeita! Energia flui (entra pelo sol, perde-se como calor). Matéria cicla (átomos de carbono, azoto e água rodam incansavelmente através da química e biologia do planeta há 4 mil milhões de anos).",
+                    options: [
+                        "Matéria na Terra é finita e constante (cicla). Energia não se recicla.",
+                        "A vida (biosfera) é essencial na parte 'Bio' do ciclo.",
+                        "Esta é a alternativa correta.",
+                        "O carbono vem do CO2 do ar, não se 'constrói' átomo novo do sol, nem se descarta azoto vital."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Impecável! Análise Ecológica Correta!' : '❌ Ops! Houve uma falha no sistema de reciclagem:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>Opção Exata:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#0F172A; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #CBD5E0; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Diagnóstico das Erradas:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício azuis e verdes
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#0EA5E9', '#10B981', '#0369A1', '#F59E0B']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#0EA5E9', '#10B981', '#0369A1', '#F59E0B']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Análise";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Concluíste com ${correct} de ${questions.length} ciclos fechados.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Desequilíbrio Ambiental!</strong> A natureza depende da precisão dos teus ciclos. Atingir os 80% (24 acertos) é obrigatório para provares a tua competência. Volta à Teoria e fortifica as tuas raízes!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Tentar Reciclar de Novo</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Perfeito Balanço Ecológico!</strong> A tua compreensão dos ciclos da matéria é imaculada. Estás pronto para ajudar a manter o planeta em rotação contínua!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Patrulhar Novamente</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Laboratorial das Tuas Falhas:</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">A tua Escolha: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">A Lei Correta: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>
