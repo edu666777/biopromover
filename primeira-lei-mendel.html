@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primeira Lei de Mendel - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-ERVILHA (Verde Ervilheira & Roxo Flor) */
+            --bg-color: #F0FDF4; /* Verde muito claro */
+            --text-color: #064E3B; /* Verde Escuro quase preto */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #D1FAE5; /* Verde Pastel */
+            --theme-medium: #10B981; /* Verde Ervilha */
+            --theme-dark: #047857; /* Verde Musgo */
+            --theme-contrast: #8B5CF6; /* Roxo da flor da ervilha (Destaque) */
+            --theme-accent: #F59E0B; /* Amarelo Semente Dominante */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#d1fae5 1px, transparent 1px), linear-gradient(90deg, #d1fae5 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #6D28D9;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #047857;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #F5F3FF; /* Roxo muito suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #4C1D95;
+        }
+        .highlight-box.amber {
+            background-color: #FFFBEB;
+            border-left-color: var(--theme-accent);
+            color: #78350F;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #047857; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E1; line-height: 1.5; color: #1E293B; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🌱</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">A Primeira Lei de Mendel</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Segregação)">
+            </div>
+            <div id="no-results"><p>😕 Alelo não encontrado. Verifica a tua meiose.</p></div>
+
+            <!-- TÓPICO 1: O MONGE E A ERVILHA -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-dark);">🌿 1. O Monge e as Ervilhas</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-dark);">
+                    <h3 style="color: var(--theme-dark);">Porque Ervilhas (Pisum sativum)?</h3>
+                    <p>Antes de Mendel (século XIX), a sociedade acreditava que a genética era como misturar tintas (ex: pai vermelho + mãe branca = filho cor-de-rosa para sempre). Mendel usou ervilheiras para provar que a herança é <strong>particulada</strong> (os genes não se diluem, comportam-se como partículas individuais que passam intactas de geração em geração).</p>
+                    
+                    <div class="visual-area">
+                        <svg width="220" height="120" viewBox="0 0 220 120">
+                            <!-- Vagem -->
+                            <path d="M 20 60 Q 110 -10 200 60 Q 110 130 20 60 Z" fill="#D1FAE5" stroke="#047857" stroke-width="3"/>
+                            
+                            <!-- Ervilha Amarela (Dominante) -->
+                            <circle cx="70" cy="60" r="15" fill="#F59E0B" stroke="#CA8A04" stroke-width="2"/>
+                            <text x="70" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFF">V</text>
+                            
+                            <!-- Ervilha Verde (Recessiva) -->
+                            <circle cx="110" cy="60" r="15" fill="#10B981" stroke="#047857" stroke-width="2"/>
+                            <text x="110" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#FFF">v</text>
+
+                            <!-- Ervilha Rugosa -->
+                            <path d="M 150 45 Q 165 45 165 60 Q 165 75 150 75 Q 135 75 135 60 Q 135 45 150 45 Z" fill="#F59E0B" stroke="#CA8A04" stroke-width="2" stroke-dasharray="2,2"/>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Fácil cultivo:</strong> Cresciam rápido, permitindo ver várias gerações em pouco tempo.</li>
+                        <li><strong>Autofecundação:</strong> A flor da ervilheira pode fecundar-se a si mesma, garantindo <em>linhagens puras</em> (Homozigotas).</li>
+                        <li><strong>Características fáceis (Antagónicas):</strong> Não havia "meio-termo". A ervilha ou era amarela ou era verde. Ou era lisa ou era rugosa.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: A 1ª LEI DE MENDEL -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-medium);">✂️ 2. A Lei da Segregação</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-medium);">
+                    <h3 style="color: var(--theme-dark);">A 1ª Lei de Mendel (Pureza dos Gâmetas)</h3>
+                    <p>A Lei da Segregação dos Fatores dita a regra de ouro da formação dos espermatozoides e óvulos (Meiose).</p>
+                    
+                    <div class="visual-area">
+                        <svg width="250" height="150" viewBox="0 0 250 150">
+                            <!-- Célula Mãe (2n) -->
+                            <circle cx="125" cy="30" r="20" fill="#E0E7FF" stroke="#4338CA" stroke-width="2"/>
+                            <text x="115" y="35" font-size="14" font-weight="bold" fill="#1E3A8A">V</text>
+                            <text x="135" y="35" font-size="14" font-weight="bold" fill="#BE123C">v</text>
+                            <text x="180" y="35" font-size="10" font-weight="bold">Célula Mãe (Vv)</text>
+                            
+                            <!-- Setas de divisão (Meiose) -->
+                            <path d="M 115 55 L 80 90" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                            <path d="M 135 55 L 170 90" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+
+                            <!-- Gametas (n) -->
+                            <circle cx="70" cy="110" r="15" fill="#FEF08A" stroke="#CA8A04" stroke-width="2"/>
+                            <text x="70" y="115" text-anchor="middle" font-size="14" font-weight="bold" fill="#B45309">V</text>
+
+                            <circle cx="180" cy="110" r="15" fill="#D1FAE5" stroke="#059669" stroke-width="2"/>
+                            <text x="180" y="115" text-anchor="middle" font-size="14" font-weight="bold" fill="#047857">v</text>
+
+                            <text x="125" y="145" text-anchor="middle" font-size="10" font-weight="bold" fill="#1E3A8A">Gâmetas são PUROS!</text>
+
+                            <defs>
+                                <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#000"/>
+                                </marker>
+                            </defs>
+                        </svg>
+                    </div>
+
+                    <div class="highlight-box purple">
+                        <strong>O que diz a lei?</strong> Cada característica é determinada por dois fatores (alelos). Mas na hora de formar os gâmetas, <strong>o par SEPARA-SE (Segrega-se)</strong>. Cada gâmeta só pode levar <strong>UM</strong> fator de cada par. Nunca podes mandar "Vv" juntos no mesmo espermatozoide!
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: O XADREZ MENDELIANO -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-contrast);">🧮 3. O Quadro de Punnett</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-contrast);">
+                    <h3 style="color: var(--theme-contrast);">Como calcular probabilidades?</h3>
+                    <p>O Xadrez Mendeliano permite prever o resultado de um cruzamento, garantindo que não falhamos a matemática da fecundação.</p>
+                    
+                    <div class="visual-area" style="background:#FFF;">
+                        <svg width="220" height="220" viewBox="0 0 220 220">
+                            <!-- Grelha -->
+                            <line x1="80" y1="40" x2="80" y2="200" stroke="#000" stroke-width="3"/>
+                            <line x1="40" y1="80" x2="200" y2="80" stroke="#000" stroke-width="3"/>
+                            
+                            <!-- Gâmetas Pai (Topo) -->
+                            <text x="110" y="65" font-size="20" font-weight="bold" fill="#047857">V</text>
+                            <text x="170" y="65" font-size="20" font-weight="bold" fill="#047857">v</text>
+                            
+                            <!-- Gâmetas Mãe (Esquerda) -->
+                            <text x="50" y="125" font-size="20" font-weight="bold" fill="#E11D48">V</text>
+                            <text x="50" y="185" font-size="20" font-weight="bold" fill="#E11D48">v</text>
+
+                            <!-- Descendentes (F2) -->
+                            <text x="110" y="125" font-size="22" font-weight="bold" fill="#1E3A8A">VV</text>
+                            <text x="170" y="125" font-size="22" font-weight="bold" fill="#1E3A8A">Vv</text>
+                            <text x="110" y="185" font-size="22" font-weight="bold" fill="#1E3A8A">Vv</text>
+                            <text x="170" y="185" font-size="22" font-weight="bold" fill="#BE123C">vv</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px;">
+                        <li><strong>Geração Parental (P):</strong> VV (Amarelo Puro) cruzado com vv (Verde Puro).</li>
+                        <li><strong>Geração F1:</strong> Nascem todos <strong>Vv</strong> (Híbridos Amarelos). 100% iguais fenotipicamente.</li>
+                        <li><strong>Geração F2 (Vv x Vv):</strong> O quadro acima mostra o cruzamento de dois híbridos da F1. A característica verde 'escondida' regressa dos mortos!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: PROPORÇÕES MATEMÁTICAS -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: #F59E0B; color: #451A03;">📈 4. A Regra do 3 para 1</div>
+                <div class="theory-box search-target" style="border-left-color: #F59E0B;">
+                    <h3 style="color: #78350F;">As Proporções de Mendel na F2</h3>
+                    <p>Ao cruzares dois Heterozigotos (Vv x Vv) para uma característica de dominância completa, os resultados matemáticos são sempre fixos e deves decorá-los para os exames.</p>
+                    
+                    <div class="visual-area" style="display: flex; flex-direction:column; gap: 15px; background:transparent; border:none; padding:0;">
+                        <!-- Fenótipo -->
+                        <div style="background:#FFFBEB; border:2px solid #D97706; padding:15px; border-radius:8px; width:100%;">
+                            <h4 style="color:#B45309; margin-bottom:5px;">Proporção FENOTÍPICA (O que se vê fisicamente)</h4>
+                            <p style="font-size:1.2rem; font-weight:900; margin:0; color:#1E3A8A;">3 : 1</p>
+                            <p style="font-size:0.85rem; margin-top:5px;"><strong>75%</strong> (3 em 4) nascem com a característica Dominante (Amarelas).<br><strong>25%</strong> (1 em 4) nascem com a característica Recessiva (Verde).</p>
+                        </div>
+                        <!-- Genótipo -->
+                        <div style="background:#E0E7FF; border:2px solid #4338CA; padding:15px; border-radius:8px; width:100%;">
+                            <h4 style="color:#312E81; margin-bottom:5px;">Proporção GENOTÍPICA (As Letras no ADN)</h4>
+                            <p style="font-size:1.2rem; font-weight:900; margin:0; color:#1E3A8A;">1 : 2 : 1</p>
+                            <p style="font-size:0.85rem; margin-top:5px;">
+                                <strong>25% (1)</strong> Homozigoto Dominante (VV)<br>
+                                <strong>50% (2)</strong> Heterozigotos (Vv)<br>
+                                <strong>25% (1)</strong> Homozigoto Recessivo (vv)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 5: CRUZAMENTO-TESTE -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: #E11D48;">🕵️ 5. O Cruzamento-Teste</div>
+                <div class="theory-box search-target" style="border-left-color: #E11D48;">
+                    <h3 style="color: #BE123C;">Como desmascarar um Dominante?</h3>
+                    <p>Olhas para uma ervilha Amarela na mesa. Ela pode ser VV (Pura) ou Vv (Híbrida), pois o fenótipo visual é idêntico. Como descobres a verdade genética escondida sem olhar para o ADN com um microscópio?</p>
+                    
+                    <div class="highlight-box">
+                        <strong>A Solução Genial de Mendel:</strong> Fazes um Cruzamento-Teste! Cruzas a ervilha suspeita com um indivíduo <strong>Homozigoto Recessivo puro (vv)</strong>.
+                        <br><br>
+                        - Se nascerem <strong>100% amarelas</strong>, a suspeita era <strong>VV</strong> (pois deu o 'V' grande e forte a todos os filhos, abafando o 'v' do outro).<br>
+                        - Se nascerem <strong>50% amarelas e 50% verdes</strong>, a suspeita era <strong>Vv</strong> (ela doou o pequeno 'v' que estava escondido a metade da ninhada).
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar a Avaliação Genética (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">A Prova de Mendel</h2>
+                <p style="color: #047857; font-size: 0.95rem; font-weight:600;">
+                    30 questões de cálculo genético. Acerta <strong>80% (24/30)</strong> ou admito que a tua segregação meiótica falhou redondamente. Lê a análise forense após cada erro!
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Relatório Genómico</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS RIGOROSOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Mendel e as Ervilhas (1-6)
+            {
+                id: 1, level: "Fácil",
+                text: "Gregor Mendel é considerado o Pai da Genética. Que ser vivo específico ele utilizou nas suas experiências clássicas nos jardins do mosteiro de Brno?",
+                options: ["Moscas-da-fruta (Drosophila melanogaster).", "Ratos de laboratório albinos.", "Plantas de Ervilheira (Pisum sativum).", "Bactérias Escherichia coli."],
+                correct: 2,
+                explanation: {
+                    correct: "Mendel escolheu as ervilhas por serem perfeitas para a estatística: cresciam depressa, eram fáceis de polinização artificial cruzada e, o mais importante, tinham características muito bem definidas ('ou amarelo ou verde', sem meios-termos).",
+                    options: [
+                        "Usadas por Thomas Hunt Morgan muito mais tarde.",
+                        "Não ofereciam o isolamento reprodutivo fácil das plantas fechadas.",
+                        "Esta é a alternativa correta histórica.",
+                        "No tempo de Mendel (século XIX) o DNA e as bactérias genéticas eram desconhecidos."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Médio",
+                text: "Antes das descobertas matemáticas de Mendel, qual era a teoria errada dominante sobre a herança biológica na sociedade da época?",
+                options: ["A Teoria da Geração Espontânea, onde filhos nasciam da terra.", "A Teoria da Herança Particulada, onde os genes não se misturavam.", "A Teoria da Mistura (ou Mescla). Acreditava-se que as características dos pais se fundiam como tintas num copo (ex: pai preto + mãe branca = filho eternamente cinzento), perdendo-se a cor original para as gerações futuras.", "A Teoria do Pré-formismo (um humano minúsculo já vinha no espermatozoide)."],
+                correct: 2,
+                explanation: {
+                    correct: "Mendel arrasou com esta ideia! Se a teoria da mistura fosse verdade, após muitas gerações seríamos todos de uma cor intermédia baça e igual. Mendel provou que o verde da ervilha podia desaparecer num filho e voltar intacto no neto, provando que as 'letras' (alelos) não se misturam como tinta.",
+                    options: [
+                        "Isso tem a ver com a origem da vida, não com hereditariedade de traços.",
+                        "Isso é exatamente o que Mendel veio PROVAR (que é particulada).",
+                        "Esta é a alternativa correta sobre o erro do senso comum da época.",
+                        "Uma teoria embriológica antiga, não a teoria da transmissão fenotípica."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Fácil",
+                text: "Para iniciar as suas experiências, Mendel criou 'Linhagens Puras'. O que caracteriza geneticamente uma linhagem pura (ex: uma planta de ervilhas amarelas puras)?",
+                options: ["É uma planta que é sempre Heterozigota (Aa).", "É uma planta Homozigótica (AA ou aa). Quando autofecundada geração após geração, produz sempre 100% de descendentes com a exata mesma característica.", "É uma planta que foi regada com água purificada.", "É uma planta que sofreu mutações recentes."],
+                correct: 1,
+                explanation: {
+                    correct: "Uma planta 'pura' não tem o alelo da outra cor escondido no seu DNA. Se é amarela pura (VV), ao autofecundar-se, só pode cruzar (VV x VV), logo todos os netos e bisnetos serão para sempre amarelos.",
+                    options: [
+                        "Híbridos (Aa) dão origem a misturas, não são puros.",
+                        "Esta é a alternativa correta laboratorial de linhagem fixa.",
+                        "A pureza é genética, não sanitária ou agrícola.",
+                        "Mutações alteram a linhagem, não a fixam."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Médio",
+                text: "Quando Mendel cruzou a Geração Parental (P) composta por uma Ervilha Amarela PURA (VV) e uma Ervilha Verde PURA (vv), o que nasceu na primeira geração de filhos (Geração F1)?",
+                options: ["Nasceram 50% de ervilhas amarelas e 50% de verdes.", "Nasceram ervilhas de uma cor intermédia, o amarelo-esverdeado.", "Nasceram 100% de ervilhas AMARELAS híbridas (Vv).", "A planta morreu por incompatibilidade genética de cor."],
+                correct: 2,
+                explanation: {
+                    correct: "A 1ª Lei em ação! Se o pai deu 'V' e a mãe deu 'v', todas as filhas (F1) são 'Vv'. Como o Amarelo (V) é Dominante sobre o Verde (v), o verde fica calado e escondido. Logo, visualmente (fenótipo), todas nascem 100% amarelas.",
+                    options: [
+                        "Isso seria o resultado de Vv x vv (cruzamento teste).",
+                        "A herança não é uma mistura de tintas (refutação do mito).",
+                        "Esta é a alternativa correta mendeliana da F1.",
+                        "Pelo contrário, vigor híbrido."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Difícil",
+                text: "Ao observar o resultado da Geração F1 (todas amarelas Vv), como é que Mendel percebeu a existência da Dominância e Recessividade?",
+                options: ["Porque ele abriu as ervilhas ao meio e viu a letra 'V' no interior.", "Ele concluiu que o 'fator' para verde tinha sido destruído para sempre pela planta amarela.", "Ele notou que, embora as plantas tivessem recebido material de ambos os pais puros, apenas o traço (amarelo) de um dos pais se MANIFESTAVA fisicamente, enquanto o outro (verde) ficava completamente oculto, provando que um dominava e o outro recuava.", "Porque a ervilha verde cheirava pior."],
+                correct: 2,
+                explanation: {
+                    correct: "Sem microscópios, ele usou a lógica pura! 'Se a mãe era verde, a filha tem a essência verde dentro dela. Mas se ela é amarela por fora, então o amarelo abafou o verde!'.",
+                    options: [
+                        "O genótipo é invisível a olho nu.",
+                        "Falso, ele provaria a seguir (na F2) que o fator não foi destruído, apenas escondido.",
+                        "Esta é a alternativa correta de dedução lógica do fenómeno de dominância.",
+                        "Sem base científica fenotípica."
+                    ]
+                }
+            },
+            {
+                id: 6, level: "Médio",
+                text: "Mendel não se ficou pela F1. Ele deixou que a Geração F1 Híbrida (Vv) se autofecundasse (Vv x Vv). O que aconteceu de chocante e histórico na Geração F2 (os netos)?",
+                options: ["Nasceram todas amarelas para sempre.", "A cor Verde REAPARECEU do nada! Numa proporção exata de 3 amarelas para cada 1 verde.", "Nasceram todas Verdes, o amarelo perdeu a força.", "Nasceram azuis por erro de cópia de geração prolongada."],
+                correct: 1,
+                explanation: {
+                    correct: "O regresso do morto-vivo! O 'v' recessivo viajou escondido na F1, e quando dois híbridos se cruzaram, houve a chance estatística (25%) do esperma 'v' encontrar o óvulo 'v'. Nasceu a ervilha 'vv' verde, provando que o gene nunca se tinha misturado com o amarelo, apenas se ocultara.",
+                    options: [
+                        "Isso aconteceria se a F1 fosse pura (VV).",
+                        "Esta é a alternativa correta fenotípica da F2 de Mendel.",
+                        "Falso matematicamente (o V dominante é muito mais frequente de calhar no cruzamento).",
+                        "Mito."
+                    ]
+                }
+            },
+
+            // BLOCO 2: A Lei da Segregação e Gâmetas (7-12)
+            {
+                id: 7, level: "Fácil",
+                text: "O que afirma textualmente a Primeira Lei de Mendel (Lei da Segregação dos Fatores)?",
+                options: ["Cada característica é condicionada por três ou mais fatores que se unem no sangue.", "Cada característica é condicionada por um PAR de fatores (alelos). Estes fatores SEPARAM-SE na formação dos gâmetas (espermatozoides/óvulos), indo apenas UM fator de cada par para cada gâmeta.", "A cor domina sempre o tamanho nas regras de hibridização botânica.", "O ambiente apaga os fatores fracos na hora do parto."],
+                correct: 1,
+                explanation: {
+                    correct: "Segregar significa Separar. Se tu és Vv para a cor da ervilha, não podes mandar Vv no mesmo espermatozoide (se não o filho nascia com 3 ou 4 letras e era uma aberração genética). A meiose rasga o par ao meio. Um gâmeta leva o V, o outro leva o v. São Puros.",
+                    options: [
+                        "São controladas por um PAR (dois).",
+                        "Esta é a alternativa correta de citogenética meiótica clara.",
+                        "Uma característica não interfere fisicamente na outra desta forma de anulação de traço.",
+                        "O ambiente atua no fenótipo, não apaga o genótipo herdado."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Fácil",
+                text: "Se uma planta é Homozigótica Dominante (AA) para a altura do caule, que tipo de gâmetas (espermatozoides/óvulos de pólen) ela irá produzir e libertar?",
+                options: ["Apenas gâmetas contendo o alelo 'a'.", "Metade dos gâmetas com 'A' e metade com 'a'.", "100% dos gâmetas produzidos conterão exclusivamente o alelo 'A'.", "Gâmetas com 'AA' juntos num único pacote."],
+                correct: 2,
+                explanation: {
+                    correct: "Sendo Pura (Homozigota AA), a única coisa que ela tem no seu 'cofre' para dar aos filhos é a letra A. Ela não pode dar o que não tem.",
+                    options: [
+                        "Ela não possui a letra pequena 'a' no seu genoma.",
+                        "Isso seria o que uma planta Heterozigota (Aa) faria.",
+                        "Esta é a alternativa correta lógica e pura.",
+                        "A lei da segregação dita que o par separa-se; um gâmeta leva só uma letra."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Médio",
+                text: "Se uma pessoa é Heterozigota (Aa) para o albinismo, qual a proporção estatística de gâmetas que ela produzirá durante a meiose?",
+                options: ["75% 'A' e 25% 'a'.", "50% dos gâmetas carregarão o alelo 'A' e os outros 50% carregarão o alelo 'a'.", "100% de 'A', porque o dominante destrói o recessivo na divisão.", "100% de 'Aa'."],
+                correct: 1,
+                explanation: {
+                    correct: "A roleta é justa e imparcial! A célula tem as duas letras. Ao cutting ao meio, a matemática dita que metade do esperma produzido leva a letra grande, e a outra metade leva a letra pequena. O acaso depois decide qual fecundará.",
+                    options: [
+                        "A meiose separa o par equitativamente 1 para 1.",
+                        "Esta é a alternativa correta de probabilidade gamética base.",
+                        "O dominante mascara no corpo, mas NÃO apaga o recessivo na hora de passar aos filhos.",
+                        "Violaria a Lei da Segregação de Mendel."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Difícil",
+                text: "A Primeira Lei de Mendel (Separação dos Alelos) foi formulada muito antes de se conhecer a estrutura do DNA ou a divisão celular com microscópios de alta potência. Qual é o fenómeno celular exato descoberto no Século XX que provou fisicamente que Mendel estava 100% certo?",
+                options: ["A Mitose nas células da pele.", "A Circulação Sanguínea Cardíaca.", "A MEIOSE (fase da anáfase I), onde ocorre a separação física dos Cromossomas Homólogos (que carregam os pares de alelos) para pólos opostos da célula a caminho de formarem os gâmetas independentes.", "A Fagocitose dos glóbulos brancos."],
+                correct: 2,
+                explanation: {
+                    correct: "Mendel era um génio abstrato. Ele imaginou que as 'partículas' se separavam. A citologia moderna meteu a célula ao microscópio na Meiose e viu LITERALMENTE os cromossomas a separarem-se, puxados pelo fuso acromático. Foi a validação física da teoria botânica abstrata.",
+                    options: [
+                        "Na Mitose, os homólogos não se separam, a célula copia-se a si mesma (células diplóides).",
+                        "Sem relação citogenética.",
+                        "Esta é a alternativa correta de base cromossômica da hereditariedade clara e dura.",
+                        "Digestão imunológica baseada em lisossomas, não partilha de genes."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Médio",
+                text: "Porque é que a Primeira Lei de Mendel também é apelidada de 'Lei da Pureza dos Gâmetas'?",
+                options: ["Porque os gâmetas são lavados em água destilada nos ovários.", "Porque um gâmeta (espermatozoide ou óvulo) é 'puro', no sentido em que só transporta um único alelo de um par para uma dada característica, nunca estando misturado com a versão antagónica dentro da sua cabeça nuclear.", "Porque os gâmetas não têm cromossomas doentes mutantes.", "Porque eles transportam apenas alelos dominantes puros."],
+                correct: 1,
+                explanation: {
+                    correct: "Pureza significa 'não misturado'. Como o gâmeta só pode levar um fator (ou leva A, ou leva a), não existe a confusão do heterozigoto lá dentro. A mensagem do espermatozoide é clara, isolada e sem ruído.",
+                    options: [
+                        "Metáfora irreal.",
+                        "Esta é a alternativa correta conceptual e morfológica da haploidia base pura.",
+                        "Mutações também são transmitidas em gâmetas 'puros' mutados e mortos de erro cru.",
+                        "Gâmetas levam imensos alelos recessivos nas suas fileiras aéticas."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Fácil",
+                text: "Para fazeres um Quadro de Punnett da Primeira Lei (Monohibridismo), quantas linhas e quantas colunas precisas desenhar para cruzar o pai com a mãe?",
+                options: ["Uma grelha gigante de 4x4 (16 quadrados de respostas de cruzes longos e grossos).", "Um círculo com fatias de pizza.", "Uma grelha de 2x2 (4 quadrados centrais para os resultados filhos). Porque cada progenitor dá 2 opções de gâmetas nas bordas do quadro.", "Um triângulo de base larga cega fofa."],
+                correct: 2,
+                explanation: {
+                    correct: "Sendo um cruzamento para UMA só característica (monohibridismo), o Pai põe 2 alelos em cima, a Mãe põe 2 de lado. 2 x 2 = 4 quadrados de possibilidades totais. (O 4x4, com 16 quadrados, é para a Segunda Lei de Mendel com duas características em jogo).",
+                    options: [
+                        "Isto é para o Di-hibridismo (2ª Lei, AaBb x AaBb).",
+                        "Punnett usa xadrez/grelha cartesiana matriz clara.",
+                        "Esta é a alternativa correta metodológica do quadrado de base prático escolar e letal.",
+                        "Falso."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Cálculo Mendeliano (Proporções F2) (13-19)
+            {
+                id: 13, level: "Médio",
+                text: "Cruzas dois ratos híbridos heterozigotos para a cor do pelo (Aa x Aa), onde Preto (A) domina sobre o Branco (a). Qual é a PROPORÇÃO GENOTÍPICA exata esperada nos seus filhos (Geração F2)?",
+                options: ["3 pretos : 1 branco.", "2 AA : 2 aa.", "1 AA : 2 Aa : 1 aa.", "100% Aa híbridos suados falsos de base cega e rasa."],
+                correct: 2,
+                explanation: {
+                    correct: "Atenção à pergunta: pediu a proporção GENOTÍPICA (as Letras!). O cruzamento (A e a) com (A e a) dá: 1 caixa AA (25%), 2 caixas Aa (50%) e 1 caixa aa (25%). Logo: 1:2:1.",
+                    options: [
+                        "Esta é a proporção FENOTÍPICA (o que vês por fora), não a genotípica (as letras de dentro).",
+                        "A matemática de Punnett não gera pares iguais desta forma falha.",
+                        "Esta é a alternativa correta mendeliana clássica da geração dois exata e plena de.",
+                        "Isto seria o resultado F1 de um cruzamento AA x aa de linhagens puras originais."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Médio",
+                text: "Voltando ao caso do cruzamento de dois híbridos (Aa x Aa) da questão anterior. Agora responde: Qual é a PROPORÇÃO FENOTÍPICA (as cores que vês) exata esperada nos filhos?",
+                options: ["1:2:1 (Preto forte, preto fraco, branco livre).", "3:1 (Três ratos pretos para cada Um rato branco).", "4:0 (Todos nascem pretos).", "50% pretos e 50% brancos de cor pálida crua limpa."],
+                correct: 1,
+                explanation: {
+                    correct: "Agora sim, Fenótipo! Os resultados do quadro são AA, Aa, Aa, aa. Como o A manda no a, o rato 'Aa' é tão PRETO como o rato 'AA'. Logo, tens 1+2 = 3 pretos, e apenas 1 branco que conseguiu juntar o 'aa'. A mágica regra do Três-para-Um da genética de Mendel!",
+                    options: [
+                        "Isto é a genotípica disfarçada.",
+                        "Esta é a alternativa correta visual mendeliana magna.",
+                        "O alelo recessivo expressa-se se juntar homozigose.",
+                        "Isto seria no Cruzamento Teste (Aa x aa)."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Fácil",
+                text: "A cor dos olhos castanhos (C) é dominante sobre o azul (c). Um homem de olhos azuis casa-se com uma mulher também de olhos azuis. É possível eles terem um filho legítimo de olhos castanhos biológicos?",
+                options: ["Sim, se os avós tiverem olhos castanhos.", "NÃO! Se ambos têm o fenótipo recessivo, o genótipo deles é obrigatoriamente 'cc' e 'cc'. Eles NÃO POSSUEM o alelo dominante 'C' forte de castanho para dar ao filho. Todos os filhos serão 100% de olhos azuis 'cc'.", "Sim, por dominância incompleta.", "Apenas se o bebé apanhar sol de nascença na córnea."],
+                correct: 1,
+                explanation: {
+                    correct: "A matemática é cega e absoluta. Recessivo puro só dá recessivo. Não há 'C' grande escondido no azul, senão a pessoa não era azul. Pai 'cc' com Mãe 'cc' é igual a zero hipóteses de castanho. Se a criança for castanha... algo se passou com o carteiro na rua.",
+                    options: [
+                        "O salto de gerações de avós só ocorre quando os pais SÃO heterozigotos 'Cc' e escondem o gene e, não quando são recessivos expressos plenos.",
+                        "Esta é a alternativa correta forense de dedução lógica e parentalidade clínica pura.",
+                        "Não há tons no olho assim base.",
+                        "Sol afeta melanina de pele fenótipo, mas não altera base da íris congênita de gene profundo de C."
+                    ]
+                }
+            },
+            {
+                id: 16, level: "Médio",
+                text: "O albinismo é uma anomalia genética recessiva (a). Qual a única forma orgânica laboratorial de um casal de humanos perfeitamente normais (fenótipo não-albino) gerar um filho albino branco pálido?",
+                options: ["Apenas se a mãe cometer adultério genético.", "O bebé tem de sofrer uma mutação de radiação forte nascente do sol no cérebro.", "Se ambos os pais, apesar de parecerem normais de cor de fora, forem HETEROZIGOTOS (Aa e Aa). Ao cruzar, existe a probabilidade russa lotaria de 25% do gâmeta 'a' da mãe encontrar o gâmeta 'a' do pai, fechando o filho no cofre recessivo (aa).", "É impossível pais normais terem filhos com doenças recessivas."],
+                correct: 2,
+                explanation: {
+                    correct: "O grande perigo das doenças recessivas: Elas andam SILENCIOSAS nas famílias durante gerações (no formato Heterozigoto Aa). Tu podes ser saudável e carregar o gene doente 'a' de lixo sem saberes. Se casares com alguém que por azar também o carrega, o vosso bebé pode juntar as duas metades da moeda (aa) e nasce doente. 25% de taxa de azar.",
+                    options: [
+                        "Os portadores heterozigotos são a via patológica mais comum destas anomalias hereditárias.",
+                        "Mutações *de novo* ocorrem, mas a genética mendeliana aponta a hereditariedade portadora como a origem primária clássica de base.",
+                        "Esta é a alternativa correta do princípio do 'Salto de Geração' mendeliano da genética autossômica pura fina e letal mestre.",
+                        "Mentira! A maioria das doenças genéticas sérias no mundo moderno (fibrose cística, fenilcetonúria de base) é propagada oculta transmitida furtiva sorrateiramente por Pais Portadores perfeitamente Sãos (Heterozigotos Híbridos)."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Difícil",
+                text: "Cruzamento: Um aluno tem uma flor Vermelha Dominante (pode ser VV ou Vv). Ele não sabe qual o genótipo da flor (as letras). Como é que ele faz um 'CRUZAMENTO-TESTE' prático e seguro no laboratório para descobrir as letras cegas da flor vermelha sem a ter de matar extrair o DNA?",
+                options: ["Ele cruza a flor vermelha misteriosa com uma flor Branca Recessiva Pura (vv). Se nascerem filhas TODAS VERMELHAS (100%), a flor mãe era Pura (VV). Se nascer pelo menos uma filha BRANCA no meio da prole, é prova irrefutável que a mãe escondia a letra 'v' Híbrida (Vv).", "Ele cruza a flor vermelha com uma flor verde podre suja morta.", "Ele cruza a flor vermelha misteriosa com outra vermelha misteriosa.", "Ele arranca as folhas da flor vermelha e cheira o caule."],
+                correct: 0,
+                explanation: {
+                    correct: "A ferramenta de espionagem de Mendel: O Cruzamento-Teste (Test-Cross)! O Recessivo (vv) é o teu espião e o delator. Como o (vv) não tem força e só tem pequenos 'v's para dar, a cor que os filhos tiverem vai denunciar o que a mãe mistério tinha de lá de no escondido e calado fundo! Se a mãe der apenas o grande 'V', saem todos vermelhos. Se a mãe for (Vv), o 'v' pequeno alia-se ao 'v' do espião, e nasce um filho branco. Brilhante lógica dedutiva da biologia clássica.",
+                    options: [
+                        "Esta é a alternativa correta metodológica do cruzamento-teste botânico e laboratorial puro de Mendel exato.",
+                        "Cruzar fora da característica alelica não responde à questão.",
+                        "Vermelho com Vermelho pode esconder tudo em briga de dominantes, precisas de um recessivo submisso para desvendar.",
+                        "Sem lógica científica."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Sistema ABO e Dominância (18-22)
+            {
+                id: 18, level: "Fácil",
+                text: "Na genética do Sistema Sanguíneo ABO humano, existem quantas versões de alelos (letras diferentes) a circular na população para definir o teu tipo de sangue?",
+                options: ["Apenas dois (A e B).", "Apenas um (Sangue vermelho).", "Três alelos diferentes na roleta genética humana: O alelo I^A (forte), o alelo I^B (forte) e o alelo 'i' (recessivo fraco). (Isto chama-se Alelos Múltiplos).", "Quatro alelos (A, B, C e D)."],
+                correct: 2,
+                explanation: {
+                    correct: "Alelos Múltiplos! Mendel só trabalhava com 2 versões (Amarelo ou Verde). No sangue humano tens 3 versões na sopa da população (I^A, I^B e o i). Lembra-te que tu só podes herdar DOIS desses três, porque só tens o cromossoma da mãe e o do pai.",
+                    options: [
+                        "Falta o recessivo 'i' que dita o tipo O.",
+                        "Biologicamente abstrato.",
+                        "Esta é a alternativa correta taxonómica e de nomenclatura.",
+                        "O sistema ABO não tem variante D (isso é o fator Rh)."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Médio",
+                text: "Se tu tens o Grupo Sanguíneo TIPO O, o que é que isso significa quimicamente e rigorosamente na superfície das tuas células vermelhas (hemácias) e qual o teu Genótipo de base?",
+                options: ["Significa que as tuas hemácias têm a proteína O espetada e o teu genótipo é OO.", "Significa que és Recessivo Puro (Genótipo 'ii'). As tuas hemácias são 'carecas', não têm nenhuma proteína nem 'A' nem 'B' espetada na membrana exterior para causar alergia.", "Significa que tens o sangue envenenado.", "Significa que és Híbrido (Ai) e escondes a proteína B."],
+                correct: 1,
+                explanation: {
+                    correct: "Sangue O (zero) significa Zero Proteínas! Como herdaste o alelo fraco 'i' do pai e o 'i' da mãe (ii), não tiveste as instruções para montar as bandeiras A ou B. As tuas hemácias são lisas. É por isso que és Dador Universal: o corpo de quem recebe não deteta espinhos estranhos para atacar.",
+                    options: [
+                        "Não existe 'Proteína O'.",
+                        "Esta é a alternativa correta imuno-hematológica.",
+                        "Falso.",
+                        "Híbrido Ai manifesta sangue Tipo A."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Médio",
+                text: "O fenómeno da CODOMINÂNCIA no sangue! Um pai com sangue AA dá o alelo I^A. A mãe com sangue BB dá o alelo I^B. Que sangue terá o filho e porquê?",
+                options: ["O filho tem sangue Tipo O porque os fortes anulam-se.", "O filho tem sangue TIPO AB (Genótipo I^A I^B). Ambos os alelos são fortes dominantes (Codominantes). Nenhum rebaixa ou abafa o outro. A hemácia da criança vai ter espinhos da proteína A E espinhos da proteína B misturados pacíficamente na mesma célula.", "O filho tem sangue A porque o pai manda sempre.", "O filho nasce sem sangue vivo limpo."],
+                correct: 1,
+                explanation: {
+                    correct: "A paz no castelo! Em vez de o A esmagar o B, eles partilham o trono. A célula lê as duas receitas ao mesmo tempo e produz ambas as características. O sangue AB é o Recetor Universal porque o corpo dele já conhece todas as proteínas e não ataca nenhuma.",
+                    options: [
+                        "O zero só aparece em duplos recessivos.",
+                        "Esta é a alternativa correta de co-expressão alélica de proteínas exata.",
+                        "A dominância não depende do sexo do progenitor.",
+                        "Absurdo lúdico e fútil."
+                    ]
+                }
+            },
+            {
+                id: 21, level: "Difícil",
+                text: "A Rasteira Matemática Pura! Num tribunal de paternidade, uma Mulher com sangue TIPO AB (I^A I^B) alega que o Pai do seu filho é um homem com sangue TIPO O (ii). Se fizermos o cruzamento matemático cego da genética, a criança deles SÓ E APENAS poderá ter nascido com que sangue?",
+                options: ["A criança nasce O ou AB igual aos pais.", "A criança SÓ PODE NASCER COM TIPO A (I^A i) OU TIPO B (I^B i). A mãe obriga a dar o A ou o B. O pai só tem o 'i' minúsculo lixo para dar. Logo a criança é obrigatoriamente um Híbrido A ou B. Nunca poderá ser igual aos pais!", "A criança nasce com sangue verde e podre.", "A criança nasce sem sangue cego."],
+                correct: 1,
+                explanation: {
+                    correct: "A prova irrefutável do ADN! Se a mãe é AB, ela atira o A ou o B. Se o pai é ii, ele atira o i. Cruzando A com i dá Tipo A. Cruzando B com i dá Tipo B. O casal (AB x O) nunca na vida produzirá um bebé O nem um bebé AB. Se o bebé for O, a mulher andou com o carteiro da rua.",
+                    options: [
+                        "Impossível matematicamente.",
+                        "Esta é a alternativa correta mendeliana do sistema ABO alélico múltiplo brutal exato claro.",
+                        "Falso.",
+                        "Falso."
+                    ]
+                }
+            },
+            {
+                id: 22, level: "Difícil",
+                text: "O Fator Rh é a outra proteína famosa do sangue (o Positivo ou Negativo). O alelo Rh Positivo (R) domina sobre o Rh Negativo (r). Duas pessoas com Sangue Positivo cruzam as veias e podem ter um filho de sangue Negativo?",
+                options: ["Sim! Se AMBOS os pais positivos forem Híbridos Heterozigotos (Rr), eles carregam o alelo negativo adormecido. Têm 25% (1 em 4) de hipótese de chocar e juntar o espermatozoide 'r' com o óvulo 'r', gerando o filho 'rr' Negativo.", "Não, positivo mais positivo dá super positivo letal.", "Sim, a mutação do ar frio tira o R do sangue.", "Não, positivo engole negativo cego duro murcho."],
+                correct: 0,
+                explanation: {
+                    correct: "A mesma lei das sardas e da ervilha amarela! Dois positivos escondem um negativo. (Rr x Rr = RR, Rr, Rr, rr). O negativo (rr) tem 25% de probabilidade de sair à luz na sala de partos matemática de herança dura.",
+                    options: [
+                        "Esta é a alternativa correta mendeliana heterozigótica do teste de paternidade puro e clássico duro letal claro exato.",
+                        "Falso.",
+                        "Falso.",
+                        "Falso."
+                    ]
+                }
+            },
+
+            // BLOCO 5: Heredogramas e Conceitos Finais (23-30)
+            {
+                id: 23, level: "Difícil",
+                text: "Um Casal tem o FENÓTIPO EXATAMENTE IGUAL na rua visual: Ambos os pais têm sardas na cara. Subitamente e com magia biológica, a esposa dá à luz um bebé totalmente SEM SARDAS, de pele lisa diferente dos pais. Sem fazer testes de sangue, o que dita a lei absoluta da genética sobre os Genótipos dos três indivíduos ali presentes?",
+                options: ["A mãe traiu o pai e o bébé é alien.", "Os pais são OBRIGATORIAMENTE os Dois HETEROZIGOTOS (Aa). E o Filho 'Diferente' é Inevitavelmente e Sempre HOMOZIGOTO RECESSIVO de letra pequena pura (aa). Porque se os pais fossem aa puros, só poderiam fabricar filhos iguais a eles.", "Os pais são homozigotos recessivos (aa) puros.", "O bebé é um clone do pai falso mudo ralo."],
+                correct: 1,
+                explanation: {
+                    correct: "O dogma de ouro que te salva nos Exames Nacionais! 'Pais Iguais + Filho Diferente = Pais Aa e Filho aa'. Se os pais fossem (aa) não podiam ter um filho diferente (A), porque só tinham 'a' minúsculo lixo recessivo para dar de oferta de cofre vazio! Como o filho foi 'diferente', ele juntou o lixo escondido (o 'a') que vinha adormecido na pele dos pais híbridos de fachada. O filho é o 'aa' recessivo.",
+                    options: [
+                        "Assunção sociológica falaciosa não biológica.",
+                        "Esta é a alternativa correta dedutiva mestre de pedigree forense puro e imaculado firme.",
+                        "Se eles fossem (aa) e (aa) só podiam fazer e parir (aa).",
+                        "Falso."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Médio",
+                text: "O fenómeno da Dominância Incompleta (Mistura de Tintas). Ocorre num caso clássico onde cruzas uma Flor Vermelha Pura (VV) com uma Flor Branca Pura (BB). Ao contrário da primeira lei de Mendel, o que vai nascer visualmente nos filhos (VB) híbridos?",
+                options: ["Nascem flores às riscas vermelhas e brancas.", "Nascem 100% de flores COR-DE-ROSA. Nenhum dos alelos tem força para dominar e abafar o outro a 100%, pelo que o resultado é um fenótipo intermediário (mistura das enzimas de pigmento).", "A flor morre murcha seca.", "Nascem azuis puras."],
+                correct: 1,
+                explanation: {
+                    correct: "A Natureza a quebrar as próprias regras! A Dominância Incompleta é o único cenário onde a teoria antiga das 'misturas de tintas' parece ser verdade por fora. O vermelho e branco diluem-se num terceiro fenótipo (Rosa) que não existia nos pais.",
+                    options: [
+                        "Isso seria Codominância (as duas cores ativas sem se misturarem).",
+                        "Esta é a alternativa correta excecional da genética floral limpa e direta de mistura fenotípica.",
+                        "Ocorreu vida, flor e pigmento sã.",
+                        "Falso."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Fácil",
+                text: "O que é o Cariótipo e que informação vital e brutal nos revela no laboratório de genética citológica humana?",
+                options: ["É a fotografia fotográfica alinhada dos 46 Cromossomas (23 pares) da célula de uma pessoa. Permite detetar a olho nu anomalias graves no número (Ex: Síndrome de Down, se houverem 3 cromossomas no par 21 em vez de 2) ou o Sexo biológico (Se tem XX ou XY).", "É um medicamento que mata vírus.", "É um prato de comida quente de carne crua e de osso mudo de base limpa.", "É a contagem dos glóbulos brancos em sangue suado morno."],
+                correct: 0,
+                explanation: {
+                    correct: "O Cariótipo é o 'mapa fotográfico' do teu DNA condensado! Os cientistas param a célula no meio da divisão, pintam os cromossomas e metem-nos à vez por tamanho do maior para o menor. É o exame rei para apanhar Síndrome de Down, Turner ou Klinefelter.",
+                    options: [
+                        "Esta é a alternativa correta citogenética diagnóstica macroscópica de núcleo mestre e clara de anomalias cromossómicas.",
+                        "Isso é vacina ou antiviral.",
+                        "Absurdo.",
+                        "Isso é hemograma leucocitário."
+                    ]
+                }
+            },
+            {
+                id: 26, level: "Médio",
+                text: "Muitas vezes, a palavra 'Gêmeos' levanta dúvidas na genética. Como a Ciência Biológica explica e justifica a origem exata dos Gêmeos Verdadeiros (Monozigóticos idênticos, do mesmo sexo obrigatório, clones de rosto e corpo)?",
+                options: ["A Mulher liberta e atira 2 (DOIS) Óvulos ao mesmo tempo, e cada um é fecundado por 1 (UM) Espermatozoide diferente na mesma noite cruzada.", "Eles nascem por mitose de duas mães diferentes.", "1 (UM) Óvulo ÚNICO é fecundado por 1 (UM) Espermatozoide, e forma-se apenas 1 Zigoto normal. MAS, por magia biológica de divisão, essa bolha de células parte-se, quebra-se, SEPARA-SE ao Meio exato em dois aglomerados que continuam a crescer independentes, formando dois embriões 100% com o mesmo código Genético de clones absolutos.", "O espermatozoide tem 2 caudas de e 2 cabeças duplas."],
+                correct: 2,
+                explanation: {
+                    correct: "Mono = Um. Zigoto = célula-ovo inicial. A magia é que a bolha de células dividiu-se ao meio e continuou a crescer! Eles são clones biológicos perfeitos (mesmo DNA, mesmo sexo, cor olhos). Gêmeos Falsos (Dizigóticos) é que são 2 óvulos + 2 espermatozoides (são apenas dois irmãos vulgares que nasceram na mesma barriga na mesma semana, podendo ser homem e mulher distintos).",
+                    options: [
+                        "Isto é a definição exata e única de Gêmeos FALSOS (Dizigóticos ou bivitelinos fraternos de DNA diferente 50%).",
+                        "Falso.",
+                        "Esta é a alternativa correta embriológica e reprodutiva clássica da gemelidade univitelina.",
+                        "Mito e aberração de biologia de falha murcha."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Médio",
+                text: "A Genética Ligada ao Sexo (Cromossoma X). Doenças como o Daltonismo (não ver verde/vermelho) e a Hemofilia (sangue não coagular) são causadas por genes RECESSIVOS defeituosos escondidos encravados mortos que moram unicamente no Cromossoma X, e não no Cromossoma Y pequeno. Porque é que os HOMENS sofrem muito mais e têm muito mais estas doenças que as Mulheres?",
+                options: ["Porque os homens comem mal.", "Porque o homem tem a fórmula XY. Sendo o Y inútil para esta doença, o homem só tem UM cromossoma X! Se a mãe lhe der um X doente (com a letra recessiva do Daltonismo), o Homem não tem outro X suplente e bom dominante dominante para o encobrir salvar abafar! Ele fica logo doente letal. A Mulher é XX. Se herdar um X doente, o outro X dela bom dominante dominante mascara a doença e salva a rapariga cega a cores.", "Porque a mulher tem visão a laser biológica.", "Porque o cromossoma Y é mágico e atrai as dores da de de vida fina."],
+                correct: 1,
+                explanation: {
+                    correct: "A matemática da tragédia genética masculina! O Cromossoma Y é minúsculo e quase não tem genes (só o de fazer testículos). A mulher tem dois cromossomas X gordos. Ela tem pneu suplente! Se um falha (daltonismo), ela usa o outro (fica portadora sã sã). O homem (XY) não tem pneu suplente! Ou ganha ou perde. A mãe passou-lhe um X estragado? Ele fica doente crónico a 100%.",
+                    options: [
+                        "Não é alimentar.",
+                        "Esta é a alternativa correta ligada ao sexo de Morgan e do sistema X letal puro heterogamético claro exato.",
+                        "Não.",
+                        "Não."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Fácil",
+                text: "A determinação e a condenação genética do Sexo Biológico Humano Eucarionte Mestre Puro na fecundação de embrião ventre oco mole morno fofo quente da mulher: A Mulher é XX e o Homem é XY. Quem é o responsável genético que define o sexo final do zigoto feto criança que vai nascer homem ou mulher?",
+                options: ["As luas do cosmos espaço estrelado de ar pálido murcho a do sol frio.", "A Mãe Mulher (Pois os seus óvulos são maiores pesados duros).", "Apenas e unicamente o Pai Homem! A mulher nos seus óvulos SÓ PODE doar o cromossoma X. O homem fabrica milhões de espermatozoides: Metade (50%) deles leva a letra X e a outra metade (50%) leva a Letra Y. O que ganhar a corrida de natação dita a sentença.", "É aleatório pela mutação radioativa do solo suado murcho."],
+                correct: 2,
+                explanation: {
+                    correct: "A matemática fria da natureza XY! As mulheres não têm a peça 'Y' na sua loja genética para doar no ovário. O macho porta o Y. Por isso o espermatozoide é o portador final da decisão sexual da criança! Se ele mandar X é XX, se mandar Y é XY viril macho testículo.",
+                    options: [
+                        "A astrologia não pauta a cariotipagem genética molecular molecular e de replicação.",
+                        "A fêmea não dita a variável seletiva heterogamética basal.",
+                        "Esta é a alternativa correta genética de determinação sexual de base XY de fecundação clara direta e reta imaculada viva e sã e mestre do exame base.",
+                        "Não tem mutação química externa ambiental ou radiação no ato clássico biológico de encontro ovariano trompal."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Difícil",
+                text: "Resumo Epistemológico Genético Mendeleano: Relaciona corretamente com exatidão implacável os três conceitos e dita o teu veredicto final mestre letal para o 9º ano Alfa base clara pura de vida sã e cega suja fina:",
+                options: ["HOMOZIGOTO: Alelos iguais no par (AA ou aa). // HETEROZIGOTO: Alelos cruzados e diferentes híbridos (Aa). O Dominante silencia o Recessivo na célula. // FENÓTIPO: É o que os teus olhos vêem (a cor do olho) e é moldado e ditado obrigatoriamente pela equação: GENÓTIPO Oculto Interior de Base + AMBIENTE Exterior Lixo Sujo do Sol Fome e Vida.", "FENÓTIPO é a letra A maiúscula e Genótipo é o olho roxo.", "ALELO é o gâmeta de osso murcho calmo de poeira e DNA é a barriga limpa doce.", "HETEROZIGOTO é a pessoa com olhos iguais murchos cegos calmos doentes pálidos."],
+                correct: 0,
+                explanation: {
+                    correct: "O Santo Graal da Terminologia Genética! Memorizar que Heterozigoto é Aa (híbrido disfarçado) e Homozigoto é o Puro (AA ou aa). Mas a maior glória da biologia: Tu não és apenas as tuas Letras DNA. Tu és o teu DNA a reagir com as chapadas do Sol do ar do frio do alimento da Fome e do Stress. Fenótipo é a Pintura Final (Genótipo + Ambiente). Gênio absoluto brutal e limpo e firme puro de ouro limpo letal fina dura clara exata.",
+                    options: [
+                        "Esta é a alternativa correta taxonómica e dicionária de hereditariedade básica mendeliana exata clara imaculada e genial de laboratório reta e densa mestre e forte limpa plena suprema fina.",
+                        "Inversão do material biológico de código base. Fenótipo é a cor visual final macro, Genótipo é o código letra letra micro atómico base.",
+                        "Alelo é variante do gene filamento de e não o gâmeta célula sã livre.",
+                        "Falso orgânico."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "O que diz a Lei Citológica Genética de Genótipo e Fenótipo na briga dos Alelos?",
+                options: ["Vírus = Genótipo Oco // Bactéria = Fenótipo Verde.", "DOMINANTE NÃO SIGNIFICA COMUM. Um gene Dominante pode dominar e esmagar anular matar a letra pequena do seu vizinho recessivo na briga e luta de forças restrita dentro do espaço confinado escuro fechado do núcleo da TUA célula, MAS esse gene dominante poderoso pode ser RARÍSSIMO DE SE ENCONTRAR na rua da população geral. (Ex: Polidactilia 6 dedos é um gene Dominante, mas 99% da população não o tem, pois o alelo é escasso na natureza de Darwin seleção).", "Genótipo Oco Nulo Falso Mudo Lento.", "Recessivo Murcho Lenta Murcha Morta Murcha Rasa Falsa."],
+                correct: 1,
+                explanation: {
+                    correct: "O Último e Maior Mito Destruído por ti! Força bioquímica de dominância NÃO SE TRADUZ EM abundância e estatística populacional de Censo Nacional! O Nanismo é dominante, as 6 seis dedos dedos de mão de doentes e é dominante! A letra A grande bate no a pequeno, mas se tu não encontrares uma pessoa A para casar, vais casar com os 99% de pessoas aa (normais) e terás filhos normais.",
+                    options: [
+                        "Falso.",
+                        "Esta é a alternativa correta.",
+                        "Falso.",
+                        "Falso."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Diagnóstico Genético Aprovado!' : '❌ Ops! Falha no Feedback Mendeliano:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>A Verdade Fisiológica Bioquímica Direta:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#4C0519; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #FBCFE8; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Diagnóstico das Anomalias e Mitos Orgânicos Falsos Errados:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício Genéticos
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#E11D48', '#D97706', '#0369A1', '#9F1239']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#E11D48', '#D97706', '#0369A1', '#9F1239']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Relatório Genético Mestre";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar na Corrente do DNA";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Descodificaste ${correct} de ${questions.length} genomas biológicos rasos.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Colapso Genético e Mutação Severa!</strong> A tua análise de Mendel e DNA falhou. Atingir 80% (24 acertos) é obrigatório nesta prova vital médica forense pura. Terapia de Reposição de Estudo Urgente: Lê a Teoria e limpa as falhas recetoras do núcleo antes de repetires o Exame!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Reconstruir Código Genético (Refazer Prova Alfa)</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Geneticista Sistêmico Mestre de Ouro Alfa Superior Real!</strong> Sabes a diferença milimétrica entre genótipo e fenótipo, dominância e codominância. A tua análise genética do laboratório está clinicamente blindada perfeita exata sem falhas! O corpo e a balança química da genética humana não tem segredos teóricos para o teu cérebro! Estás pronto para vencer!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Inspecionar o Citosol e Recetores Novamente Reta</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Forense das Anomalias Genéticas (Falhas Bioquímicas Letais):</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">O teu Mito Genético Perigoso Oco e Falso: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">A Verdade Metabólica Fisiológica Fina e Direta Pura Absoluta: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>
