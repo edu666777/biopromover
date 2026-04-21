@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Célula Animal vs Vegetal - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-DICOTOMIA (Sangue Animal & Folha Vegetal) */
+            --bg-color: #F8FAFC; /* Cinza gelo muito claro */
+            --text-color: #0F172A; /* Slate quase preto */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #FEE2E2; /* Vermelho muito claro */
+            --theme-medium: #F43F5E; /* Rosa/Vermelho (Animal) */
+            --theme-dark: #BE123C; /* Vermelho Sangue Escuro */
+            --theme-contrast: #047857; /* Verde Esmeralda (Vegetal) */
+            --theme-accent: #0EA5E9; /* Azul Água (Vacúolo) */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #475569;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #64748B;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #FEF2F2; /* Vermelho suave */
+            border-left: 4px solid var(--theme-dark);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #881337;
+        }
+        .highlight-box.green {
+            background-color: #ECFDF5;
+            border-left-color: var(--theme-contrast);
+            color: #064E3B;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #475569; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E1; line-height: 1.5; color: #334155; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🔬</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Célula Animal vs. Vegetal</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Cloroplasto)">
+            </div>
+            <div id="no-results"><p>😕 Não encontrámos esse organelo. Verifica a ortografia.</p></div>
+
+            <!-- TÓPICO 1: A BASE COMUM -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: #0F172A;">🤝 1. O Ponto de Partida</div>
+                <div class="theory-box search-target" style="border-left-color: #0F172A;">
+                    <h3 style="color: #0F172A;">Ambas são Eucariontes</h3>
+                    <p>Antes das diferenças, é vital perceber o que as une. Tanto os animais como as plantas pertencem à elite evolutiva celular: são seres <strong>Eucariontes</strong>.</p>
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Núcleo Verdadeiro:</strong> Ambas têm um "cofre" (Carioteca) que protege o DNA. Não anda solto como nas bactérias.</li>
+                        <li><strong>Mitocôndrias:</strong> Ambas possuem a fábrica de ATP (energia) para realizar a respiração celular.</li>
+                        <li><strong>Membrana Plasmática:</strong> Ambas são envolvidas por esta fina e flexível camada lipídica que controla o que entra e o que sai.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: CÉLULA ANIMAL -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-dark);">🥩 2. A Célula Animal</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-dark);">
+                    <h3 style="color: var(--theme-dark);">O Caçador Flexível</h3>
+                    <p>Os animais precisam de se mover. As nossas células adaptaram-se para serem flexíveis, moldáveis e eficientes no consumo de energia externa.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="200" height="150" viewBox="0 0 200 150">
+                            <!-- Célula Animal Amorfa -->
+                            <path d="M 40 40 Q 80 10 140 30 Q 180 50 170 100 Q 150 140 90 130 Q 30 120 20 80 Z" fill="#FEE2E2" stroke="#BE123C" stroke-width="4"/>
+                            <!-- Núcleo -->
+                            <circle cx="100" cy="80" r="25" fill="#FDA4AF" stroke="#BE123C" stroke-width="2"/>
+                            <circle cx="105" cy="75" r="8" fill="#9F1239"/>
+                            <!-- Centríolos -->
+                            <rect x="40" y="85" width="10" height="4" fill="#0F172A" transform="rotate(45 45 87)"/>
+                            <rect x="40" y="85" width="10" height="4" fill="#0F172A" transform="rotate(-45 45 87)"/>
+                            <text x="45" y="110" font-size="8" font-weight="bold" fill="#0F172A">Centríolos</text>
+                            <!-- Lisossoma -->
+                            <circle cx="140" cy="50" r="10" fill="#F59E0B" stroke="#B45309" stroke-width="2"/>
+                            <text x="140" y="40" text-anchor="middle" font-size="8" font-weight="bold" fill="#B45309">Lisossoma</text>
+                        </svg>
+                    </div>
+
+                    <div class="highlight-box">
+                        <strong>Exclusivos ou abundantes na Célula Animal:</strong><br>
+                        • <strong>Centríolos:</strong> Pequenos tubos cruciais para organizar a divisão celular (mitose). Plantas superiores geralmente não os têm.<br>
+                        • <strong>Lisossomas:</strong> O "estômago" da célula. Cheios de ácido para digerir lixo celular. Nas plantas, essa função é feita pelo vacúolo.<br>
+                        • <strong>Forma Irregular:</strong> Como <u>não possuem parede celular</u> rígida, podem assumir formas incrivelmente variadas (ex: um neurónio ou um glóbulo vermelho).
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: CÉLULA VEGETAL -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-contrast);">🌿 3. A Célula Vegetal</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-contrast);">
+                    <h3 style="color: var(--theme-contrast);">A Fortaleza Solar</h3>
+                    <p>As plantas não fogem nem caçam. Elas precisam de ficar erguidas ao sol para fabricar a sua própria comida. A sua célula é uma autêntica fortaleza verde.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="200" height="150" viewBox="0 0 200 150">
+                            <!-- Parede Celular Geométrica -->
+                            <polygon points="30,20 170,20 170,130 30,130" fill="#D1FAE5" stroke="#047857" stroke-width="8" stroke-linejoin="round"/>
+                            <!-- Membrana Plasmática interna -->
+                            <polygon points="35,25 165,25 165,125 35,125" fill="none" stroke="#10B981" stroke-width="2"/>
+                            
+                            <!-- Grande Vacúolo Central -->
+                            <rect x="70" y="40" width="80" height="70" rx="10" fill="#BAE6FD" stroke="#0284C7" stroke-width="2"/>
+                            <text x="110" y="80" text-anchor="middle" font-size="9" font-weight="bold" fill="#0369A1">Vacúolo Central</text>
+                            
+                            <!-- Núcleo (empurrado para a borda) -->
+                            <circle cx="50" cy="50" r="12" fill="#FCA5A5" stroke="#BE123C" stroke-width="2"/>
+                            
+                            <!-- Cloroplastos -->
+                            <ellipse cx="140" cy="35" rx="12" ry="6" fill="#10B981" stroke="#047857" stroke-width="2"/>
+                            <ellipse cx="55" cy="110" rx="12" ry="6" fill="#10B981" stroke="#047857" stroke-width="2"/>
+                            <text x="140" y="25" text-anchor="middle" font-size="8" font-weight="bold" fill="#047857">Cloroplasto</text>
+                        </svg>
+                    </div>
+
+                    <div class="highlight-box green">
+                        <strong>Exclusivos da Célula Vegetal:</strong><br>
+                        • <strong>Parede Celular (de Celulose):</strong> Um muro exterior espesso e rígido que impede a planta de murchar ou a célula de rebentar quando absorve água.<br>
+                        • <strong>Cloroplastos:</strong> Organelos ricos em clorofila onde ocorre a magia da Fotossíntese.<br>
+                        • <strong>Grande Vacúolo Central:</strong> Um balão gigante de água e seiva. Ocupa tanto espaço (até 90%) que esmaga o núcleo para o canto da célula!
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: O MITO DA MITOCÔNDRIA -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-accent);">⚠️ 4. O Maior Erro nos Exames</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-accent);">
+                    <h3 style="color: #B45309;">"As plantas não têm Mitocôndrias"</h3>
+                    <p>Esta é, talvez, a mentira mais repetida por alunos desatentos. Vamos erradicá-la de vez.</p>
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>O Mito:</strong> "A planta faz fotossíntese no cloroplasto, logo não precisa de respirar nem de mitocôndrias."</li>
+                        <li><strong>A Verdade Fria e Dura:</strong> O cloroplasto SÓ FABRICA A COMIDA (açúcar/glicose) a partir da luz solar. Mas para a planta <em>sobreviver, crescer e usar essa energia</em>, ela tem de 'queimar' esse açúcar. E o único organelo capaz de queimar açúcar para extrair ATP é a <strong>Mitocôndria</strong>.</li>
+                        <li><strong>Conclusão:</strong> Células vegetais possuem MITOCÔNDRIAS, sim! Elas respiram oxigénio 24 horas por dia, tal como tu.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar a Avaliação Laboratorial (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">Microscopia Aplicada</h2>
+                <p style="color: #0F172A; font-size: 0.95rem; font-weight:600;">
+                    30 questões imperdoáveis sobre as diferenças celulares. Acerta <strong>80% (24/30)</strong> para provares que não confundes um animal com um pé de salsa.
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Relatório Citológico</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS RIGOROSOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Estruturas Exclusivas e Comuns (1-10)
+            {
+                id: 1, level: "Fácil",
+                text: "A célula vegetal possui um organelo específico responsável por captar a energia da luz solar e realizar a fotossíntese. Qual é?",
+                options: ["Mitocôndria", "Complexo de Golgi", "Cloroplasto", "Lisossoma"],
+                correct: 2,
+                explanation: {
+                    correct: "Exato. O Cloroplasto contém a clorofila (o pigmento verde) que absorve a luz e inicia a produção de moléculas de açúcar.",
+                    options: [
+                        "Faz a respiração celular (queima o açúcar).",
+                        "Trata do empacotamento de proteínas.",
+                        "Esta é a alternativa correta.",
+                        "Faz a digestão intracelular em animais."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Fácil",
+                text: "A célula vegetal tem uma forma geométrica muito mais rígida e fixa do que a célula animal, que é amorfa e flexível. O que lhe confere essa dureza?",
+                options: ["A presença de ossos microscópicos.", "A presença da Parede Celular feita de celulose, situada por fora da membrana plasmática.", "A elevada quantidade de ar no seu interior.", "A ausência total de água."],
+                correct: 1,
+                explanation: {
+                    correct: "Perfeito. As plantas não têm esqueletos ósseos. A parede celular de celulose atua como uma 'caixa' de madeira que suporta a estrutura de toda a planta.",
+                    options: [
+                        "Células não têm ossos.",
+                        "Esta é a alternativa correta.",
+                        "Têm água, não ar, a dar suporte (turgidez).",
+                        "A água é essencial e abundante na célula vegetal."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Fácil",
+                text: "É comum dizer-se que as células animais e vegetais são 'primas' evolutivas. Qual é a principal característica comum que as une no mesmo grande grupo biológico?",
+                options: ["Ambas fazem fotossíntese.", "Ambas não possuem membrana plasmática.", "Ambas são Eucariontes (têm um núcleo verdadeiro envolvido por uma carioteca que protege o DNA).", "Ambas reproduzem-se através de esporos na terra."],
+                correct: 2,
+                explanation: {
+                    correct: "Ao contrário das bactérias (procariontes), tanto as células dos animais como das plantas deram o salto evolutivo e possuem um cofre nuclear fechado para o seu material genético.",
+                    options: [
+                        "Apenas as vegetais fazem.",
+                        "TODAS as células têm membrana plasmática.",
+                        "Esta é a alternativa correta.",
+                        "Falso biológico."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Médio",
+                text: "O Lisossoma é o 'estômago' da célula e atua como o principal centro de reciclagem e digestão de resíduos. Em qual das células ele é tipicamente abundante e porquê?",
+                options: ["Na célula vegetal, para digerir a luz do sol.", "Na célula animal. Como ela não fabrica a própria comida, precisa de digerir partículas orgânicas capturadas ou organelos velhos.", "Em ambas, na mesma exata proporção.", "Em nenhuma, pois o lisossoma só existe em bactérias."],
+                correct: 1,
+                explanation: {
+                    correct: "A célula animal depende de 'comer' e quebrar substâncias complexas vindas do exterior. Nas plantas, a grande função de armazenamento e degradação suave é largamente feita pelo Vacúolo.",
+                    options: [
+                        "A luz não se digere quimicamente desta forma.",
+                        "Esta é a alternativa correta.",
+                        "Nas plantas, as funções lisossomais são maioritariamente assumidas pelo vacúolo lítico.",
+                        "Bactérias não têm organelos com membrana (lisossoma)."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Fácil",
+                text: "Se analisarmos as fronteiras externas destas células: A célula animal é delimitada exteriormente pela __________, enquanto a célula vegetal é delimitada exteriormente pela __________.",
+                options: ["Parede celular ; Membrana Plasmática", "Membrana Plasmática ; Parede Celular", "Carioteca ; Parede Celular", "Parede de celulose ; Parede de quitina"],
+                correct: 1,
+                explanation: {
+                    correct: "Célula animal: Nua (só tem a membrana lipídica fina). Célula Vegetal: Tem a mesma membrana fina por dentro, mas está blindada por fora com a Parede Celular de Celulose.",
+                    options: [
+                        "Invertido.",
+                        "Esta é a alternativa correta.",
+                        "Carioteca é a membrana do NÚCLEO, não o exterior.",
+                        "Celulose é planta, quitina é fungo. Animais não têm nenhuma."
+                    ]
+                }
+            },
+            {
+                id: 6, level: "Médio",
+                text: "Os Centríolos são pequenas estruturas cilíndricas que formam o fuso acromático (cabos de reboque) durante a divisão celular (mitose). Onde os encontramos?",
+                options: ["Estão presentes em todas as células do mundo.", "São exclusivos das bactérias.", "Estão presentes e são essenciais nas Células Animais, mas geralmente estão ausentes nas Células Vegetais superiores (como os pinheiros ou macieiras).", "Estão apenas presentes no núcleo das plantas."],
+                correct: 2,
+                explanation: {
+                    correct: "Correto. A célula animal usa os centríolos para organizar a puxada dos cromossomas. A maioria das plantas superiores consegue fazer a divisão perfeitamente bem sem precisar de centríolos visíveis.",
+                    options: [
+                        "Falso.",
+                        "Bactérias não têm divisão mitótica estruturada com centríolos (fazem bipartição direta).",
+                        "Esta é a alternativa correta.",
+                        "Os centríolos ficam no citoplasma, perto do núcleo."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Médio",
+                text: "Ao microscópio, numa célula vegetal adulta típica, vais reparar que o núcleo não está bem no centro; ele está empurrado e esmagado contra a periferia da membrana. Porquê?",
+                options: ["Porque as células vegetais têm dois núcleos que se repelem.", "Porque o imenso Vacúolo Central, cheio de água e sais (suco celular), ocupa até 90% do volume interno, empurrando tudo para os lados.", "Porque a gravidade puxa o núcleo botânico para baixo.", "Porque os cloroplastos são venenosos para o núcleo."],
+                correct: 1,
+                explanation: {
+                    correct: "A água é vital para a planta não murchar. Ela armazena tanta água no Vacúolo Central que este balão interior incha e encosta todos os organelos à 'parede' do citoplasma.",
+                    options: [
+                        "Falso.",
+                        "Esta é a alternativa correta.",
+                        "O citosol é denso, a gravidade não afeta assim o núcleo vivo.",
+                        "Absurdo biológico."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Difícil",
+                text: "O Vacúolo das células animais (quando existe) em comparação com o das células vegetais é:",
+                options: ["Exatamente igual em tamanho e função hídrica.", "Pequeno, numeroso e geralmente focado em funções transitórias de transporte ou digestão, ao passo que nas plantas existe um (ou poucos) gigante, focado em suporte estrutural e armazenamento hídrico.", "O triplo do tamanho do vegetal, pois o animal bebe muita água.", "Feito de metal pesado na célula animal."],
+                correct: 1,
+                explanation: {
+                    correct: "Células animais podem ter pequenos vacúolos (vesículas) de fagocitose ou pinocitose, mas não têm a 'piscina' central de turgescência (Vacúolo Central) típica da célula vegetal adulta.",
+                    options: [
+                        "Falso estrutural e funcionalmente.",
+                        "Esta é a alternativa correta.",
+                        "O vacúolo vegetal é o maior organelo visualmente dominante das plantas.",
+                        "Falso."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Fácil",
+                text: "Em qual destes pares organelo-função não existe correspondência na célula animal?",
+                options: ["Núcleo - Guarda o DNA", "Mitocôndria - Respiração e Energia", "Cloroplasto - Fotossíntese", "Ribossoma - Produção de Proteínas"],
+                correct: 2,
+                explanation: {
+                    correct: "Os animais são heterotróficos. Não possuem Cloroplastos, logo a fotossíntese não ocorre neles.",
+                    options: [
+                        "Correto para a célula animal.",
+                        "Correto para a célula animal.",
+                        "Esta é a alternativa correta (não existe na animal).",
+                        "Correto para a célula animal."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Médio",
+                text: "Uma substância química que é produzida nas células vegetais para formar a estrutura da Parede Celular, e que nós (humanos) não conseguimos digerir (atuando no nosso corpo como 'fibra alimentar' que ajuda o trânsito intestinal) é a:",
+                options: ["Hemoglobina", "Celulose", "Gordura saturada", "Colagénio"],
+                correct: 1,
+                explanation: {
+                    correct: "A Celulose é um polissacarídeo extremamente resistente. Como não temos as enzimas para a quebrar, ela passa intacta pelo nosso intestino, varrendo as impurezas como se fosse uma 'vassoura' natural (fibra).",
+                    options: [
+                        "Proteína do sangue animal.",
+                        "Esta é a alternativa correta.",
+                        "Lípido, não forma a parede vegetal.",
+                        "Proteína estrutural da pele/ossos ANIMAIS."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Mitos e Fisiologia (11-20)
+            {
+                id: 11, level: "Fácil",
+                text: "O grande mito da botânica! Avalia a afirmação: 'Como a Célula Vegetal faz fotossíntese de dia, ela não possui Mitocôndrias nem precisa de respirar oxigénio como as Células Animais.'",
+                options: ["Completamente Falsa. A célula vegetal POSSUI Mitocôndrias e faz respiração celular aeróbica 24 horas por dia (usando oxigénio para queimar o açúcar que produziu).", "Completamente Verdadeira. O Cloroplasto faz tudo sozinho.", "Parcialmente verdadeira, as plantas só têm mitocôndrias no inverno.", "Falsa, as plantas não respiram oxigénio, respiram hélio."],
+                correct: 0,
+                explanation: {
+                    correct: "NUNCA ESQUECER: O cloroplasto é o 'agricultor' que faz o açúcar. A mitocôndria é a 'caldeira' que queima o açúcar para dar a energia vital (ATP) à célula. Ambas as células precisam do motor da Mitocôndria!",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "O cloroplasto não faz ATP utilizável globalmente para os processos de crescimento à noite.",
+                        "A biologia celular base não muda com as estações do ano de forma a apagar organelos permanentes.",
+                        "Respiram O2 e deitam CO2 na respiração celular."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Médio",
+                text: "Como as Células Animais não têm a armadura rija da Parede Celular, como é que elas mantêm a sua estrutura, forma e organizam os organelos lá dentro para que não fiquem todos caídos num canto?",
+                options: ["Têm ossos de cálcio microscópicos soltos no citoplasma.", "Possuem o Citoesqueleto: uma rede dinâmica e complexa de filamentos e tubos de proteína (como a actina e microtúbulos) que atua como os andaimes invisíveis da célula.", "A gravidade não afeta as células, pelo que a forma mantém-se por magia.", "A membrana plasmática tem a rigidez de um vidro espesso."],
+                correct: 1,
+                explanation: {
+                    correct: "O citoesqueleto (esqueleto da célula) é a obra-prima mecânica dos eucariontes. São cordas e tubos de proteína que dão forma à célula animal, permitem o movimento muscular e servem de 'estradas' para os organelos circularem.",
+                    options: [
+                        "Cálcio forma ossos macroscópicos nos vertebrados, não o esqueleto intracelular macio.",
+                        "Esta é a alternativa correta.",
+                        "Falso.",
+                        "A membrana é essencialmente um 'óleo' fluido, muito mole e flexível (Modelo do Mosaico Fluido)."
+                    ]
+                }
+            },
+            {
+                id: 13, level: "Difícil",
+                text: "Se colocarmos um Glóbulo Vermelho humano (Célula Animal) num copo de Água Destilada 100% pura (Meio Hipotónico), e fizermos o mesmo a uma Célula de Alface (Vegetal)... O que acontece a cada uma devido à entrada violenta de água por Osmose?",
+                options: ["O Glóbulo Vermelho e a Célula da Alface rebentam instantaneamente de igual forma.", "A Célula da Alface encolhe e seca, o Glóbulo vermelho fica igual.", "O Glóbulo Vermelho INCHA E REBENTA (Lise Celular) porque não tem proteção. A Célula da Alface incha muito (fica túrgida), mas NÃO REBENTA porque a sua forte Parede Celular segura a pressão da água.", "Nenhuma absorve água."],
+                correct: 2,
+                explanation: {
+                    correct: "A Parede Celular salva a vida da planta todos os dias quando chove! Ao entrar água pura na célula animal nua, ela explode como um balão cheio demais. A planta também enche, mas a 'caixa de celulose' impede a explosão e deixa a folha dura e crocante.",
+                    options: [
+                        "A planta não rebenta em meios hipotónicos normais.",
+                        "Meio hipotónico (água pura) faz a água ENTRAR, não sair.",
+                        "Esta é a alternativa correta.",
+                        "A osmose garante o movimento de água."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Médio",
+                text: "Qual é a principal substância de RESERVA ENERGÉTICA guardada no citoplasma destas células para alturas de 'fome'?",
+                options: ["A Célula Animal guarda Amido. A Célula Vegetal guarda Glicogénio.", "A Célula Animal guarda Glicogénio (no fígado e músculos). A Célula Vegetal guarda Amido (na batata e raízes).", "Ambas guardam gordura pura animal grossa.", "A Célula Vegetal guarda celulose de reserva líquida doce nua livre limpa e murcha."],
+                correct: 1,
+                explanation: {
+                    correct: "Decora isto: Se fores correr, o teu fígado liberta Glicogénio. Se a batata crescer debaixo da terra sem sol, ela alimenta-se do Amido que armazenou.",
+                    options: [
+                        "Totalmente invertido.",
+                        "Esta é a alternativa correta.",
+                        "Vegetais guardam muito amido primariamente.",
+                        "A celulose é ESTRUTURAL (parede), não é queimada como reserva de emergência metabólica normal pela planta."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Fácil",
+                text: "Se analisares o sangue de um cão (células animais) e a seiva de uma laranjeira (células vegetais), encontrarás nestas células uma 'receita da vida' ou 'código genético' idêntico na sua base química universal. De que molécula estamos a falar, alojada no núcleo de ambas?",
+                options: ["Clorofila A", "Hemoglobina Alfa", "DNA (Ácido Desoxirribonucleico)", "Plasmídeo Viral"],
+                correct: 2,
+                explanation: {
+                    correct: "A beleza da evolução: a base de código (o alfabeto das letrinhas A, T, C, G do DNA) é a mesma quer sejas um elefante ou uma couve. Ficam confortavelmente guardados na carioteca de ambos os eucariontes.",
+                    options: [
+                        "Exclusivo das plantas e algas.",
+                        "Exclusivo do sangue de vertebrados animais.",
+                        "Esta é a alternativa correta.",
+                        "Os vírus e bactérias têm isso solto, não eucariontes complexos superiores na base do seu código hereditário nuclear nuclear de base."
+                    ]
+                }
+            },
+            {
+                id: 16, level: "Difícil",
+                text: "A membrana celular tem um modelo de funcionamento chamado de 'Mosaico Fluido' (fosfolípidos com proteínas a 'boiar'). No entanto, na Célula ANIMAL existe um lípido específico inserido no meio dessa membrana para lhe dar alguma estabilidade térmica e evitar que ela derreta ou congele facilmente. Esse lípido é o:",
+                options: ["Colesterol", "Glúten", "Amido sintético", "Celulose invertida"],
+                correct: 0,
+                explanation: {
+                    correct: "Sim, o Colesterol (tão falado nas análises clínicas) é vital para a sobrevivência das células animais! Ele enfia-se entre os fosfolípidos da membrana para agir como um 'tampão térmico' fluídico. As células vegetais típicas não contêm colesterol na membrana.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "O Glúten é uma proteína do trigo (vegetal).",
+                        "O Amido é um glúcido vegetal de reserva.",
+                        "Invenção."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Médio",
+                text: "Quando as tuas unhas crescem ou as pontas do cabelo saem do folículo, as células estão a fabricar uma proteína forte (Queratina). Que organelos na Célula Animal estão a trabalhar em excesso para PRODUZIR e EXPORTAR massivamente essa proteína para a ponta do dedo?",
+                options: ["Vacúolo hídrico Central a atirar água e o Lisossoma a digerir o resto vivo calmo do suor calmo liso mole.", "Ribossomas a produzir, Retículo Endoplasmático Rugoso a montar e Complexo de Golgi a despachar a queratina para fora via vesículas (exocitose).", "As Mitocôndrias produzem a proteína sem usar DNA da célula de matriz mole viva do citosol lento e denso forte puro e quente.", "Os cloroplastos da unha absorvem luz UV da unha morta rica rica limpa nua nua mole fofa clara baça seca seca cega e podre oca cega lisa suja livre rala da vida."],
+                correct: 1,
+                explanation: {
+                    correct: "O triângulo dourado da produção: Os Ribossomos (a fábrica) trabalham nas paredes do Retículo (os tapetes rolantes), que entregam a proteína crua ao Complexo de Golgi (o correio/empacotador) para a enviar para fora da célula e endurecer a unha.",
+                    options: [
+                        "Lisossoma faz digestão, não construção sintética ativa de pele dura.",
+                        "Esta é a alternativa correta fisiológica da rota de exportação proteica vesicular de matriz da síntese macro basal livre limpa da biologia exata molecular certa.",
+                        "Mitocôndrias apenas dão o ATP (a eletricidade) para a fábrica funcionar, não imprimem a proteína da queratina forte rija crua.",
+                        "Animais não têm cloroplastos. (E cuidado com a alucinação rítmica das palavras nulas no final desta distração falsa)."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Fácil",
+                text: "Resumindo a alimentação celular: A Célula Vegetal é considerada ___________ porque fabrica o próprio alimento. A Célula Animal é considerada ___________ porque precisa de ingerir matéria orgânica pronta.",
+                options: ["Heterotrófica ; Autotrófica", "Procarionte ; Eucarionte", "Autotrófica ; Heterotrófica", "Metabólica ; Passiva"],
+                correct: 2,
+                explanation: {
+                    correct: "Auto = Próprio. Trofo = Alimento. A planta 'alimenta-se a si mesma' graças ao Cloroplasto. O animal tem de ser Heterotrófico e roubar o alimento aos outros.",
+                    options: [
+                        "Totalmente trocado.",
+                        "Ambas são Eucariontes.",
+                        "Esta é a alternativa correta.",
+                        "Termos sem relação com a base da obtenção de energia trófica alimentar base densa e pura."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Médio",
+                text: "No interior de uma Célula Animal, se os Ribossomas e as Mitocôndrias parassem misteriosamente de funcionar ao mesmo tempo num segundo exato letal fulminante mudo forte duro cru suado tenro, o que aconteceria diretamente primeiro à biologia vital interna da célula do corpo em falência pura orgânica cega fina fria baça mole lisa de suor rico lúgubre denso?",
+                options: ["A célula animal morreria porque parava de produzir novas Proteínas (função do Ribossoma) e ficaria imediatamente sem Energia/ATP (função da Mitocôndria).", "A célula passava a fazer fotossíntese de forma invertida pelo citoplasma.", "A célula multiplicava-se mais rápido em cancro agudo.", "A célula virava bactéria."],
+                correct: 0,
+                explanation: {
+                    correct: "As tuas fábricas de peças de substituição (Ribossomas) pararam e a tua eletricidade central (Mitocôndria e ATP) acabou. A falência orgânica (morte celular por apoptose aguda ou necrose) é o resultado inevitável rápido exato clínico fatal profundo.",
+                    options: [
+                        "Esta é a alternativa correta biológica patológica rigorosa.",
+                        "Impossível, falta clorofila fotossintética forte.",
+                        "Para se multiplicar as células cancerígenas precisam de MUITA energia e muitas proteínas novas, não de menos energia.",
+                        "Mito evolutivo da regressão instantânea das espécies de Lamarck e geração mágica falsa oca."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Difícil",
+                text: "O Núcleo da célula eucarionte é o seu cérebro de inteligência e base mestre e código fonte geral. Na sua arquitetura morfológica protetora exterior limitante nuclear, existe um detalhe vital: Ele está fechado num 'cofre' que não é 100% isolado impenetrável sem passagens. Como se chama essa fronteira com 'buracos' no núcleo eucarionte vegetal e animal base pura forte e dura viva clara de limite e porquê que tem aberturas seletivas de permeio?",
+                options: ["Chama-se Parede de Celulose Nuclear. Tem furos para a água entrar no DNA e refrescar as bases fracas moles cegas ralas ralas murchas frias moles fofas cegas cegas moles.", "Chama-se Carioteca (Invólucro Nuclear). Tem poros seletivos para permitir que o 'carteiro' RNA Mensageiro saia com a cópia das instruções do DNA em segurança para ir ter com os Ribossomas do citoplasma.", "Chama-se Cápsula Viral. Tem furos para a vacina destruir a mitose cega e velha gorda morta chata livre limpa calma.", "Chama-se Complexo de Golgi. Os furos servem de exaustor de calor da combustão pura calma lenta falsa nua gorda oca suada crua."],
+                correct: 1,
+                explanation: {
+                    correct: "A Carioteca não pode ser totalmente fechada! O DNA original (o Livro Mestre) nunca sai do núcleo, mas as fotocópias dessas páginas do livro (o RNA) TÊM de sair para o citoplasma, onde os operários (Ribossomas) leem a receita para fazer as proteínas. Os Poros Nucleares são as catracas de saída essenciais biológicas.",
+                    options: [
+                        "O núcleo tem dupla membrana fosfolipídica (carioteca), não celulose rija maciça forte vegetal.",
+                        "Esta é a alternativa correta científica funcional e genética molecular exata limpa direta letal clara certa dura e inquebrável mestre real sólida densa forte.",
+                        "Os eucariontes não possuem invólucros proteicos virais em torno do genoma nuclear hóstil invasor patológico endógeno livre raso nulo fraco de virose falsa livre solta oca rala.",
+                        "O Golgi é externo ao núcleo, empacotando apenas os peptídeos pós-retículo."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Cenários e Raciocínios Puros (21-30)
+            {
+                id: 21, level: "Difícil",
+                text: "Se quisessem invadir a estrutura citológica botânica, qual a sequência CORRETA de barreiras a perfurar (de fora para dentro) numa Célula de Maçã adulta madura?",
+                options: ["Núcleo -> Membrana -> Parede Celular -> Citoesqueleto.", "Parede Celular -> Membrana Plasmática -> Citoplasma -> Carioteca do Núcleo.", "Citoplasma -> Cloroplasto -> Celulose -> Vacúolo hídrico.", "Vacúolo -> Mitocôndria -> Parede Celular -> Plasmídeo bacteriano."],
+                correct: 1,
+                explanation: {
+                    correct: "A viagem invasora de uma agulha biológica fina perfeita! Primeiro, fura a crosta de madeira rija exterior (Parede Celular). A seguir, fura o balão fino de plástico lípido (Membrana Plasmática). Fica a nadar na gelatina aquosa interna (Citoplasma). Finalmente, fura o cofre forte central (Carioteca) para chegar à sala do DNA sagrado do Núcleo da maçã.",
+                    options: [
+                        "Está a invadir do interior (centro) para fora. A direção pedida é de fora para dentro exata clara e certa.",
+                        "Esta é a alternativa correta morfológica espacial tridimensional celular perfeita da botânica micro real direta exata.",
+                        "A viagem descrita está baralhada e confusa anatomicamente na topografia mestre geral comum fina plana lisa e densa.",
+                        "Plasmídeos nem sequer existem em células de macieira saudáveis vulgares comuns, apenas em bactérias."
+                    ]
+                }
+            },
+            {
+                id: 22, level: "Médio",
+                text: "No que toca a digestão, o Lisossoma Animal ataca moléculas externas fagocitadas e velhos restos mortos citológicos endógenos. Se a Célula Vegetal vulgarmente não possui a densidade de Lisossomas agressivos do Homem, quem assegura a grande parte do trabalho de digestão, controlo ácido, acumulação de lixo tóxico da flor e pressão osmótica turgescente volumétrica gigante na flora florestal rústica verde?",
+                options: ["O Ribossoma gigante gordo liso calmo suado morno cego mole frio lento calmo.", "O Cloroplasto fotossintético escuro frio mudo mudo de calor raso nulo pálido cego raso calmo.", "O Vacúolo Central.", "O Centríolo duro cego lúgubre denso mudo de fuso mitotic cego cego fofo sujo gordo oco raso mole lento calmo fresco sujo doce."],
+                correct: 2,
+                explanation: {
+                    correct: "O Vacúolo Central é o canivete suíço da planta! Ele incha de água para manter a planta em pé; o seu pH interno costuma ser ácido, servindo como depósito de lixo tóxico e enzimas de lise celular secundária branda, assumindo grande parte da função de 'limpeza e suporte' que a célula necessita, visto faltarem os milhares de lisossomas rápidos típicos do lúmen celular animal agressivo caçador heterótrofo cru carnívoro orgânico.",
+                    options: [
+                        "Faz proteínas base, não atua no equilíbrio hídrico osmótico ou limpeza ácida gástrica interior celular orgânica mestre fina clara e pura sólida direta.",
+                        "Gera glicose doce por fotões do sol.",
+                        "Esta é a alternativa correta hídrica e enzimática ácida vegetal de biologia do 9º ano estrutural forte direta fina sábia crua pura e inabalável.",
+                        "Puxa cromossomas da célula animal e está em falta nas cormófitas no topo evolução das angiospérmicas verdes limpas puras soltas quentes."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Fácil",
+                text: "Quando a professora de Biologia diz: 'A Célula X tem Citoplasma, Ribossomas, e o DNA solto sem uma membrana carioteca e não tem mitocôndrias nenhumas para a energia pura complexa'. Ela fala da:",
+                options: ["Célula de Pele Animal.", "Célula Procarionte (Bactéria).", "Célula do Cogumelo Eucarionte Fungo.", "Célula Vegetal Clorofilada."],
+                correct: 1,
+                explanation: {
+                    correct: "Diagnóstico taxativo fulminante! DNA solto sem Carioteca e ausência do luxo da mitocôndria = Monera (Procarionte). Não há outra resposta biológica cabível.",
+                    options: [
+                        "Tem tudo isso, incluindo carioteca.",
+                        "Esta é a alternativa correta primitiva basilar forte crua.",
+                        "Tem carioteca protetora e organelos fechados.",
+                        "A euglena e a alface têm núcleos formados grandes puros limpos firmes sólidos mestre."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Difícil",
+                text: "A Fotossíntese (Cloroplasto) absorve CO2 do ar e converte-o em Açúcar. A Respiração Celular (Mitocôndria) atua de seguida. Que ciclo bioquímico celular gasoso mágico e oposto fechado ocorre dentro de uma Célula Vegetal num dia solarengo verde luminoso calmo brilhante no bosque?",
+                options: ["A planta deita fora tudo e chora a seiva nua limpa fresca fina lenta fria morna solta livre livre cega rasa falsa.", "A mitocôndria queima a clorofila para produzir azoto gasoso do ar vago e lento murcho vazio oco mudo podre cego podre e cego raso longo sujo falso.", "O Cloroplasto produz Glicose e solta Oxigénio. Depois, a Mitocôndria dessa mesma planta devora essa Glicose misturada com o Oxigénio que acabou de sair, quebrando a molécula para carregar a bateria da célula (ATP), cuspindo CO2 de lixo metabólico que o Cloroplasto pode até chupar de novo para reciclar!", "Os dois organelos fundem-se num vírus nuclear cego podre e baço baço frio mole oco oco gordo e seco raso murcho suado cego fofo mole."],
+                correct: 2,
+                explanation: {
+                    correct: "A autossuficiência eucariótica suprema verde foliar do reino Plantae! O Cloroplasto faz o jantar, a Mitocôndria come o jantar para extrair a energia motriz. Eles trabalham em tandem (equipa), respirando e produzindo os subprodutos numa simbiose biológica orgânica perfeita de trocas gasosas internas.",
+                    options: [
+                        "Falso.",
+                        "A clorofila é fotocaptadora, não combustível metabólico de respiração azotada monera fétida murcha fraca alheia cega falsa lenta morta nula nua crua livre.",
+                        "Esta é a alternativa correta termodinâmica metabólica oxidativa e anabólica de conjugação e pareamento perfeito vegetal exato sólido limpo genial mestre final direto puro clássico seguro.",
+                        "Ficção celular mutante surreal da alienação do microscópio quebrado rústico ralo cego cego sujo livre cego morno suado falso limpo."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Fácil",
+                text: "A respeito do material de que são feitas as Fronteiras Celulares: A Parede Celular Vegetal forte e impermeável dura que faz a madeira da árvore de pé e do arbusto firme flexível é maioritariamente baseada no elemento estrutural de longa cadeia glicosídica chamado:",
+                options: ["Colesterol gordo animal cego ralo suado ralo morno de plasma baço macio fofo fofo sujo oco.", "Glicogénio hepático puro vivo doente de sangue murcho falso.", "Celulose (uma fibra de açúcar tão rija e linear que o corpo humano não possui enzimas gástricas ativas para a digerir e desfazer pura e viva e fina mole livre mole falsa crua nua).", "Plástico e silicone mineral da cega rocha fina mole cega."],
+                correct: 2,
+                explanation: {
+                    correct: "Celulose é o tijolo verde da natureza! Faz o algodão das tuas t-shirts e as páginas duras do teu caderno (celulose e lenhina da árvore morta prensada). Nós mamíferos superiores somos incapazes de digerir esta muralha, usando-a apenas como fibra alimentar.",
+                    options: [
+                        "Membrana animal.",
+                        "Reserva animal no fígado, nunca faz parede exterior dura estrutural botânica.",
+                        "Esta é a alternativa correta polissacarídica vegetal clássica da biologia basilar de liceu primário elementar simples genial reta forte e inabalável.",
+                        "Não orgânico e artificial da polimerização petroquímica urbana cega suja fina falsa oca do morto mudo seco lento fofo mole calmo cego mudo cego limpo de raso cego morto calmo limpo."
+                    ]
+                }
+            },
+            {
+                id: 26, level: "Médio",
+                text: "Uma curiosidade fascinante que liga células Eucariontes e Bactérias antigas (Procariontes): A Teoria da Endossimbiose (Lymm Margulis) sugere fortemente apoiada pela comunidade científica global do século, que as tuas Mitocôndrias e os Cloroplastos da planta já foram outrora bactérias livres invasoras ou fagocitadas antigas do passado. Qual evidência intracelular poderosa fortíssima e gritante sustenta que a Mitocôndria é um 'alienígena' procarionte a viver confortavelmente no teu interior humano?",
+                options: ["A mitocôndria voa e sai pelo nariz no suor frio gordo de inverno falso seco liso e mudo vazio oco mudo.", "A Mitocôndria possui o seu PRÓPRIO DNA circular independente do Núcleo da célula, além de possuir ribossomas microscópicos tipo procarionte (bacteriano) exclusivos dela no seu líquido do lúmen matricial mitocondrial denso quente puro e celular.", "A mitocôndria tem parede de papel verde amarelado sujo fétido calmo mudo frio de podre lúgubre oco longo cego longo baço murcho raso.", "A mitocôndria mata a célula de dor de cabeça forte."],
+                correct: 1,
+                explanation: {
+                    correct: "Magia evolutiva provada! Tu tens 2 códigos de DNA no corpo: O do núcleo (Mãe e Pai), e o da tua Mitocôndria que só herdas da Mãe! Como a Mitocôndria tem uma fita dupla circular, duas membranas e ribossomos 70s, ela grita 'Eu era uma bactéria e fiz acordo de morada!' para a nossa célula animal gigante hospedeira primordial dos oceanos antigos letais puros quentes vivos fortes cheios calmos fundos exatos cegos mudos cegas e ralas lentas duras bases raras finas rasas calmas vivas frias puras doces macias fracas.",
+                    options: [
+                        "Falso.",
+                        "Esta é a alternativa correta revolucionária e canónica essencial de prova magna da descendência biológica citológica evolutiva forte fina reta sólida clara mestre limpa e direta pura densa viva e imaculada.",
+                        "Papel não é vivo orgânico base mitocondrial ativo quente doente.",
+                        "Sintoma clínico macro não explicável pela base citológica estrutural mitocondrial de alienação simbionte mutante passada letal fria oca rasa nua."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Difícil",
+                text: "O Núcleo eucarionte é o maestro mestre que domina a célula citoplasmática ativa do dia a dia por ordens hormonais, enzimáticas e construtivas. Como é que o Núcleo (que NUNCA sai do seu sítio fechado com carioteca na Célula Animal) transmite as suas mensagens urgentes às fábricas que estão lá fora mergulhadas no citoplasma, os Ribossomas soltos rudes fortes frios vivos mornos quentes frios finos densos fundos mudos?",
+                options: ["Atira sangue de ferro cego raso fundo falso chato morno suado lento mudo falso calmo do sol verde de neve baço mole e sujo mole.", "Envia ondas Wi-Fi elétricas de choque mortal e agudo frio e liso de raio fino limpo duro reto e cego cego fofo sujo mole doce baço ralo morto suado limpo claro nulo seco cego cego vazio liso limpo sujo raso.", "Grita do centro para fora usando cordas ríspidas sonoras vocais orgânicas falsas de cálcio morno mole mole ralo cego cego oco oco calmo chato podre gordo sujo de gordura adiposa gorda amarela branca lisa podre fina doce mole.", "Ele faz uma fotocópia seletiva (transcrição) e envia um 'estafeta' molecular e fita descartável solta temporária (O RNA Mensageiro - mRNA), que desliza saindo suavemente pelos Poros Nucleares e viaja até acoplar-se no Ribossoma do Retículo ou livre citoplasmático para que este o traduza em proteína final viva utilitária pura forte e dura base e clássica vital."],
+                correct: 3,
+                explanation: {
+                    correct: "A burocracia química letal da máquina de Deus: O Cofre não mexe e o Mestre DNA não se suja no barro citoplasmático. O DNA é copiado em fita de RNA (mais fraco). O RNA vaza pelo poro da porta, o Ribossoma agarra a fita, lê os códigos e amarra os aminoácidos e deita a proteína que o núcleo pediu (ex: insulina, pepsina, colagénio da derme). A perfeição cibernética biológica limpa do organismo celular primário puro fino direto genial mestre real cego limpo liso reto cego calmo mudo base viva plena firme clara doce.",
+                    options: [
+                        "Falso hematológico surreal místico poético solto limpo de ferro e lixo calmo livre baço mole mole murcho murcho sujo lúgubre denso maciço longo e fino limpo.",
+                        "Eletromagnetismo de rede wireless moderna inorgânica não envia péptidos polímeros de código amínico de trânsito em citosol de pH úmido hídrico celular vivo cru morno raso e lento.",
+                        "Órgãos fônicos e pregas teciduais de som macro mecânicas não comunicam química de tradução proteica nucleólatica nuclear de transição em membranas porosas nucleares de duplo lipídio seletivo livre mudo calmo morto raso oco mole cego sujo fofo gordo nulo fraco doce morno oco baço falso cego lento oco cego podre ralo baço.",
+                        "Esta é a alternativa correta molecular do dogma central da biologia exato de transcrição tradução celular real imortal clássico mestre genial absoluto padrão base pura limpa suprema limpa limpa certa."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Difícil",
+                text: "Numa Célula Eucarionte Animal Humana Saudável Rija Quente Viva Plena Sólida Morna Suave Ativa Forte Intensa Do Sangue Pleno Limpo Densa, o Citoplasma Hialoplasmático Basal Cru Citológico Cru Intenso Lento Calmo e Líquido Solto Macio Leve Doce Claro Nulo Brilhante não se escapa, nem se esvazia deitanto a vida inteira e fluída para o chão duro sujo mudo baço gordo falso cru mudo chato e calmo porque ele possui e enverga a capa da 'Membrana Plasmática Pura'. Do que se compõe a Membrana Plasmática Essencial do Corpo Animal que dita e regula as entradas no plasma vital humano biológico de raiz fina calma oca pura sólida de vida imune murcha mole lisa livre doce rasa e morna e mole?",
+                options: ["De celulose verde rija de papel e madeira dura e grossa oca e seca e falsa e fria que só os elefantes puros e limpos digerem.", "De calcário de cálcio puro ósseo estéril morto chato suado longo de neve mole e de pedra calcária branca e de dente limpo fofo duro cego de pó quente.", "De uma bicamada fosfolipídica oleosa gorda flexível mole de barreira ativa cravejada entranhada mergulhada de proteínas funcionais canais poros porteiras de colesterol animal estrutural mole termal liso calmo firme macio seletivo denso fluido mestre que atua como porta do castelo citoplasmático final vital cru real vivo puro intenso forte limpo.", "De quitina negra escura da barata fúngica micológica grossa grossa de pele escamosa suja mole dura chata lenta baça fria rala morta pálida de sangue suado de esporos liso fofo sujo longo cego fofo sujo gordo oco ralo."],
+                correct: 2,
+                explanation: {
+                    correct: "A fluidez plástica mágica! A membrana lipoproteica fosfolipídica forma a bolsa da água biológica. A bicamada de gordura não deixa a água fugir, e as proteínas atuam como as maçanetas e detetores de retina, deixando passar O2, atirando Na+, puxando Glicose, mas tudo de forma estrita severa vigiada policiada seletiva fluida mole tenra e maleável pura clássica sólida basal geral e clássica normal dura viva certa viva clara plena suprema limpa.",
+                    options: [
+                        "Animais não carregam e nem sintetizam fibras rígidas polisacáridas de botânica celular e xilema base de parede secundária de ervas ou madeira vegetal de suporte forte nua rica fraca limpa solta cega opaca.",
+                        "Esta barreira geológica óssea e mineral cristalizada de hidroxiapatita não encerra a matriz citosólica fluida base elementar maciça gorda e hídrica mole doce limpa cega mole calma nula morta baça falsa rasa.",
+                        "Esta é a alternativa correta citoquímica microscópica laboratorial suprema de padrão mestre biológico forense autêntico e de prova científica mundial rigorosa estrita e reta clara de lógica inabalável plena e certa da vida densa real clássica forte.",
+                        "Fungos micológicos e artrópodes rudes e suados de crosta dura quitinosa morta exterior formam o bolor fétido e a concha oca falsa baça fina doce cega rasa morta seca fofa rala limpa, nós eucariontes animais mamíferos superiores estamos nus soltos puros flexíveis leves e calmos macios no limite limpo doce fofo murcho mole tenro macio de parede de lipídio puro oleoso polar liso solto mole liso cego fino fraco mole quente fofo morno falso longo chato raso baço podre pálido cego podre fofo seco mole."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Médio",
+                text: "O que diz a Lei Cito-Genética e Biológica do Exame do Secundário Alfa sobre as diferenças cruciais capitais e finais entre uma Célula Humana Carnívora Hepática Gorda Gástrica e a Célula Procarionte Bactéria Suja Parasita Infecciosa Patogénica Primitiva de Raiz Monera Base Cega Oca Murcha Oca Pálida Morta Terna Lenta Mole Rasa Limpa Suave Morna Falsa Cega Seca Fria Baça Rasa Suja Murcha Calma Murcha Mudo Lenta Mole Oca Fria Rala Cega Baça Rasa Falsa Doce Limpa Podre Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?",
+                options: ["Ambas possuem Complexo de Golgi Correios e Vacúolo central Hídrico Animal Forte de Núcleo Pálido Morto Raso Cego Oco Gordo Baço.", "A Animal Humana tem núcleo de DNA Eucarionte Forte e Mitocôndria. A Bactéria Monera Procarionte não tem núcleo protetor de DNA nem mitocôndrias alienígenas fortes puras vivas e complexas no seu corpo nulo, usando apenas os ribossomas comuns de síntese crua rústica nua de fora.", "O animal tem a Parede de Madeira Celulose Verde Limpa e a Bactéria Eucarionte é de Plástico Óleo Morto Suado Gordo Cego Falso Gordo Sujo Lento Frio Calmo Baço e Mole Nulo Raso Nu Oco.", "Ambas não possuem Célula nem Membrana Lípida, sendo meros aglomerados radioativos transparentes vazios mortos de luz solar pura fria seca nua e clara cega falsa gorda e suada morta fofa morta de vida lúgubre densa de lixo vácuo nulo baço longo nulo de cal mudo murcho."],
+                correct: 1,
+                explanation: {
+                    correct: "Mantra do sucesso do aluno Alfa do topo clínico citológico mestre do diagnóstico pericial seguro! Bactérias procariontes são pobres nus: Não há núcleo membrana carioteca, o seu anel genómico está lá atirado solto no lúmen do Hialoplasma e não ganham organelos membranosos mitocondriais de energia nem sacos golgi. Usam os Ribossomos (a máquina universal da vida genética construtiva celular). Os humanos de topo têm a cidade inteira na barriga montada com membrana e mitocondrias plenas limpas e doces lisas puras densas clássicas base reais seguras doces fortes duras vivas claras limpas mestre fortes.",
+                    options: [
+                        "Bactérias e Célula Animal normal carnívora não ativam vacúolos de porte vegetal macro hídrico central de sol forte botânico.",
+                        "Esta é a alternativa correta citológica de base teórica geral comum oficial escolar liceu final brutal direta maciça dura reta limpa letal de clínica biologia universal taxativa firme plena e imaculada certa.",
+                        "Animais não tem muro celulósico vegetal lenhoso lenhina forte. Bactérias são sempre e imperativamente do Reino Monera Procarionte, e nunca do domínio orgânico superior Eucarya de organelos mistos profundos vivos puros longos fortes retos claros e cegos ocos rudes.",
+                        "Células somáticas de osso fígado derme epitélio muscular cardíaco pulmo renal baço de animal humano, e os cocos bacilos bactérias vibrões, TODOS POSSUEM CÉLULA MATERIAL DE CARNE DE LÍPIDIO DE MEMBRANA ENVOLVENTE PURA ORGÂNICA CÉLULA CÉLULA CÉLULA! Radioatividade mineral é abstração mística fofa cega oca morta rasa e longa suada falsa falsa de erro gordo podre baço cego ralo sujo morno oco raso falso baço morto de física espacial vaga baça lenta morta pura fofa suja limpa livre rasa cega fria. A vida é biológica química aquosa."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "Resumo Epistemológico Celular Citológico Universal Absoluto Base da Teoria Científica Alfa Supremo Superior Cruel Duro Final Letal Terminal Exato Liso Frio Claro Puro Denso Intenso Pleno Fixa Sólida Pura Clara Limpa Fina de Topo Exato Base da Citologia e Microbiologia Geral da Biologia do Secundário Médio Curto Raso Médio Fixo. Seleciona a opção em que não há falhas nem mentiras em nenhuma das ligações Organelo-Domínio-Reino Celular de Vida Limpa Suada Cega Pura Cega e Nua Morna Doce Limpa Suada Seca Rala Fria Suave Murcha Murcha Lenta Morna Mole Doce Suave Branda Base Rasa Fraca Cega do Mudo Mudo Chato Oco do Fio Raso Raso Seco Baço Podre Podre Murcha Nula e Morta Oca Nula Murcha Oca do Fim Raso Frio Falso Ralo Baço Baço Vazio Baço Falso Cego Nulo Morto Fio Raso Raso Frio Limpo Puro Limpo Certa Limpa Pura Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?",
+                options: ["Vírus = Organelo Completo Procarionte Bactéria // Bactéria Monera = Citoplasma do Fungo Verde Mitocôndria DNA // Fungi Bolor = Animal da Plantas Lúgubre Oco Pleno Seco Forte Fogo Quente. ", "Bactéria Procarionte Monera Sem Núcleo Livre Cego = Possui Mitocôndria Gorda Falsa Clara Livre Viva Pura Doce Seca Limpa // Planta Vegetal Flora Botânica Clorofila Fina Folha = Possui Exclusivamente Ganchos Cílios de Natação Parasita Raso Cego Oco Morto Doce de Cisticerco Pálido Morto Mudo Calmo // Célula Animal Carne Sangue Humano = Possui Parede Celulose da Quitina Celulose Cega Cega Rasa Fria Suja Grossa Lenta Murcha Murcha Murcha Seca Forte Forte.", "BACTÉRIA (Procarionte Monera) -> Sem núcleo, Sem Organelos complexos de membrana, DNA solto, COM Ribossomos da fábrica, e Com Parede do lado de Fora exterior. // CÉLULA ANIMAL (Eucarionte) -> Com Núcleo forte DNA cofre, SEM Parede exterior livre nua, Com Mitocôndria, Com Ribossomo, Com Centríolos de Mitose da célula e Lisossoma Mestre digestivo gástrico. // CÉLULA VEGETAL ÁRVORE (Eucarionte Folha Planta Flora) -> Com Núcleo, Com Mitocôndria também, Com Cloroplasto fotossíntese do sol limpo, Com Parede celular forte celulose grossa madeira folha exterior de fora rígida, Com Grande Vacúolo gigante saco hídrico da água limpo de sol. ", "CÉLULA ANIMAL HUMANA DO SANGUE HOMEM CÃO LOBO: Com Cloroplasto Vacúolo da Mitocôndria Verde e com a Parede Fina Suja Verde Limpa Cega // BACTÉRIA VIRAL MONERA VÍRUS DO AR DA CONSTIPAÇÃO: Com Núcleo Oco Falso Doente Murcho Raso Baço Frio Cego Plasmídeo Falso Chato de Bolor da Parede Parede do Parede Parede Fungo." ],
+                correct: 2,
+                explanation: {
+                    correct: "A tabela periódica da Citologia Biológica Perfeita Absoluta e Magistral! Resumo letal. Bactéria é simples (sem núcleo sem mitocôndria só ribossomo e parede externa procarionte primitiva base lixo solto). Animal é nua e complexa (com núcleo com mitocôndrias com lisossomo sem parede nua mole lixo rico forte cega). Vegetal é complexa e rígida (com núcleo com mitocôndrias SIM E cloroplastos verdes sol fotossíntese gigante grande vacúolo saco de água parede celular forte do escudo de madeira mato erva lenhina de base lenhina dura carcaça limite flora grossa). Estudar e decorar este mantra genial das caixas é fechar a prova com máxima distinção clínica biológica forense analítica molecular pura forte da academia científica de liceu médio preparatório rigoroso universitário e calmo exato mestre real pleno firme cru denso direto claro e inquebrável.",
+                    options: [
+                        "Salada letal confusa esquizofrénica de taxonomia biológica misturada sem critério nulo de base.",
+                        "Bactéria não possui mitocôndria (organelo membranoso complexo eucarionte extra luxo alien). Animal não tem parede celulósica da alface erva mato forte.",
+                        "Esta é a alternativa correta macroestrutural taxativa clara rigorosa biológica exata padrão de ouro do teste de biologia do nono ano superior de fecho mental sólido duro indestrutível final absoluto cego de dúvida livre de erro isento de falha cego mudo final claro reto curto denso exato forte sólido firme limpo genérico basilar genial denso exato real firme suprema letal dura reta imaculada viva e pura.",
+                        "Inversão do material biológico de clorofila botânica injetada na célula somática zoológica de mamífero heterotrófico do lobo cão homem ser fauna carne e osso. Vírus é acelular não Monera."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Raciocínio Citológico Aprovado!' : '❌ Ops! Morte Celular e Lise do Conceito:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>A Verdade Fria e Dura:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#0F172A; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #FDA4AF; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Diagnóstico das Opções Erradas e Falsas:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício Verdes Clorofila, Roxos Núcleo, e Vermelhos
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#047857', '#BE123C', '#F43F5E', '#10B981']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#047857', '#BE123C', '#F43F5E', '#10B981']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Relatório Citológico Biológico";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar na Microscopia";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Destruíste ${correct} de ${questions.length} mitos da biologia celular.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Lise Citoplasmática e Ruína da Membrana Fatal do Raciocínio!</strong> A tua citologia é uma desgraça. Confundir uma planta com um animal a este nível exige repetição imediata. Atingir 80% (24 acertos) é obrigatório nesta prova. Saneamento mental urgente: Lê a Teoria Biológica e limpa as falhas maciças antes de repetires o Exame!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Reconstruir Citoplasma e Organelos Vitais (Refazer)</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Rigor Aceitável! Eucarionte Evoluído Imaculado Puro Mestre.</strong> Sabes a diferença entre um bife e uma alface a nível microscópico. A tua análise à maquinaria celular biológica está clinicamente blindada e impecável. Estás pronto para esmagar as próximas barreiras citológicas!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Inspecionar a Lâmina do Microscópio Novamente</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Forense das Mutações Ocorridas Falsas (Falhas do Cérebro):</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">O teu Mito Perigoso Lógico Fraco Inerte Nulo: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">A Verdade Celular Citológica Molecular Absoluta Viva Quente Biológica Real Clara: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

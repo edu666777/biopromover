@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bactérias e Bacterioses - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-BACTÉRIA (Ciano Clínico & Laranja Laboratorial) */
+            --bg-color: #ECFEFF; /* Ciano muito claro */
+            --text-color: #083344; /* Ciano quase preto */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #CCFBF1; /* Ciano Claro */
+            --theme-medium: #14B8A6; /* Ciano Vibrante */
+            --theme-dark: #0F766E; /* Ciano Profundo */
+            --theme-contrast: #EA580C; /* Laranja (Destaque/Perigo) */
+            --theme-accent: #EAB308; /* Amarelo Mostarda (Plasmídeos/Atenção) */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#ccfbf1 1px, transparent 1px), linear-gradient(90deg, #ccfbf1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #0F766E;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #0891B2;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #FFF7ED; /* Laranja muito suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #7C2D12;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #0F766E; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E1; line-height: 1.5; color: #334155; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🔬</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Bactérias e Bacterioses: O Domínio Procarionte</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Plasmídeo)">
+            </div>
+            <div id="no-results"><p>😕 Nenhum conceito encontrado. A ciência exige precisão.</p></div>
+
+            <!-- TÓPICO 1: O QUE SÃO BACTÉRIAS? -->
+            <div class="content-group">
+                <div class="section-badge">🧫 1. A Anatomia Procarionte</div>
+                <div class="theory-box search-target">
+                    <h3>Vivos, Simples e Eficientes</h3>
+                    <p>Ao contrário dos vírus, as bactérias são <strong>Seres Vivos</strong> genuínos. Pertencem ao Reino Monera e a sua característica principal é serem <strong>Procariontes</strong> (não têm um núcleo verdadeiro para guardar o DNA).</p>
+                    
+                    <div class="visual-area">
+                        <svg width="280" height="150" viewBox="0 0 280 150">
+                            <!-- Flagelo -->
+                            <path d="M 200 75 Q 230 50 250 80 Q 270 110 280 60" fill="none" stroke="#EA580C" stroke-width="3"/>
+                            
+                            <!-- Cápsula & Parede & Membrana -->
+                            <rect x="20" y="30" width="180" height="90" rx="45" fill="#CCFBF1" stroke="#0F766E" stroke-width="6"/> <!-- Parede Celular -->
+                            <rect x="25" y="35" width="170" height="80" rx="40" fill="#E0F2FE" stroke="#0369A1" stroke-width="2"/> <!-- Membrana -->
+                            
+                            <!-- Pili (Fímbrias) -->
+                            <line x1="30" y1="35" x2="20" y2="20" stroke="#0F766E" stroke-width="2"/>
+                            <line x1="60" y1="30" x2="55" y2="15" stroke="#0F766E" stroke-width="2"/>
+                            <line x1="120" y1="30" x2="125" y2="15" stroke="#0F766E" stroke-width="2"/>
+                            <line x1="160" y1="35" x2="175" y2="20" stroke="#0F766E" stroke-width="2"/>
+                            <line x1="40" y1="110" x2="30" y2="125" stroke="#0F766E" stroke-width="2"/>
+                            <line x1="100" y1="115" x2="100" y2="130" stroke="#0F766E" stroke-width="2"/>
+                            <line x1="150" y1="110" x2="160" y2="125" stroke="#0F766E" stroke-width="2"/>
+
+                            <!-- DNA (Nucleóide) -->
+                            <path d="M 70 75 Q 80 50 90 75 T 110 75 T 130 65 T 140 85 T 110 95 T 80 85 Z" fill="none" stroke="#EAB308" stroke-width="3"/>
+                            
+                            <!-- Plasmídeos -->
+                            <circle cx="160" cy="55" r="8" fill="none" stroke="#EAB308" stroke-width="3"/>
+                            <circle cx="150" cy="95" r="6" fill="none" stroke="#EAB308" stroke-width="3"/>
+
+                            <!-- Ribossomas -->
+                            <circle cx="50" cy="60" r="2" fill="#0F172A"/> <circle cx="60" cy="80" r="2" fill="#0F172A"/>
+                            <circle cx="120" cy="45" r="2" fill="#0F172A"/> <circle cx="170" cy="75" r="2" fill="#0F172A"/>
+                            
+                            <!-- Labels -->
+                            <text x="10" y="75" font-size="9" font-weight="bold" fill="#0F766E">Parede Celular</text>
+                            <text x="100" y="115" font-size="9" font-weight="bold" fill="#EAB308">DNA (Solto)</text>
+                            <text x="230" y="45" font-size="9" font-weight="bold" fill="#EA580C">Flagelo</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Parede Celular:</strong> Um escudo rígido exterior. É exatamente isto que os antibióticos tentam destruir!</li>
+                        <li><strong>Nucleóide:</strong> O DNA da bactéria está solto e emaranhado no meio do citoplasma, sem nenhuma membrana nuclear a protegê-lo.</li>
+                        <li><strong>Plasmídeos:</strong> Pequenos anéis de DNA "extra" que contêm os superpoderes da bactéria (ex: genes de resistência a antibióticos). Elas adoram trocar plasmídeos umas com as outras.</li>
+                        <li><strong>Ribossomas:</strong> As únicas "fábricas" que as bactérias possuem, usadas para construir proteínas.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: FORMAS E REPRODUÇÃO -->
+            <div class="content-group">
+                <div class="section-badge">🔄 2. A Multiplicação Explosiva</div>
+                <div class="theory-box search-target">
+                    <h3>Formas e Divisão Celular</h3>
+                    <p>As bactérias reproduzem-se assexuadamente por <strong>Bipartição (ou Cissiparidade)</strong>. Uma bactéria duplica o seu DNA, estica-se e corta-se ao meio. O resultado? Duas bactérias clones perfeitas em apenas 20 minutos!</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding:0; background:transparent; border:none;">
+                        
+                        <div style="background:white; border:2px solid var(--theme-dark); padding:10px; border-radius:8px; text-align:center;">
+                            <svg width="60" height="40" viewBox="0 0 60 40">
+                                <circle cx="20" cy="20" r="8" fill="#14B8A6" stroke="#000"/>
+                                <circle cx="35" cy="20" r="8" fill="#14B8A6" stroke="#000"/>
+                            </svg>
+                            <p style="font-size:0.8rem; margin:0; font-weight:bold; color:#0F766E;">Cocos<br>(Esferas/Diplococos)</p>
+                        </div>
+                        
+                        <div style="background:white; border:2px solid var(--theme-dark); padding:10px; border-radius:8px; text-align:center;">
+                            <svg width="60" height="40" viewBox="0 0 60 40">
+                                <rect x="15" y="12" width="30" height="15" rx="7" fill="#14B8A6" stroke="#000"/>
+                            </svg>
+                            <p style="font-size:0.8rem; margin:0; font-weight:bold; color:#0F766E;">Bacilos<br>(Bastonetes)</p>
+                        </div>
+                        
+                        <div style="background:white; border:2px solid var(--theme-dark); padding:10px; border-radius:8px; text-align:center;">
+                            <svg width="60" height="40" viewBox="0 0 60 40">
+                                <path d="M 10 20 Q 20 5 30 20 T 50 20" fill="none" stroke="#14B8A6" stroke-width="4"/>
+                            </svg>
+                            <p style="font-size:0.8rem; margin:0; font-weight:bold; color:#0F766E;">Espirilos<br>(Espirais)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="highlight-box">
+                        <strong>Esporos de Resistência:</strong> Quando o ambiente fica tóxico (sem comida, muito calor ou químicos), algumas bactérias (como a do Tétano) "encolhem-se" numa carapaça dura chamada esporo. Podem ficar anos a dormir na terra até as condições melhorarem!
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: BACTERIOSES -->
+            <div class="content-group">
+                <div class="section-badge">🤒 3. Os Inimigos Microscópicos</div>
+                <div class="theory-box search-target">
+                    <h3>Bacterioses: As Doenças Bacterianas</h3>
+                    <p>Apesar de a maioria das bactérias ser inofensiva (ou até útil), algumas são patogénicas (causam doença). A transmissão varia conforme a espécie:</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:10px;">
+                        <li><strong>Pelo Ar/Gotículas:</strong> <em>Tuberculose</em> (ataca os pulmões gravemente) e <em>Meningite Bacteriana</em>.</li>
+                        <li><strong>Pela Água/Alimentos:</strong> <em>Cólera</em> (causa diarreia letal por desidratação, ligada a falta de saneamento) e <em>Botulismo</em> (toxina em enlatados estragados).</li>
+                        <li><strong>Via Sexual (ISTs):</strong> <em>Sífilis</em> e <em>Gonorreia</em> (são curáveis com antibióticos se detetadas cedo).</li>
+                        <li><strong>Por Feridas/Solo:</strong> <em>Tétano</em> (os esporos da bactéria estão na terra/ferrugem e libertam uma toxina que causa paralisia muscular extrema).</li>
+                        <li><strong>Por Animais:</strong> <em>Leptospirose</em> (a bactéria sobrevive na urina do rato e entra na nossa pele durante cheias/enchentes).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: ANTIBIÓTICOS -->
+            <div class="content-group">
+                <div class="section-badge">💊 4. A Arma e o Risco</div>
+                <div class="theory-box search-target">
+                    <h3>Antibióticos e Superbactérias</h3>
+                    <p>Em 1928, Alexander Fleming descobriu acidentalmente que um fungo (<em>Penicillium</em>) matava bactérias, criando assim a <strong>Penicilina</strong> (o primeiro antibiótico). Isto mudou a história da humanidade.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="260" height="110" viewBox="0 0 260 110">
+                            <!-- Comprimido atacando bactéria normal -->
+                            <rect x="20" y="40" width="40" height="20" rx="10" fill="#EA580C" stroke="#000" stroke-width="2"/>
+                            <path d="M 60 50 L 90 50" stroke="#EA580C" stroke-width="3" marker-end="url(#arrow)"/>
+                            <path d="M 110 30 Q 130 50 110 70 M 130 40 Q 110 50 130 60" fill="none" stroke="#14B8A6" stroke-width="4"/>
+                            <text x="120" y="90" font-size="9" font-weight="bold">Destruição Celular</text>
+
+                            <!-- Comprimido rebatendo na Superbactéria -->
+                            <rect x="180" y="20" width="40" height="60" rx="20" fill="#EAB308" stroke="#000" stroke-width="4"/>
+                            <path d="M 180 50 L 150 50" stroke="#EA580C" stroke-width="3" stroke-dasharray="4,4"/>
+                            <text x="160" y="45" font-size="12">💥</text>
+                            <text x="200" y="95" text-anchor="middle" font-size="9" font-weight="bold" fill="#0F766E">Superbactéria</text>
+                        </svg>
+                    </div>
+
+                    <div class="highlight-box">
+                        <strong>O Perigo de Parar o Tratamento:</strong> Se o médico mandar tomar o antibiótico durante 8 dias, e tu parares ao 4º dia porque "já te sentes bem", cometeste um erro biológico fatal. Tu mataste as bactérias fracas, mas as mais fortes (resistentes) sobreviveram. Elas vão multiplicar-se e a doença volta em força. O uso irresponsável de antibióticos gera as mortais <strong>Superbactérias</strong> através da Seleção Natural de Darwin!
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar Diagnóstico Laboratorial (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">Microbiologia Aplicada</h2>
+                <p style="color: #0F766E; font-size: 0.95rem; font-weight:600;">
+                    30 questões sobre os seres procariontes. Acerta <strong>80% (24/30)</strong> ou arriscas-te a provar que não prestaste atenção à Ciência! Lê a correção rigorosa de cada erro.
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Relatório Científico</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS RIGOROSOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Estrutura Celular e Classificação (1-7)
+            {
+                id: 1, level: "Fácil",
+                text: "Ao nível da sua organização celular, a característica que define ABSOLUTAMENTE todas as bactérias e as separa dos animais e plantas é o facto de serem:",
+                options: ["Eucariontes (com núcleo verdadeiro).", "Acelulares (não possuem células).", "Procariontes (o seu material genético não está guardado dentro de um núcleo).", "Pluricelulares (feitas de várias células)."],
+                correct: 2,
+                explanation: {
+                    correct: "As bactérias são o exemplo clássico de células Procariontes. O prefixo 'Pro-' significa 'antes', e 'Cario' significa núcleo. O DNA está solto e emaranhado no citoplasma.",
+                    options: [
+                        "Isto descreve plantas, animais e fungos.",
+                        "Isto descreve os Vírus.",
+                        "Esta é a alternativa correta.",
+                        "As bactérias são sempre UNICELULARES (feitas de uma única célula)."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Fácil",
+                text: "A que grande Reino da biologia pertencem as bactérias e as cianobactérias?",
+                options: ["Reino Protista", "Reino Fungi", "Reino Animalia", "Reino Monera"],
+                correct: 3,
+                explanation: {
+                    correct: "Exato. O Reino Monera é o reino exclusivo dos organismos procariontes unicelulares.",
+                    options: [
+                        "Inclui protozoários e algas (eucariontes).",
+                        "Inclui cogumelos e bolores.",
+                        "Inclui animais.",
+                        "Esta é a alternativa correta."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Médio",
+                text: "Uma bactéria é um organismo muito simples, carecendo de mitocôndrias ou complexo de Golgi. No entanto, ela precisa de construir proteínas. Qual é o ÚNICO organelo presente no citoplasma bacteriano?",
+                options: ["Cloroplasto", "Ribossoma", "Lisossoma", "Vacúolo"],
+                correct: 1,
+                explanation: {
+                    correct: "Os Ribossomas são as 'fábricas' de proteínas. Como as proteínas são a base química da vida (enzimas, estruturas), nenhuma célula (nem mesmo as primitivas bactérias) pode viver sem eles.",
+                    options: [
+                        "Usado para fotossíntese (bactérias fazem fotossíntese com clorofila dispersa, não organelos estruturados).",
+                        "Esta é a alternativa correta.",
+                        "Para digestão intracelular em eucariontes.",
+                        "Para armazenamento em eucariontes."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Médio",
+                text: "Muitas bactérias possuem estruturas defensivas externas muito resistentes. O alvo principal da maioria dos antibióticos é destruir uma 'armadura' rígida que envolve a bactéria, chamada:",
+                options: ["Membrana Nuclear", "Parede Celular (de peptidoglicano)", "Mitocôndria", "Citoesqueleto"],
+                correct: 1,
+                explanation: {
+                    correct: "A Parede Celular protege a bactéria contra ruturas por pressão de água. Se o antibiótico impedir a bactéria de fabricar a parede, a bactéria incha e 'explode' (lise celular).",
+                    options: [
+                        "Bactérias não têm núcleo.",
+                        "Esta é a alternativa correta.",
+                        "Bactérias não têm mitocôndrias.",
+                        "É uma rede interna de suporte em eucariontes."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Difícil",
+                text: "Para além do seu grande DNA circular principal (nucleóide), as bactérias frequentemente possuem pequenos anéis de DNA extra que lhes conferem vantagens de sobrevivência (como a resistência a venenos). Como se chamam estes anéis?",
+                options: ["Plasmídeos", "Cromossomos sexuais", "Cílios", "Mesossomas"],
+                correct: 0,
+                explanation: {
+                    correct: "O Plasmídeo é como se fosse uma pen-drive com 'hacks' genéticos. As bactérias conseguem passar estes plasmídeos umas às outras, espalhando a resistência aos antibióticos rapidamente pela população.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "As bactérias não têm X ou Y.",
+                        "Estruturas de locomoção.",
+                        "Dobra da membrana (conceito histórico/artefacto microscópico)."
+                    ]
+                }
+            },
+            {
+                id: 6, level: "Fácil",
+                text: "Ao microscópio, as bactérias esféricas (em forma de bola) que andam muitas vezes agrupadas em cachos ou fios são denominadas:",
+                options: ["Bacilos", "Espirilos", "Vibriões", "Cocos"],
+                correct: 3,
+                explanation: {
+                    correct: "A forma redonda é o 'Coco' (ex: Estreptococos, Estafilococos).",
+                    options: [
+                        "Têm forma de bastonete/cápsula de comprimido.",
+                        "Têm forma de espiral.",
+                        "Têm forma de vírgula (,).",
+                        "Esta é a alternativa correta."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Médio",
+                text: "Em condições ambientais péssimas (falta de comida, calor extremo ou produtos químicos), certas bactérias (como a do Tétano) não morrem. Elas desidratam, criam uma casca impenetrável e ficam 'adormecidas' no solo durante décadas. Como se chama esta forma de resistência?",
+                options: ["Feto bacteriano", "Esporo", "Cápsula de hibernação", "Clone"],
+                correct: 1,
+                explanation: {
+                    correct: "O Esporo bacteriano é quase indestrutível. Resiste à água a ferver e ao álcool. Só métodos drásticos (como a Autoclave hospitalar) conseguem destruir esporos esterilizando material médico.",
+                    options: [
+                        "Bactérias não têm embriões.",
+                        "Esta é a alternativa correta.",
+                        "A cápsula existe na bactéria ativa, o esporo é uma transformação total.",
+                        "Clone é o resultado da reprodução natural."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Reprodução e Vida (8-13)
+            {
+                id: 8, level: "Fácil",
+                text: "As bactérias multiplicam-se de forma assustadoramente rápida. Qual é o seu processo normal de reprodução?",
+                options: ["Reprodução sexuada (produzem gâmetas masculinos e femininos).", "Reprodução assexuada por Bipartição (ou Cissiparidade), onde uma célula copia o DNA e divide-se em duas metades iguais.", "Brotamento de sementes.", "Fragmentação celular múltipla."],
+                correct: 1,
+                explanation: {
+                    correct: "Bipartição (dividir em duas partes). Uma bactéria duplica o DNA, estica-se e corta-se no meio. Em condições ideais, isto acontece a cada 20 minutos, gerando milhares de clones em poucas horas.",
+                    options: [
+                        "Elas não têm gâmetas (óvulos/espermatozoides).",
+                        "Esta é a alternativa correta.",
+                        "Isso é para plantas e alguns fungos.",
+                        "Isso é regeneração de partes em animais simples (ex: planária)."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Difícil",
+                text: "Apesar de a reprodução bacteriana criar CLONES exatos, as populações de bactérias adquirem novas características muito rápido. Para além das mutações, elas trocam DNA entre si (ex: através de um tubo chamado 'Pili sexual'). Este processo de mistura genética chama-se:",
+                options: ["Clonagem cruzada", "Conjugação bacteriana", "Meiose", "Fagocitose genética"],
+                correct: 1,
+                explanation: {
+                    correct: "Na Conjugação, duas bactérias ligam-se e uma transfere uma cópia do seu plasmídeo para a outra. É assim que uma bactéria ensina a outra a resistir a um antibiótico sem sequer terem de se reproduzir!",
+                    options: [
+                        "Termo inventado.",
+                        "Esta é a alternativa correta.",
+                        "A meiose é a divisão para formar gâmetas (em eucariontes).",
+                        "Fagocitose é 'comer' algo."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Médio",
+                text: "Como as bactérias são um Reino extremamente diversificado, podemos afirmar sobre a sua alimentação que:",
+                options: ["Todas são parasitas que causam doenças (patogénicas).", "Todas fazem fotossíntese.", "Todas são carnívoras.", "Existem bactérias Autotróficas (fazem fotossíntese/quimiossíntese) e Heterotróficas (absorvem matéria orgânica do meio)."],
+                correct: 3,
+                explanation: {
+                    correct: "A versatilidade das bactérias é absoluta. As cianobactérias fazem fotossíntese, as do fundo do mar fazem quimiossíntese, e a maioria absorve matéria morta ou atua como parasita.",
+                    options: [
+                        "Erro! Apenas uma minoria ínfima é patogénica.",
+                        "Nem todas têm o equipamento enzimático para isso.",
+                        "Bactérias não comem 'carne' como animais, absorvem moléculas orgânicas.",
+                        "Esta é a alternativa correta."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Fácil",
+                text: "Qual destas frases descreve um erro crasso e um mito perigoso muito propagado na sociedade?",
+                options: ["'As bactérias multiplicam-se rapidamente no calor.'", "'Sem bactérias, nós morreríamos de fome e problemas intestinais.'", "'Todas as bactérias são microrganismos nocivos e perigosos que devem ser exterminados com produtos de limpeza em todo o lado.'", "'Existem bactérias que sobrevivem a antibióticos.'"],
+                correct: 2,
+                explanation: {
+                    correct: "Tentar matar 100% das bactérias de uma casa destrói o nosso microbioma e o sistema imunitário! A vasta maioria das bactérias no teu corpo (Flora Intestinal) são Mutualistas pacíficas que te ajudam a viver.",
+                    options: [
+                        "Isso é uma verdade biológica.",
+                        "Isto é verdade (ajudam na digestão e produção de vitaminas).",
+                        "Esta é a alternativa correta.",
+                        "Isto é uma dura realidade hospitalar."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Médio",
+                text: "Na ecologia global, se não existissem bactérias Decompositoras juntamente com os fungos, o que aconteceria?",
+                options: ["Os animais carnívoros extinguir-se-iam imediatamente.", "O ciclo da matéria parava: os cadáveres e as folhas mortas nunca apodreciam e o solo ficava estéril, sem nutrientes para as plantas.", "O mar secava.", "A fotossíntese tornava-se vermelha."],
+                correct: 1,
+                explanation: {
+                    correct: "A decomposição bacteriana é o grande motor da reciclagem química do planeta. Elas transformam carne e madeira morta nos minerais básicos que adubam a floresta do futuro.",
+                    options: [
+                        "O colapso demoraria um pouco pela base da cadeia, não seria a falha dos carnívoros em si.",
+                        "Esta é a alternativa correta.",
+                        "A água evapora fisicamente, não biologicamente.",
+                        "Não afeta o espectro da luz da clorofila."
+                    ]
+                }
+            },
+            {
+                id: 13, level: "Fácil",
+                text: "A indústria alimentar depende massivamente de bactérias específicas (como os Lactobacilos) que realizam a Fermentação Lática. Graças a elas, conseguimos produzir industrialmente:",
+                options: ["Álcool para os carros.", "Pão e Bolos.", "Iogurtes e Queijos.", "Sal de cozinha."],
+                correct: 2,
+                explanation: {
+                    correct: "As bactérias láticas consomem o açúcar do leite (lactose) e libertam ácido lático. É este ácido que azeda o leite e lhe dá aquela textura e sabor cremoso característicos do iogurte e do queijo.",
+                    options: [
+                        "Isso usa a fermentação alcoólica de fungos (leveduras).",
+                        "Isso usa fungos (Saccharomyces).",
+                        "Esta é a alternativa correta.",
+                        "O sal é mineral extraído do mar/minas."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Bacterioses (14-22)
+            {
+                id: 14, level: "Fácil",
+                text: "A Cólera é uma doença bacteriana agressiva que causa diarreia aquosa grave, levando rapidamente à morte por desidratação se não for tratada. Como é, quase sempre, transmitida?",
+                options: ["Pela picada de mosquitos durante a noite.", "Ao beber água contaminada com fezes (falta de saneamento básico).", "Pelo ar, quando alguém espirra.", "Ao andar descalço no asfalto quente."],
+                correct: 1,
+                explanation: {
+                    correct: "A bactéria 'Vibrio cholerae' é a doença clássica da pobreza e da falta de esgotos. As fezes de um doente contaminam o poço de água, infetando milhares de pessoas em dias.",
+                    options: [
+                        "Isto seria a Malária ou Dengue.",
+                        "Esta é a alternativa correta.",
+                        "Isto seria Gripe ou Tuberculose.",
+                        "A cólera é ingestiva-gastrointestinal, não dérmica em asfalto."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Médio",
+                text: "A Tuberculose foi uma das maiores pragas da humanidade (conhecida no século XIX como 'a peste branca'). Que órgão é o alvo principal da bactéria Bacilo de Koch, e como se transmite?",
+                options: ["Ataca os pulmões; transmite-se pelo ar (tosse/espirro).", "Ataca o fígado; transmite-se pelo álcool.", "Ataca o sangue; transmite-se por carraças.", "Ataca a pele; transmite-se por beijos."],
+                correct: 0,
+                explanation: {
+                    correct: "A Tuberculose destrói o tecido pulmonar, causando tosse com sangue. Como a bactéria vive nos pulmões, quando o doente tosse, atira milhões de bactérias para o ar, infetando quem respirar perto dele.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Álcool causa cirrose, não tuberculose.",
+                        "Carraças transmitem a doença de Lyme.",
+                        "Pele é atacada por bactérias diferentes (ex: Lepra/Hansen)."
+                    ]
+                }
+            },
+            {
+                id: 16, level: "Médio",
+                text: "O Tétano é uma bacteriose aterrorizante que causa espasmos musculares tão violentos que podem partir ossos, e que frequentemente mata por paragem respiratória. Qual o ambiente típico onde a bactéria do Tétano vive?",
+                options: ["Dentro de água engarrafada nos supermercados.", "No ar poluído das grandes cidades modernas.", "No solo (terra) e em objetos sujos e ferrugentos, sob a forma de esporos altamente resistentes.", "Apenas no gelo da Antártida."],
+                correct: 2,
+                explanation: {
+                    correct: "O 'Clostridium tetani' vive na sujidade do chão. Se pisares um prego sujo (a ferrugem apenas cria uma ferida perfurante boa para a bactéria sem oxigénio entrar), a bactéria acorda e liberta uma neurotoxina fatal. Por isso deves vacinar-te de 10 em 10 anos!",
+                    options: [
+                        "A água passa por tratamento.",
+                        "O tétano não se pega por via aérea urbana.",
+                        "Esta é a alternativa correta.",
+                        "Morreria sem matéria para infetar a longo prazo desta forma."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Fácil",
+                text: "Das ISTs (Infeções Sexualmente Transmissíveis) mais conhecidas mundialmente, duas das mais graves são originadas por BACTÉRIAS e têm cura rápida se tratadas no início com antibióticos. Quais são?",
+                options: ["SIDA e HPV", "Sífilis e Gonorreia", "Herpes Genital e Covid-19", "Cólera e Raiva"],
+                correct: 1,
+                explanation: {
+                    correct: "A Sífilis (Treponema pallidum) e a Gonorreia (Neisseria gonorrhoeae) são flagelos curáveis. Se não forem tratadas a tempo, a Sífilis ataca o cérebro e o coração anos mais tarde, levando à loucura e à morte.",
+                    options: [
+                        "Ambas são Virais (Vírus não curam com antibiótico).",
+                        "Esta é a alternativa correta.",
+                        "Herpes é viral, Covid é respiratória viral.",
+                        "Nenhuma delas é primariamente de transmissão sexual."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Médio",
+                text: "A Leptospirose é uma bacteriose que costuma provocar surtos em épocas de grandes cheias e enchentes nas cidades. Como é que o ser humano se contamina?",
+                options: ["Ao respirar a neblina dos rios durante a cheia.", "Ao beber água do mar na praia.", "Através do contacto de pele com feridas (ou mucosas) com água contaminada com URINA de ratos infetados.", "Através da picada de mosquitos que se reproduzem nas cheias."],
+                correct: 2,
+                explanation: {
+                    correct: "Os ratos portadores da bactéria urinam na cidade. Quando chove e há inundações, a água espalha a urina para todo o lado. Se andares a chapinhar nas cheias e tiveres um pequeno corte no pé, a bactéria entra diretamente no teu sangue.",
+                    options: [
+                        "Não é uma doença primariamente de inalação em ar livre.",
+                        "A água do mar tem alta salinidade e não é a via comum do roedor.",
+                        "Esta é a alternativa correta.",
+                        "Mosquitos dão Dengue, a Leptospirose é contacto direto do solo/água."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Difícil",
+                text: "Para além da sua infame ação neurológica, o que torna a toxina do botulismo (causada pela bactéria Clostridium botulinum) numa falha técnica da indústria alimentar, visto que ocorre muito em conservas e enlatados estragados?",
+                options: ["Ela desenvolve-se apenas em alimentos deixados ao sol ardente.", "A bactéria é anaeróbia estrita (só cresce ONDE NÃO HÁ OXIGÉNIO). Se uma lata for mal esterilizada, o ambiente fechado sem ar é perfeito para a bactéria libertar a toxina.", "A bactéria é aeróbia e sobrevive de furar o alumínio.", "A toxina atua apenas mudando a cor dos alimentos para azul."],
+                correct: 1,
+                explanation: {
+                    correct: "Falta de oxigénio não mata todas as bactérias! Latas inchadas (com gás lá dentro) são o sinal vermelho do Botulismo. A toxina paralisa os músculos e é tão fatal que uma dose ínfima pode matar uma cidade. (Curiosidade: em microdoses purificadas, é o famoso Botox que apaga rugas paralisando o rosto).",
+                    options: [
+                        "Ocorrem em latas guardadas na despensa.",
+                        "Esta é a alternativa correta.",
+                        "Elas morreriam na presença de oxigénio atmosférico.",
+                        "A pior coisa do botulismo é que muitas vezes não altera o cheiro nem a cor da comida de forma evidente."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Fácil",
+                text: "Se um cão raivoso morder uma pessoa, o médico irá preocupar-se principalmente com a transmissão de uma doença bacteriana ou viral grave?",
+                options: ["Viral, pois a Raiva é causada por um vírus letal.", "Bacteriana, pois os dentes do cão injetam o bacilo de Koch.", "Ambas, sendo a Raiva bacteriana e o Tétano viral.", "Bacteriana, focada apenas nas cáries do cão."],
+                correct: 0,
+                explanation: {
+                    correct: "Este é um truque de revisão de matéria! O Tétano (no prego) é Bactéria. A Raiva (na boca do cão e do morcego) é um Vírus neurotrópico, exigindo vacina e soro imediatos.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Bacilo de Koch causa a Tuberculose respiratória.",
+                        "Troca completa de agentes.",
+                        "Mordidas transmitem bactérias da boca que infetam a ferida, mas a ameaça letal principal aguda é a Raiva (vírus)."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Antibióticos e Superbactérias (21-27)
+            {
+                id: 21, level: "Fácil",
+                text: "O que é que um 'Antibiótico' faz no organismo humano?",
+                options: ["Mata qualquer tipo de vírus responsável por constipações.", "Anula dores de cabeça instantaneamente.", "Inibe o crescimento ou destrói BACTÉRIAS no nosso corpo, sendo totalmente inútil contra viroses.", "Destrói parasitas intestinais multicelulares, como a ténia."],
+                correct: 2,
+                explanation: {
+                    correct: "A principal lei da medicina moderna: Antibiótico = Matar Bactéria. Eles funcionam rebentando a parede celular ou parando os ribossomas bacterianos. Como o vírus é só uma cápsula morta até entrar na célula, o antibiótico não tem parede nenhuma para atacar.",
+                    options: [
+                        "Erro clássico! Pior coisa a fazer numa virose.",
+                        "Isso é o analgésico (ex: paracetamol).",
+                        "Esta é a alternativa correta.",
+                        "Esses tratam-se com anti-helmínticos (antiparasitários)."
+                    ]
+                }
+            },
+            {
+                id: 22, level: "Médio",
+                text: "Em 1928, a descoberta acidental do primeiro antibiótico mudou a humanidade, pois um simples corte já não era uma sentença de morte. Quem descobriu a Penicilina, notando que um bolor matava as bactérias à sua volta numa placa de laboratório?",
+                options: ["Louis Pasteur", "Alexander Fleming", "Charles Darwin", "Gregor Mendel"],
+                correct: 1,
+                explanation: {
+                    correct: "Alexander Fleming foi de férias e deixou as placas de Petri sujas. Ao voltar, notou que o fungo 'Penicillium' tinha crescido e todas as bactérias ao redor tinham morrido. Tinha nascido a era da Penicilina!",
+                    options: [
+                        "Descobriu a pasteurização e defendeu a teoria dos germes.",
+                        "Esta é a alternativa correta.",
+                        "Teoria da Evolução das Espécies.",
+                        "Pai da Genética (estudos com ervilhas)."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Médio",
+                text: "Por que motivo o médico te exige (e a farmácia não te vende sem receita) que tomes o antibiótico durante 8 dias completos (até à última caixa), mesmo que a febre e as dores passem ao 3º dia?",
+                options: ["Para a farmácia faturar mais lucro.", "Para o teu corpo treinar a memória celular à força.", "Se parares o tratamento cedo, mataste apenas as bactérias fracas. As bactérias naturalmente mais fortes (resistentes) sobreviventes vão multiplicar-se, criando uma população inteira invulnerável àquele remédio.", "Porque os comprimidos de antibiótico só ativam no 8º dia."],
+                correct: 2,
+                explanation: {
+                    correct: "Este é o princípio básico da Evolução e Seleção Natural de Darwin a acontecer dentro do teu nariz! Ao parares a meio, deixaste as 'sobreviventes de elite' procriarem. Da próxima vez que ficares doente, esse antibiótico já não fará efeito algum nelas.",
+                    options: [
+                        "Teoria de conspiração sem mérito biológico.",
+                        "Antibióticos não geram células de memória imunitária (quem o faz é a vacina).",
+                        "Esta é a alternativa correta.",
+                        "Os antibióticos atuam na primeira dose, mas precisam de dias para limpar a colónia inteira."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Difícil",
+                text: "O que são as assustadoras 'Superbactérias' de que se fala frequentemente nas infeções hospitalares (KPC, MRSA)?",
+                options: ["Bactérias gigantes visíveis a olho nu e que andam fora do corpo humano.", "Bactérias alienígenas desconhecidas pela ciência terrestre.", "Bactérias que sofreram mutações evolutivas e acumularam resistência a quase todos os antibióticos conhecidos pela medicina, tornando as infeções dificílimas de curar.", "Bactérias que foram fabricadas propositadamente em laboratórios hospitalares para adoecer pacientes velhos."],
+                correct: 2,
+                explanation: {
+                    correct: "A culpa é nossa! Ao tomarmos antibióticos por tudo e por nada (especialmente quando estamos com vírus), nós treinamos as bactérias e ajudámos à sua seleção. Hoje, um arranhão num doente pode infectar com uma Superbactéria para a qual nenhum comprimido da farmácia funciona.",
+                    options: [
+                        "Tamanho não muda de forma gigantesca.",
+                        "Ficção científica.",
+                        "Esta é a alternativa correta.",
+                        "Absurdo e anti-ético."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Médio",
+                text: "Um problema muito sério da medicina moderna é o uso abusivo de antibióticos na criação de gado (vacas, porcos e galinhas), misturados diariamente na comida dos animais. O que é que este ato irresponsável promove a longo prazo?",
+                options: ["Causa a explosão populacional de lobos.", "Faz os animais ficarem com pele impenetrável.", "Transforma as quintas em autênticas fábricas e 'incubadoras' de bactérias resistentes que vão acabar no prato e no ambiente humano.", "Ajuda a matar os vírus que afetam os humanos."],
+                correct: 2,
+                explanation: {
+                    correct: "Ao dar doses baixas diárias de antibiótico a um porco só para ele engordar mais rápido (sem estar doente), o agricultor está a matar as bactérias fracas do porco e a treinar uma estirpe super-resistente no intestino do animal, que irá parar aos matadouros, rios e por fim a nós.",
+                    options: [
+                        "Sem lógica ecológica interligada desta forma.",
+                        "A resistência é microscópica.",
+                        "Esta é a alternativa correta.",
+                        "Mais uma vez: antibiótico NÃO ataca vírus."
+                    ]
+                }
+            },
+            {
+                id: 26, level: "Fácil",
+                text: "Se tiveres uma dor de garganta muito forte e fores à farmácia comprar pastilhas ou antibiótico sem consultar o médico para saber se é viral (Gripe/Covid) ou bacteriana (Faringite Estreptocócica), tu estás a fazer o perigoso ato da:",
+                options: ["Prevenção Profilática Superior", "Automedicação", "Apoio Terapêutico Focado", "Vacinação Passiva Doméstica"],
+                correct: 1,
+                explanation: {
+                    correct: "A automedicação baseada em 'achismos' é a principal causa do surgimento das Superbactérias. Como as pessoas tomam os restos de antibiótico antigo que têm em casa, estão apenas a fortalecer a doença e a baixar a sua imunidade natural.",
+                    options: [
+                        "Termos vazios.",
+                        "Esta é a alternativa correta.",
+                        "Não tem apoio clínico.",
+                        "Isso não é uma vacina."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Difícil",
+                text: "Como atuam a grande maioria dos antibióticos a nível celular (como a Penicilina) para travar a infeção sem destruir as células humanas (visto que o remédio não tem 'olhos' para saber quem é quem)?",
+                options: ["Porque os antibióticos procuram células que se movam muito depressa no sangue.", "Porque eles interferem na produção da 'Parede Celular' de Peptidoglicano, uma estrutura essencial para a bactéria e que as células humanas NÃO possuem de todo.", "Porque eles atacam o núcleo da bactéria, evitando os humanos.", "Porque reagem com a cor da bactéria."],
+                correct: 1,
+                explanation: {
+                    correct: "É a magia farmacológica! Como as células do nosso corpo (animais) não têm parede celular (só membrana plástica flexível), a Penicilina corre livre no sangue sem magoar o teu tecido, mas quando apanha a bactéria, dissolve o seu 'muro de cimento' protetor, fazendo a bactéria rebentar.",
+                    options: [
+                        "Isso mataria os nossos glóbulos brancos e espermatozoides.",
+                        "Esta é a alternativa correta.",
+                        "Bactérias NÃO têm núcleo verdadeiro para ser atacado.",
+                        "Falso."
+                    ]
+                }
+            },
+
+            // BLOCO 5: Raciocínio Sintético (28-30)
+            {
+                id: 28, level: "Difícil",
+                text: "Muitas vezes ouvimos a frase 'Lava sempre as mãos com sabão e água para matares os micróbios'. Biológica e quimicamente, porque é que o sabão comum é muitas vezes a arma mais letal contra certas bactérias (e vírus com envelope lipídico)?",
+                options: ["Porque a espuma envenena as bactérias sufocando-as com o seu gás tóxico químico especial.", "Porque o sabão interage violentamente com a 'Membrana Plasmática' da bactéria (feita de gorduras/lípidos e proteínas), dissolvendo essa capa externa tal como dissolve a gordura num prato sujo e destruindo o ser vivo.", "Porque o sabão é radioativo e destrói o DNA na sua plenitude nuclear.", "O sabão não afeta bactérias, apenas tira a terra da mão para parecer limpo no cérebro."],
+                correct: 1,
+                explanation: {
+                    correct: "Fisiologia química simples! A pele externa da bactéria tem gordura (lípidos). O sabão tem duas pontas: uma agarra a água, a outra agarra a gordura. O sabão literalmente desfaz a membrana bacteriana pelo meio, puxando a sua gordura para água e estourando-a instantaneamente.",
+                    options: [
+                        "O sabão não liberta gás tóxico na pele.",
+                        "Esta é a alternativa correta.",
+                        "Felizmente, não usamos materiais radioativos na pia da casa de banho.",
+                        "Falso. É um poderoso destruidor de patógenos."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Médio",
+                text: "Quando fazes um corte na perna num parque e precisas de saber se deves tomar a vacina contra o Tétano (profilaxia), o médico precisa de saber se a tua 'Memória Imunológica' ainda está ativa. Se já não estiver ativa, e a bactéria entrar de certeza, em vez de uma vacina, ele dará um:",
+                options: ["Paracetamol intravenoso (dor).", "Soro Antitetânico (Anticorpos prontos rápidos).", "Antibiótico em spray preventivo.", "Xarope de ferro oral ativo."],
+                correct: 1,
+                explanation: {
+                    correct: "A toxina tetânica mata rápido. Se não tiveres vacina em dia, a enfermeira não tem tempo a perder. Dá-te as 'tropas' prontas de outro animal (Soro) para neutralizar o veneno na hora e evitar o bloqueio neuro-muscular dos nervos.",
+                    options: [
+                        "Não pára o tétano letal neurológico progressivo fatal sistémico agudo.",
+                        "Esta é a alternativa correta.",
+                        "A toxina já atua muito velozmente nos nervos.",
+                        "Absurdo."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "Resumo Analítico Final: Se um aluno de Biologia afirmar que: 'Bactérias são Procariontes sem organelos, o vírus do HIV devia curar-se com penicilina e a Seleção Natural de Darwin não acontece hoje nos hospitais.' Quantos ERROS fatais ele cometeu na sua argumentação global?",
+                options: ["Zero. Ele está absolutamente correto e provou compreender a microbiologia clássica.", "Dois Erros. O vírus do HIV não cura com penicilina (antibióticos matam bactérias e não afetam vírus sem parede) e a seleção de Darwin ACONTECE hoje intensamente nos hospitais, originando as mortais Superbactérias. A parte dos procariontes estava certa.", "Um Erro. As bactérias são eucariontes na realidade.", "Três Erros. Bactérias têm dezenas de organelos como o complexo de golgi, vírus matam-se com pomadas botânicas na pele e a seleção de Darwin falhou desde o ano 2000."],
+                correct: 1,
+                explanation: {
+                    correct: "Análise perfeita e sem falhas da tua parte! Ele disse 1 verdade (bactérias procariontes sem organelos complexos, só têm ribossoma) e cometeu 2 mentiras colossais biológicas modernas (medicar vírus com penicilina e negar o facto da evolução das bactérias resistentes às portas das nossas urgências por uso abusivo de remédios).",
+                    options: [
+                        "Mentiu nos 2 terços finais da afirmação complexa cruzada.",
+                        "Esta é a alternativa correta impecável.",
+                        "A primeira parte não era erro. Elas SÃO procariontes.",
+                        "Destrói todos os dogmas e as provas visíveis."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Rigor Científico Aprovado!' : '❌ Ops! Erro Microbiológico:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>A Única Verdade Biológica:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#0F172A; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #CBD5E1; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Porque não escolhemos o resto:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício Ciano e Laranja
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#0F766E', '#14B8A6', '#EA580C', '#EAB308']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#0F766E', '#14B8A6', '#EA580C', '#EAB308']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Procedimento";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Destruíste ${correct} de ${questions.length} mitos biológicos.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Falha Antibiótica Severa!</strong> A biologia não perdoa palpites. Atingir 80% (24 acertos) é obrigatório para evitares a propagação da ignorância nesta matéria. Volta à Teoria, limpa os erros e repete o procedimento clínico com o máximo de rigor!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Desinfetar Erros e Repetir</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Imunidade Total Aprovada!</strong> O teu diagnóstico às armadilhas da microbiologia está clinicamente impecável. Vais arrasar em qualquer prova que te apareça à frente com este rigor de cirurgião.
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Testar a Memória Celular (Novamente)</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Médico (Falhas nas Linhas de Defesa):</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">A tua Escolha: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">O Diagnóstico Exato: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

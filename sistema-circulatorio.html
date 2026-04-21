@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Circulatório - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-CIRCULAÇÃO (Vermelho Sangue & Azul Venoso) */
+            --bg-color: #FFF1F2; /* Rosa/Vermelho muito claro */
+            --text-color: #4C0519; /* Bordeaux quase preto */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #FECDD3; /* Rosa Pastel */
+            --theme-medium: #E11D48; /* Vermelho Carmim (Arterial) */
+            --theme-dark: #9F1239; /* Vermelho Sangue Escuro */
+            --theme-contrast: #0284C7; /* Azul (Venoso/Destaque) */
+            --theme-accent: #F59E0B; /* Âmbar (Eletricidade Cardíaca) */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#fecdd3 1px, transparent 1px), linear-gradient(90deg, #fecdd3 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 1s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.15); color: var(--theme-contrast); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.15); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #9F1239;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #BE123C;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #E0F2FE; /* Azul suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #075985;
+        }
+        .highlight-box.warning {
+            background-color: #FEF2F2;
+            border-left-color: #BE123C;
+            color: #881337;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #9F1239; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E1; line-height: 1.5; color: #0F172A; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">❤️</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Sistema Circulatório: O Motor e as Autoestradas</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar estrutura... (ex: Ventrículo)">
+            </div>
+            <div id="no-results"><p>😕 Estrutura não encontrada. Estás com falta de fluxo sanguíneo?</p></div>
+
+            <!-- TÓPICO 1: O CORAÇÃO -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-dark);">❤️ 1. A Bomba Dupla</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-dark);">
+                    <h3 style="color: var(--theme-dark);">O Coração: Anatomia Interna</h3>
+                    <p>O coração não é um saco aberto. É um músculo poderoso (o Miocárdio) dividido em <strong>quatro quartos herméticos</strong> (cavidades). O lado direito NUNCA se mistura com o lado esquerdo.</p>
+                    
+                    <!-- MAPA ANATÓMICO EM SVG -->
+                    <div class="visual-area" style="padding: 20px 0; background-color: var(--white); border: 2px solid var(--border-color);">
+                        <svg width="100%" height="auto" viewBox="-120 0 740 450" style="max-width: 740px; font-family: 'Poppins', sans-serif;">
+                            
+                            <!-- Miocárdio (Músculo Cardíaco) -->
+                            <!-- Parede Direita (Fina) -->
+                            <path d="M 250 80 C 130 80 120 200 180 320 C 220 380 250 400 250 400 L 250 350 C 220 330 180 250 180 150 C 180 120 220 110 250 110 Z" fill="#FCA5A5" stroke="#BE123C" stroke-width="2"/>
+                            <!-- Parede Esquerda (Grossa) -->
+                            <path d="M 250 80 C 370 80 400 200 320 360 C 280 410 250 400 250 400 L 250 350 C 280 350 330 250 300 150 C 290 120 270 110 250 110 Z" fill="#E11D48" stroke="#881337" stroke-width="2"/>
+                            <!-- Septo (Meio) -->
+                            <path d="M 230 110 L 270 110 L 270 350 L 230 350 Z" fill="#BE123C" stroke="#881337" stroke-width="2"/>
+
+                            <!-- Aurículas/Átrios -->
+                            <!-- Aurícula Direita (Azul - Sangue Venoso) -->
+                            <path d="M 180 150 C 180 120 220 110 250 110 L 250 200 L 180 200 Z" fill="#BAE6FD" stroke="#0284C7" stroke-width="2"/>
+                            <text x="215" y="165" font-size="16" font-weight="900" fill="#0369A1" text-anchor="middle">AD</text>
+                            
+                            <!-- Aurícula Esquerda (Vermelho - Sangue Arterial) -->
+                            <path d="M 250 110 C 270 110 290 120 300 150 L 300 200 L 250 200 Z" fill="#FECDD3" stroke="#BE123C" stroke-width="2"/>
+                            <text x="275" y="165" font-size="16" font-weight="900" fill="#9F1239" text-anchor="middle">AE</text>
+
+                            <!-- Ventrículos -->
+                            <!-- Ventrículo Direito (Azul) -->
+                            <path d="M 180 200 L 250 200 L 250 350 C 220 330 180 250 180 200 Z" fill="#7DD3FC" stroke="#0284C7" stroke-width="2"/>
+                            <text x="215" y="270" font-size="18" font-weight="900" fill="#0369A1" text-anchor="middle">VD</text>
+
+                            <!-- Ventrículo Esquerdo (Vermelho) -->
+                            <path d="M 250 200 L 300 200 C 330 250 280 350 250 350 Z" fill="#FDA4AF" stroke="#BE123C" stroke-width="2"/>
+                            <text x="275" y="270" font-size="18" font-weight="900" fill="#9F1239" text-anchor="middle">VE</text>
+
+                            <!-- Válvulas -->
+                            <!-- Tricúspide -->
+                            <line x1="180" y1="200" x2="250" y2="200" stroke="#0284C7" stroke-width="6" stroke-dasharray="20,10"/>
+                            <!-- Mitral / Bicúspide -->
+                            <line x1="250" y1="200" x2="300" y2="200" stroke="#BE123C" stroke-width="6" stroke-dasharray="20,10"/>
+
+                            <!-- Setas de Fluxo -->
+                            <!-- Entra na AD -->
+                            <path d="M 215 50 L 215 130" stroke="#0284C7" stroke-width="6" marker-end="url(#arrowBlue)"/>
+                            <!-- AD para VD -->
+                            <path d="M 215 175 L 215 230" stroke="#0284C7" stroke-width="6" marker-end="url(#arrowBlue)"/>
+                            <!-- Entra na AE -->
+                            <path d="M 275 50 L 275 130" stroke="#BE123C" stroke-width="6" marker-end="url(#arrowRed)"/>
+                            <!-- AE para VE -->
+                            <path d="M 275 175 L 275 230" stroke="#BE123C" stroke-width="6" marker-end="url(#arrowRed)"/>
+
+                            <!-- Definições de Setas SVG -->
+                            <defs>
+                                <marker id="arrowBlue" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#0284C7"/>
+                                </marker>
+                                <marker id="arrowRed" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#BE123C"/>
+                                </marker>
+                            </defs>
+
+                            <!-- RÓTULOS (Linhas de chamada) -->
+                            
+                            <!-- Lado Esquerdo (Venoso) -->
+                            <polyline points="135,160 160,160 200,160" fill="none" stroke="#0284C7" stroke-width="2"/>
+                            <circle cx="200" cy="160" r="3" fill="#0284C7"/>
+                            <text x="130" y="165" font-size="14" font-weight="900" fill="#0284C7" text-anchor="end">ÁTRIO DIREITO (AD)</text>
+
+                            <polyline points="135,270 160,270 200,270" fill="none" stroke="#0284C7" stroke-width="2"/>
+                            <circle cx="200" cy="270" r="3" fill="#0284C7"/>
+                            <text x="130" y="275" font-size="14" font-weight="900" fill="#0284C7" text-anchor="end">VENTRÍCULO DIR. (VD)</text>
+
+                            <polyline points="135,200 160,200 180,200" fill="none" stroke="#000" stroke-width="2"/>
+                            <text x="130" y="205" font-size="12" font-weight="900" fill="#000" text-anchor="end">VÁLVULA TRICÚSPIDE</text>
+
+                            <polyline points="135,350 160,350 200,350" fill="none" stroke="#9F1239" stroke-width="2"/>
+                            <circle cx="200" cy="350" r="3" fill="#9F1239"/>
+                            <text x="130" y="355" font-size="12" font-weight="900" fill="#9F1239" text-anchor="end">MIOCÁRDIO (Fino)</text>
+
+                            <!-- Lado Direito (Arterial) -->
+                            <polyline points="365,160 340,160 290,160" fill="none" stroke="#BE123C" stroke-width="2"/>
+                            <circle cx="290" cy="160" r="3" fill="#BE123C"/>
+                            <text x="370" y="165" font-size="14" font-weight="900" fill="#BE123C" text-anchor="start">ÁTRIO ESQUERDO (AE)</text>
+
+                            <polyline points="365,270 340,270 290,270" fill="none" stroke="#BE123C" stroke-width="2"/>
+                            <circle cx="290" cy="270" r="3" fill="#BE123C"/>
+                            <text x="370" y="275" font-size="14" font-weight="900" fill="#BE123C" text-anchor="start">VENTRÍCULO ESQ. (VE)</text>
+
+                            <polyline points="365,200 340,200 300,200" fill="none" stroke="#000" stroke-width="2"/>
+                            <text x="370" y="205" font-size="12" font-weight="900" fill="#000" text-anchor="start">VÁLVULA MITRAL (Bicúspide)</text>
+
+                            <polyline points="365,350 340,350 300,350" fill="none" stroke="#9F1239" stroke-width="2"/>
+                            <circle cx="300" cy="350" r="3" fill="#9F1239"/>
+                            <text x="370" y="355" font-size="12" font-weight="900" fill="#9F1239" text-anchor="start">MIOCÁRDIO (Espesso!)</text>
+
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Átrios (Aurículas):</strong> Câmaras de RECEÇÃO (Cima). Recebem o sangue que vem do corpo ou pulmões. O sangue NUNCA passa de um átrio para o outro.</li>
+                        <li><strong>Ventrículos:</strong> Câmaras de EXPULSÃO (Baixo). São bombas fortíssimas que disparam o sangue para fora. O <strong>Ventrículo Esquerdo</strong> tem a parede muscular mais grossa porque tem de chutar sangue para o corpo todo!</li>
+                        <li><strong>Válvulas (A Rasteira Sonora):</strong> Funcionam como portas de "sentido único". Deixam o sangue descer do átrio para o ventrículo, mas fecham-se com força para impedir o retorno (refluxo). O som que ouves "TUM-TUM" é o bater destas válvulas a fechar!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: ARTÉRIAS VS VEIAS -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-medium);">🛣️ 2. Artérias vs. Veias (A Verdade)</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-medium);">
+                    <h3 style="color: var(--theme-dark);">Esquece as Cores, Foca-te na Direção!</h3>
+                    <p>O maior mito das aulas de Biologia: "Artéria transporta O2 e Veia transporta CO2". <strong>FALSO!</strong> O que define uma artéria ou uma veia é a direção do fluxo de sangue, não o que levam lá dentro.</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding:0; background:transparent; border:none;">
+                        <!-- ARTÉRIAS -->
+                        <div style="background:white; border:2px solid #E11D48; padding:15px; border-radius:8px;">
+                            <h4 style="color:#BE123C; text-align:center; font-size:1.1rem; margin-bottom:10px;">ARTÉRIAS</h4>
+                            <ul style="font-size:0.8rem; padding-left:15px; line-height:1.5;">
+                                <li><strong>SAEM</strong> do Coração!</li>
+                                <li>Têm paredes musculares muito <strong>grossas e elásticas</strong> porque lidam com o sangue em altíssima pressão.</li>
+                                <li>Não têm válvulas internas.</li>
+                            </ul>
+                        </div>
+                        <!-- VEIAS -->
+                        <div style="background:white; border:2px solid #0284C7; padding:15px; border-radius:8px;">
+                            <h4 style="color:#0369A1; text-align:center; font-size:1.1rem; margin-bottom:10px;">VEIAS</h4>
+                            <ul style="font-size:0.8rem; padding-left:15px; line-height:1.5;">
+                                <li><strong>ENTRAM</strong> no Coração!</li>
+                                <li>Têm paredes <strong>finas</strong> (o sangue já volta com pouca pressão).</li>
+                                <li>Têm <strong>VÁLVULAS VENOSAS</strong> que fecham para o sangue das pernas não cair de volta para os pés pela gravidade.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box warning">
+                        <strong>A EXCEÇÃO À REGRA (Cai sempre no Exame):</strong><br>A <strong>Artéria Pulmonar</strong> sai do coração em direção aos pulmões, mas leva sangue VENOSO (cheio de lixo CO2) para ser limpo. A <strong>Veia Pulmonar</strong> entra no coração vinda dos pulmões, carregando o sangue ARTERIAL mais rico e puro em O2 do corpo inteiro!
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: DUPLA CIRCULAÇÃO -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-contrast);">♾️ 3. O Circuito em "8"</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-contrast);">
+                    <h3 style="color: var(--theme-contrast);">Pequena e Grande Circulação</h3>
+                    <p>O teu corpo tem dois circuitos independentes. O lado direito do coração cuida de um, o lado esquerdo cuida do outro.</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:10px;">
+                        <li><strong>Pequena Circulação (Pulmonar):</strong> <em>Coração ➔ Pulmões ➔ Coração.</em><br>O Ventrículo Direito chuta o sangue sujo para os pulmões (para a Hematose). O sangue limpo volta para o Átrio Esquerdo.</li>
+                        <li><strong>Grande Circulação (Sistémica):</strong> <em>Coração ➔ Corpo ➔ Coração.</em><br>O Ventrículo Esquerdo chuta o sangue limpo (rico em O2) pela Artéria Aorta para o cérebro e pernas. O corpo suja o sangue, que volta pelas Veias Cavas para o Átrio Direito.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: O SANGUE -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: #8B5CF6;">🩸 4. O Camião de Carga</div>
+                <div class="theory-box search-target" style="border-left-color: #8B5CF6;">
+                    <h3 style="color: #4C1D95;">Os Componentes do Sangue</h3>
+                    <p>O sangue não é apenas "água vermelha". É um tecido líquido vivo, composto por quatro elementos fundamentais:</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr; gap: 10px; padding:0; background:transparent; border:none;">
+                        <div style="background:#FFFBEB; border-left:4px solid #F59E0B; padding:10px; border-radius:0 8px 8px 0;">
+                            <strong>Plasma (55%):</strong> A parte líquida e amarela. Transporta água, nutrientes, hormonas e os resíduos (CO2 dissolvido em ião bicarbonato).
+                        </div>
+                        <div style="background:#FFE4E6; border-left:4px solid #E11D48; padding:10px; border-radius:0 8px 8px 0;">
+                            <strong>Hemácias / Glóbulos Vermelhos:</strong> Os "táxis" vermelhos. Células sem núcleo, cheias de Hemoglobina (ferro) que se agarram ao Oxigénio (O2) para o distribuir pelas células. A sua falta causa Anemia.
+                        </div>
+                        <div style="background:#F1F5F9; border-left:4px solid #475569; padding:10px; border-radius:0 8px 8px 0;">
+                            <strong>Leucócitos / Glóbulos Brancos:</strong> O exército imunitário. Células maiores com núcleo que destroem vírus e bactérias.
+                        </div>
+                        <div style="background:#E0F2FE; border-left:4px solid #0284C7; padding:10px; border-radius:0 8px 8px 0;">
+                            <strong>Plaquetas (Trombócitos):</strong> Não são células inteiras, mas sim pedaços (fragmentos). Param hemorragias criando a "crosta" nas feridas (Coagulação).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar Diagnóstico Vascular (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">Cardiologia Básica</h2>
+                <p style="color: #0F172A; font-size: 0.95rem; font-weight:600;">
+                    30 questões de fisiologia cardíaca implacável. Acerta <strong>80% (24/30)</strong> ou a tua nota sofrerá um bloqueio isquémico. Lê a correção forense de cada erro!
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Relatório Hemodinâmico</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS RIGOROSOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Anatomia do Coração (1-7)
+            {
+                id: 1, level: "Fácil",
+                text: "O coração humano é anatomicamente dividido em quantas cavidades (câmaras) independentes?",
+                options: ["Duas cavidades (um átrio e um ventrículo).", "Três cavidades (dois átrios e um ventrículo).", "Quatro cavidades (dois átrios superiores e dois ventrículos inferiores).", "É uma bolsa única e aberta."],
+                correct: 2,
+                explanation: {
+                    correct: "Perfeito! O coração dos mamíferos tem quatro câmaras isoladas. O lado direito nunca se mistura com o lado esquerdo. Em cima os Átrios (que recebem), em baixo os Ventrículos (que bombeiam).",
+                    options: [
+                        "Isto é o coração dos peixes.",
+                        "Isto é o coração dos anfíbios.",
+                        "Esta é a alternativa correta.",
+                        "Biologicamente absurdo."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Fácil",
+                text: "No coração, os Átrios (Aurículas) têm uma função estruturalmente diferente dos Ventrículos. Qual é a regra do fluxo?",
+                options: ["Os átrios bombeiam o sangue para fora do coração, os ventrículos recebem o sangue.", "O sangue entra nos Átrios (câmaras de receção), que o empurram para os Ventrículos. Os Ventrículos (câmaras de expulsão) bombeiam-no com força para fora do coração.", "O sangue flui dos ventrículos para os átrios contra a gravidade.", "Eles misturam o sangue livremente num canal comum."],
+                correct: 1,
+                explanation: {
+                    correct: "Sempre de CIMA para BAIXO! Entra nos Átrios e desce para os Ventrículos. Daqui as portas abrem e o sangue sai do coração pelas artérias.",
+                    options: [
+                        "Inversão total da mecânica cardíaca.",
+                        "Esta é a alternativa correta estruturante de base.",
+                        "O fluxo reverso (refluxo) é uma patologia (sopro).",
+                        "O septo impede a mistura lateral."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Médio",
+                text: "Se analisares o corte transversal do músculo cardíaco (Miocárdio), vais notar que a parede do Ventrículo Esquerdo é incrivelmente mais GROSSA e musculada do que a do Ventrículo Direito. Porquê?",
+                options: ["Porque o lado esquerdo sofre mais inflamações no tórax.", "Porque ele tem a pesada missão de bombear e empurrar o sangue arterial com uma pressão brutal para viajar por todo o Corpo inteiro, até à ponta dos pés. O Ventrículo Direito apenas precisa de bombear sangue até aos pulmões que estão ali mesmo ao lado.", "Porque as pessoas usam mais a mão esquerda na vida.", "Porque o lado esquerdo armazena ar comprimido."],
+                correct: 1,
+                explanation: {
+                    correct: "A biologia adapta-se à função! Chutar o sangue para os pulmões (Pequena Circulação) é fácil, estão encostados. Chutar o sangue para vencer a gravidade até ao cérebro e ir aos pés (Grande Circulação) exige um músculo gigantesco no lado esquerdo.",
+                    options: [
+                        "Falso.",
+                        "Esta é a alternativa correta de bio-física e anatomia.",
+                        "Sem relação lateral.",
+                        "O coração não guarda ar."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Fácil",
+                text: "O coração emite um som caraterístico que o médico ouve no estetoscópio: o famoso 'Tum-Tum' (ou 'Lub-Dub'). O que provoca fisiológica e mecanicamente este som audível?",
+                options: ["O sangue a bater e espirrar contra a parede de músculo nua.", "O ar a entrar nas veias cegas murchas da aorta.", "É o som do impacto brutal do FECHO das Válvulas Cardíacas (Aurículo-ventriculares e Semilunares), que batem com força para impedir que o sangue volte para trás.", "O atrito do coração contra os pulmões secos e frios."],
+                correct: 2,
+                explanation: {
+                    correct: "Não é o músculo a contrair que faz barulho! São as portas (Válvulas) a fechar de estrondo! O primeiro 'TUM' são as válvulas Mitral/Tricúspide a fechar. O segundo 'TUM' são as válvulas Arteriais (Aorta/Pulmonar) a trancar. Se estas portas fecharem mal, a fuga do sangue faz um silvo chamado 'Sopro'.",
+                    options: [
+                        "Os fluidos corporais normais não fazem eco de choque acústico assim.",
+                        "Não há ar no circuito fechado.",
+                        "Esta é a alternativa correta biomecânica clínica pura.",
+                        "As pleuras e pericárdio anulam atrito mecânico de raspagem."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Médio",
+                text: "O Coração Direito (Átrio e Ventrículo Direitos) e o Coração Esquerdo lidam com tipos de sangue totalmente diferentes e não podem misturá-los (graças ao septo no meio). Qual é a regra bioquímica inquebrável deste sistema?",
+                options: ["O Lado Direito lida apenas com Sangue Venoso (pobre em O2, rico em lixo CO2) que chega do corpo cansado. O Lado Esquerdo lida apenas com Sangue Arterial (rico em oxigénio) acabado de chegar limpo dos pulmões.", "O Lado Direito lida com sangue oxigenado puro e o Esquerdo lida com água do estômago.", "O sangue flui em 8 horizontalmente entre os ventrículos da base fofa e rala.", "Ambos lidam com uma mistura 50/50 de gás letal de base murcha."],
+                correct: 0,
+                explanation: {
+                    correct: "Decora isto: Direito = Venoso (Sujo). Esquerdo = Arterial (Limpo). O lado direito pega no sangue do corpo e chuta para o pulmão limpar. O lado esquerdo pega no sangue limpo do pulmão e chuta para o corpo viver.",
+                    options: [
+                        "Esta é a alternativa correta imaculada do trânsito gasoso celular cardíaco.",
+                        "Inversão letal da fisiologia.",
+                        "O septo impede a mistura (fluxo paralelo mas cego lateralmente).",
+                        "Mistura causaria cianose (falta de O2 global)."
+                    ]
+                }
+            },
+            {
+                id: 6, level: "Difícil",
+                text: "O coração contrai ininterruptamente de dia e noite, mas tu não controlas esse batimento com a tua mente consciente. Quem atua como o 'pacemaker' (marcapasso) natural gerador da eletricidade que dita o compasso base do coração na aurícula direita?",
+                options: ["O Nervo Ótico do cérebro oco lúgubre denso mudo calmo.", "O Fígado gordo de fel calmo de água murcha cega de nula falsa.", "O Nódulo Sinoauricular (Nódulo Sinoatrial). Um feixe microscópico de células especiais que disparam pequenos choques elétricos ritmados, fazendo o músculo cardíaco contrair sozinho mesmo sem o cérebro mandar.", "Os rins murchos ralos baços de de limpo liso seco quente base longa suja."],
+                correct: 2,
+                explanation: {
+                    correct: "O coração tem eletricidade própria! É por isso que um coração humano consegue bater alguns minutos fora do corpo na mesa do cirurgião. O Nódulo SA é o maestro elétrico, disparando 70 a 80 vezes por minuto. (Se ele avariar, o doente mete um 'Pacemaker' de titânio a pilhas no peito).",
+                    options: [
+                        "Nervo ótico trata da visão visual luminosa.",
+                        "Fígado não tem papel elétrico miocárdico motor autônomo.",
+                        "Esta é a alternativa correta eletrofisiológica do nó sinusal magna pura.",
+                        "Sem relação cardíaca basal motora primária."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Fácil",
+                text: "Os movimentos mecânicos de aperto e relaxamento do coração têm nomes técnicos cruciais na medicina médica forense. Como se designa a FASE DE CONTRAÇÃO (quando o coração espreme para expulsar o sangue) e a FASE DE RELAXAMENTO (quando a câmara abre e enche)?",
+                options: ["Contração: Diástole // Relaxamento: Sístole.", "Contração: Sístole // Relaxamento: Diástole.", "Contração: Osmose // Relaxamento: Lise.", "Contração: Epiglote // Relaxamento: Pleura."],
+                correct: 1,
+                explanation: {
+                    correct: "Sístole = Aperta e chuta (A pressão arterial máxima que o médico mede: ex, o 12 no 12/8). Diástole = Abre, relaxa e enche de sangue as câmaras de vida (A pressão mínima: ex, o 8).",
+                    options: [
+                        "Inversão fatal dos conceitos mecânicos clínicos do ciclo cardíaco.",
+                        "Esta é a alternativa correta da mecânica vascular tensional pura e exata direta.",
+                        "Termos da citologia de membrana (água e rutura).",
+                        "Partes do sistema respiratório."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Vasos Sanguíneos: O Grande Mito Artéria vs Veia (8-14)
+            {
+                id: 8, level: "Fácil",
+                text: "Qual é a Verdadeira e ÚNICA regra infalível biológica anatômica universal para classificar um vaso como ARTÉRIA ou como VEIA no corpo humano?",
+                options: ["A cor do sangue. As artérias levam sempre vermelho, as veias levam sempre azul sujo.", "A grossura apenas. O tubo grosso é veia, o tubo fino é artéria de osso.", "O Sentido do Fluxo! ARTÉRIA é qualquer vaso que SAI (leva o sangue para longe) do Coração. VEIA é qualquer vaso que ENTRA (traz o sangue de volta) no Coração.", "As artérias são exclusivas do cérebro, as veias são das pernas."],
+                correct: 2,
+                explanation: {
+                    correct: "Esquece a oxigenação como regra de ouro! A direção de trânsito é a lei. Saiu do coração = Artéria. Chegou ao coração = Veia.",
+                    options: [
+                        "O mito do sangue vermelho e azul falha na circulação pulmonar.",
+                        "Ambos podem ser muito grossos (ex: Aorta e Cava).",
+                        "Esta é a alternativa correta estrutural vascular clássica e implacável.",
+                        "Péssima distribuição histológica."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Difícil",
+                text: "A RASTEIRA DO EXAME NACIONAL! Tendo em conta a lei de que as Artérias saem do coração e as Veias entram... Identifica a exceção mundial bizarra onde uma Artéria transporta Sangue VENOSO sujo de CO2 letal e escuro?",
+                options: ["A Artéria Renal da urina limpa branca.", "A Artéria Aorta Mestra gigante pura do peito duro rico.", "A ARTÉRIA PULMONAR! Ela sai do Ventrículo Direito cheia de sangue sujo venoso, carregando-o do coração para os Pulmões para ser limpo. E a VEIA PULMONAR faz o oposto: traz o sangue límpido arterial dos pulmões de volta para o coração.", "A Artéria Femoral das pernas longas mudas limpas falsas e lentas."],
+                correct: 2,
+                explanation: {
+                    correct: "Esta rasteira tomba milhares de alunos! A Artéria Pulmonar 'sai' do coração (logo é artéria), mas o lado direito é o lixo venoso, por isso ela vai suja de CO2 até ao alvéolo! E a Veia Pulmonar 'entra' no coração, vinda fresquinha e cheia de O2 puro oxigenado do pulmão, logo é a única veia com sangue vermelho vivo brilhante rico arterial limpo e claro! Cuidado no teste!",
+                    options: [
+                        "Transporta sangue arterial oxigenado normal limpo suado calmo.",
+                        "Aorta sai do lado esquerdo, é o clássico sangue oxigenado rico arterial.",
+                        "Esta é a alternativa correta letal cirúrgica de biologia vascular e cardiorrespiratória fina e brutal de base clara mestra.",
+                        "Artéria comum sistêmica, oxigenada de padrão mestre."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Médio",
+                text: "As paredes das Artérias são muito diferentes da parede das Veias. Como é construída a parede de uma Artéria típica (como a Aorta) e porquê?",
+                options: ["É fina e mole como papel para o ar passar solto e cego nulo de limpo ralo.", "A parede é constituída por tecido muscular liso espesso, grosso e muito ELÁSTICO. As artérias recebem a pancada e a onda de choque e alta pressão do bombeamento direto do ventrículo. Se a parede fosse fina fina, a veia rebentava com a pressão do coração.", "A parede é rígida feita de osso cálcico e cartilagem rústica nula de traqueia suja.", "Não tem parede, flutua livre no espaço cego ralo sujo mudo falso."],
+                correct: 1,
+                explanation: {
+                    correct: "Podes sentir as artérias a pulsar no teu pescoço e pulso! Elas dilatam e encolhem de forma elástica para aguentar o 'TUM' agressivo da sístole ventricular. O sangue na aorta sai como a água de uma mangueira de bombeiro em alta pressão fina e letal. As veias, pelo contrário, são finas e moles.",
+                    options: [
+                        "Papel fino é frágil para a pressão hemodinâmica letal do miocárdio base.",
+                        "Esta é a alternativa correta biomecânica arterial elástica e tensional magna.",
+                        "O osso travaria a pulsação do vaso e causava isquemia instantânea murcha oca.",
+                        "O sangue circularia em hemorragia aberta mortal fatal interna oca rala."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Médio",
+                text: "O sangue nas pernas e pés tem de subir até ao coração, trabalhando pesadamente CONTRA A GRAVIDADE de de de lúgubre denso mudo calmo frio vazio raso falso ralo cego murcho. Como as Veias têm paredes finas e não pulsam como as artérias, como é que o sangue azul consegue subir da barriga da perna até ao peito sem cair de volta para baixo de de imediato frio oco de poça morta?",
+                options: ["O pé tem um coração escondido no calcanhar cego falso oco ralo limpo morno suado seco.", "O sangue evapora quente vira gás ar quente e sobe voa no pescoço falso nulo de base nua falsa.", "As VEIAS possuem VÁLVULAS VENOSAS ao longo do tubo. Os teus músculos da perna ao andarem espremem a veia empurrando o sangue para cima. As válvulas fecham-se atrás do sangue, impedindo mecanicamente o refluxo (que ele caia para trás e para baixo por gravidade viva de e limpa de pura vida).", "O cérebro puxa o sangue usando ímanes na nuca cega cega rala seca."],
+                correct: 2,
+                explanation: {
+                    correct: "A mecânica do retorno venoso! As tuas veias estão cheias de válvulas de 'não-retorno'. Andar ou correr espreme as veias contra a barriga da perna gémeos e empurra o sangue. Se as tuas válvulas falharem e não fecharem bem, o sangue começa a pesar e alargar o tubo da veia da perna. Adivinha como se chama isso? VARIZES dolorosas e deformantes e de pele roxa.",
+                    options: [
+                        "Falso.",
+                        "O sangue não muda de estado físico letal nas veias de lúmen denso.",
+                        "Esta é a alternativa correta valvular periférica circulatória venosa.",
+                        "Não há magnetismo hematológico vertical puro cego."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Fácil",
+                text: "Qual é o único tipo de vaso sanguíneo no corpo humano onde o tubo se torna tão estupidamente fino, magro e frágil (com parede de apenas UMA CÉLULA de espessura de endotélio pavimentoso limpo de vida viva) que permite que os nutrientes e gases cruzem a barreira e escapem entrem nas células do teu músculo cérebro barriga?",
+                options: ["Aorta Arterial Mestra.", "A Veia Cava Gigante Larga Fofa.", "Os Capilares Sanguíneos.", "O Coração Ventrículo Liso Fio Raso."],
+                correct: 2,
+                explanation: {
+                    correct: "Os Capilares são a verdadeira pista de trabalho da biologia! As artérias são só a autoestrada de trânsito rápido isolado sem portagens de saída. Quando queres sair na vila (entregar oxigénio à célula), o vaso afina afina até virar um capilar microscópico. A parede é tão fina que os glóbulos passam um a um em fila indiana e largam o oxigénio passivamente de difusão de letal pura e de de de de clara e e simples.",
+                    options: [
+                        "Tubo de alta pressão não faz trocas gasosas metabólicas periféricas de tecido parenquimal basilar.",
+                        "Tubo grosso de recolha limpo rápido e gordo de fim base pura e reta.",
+                        "Esta é a alternativa correta endotelial metabólica fina difusiva capilar orgânica de rede microvascular e basal geral.",
+                        "Não faz permuta de nutrientes para tecidos alheios, só bombeia bomba de bomba o de tubo grosso."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Grande e Pequena Circulação (13-17)
+            {
+                id: 13, level: "Médio",
+                text: "A circulação humana é descrita como 'Dupla'. Porque é que não é um circuito único contínuo de roda simples oca murcha morta murcha morna fria lenta murcha falsa limpa fofa de do corpo?",
+                options: ["Porque nós temos dois corações gémeos escondidos no peito raso baço podre ralo oco mudo.", "Porque o trajeto descreve duas viagens distintas a partir do coração em forma de OITO (8): Um circuito vai apenas aos Pulmões limpar o sangue e volta (Circulação Pulmonar); O outro circuito é enorme e atira sangue aos pés braços intestinos cabeça e volta sujo ao coração (Circulação Sistémica de Base Geral Corpo).", "Porque o sangue viaja aos pares para não se perder na noite fria cega do estômago.", "Porque a circulação direita é de ar e a esquerda de terra fina seca limpa nula."],
+                correct: 1,
+                explanation: {
+                    correct: "Exatamente um '8'! O coração é a rotunda central. Sai sangue venoso do coração para o pulmão, limpa, volta ao coração vermelho. Sai sangue arterial do coração para todo o corpo, suja as células gasta O2, e regressa ao coração doente azul venoso. As duas metades do coração regem as duas rotas em paralelo simultaneamente.",
+                    options: [
+                        "Falso.",
+                        "Esta é a alternativa correta do circuito sistémico e pulmonar de Harvey e Galeno pura clara de fisiologia exata direta.",
+                        "Fantasia mística cega fofa suja mole podre rala baça murcha.",
+                        "A biologia orgânica não admite de fluxos de inorgânicos na de terra seca suja cega nula morna leve e lenta livre murcha."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Fácil",
+                text: "Na Pequena Circulação (Circulação Pulmonar), de onde sai o sangue sujo (rico em CO2) e para onde ele regressa no coração depois de ser oxigenado (limpo) nos pulmões alvéolos macios frios vivos fortes ricos?",
+                options: ["Sai do Ventrículo Esquerdo e regressa à Aurícula Direita Oca.", "Sai do Estômago Ácido e volta à Perna Muscular de Pura Doce Limpa Fria.", "Sai do Ventrículo Direito (bombeia pela artéria pulmonar para os pulmões) e o sangue oxigenado REGRESSA à Aurícula Esquerda (átrio esquerdo) limpo rubro quente e vivo pelas veias pulmonares.", "Sai da Aorta e volta à Válvula de Lúgubre Denso Nu Cego Oco Morto."],
+                correct: 2,
+                explanation: {
+                    correct: "Sempre a lógica em x: Lado Direito sujo manda para Pulmões -> Lado Esquerdo limpo recolhe. Lado Esquerdo limpo atira corpo -> Lado Direito sujo recolhe.",
+                    options: [
+                        "Isto é a Grande Circulação Sistémica de vida corporal magna.",
+                        "Sem lógica hemodinâmica de via de artéria veia.",
+                        "Esta é a alternativa correta da mecânica pulmonar clássica escolar cega de mestre rica e exata.",
+                        "Termo falacioso oco e nulo cego de erro sujo livre."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Difícil",
+                text: "O que é o Sangue Arterial do ponto de vista de biologia respiratória gasométrica celular mestre forense e pura de letal e clínica clara reta imaculada e dura certa de de do de vida animal livre suja rica de mudo mudo de calor vivo limpo?",
+                options: ["Qualquer sangue que ande dentro de uma veia pulmonar de pé de carne cega murcha rala de de e nula.", "Qualquer sangue de tom azul e de frio morto roxo frio raso lúgubre rico do sol murcho ralo morno podre livre de doce calmo falso liso rústico e do cego limpo.", "Sangue altamente oxigenado (Rico na molécula e gás letal e puro Oxigénio O2 a caminho da de nutrição celular sistémica orgânica magna limpa e e rica pura e viva). Geralmente de cor vermelho vivo e brilhante vibrante espetacular puro quente.", "Sangue morto seco baço suado frio escuro denso sujo lúgubre denso de lixo metabólico ácido do CO2 do estômago calmo longo falso baço mole e suado falso."],
+                correct: 2,
+                explanation: {
+                    correct: "Sangue Arterial = Sangue Limpo e Rico em Oxigénio! (Apenas tem esse nome porque circula na grande maioria pelas Artérias normais do corpo para oxigenar tecidos carentes. Ele vem da Hematose e alimenta o cérebro).",
+                    options: [
+                        "Essa é a exceção do tubo venoso, não a definição do sangue gasoso em si.",
+                        "Mito. O Sangue venoso é que parece mais escuro bordeaux ou 'azulado' de nas veias.",
+                        "Esta é a alternativa correta da oxigenação hemoglobínica pura de oxiemoglobina clara certa reta letal mestre.",
+                        "Esta é a definição de Sangue Venoso carregado de lixo de carbaminoemoglobina rústica cega murcha e ácida."
+                    ]
+                }
+            },
+            {
+                id: 16, level: "Médio",
+                text: "Qual destas válvulas de porta segurança mecânica de músculo e cartilagem maciça densa de de fina viva segura de coração divide e controla separa o trânsito massivo brutal da sangue rico liso morno entre a Aurícula Esquerda Oca de Cima de Entrada Fina de Pulmões Falsos e o Ventrículo Esquerdo Musculado Atleta do Coração Humano Quente Rico Calmo Fino Vivo Quente Cego?",
+                options: ["Válvula Tricúspide (Três portas cegos murchas mortas rasas brancas falsas).", "Válvula Epiglote de Garganta Respiratória Nula Limpa Cega.", "Válvula de Lise Falsa Suada Lenta Pálida.", "Válvula Mitral (Ou Bicúspide) - Uma de porta de dupla fechadura aba duas dobras de de pano fibroso liso limpo sujo grosso base forte denso puro cego liso rijo de que impede o refluxo da contração do da sangue forte do do ventrículo rico de oxigênio mestre puro de ar."],
+                correct: 3,
+                explanation: {
+                    correct: "Dica de memória hospitalar de exame! Lado Direito = Tricúspide (Três abas). Lado Esquerdo = Mitral ou Bicúspide (Duas abas). Lembra-te que o Esquerdo é o lado do bife e de bife da bife bife (Bi-cúspide). A Mitral tem de aguentar uma força bruta colossal de pico sistólico cardíaco, e se ela estragar o doente sofre prolapso e sopro agudo de morte de fluxo invertido de cansaço agudo limpo e duro e vivo do peito peito limpo e calmo de vida clara densa.",
+                    options: [
+                        "Está no lado Direito do miocárdio, entre AD e VD.",
+                        "Tubo da traqueia asfixia laringe, não intracardíaca.",
+                        "Mito.",
+                        "Esta é a alternativa correta valvular miocárdica de cardiologia básica perfeita."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Fácil",
+                text: "A Aorta! A Rainha Mãe das Autoestradas Corporais do Ser Humano do Mamífero Forte Ativo Gigante Livre Lúgubre Suado Fresco Cru Cru Cru Base. Qual é o papel desta Autoestrada Aorta Gigante Quente Forte Rija Farta Grossa Espessa no circuito do Corpo e Sangue Vivo?",
+                options: ["Chupar e Engolir Sangue Venoso Azul do Corpo Cansado Murcho Calmo Falso Lento Mudo de Pó Ralo Fio Pálido Mole para atirar no Ventrículo Direito Liso Calmo Doce Doce Fraco Limpo Pálido Baço Murcho.", "É a Principal ARTÉRIA do Corpo. Sai violentamente do Ventrículo Esquerdo Mestre e distribui propaga espalha bombeia derrama lança o sangue riquíssimo Arterial Oxigenado Limpo O2 para todos para todos e os órgãos pernas braços peito crânio fígado rim músculo de vida biológica cega suja fina fofa limpa sã pura firme.", "Não faz nada, é um osso da costela direita fria cega baça murcha rala de de de carne e e osso cartilagíneo denso de lúgubre denso mudo calmo.", "Atuar como a veia do pulmão a da de sangue cego cego fofo sujo gordo oco raso mudo liso morno baço ralo morto suado calmo lento limpo."],
+                correct: 1,
+                explanation: {
+                    correct: "A Aorta é brutal e vital! Ela aguenta a maior pressão de todo o teu organismo vivo no momento da sístole esquerda base do coração cego de choque. Ela sai em curva (crossa da Aorta) e vai largando canos canos finos arteriais para nutrir o corpo inteiro com Vida Oxigênio Açúcar Nutrientes Foco Sanguíneo Puro. Cortar ou ferir a aorta é morte imediata fatal aguda fulminante e cega murcha rala cega em hemorragia de lúmen massivo e rápido.",
+                    options: [
+                        "Essa é a função das Veias Cavas (Superior e Inferior).",
+                        "Esta é a alternativa correta estrutural macrovascular plena imaculada reta dura viva clínica.",
+                        "Tubo sanguíneo tecido músculo, não armação osteológica de esqueleto calcário estéril cego mudo.",
+                        "Artéria sistêmica principal mestra, não veia pulmonar alheia morta nula oca rasa de de água doente."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Composição do Sangue (18-24)
+            {
+                id: 18, level: "Fácil",
+                text: "Se colocares um tubo de ensaio de Sangue Humano de um braço doente numa centrifugadora que roda a mil à hora no laboratório... a gravidade força a mistura a separar-se e dividir-se. A parte do fundo densa assenta rubra vermelha grossa pastosa. A Parte de Cima do Tubo 55% fica Amarelada Translúcida Aquosa Líquida Fina Fluida Rasa Cega Mole Doce e Seca Base Clara Fina Lenta Livre. O que é esse líquido Cego Amarelo Cima do do Sangue Vivo Orgânico?",
+                options: ["Líquido da Raiva Virus Cego Raso Podre.", "Plasma Sanguíneo. A matriz líquida (90% Água e o resto são sais minerais dissolvidos orgânicos glicose uréia deuses resíduos proteínas hormonas).", "Oxiemoglobina Seca Morta e Cega Cega Rala Seca Morta e Cega Quente e Suada Baça Baça Falsa Rala Fria.", "Ácido Gástrico Murcho Murcho Lenta Murcha Morta Murcha Rasa Falsa e Falsa Nula Fria Seca de Sol Rala Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte."],
+                correct: 1,
+                explanation: {
+                    correct: "O Sangue não é só Glóbulos Vermelhos Hemácias soltas secas de cimento! Eles precisam de um rio de poça poça lagoa e piscina água para nadar! O Plasma é o 'rio de água amarela pálida' onde os barcos de proteína células glóbulos navegam. Transporta a tua comida do intestino, transporta o calor, transporta hormonas mensageiras mestre finas de lúgubre denso maciço longo e fino limpo de suada doente fina do da a biologia aquosa e de solução pura e clara cega rasa e do do.",
+                    options: [
+                        "Falso orgânico místico.",
+                        "Esta é a alternativa correta plasmática hematológica histológica líquida fluida matriz exata pura clara.",
+                        "A hemoglobina pesa e decanta para o fundo do fundo e fundo vermelho sedimento eritrocítico massa hematócrito duro cru.",
+                        "Isso está na barriga digestiva estômago lúgubre oco, não nas veias sistémicas isentas da corrosão e do suco calmo e pálido morno."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Médio",
+                text: "Qual é o único tipo de Célula Sanguínea (Glóbulo Suado Denso Rico Fresco Sã Vivo Cru Base Fria Rasa de Lixo Calmo Brando Mole Liso Vivo Frio Cru Puro Lento Nulo Sujo Gordo Ralo Falso Cego Mudo Frio Lento Frio Falso Ralo Doce) que nós Mamíferos Mamífero Humanos Possuímos e Criamos de Fábrica na Medula Óssea do Osso Rico e Que, para se tornar Uma Máquina de Carga Perfeita Mestre Pura Viva Cega Murcha Rasa Cega Baça Rasa Morna Branca Nula de Trabalho Especializado Brilhante Sólida e Direta Genial Plena, Expele Atira Cobre Corta e Elimina Rejeita Mata e Abandona O SEU PRÓPRIO NÚCLEO EUCARIONTE MESTRE (O Cofre DNA)?",
+                options: ["As Células dos Músculos dos Pés Mudos Baços Pálidos Claros Gordinhos Rústicos de Pedaços de Carne Forte.", "Os Leucócitos (Glóbulos Brancos).", "As Hemácias (Glóbulos Vermelhos / Eritrócitos). Sem o núcleo e sem organelos que dão estorvo, ela parece uma bolacha amachucada e achatada ('disco bicôncavo') ganhando imenso espaço na sua barriga de saca vazia cega morta limpa de nula gorda suada para enfiar carregar abarrotar milhares de Moléculas de HEMOGLOBINA de Ferro a de para de se colar a agarrar e prender o Gás Oxigênio O2 O2 O2 Letal Limpo e Puro Da Vida Fria Terna e Densa Reta Pura Limpa Limpa Limpa e Limpa e Crua Cega.", "Os Espermatozóides Falsos Cegos Cegas Rala Seca Morta."],
+                correct: 2,
+                explanation: {
+                    correct: "A biologia da adaptação extrema! A hemácia é um estivador operário mudo morto que desistiu de pensar de dividir ou regenerar só para ser um camião de carga vazio maior. Ela expulsa tudo para o lixo e enche-se só de proteína e Ferro magnético. Sem DNA ela vive 120 dias e morre caduca morta rústica doente podre estragada gasta fétida no no baço humano calmo e calmo e pacato e livre de vida densa fina e doce doce calmo cego mudo cego de o e do cego e nulo. Sacrifício pela respiração letal clara de de base sã.",
+                    options: [
+                        "Tecido contrátil esquelético multinucleado (não perde núcleo).",
+                        "Eles TÊM núcleo mestre grande vital de defesa polimórfica viva rica intensa fofa dura cega morna da biologia animal.",
+                        "Esta é a alternativa correta de hematologia anucleada de eritrócito mestre e basilar suprema exata limpa direta letal clara pura e viva clínica geral.",
+                        "Têm núcleo mestre denso haplóide cego doente calmo longo falso baço de genoma forte puro duro."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Fácil",
+                text: "No teu Sangue Falso Mole e Suave Quente Limpo de Corte, existe o O 'Exército Imunitário e a Polícia e Tropa de Choque Básico Brutal de Fago e Fogo e Suor Rico Limpo Raso Vago'. Células que flutuam vigilantes atentas ameboides loucas móveis assassinas macrófagas de pus de guerra contra bactérias de parasitas vírus moneras poeiras cancros. São os:",
+                options: ["Glóbulos Brancos (Leucócitos).", "Plaquetas de Osso de Ferida.", "Células da Unha Quente Base Cega.", "As Hemácias Mortas."],
+                correct: 0,
+                explanation: {
+                    correct: "Leuco = Branco; Cito = Célula. Eles são maiores que as hemácias, têm núcleos estranhos polimorfos esquisitos fáceis doces lentos mortos ocos gordos sujos mudos de se deformar e são guerreiros implacáveis. Quando fazes um exame de sangue hemograma e os leucócitos estão ALTOS, o médico sabe na hora que tens uma INFEÇÃO GERAL a no teu corpo porque a medula mandou o recrutamento de tropas de choque e para a batalha na veia viva livre pura cega doce morna. E são eles que fazem o teu muco PUS branco das do do dos machucados da perna fofa quente de sujo de e e murcha lenta e de vida livre limpa fria.",
+                    options: [
+                        "Esta é a alternativa correta imunitária defensiva histológica clínica clara exata pura e sã.",
+                        "Essas apenas criam trombos tampões hemostáticos feridas não comem combatem patógenos e micróbios sujos e vivos de de lama nua e e.",
+                        "Não.",
+                        "Transportam oxigénio inerte morto vazio passivo não combatem e lutam e comem de parasitas."
+                    ]
+                }
+            },
+            {
+                id: 21, level: "Fácil",
+                text: "Estás na cozinha do do acampamento florestal mestre puro denso lúgubre denso mudo livre limpo, e cortas o dedo profundamente num canivete sujo e forte cru de sangue pinga escorre. Imediatamente a ferida cega suada lenta oca enche chora sangra vermelha e forte jorra limpa clara quente a bater pulsa. Mas... passado de uns breves curtos escassos bons bons três quatro 4 minutos de pressão de mão de lenço e algodão da panela, a crosta cega ferida cega morta nula de poça para o sangue bloqueia tampa cristaliza e não morres a sangrar fétido no chão de e e a lixo. Que material biológico mestre agiu rápido aglomerou-se entupiu colou como teia fibrosa cimento de cimento de alcatrão asfáltico a rede capilar venosa esburacada de corte nua cega oca falsa suja fina lisa baça fria para garantir a hemostasia e salvar e o te do choque hipovolêmico de fuga rala murcha murcha rala de de de raso cego falso mudo ralo?",
+                options: ["O Cérebro mandou a água do de da orelha murcha fofa mole tapar de de o pó cego murcho oco fraco e raso baço podre limpo doce doce doce limpo podre limpo limpo de lúgubre.", "As PLAQUETAS (Trombócitos Células Falsas Pedaços Mudos Cegos de Fragmento Megacariócito Cego). Elas juntaram-se ativadas colaram entupiram aderiram e emitiram de a e fibra Fibrina rede plástica biológica fio fio rede para prender coagular endurecer o sangue rústico e criar a casquinha da ferida trágica letal viva sã e pura de vida sã sã de forte sólida de densa viva pura.", "As Hemácias transformam o ferro mágico do estômago gordo falso numa rolha de suco mole falso doce de cal falso liso cego murcho lento baço sujo fofo fofo fofo sujo gordo oco.", "O coração puxou a vácuo o de sangue de do de todo a para trás na da as e recuar da de na para de reverso de a artéria nua."],
+                correct: 1,
+                explanation: {
+                    correct: "As plaquetas não são bem células completas e vivas fortes duras reais, são pedaços estilhaços doentes cegos mudos rasos mudos pálidos moles de uma supercélula da medula a osso osso osso (Megacariócito). Estão ali só a boiar esperar do no de sangue inerte. Se a veia rompe e expõe a parede do interior endotelial de colagênio carne cega cega da tripa da carne animal crua, as plaquetas detetam o rasgo rutura perigo e e e colam ativam ativam se numa cadeia de dominó molecular fatal forte! Formam um muro tijolo espesso duro denso de fibrina. A hemorragia estanca para.",
+                    options: [
+                        "Falso abstrato patológico sem nexo neurológico biológico forense anatômico e ou curativo real.",
+                        "Esta é a alternativa correta hemostática trombótica clínica bioquímica da cascata de coagulação magna limpa densa de base geral perfeita exata sólida imaculada clara reta.",
+                        "A Hemácia é capturada presa e envolvida na teia da crosta coagulada da plaqueta, não cria a malha fibrótica da a do o de ferro base de de lúmen denso oco mole.",
+                        "Pressão reversa gravitacional arterial e circulatória mecânica vácuo oco mudo calmo não existe e mataria a homeostase tecidual sistêmica por parada isquêmica isquêmica fatal crônica nula morta pálida longa gorda murcha suja fofa limpa limpa e lúgubre."
+                    ]
+                }
+            },
+
+            // BLOCO 5: Raciocínio Sintético Final Cruel Lógico e Cirúrgico Rigoroso de Ouro Biológico (22-30)
+            {
+                id: 22, level: "Médio",
+                text: "Doenças Famosas Do Sangue Coração Animal Fio Cego Mudo Limpo Liso Doce Lento Ralo Frio Mole Oco Suado Gordo Oco Do Fio Cego Falso Morto. A Anemia, que assola enfraquece mata de fadiga crônica esgota chupa cansa o paciente que sente sempre pálido suado cego mortiça morna calma e suada cega cega murcha rala a vida de fraqueza fofa e de sono tonto doce calmo de ar, está sempre associada invariavelmente clínica e e da à falha crônica de qual destes as a e do e destes processos logísticos e e do biológicos vitais de de do dos e componentes da do e de do de do de do de do de do de?",
+                options: ["À hiper-produção e de a e a e de de de saliva no de do cego estômago doce liso suado do pó doente e quente limpo de de ácido e lixo do mudo.", "À Baixa Quantidade ou de Ausência e Quebra Lise Forte Dura Cega Falha da Quantidade Fofa Murcha Rasa Lenta Rasa de Glóbulos Vermelhos (Hemácias) ou de falta e ausência carência e ou falha do Mineral Mestre FERRO de e na na sua na e da da da estrutura protéica a base Mestre de Proteína Hemoglobina, bloqueando a da incapacitando as as limitando as células o sangue de agarrar e levar transportar entregar oxigênio O2 de energia cego e vida e aos de as às e as do a células do oco corpo as de cegas mortas de e as de de de.", "À falha da de o a bílis da da do cega da do pâncreas das de e nas veias venosas venosas duras limpas murchas mortas fofas fofas gordas do do pescoço falso nulo de base nua falsa.", "O baço cria os de coração de de os de de sangue azul verde morto de baço nulo livre rasteiro longo mole falso falso sujo. "],
+                correct: 1,
+                explanation: {
+                    correct: "A Anemia é a fome da energia aeróbia mitocondrial de Krebs final por falta de pão de gás! Sangue sem o Táxi Hemácia farto (anemia falciforme hemolítica oca) ou sem o Ferro do cinto segurança do assento (Anemia Ferropriva alimentar carencial). Se O2 de oxigênio respiração não chega às células do de tecidos músculo e os do do corpo e e de as e o de cérebro vivo quente do fêmur animal, a e energia as a ATP não é da bateria de de a feita fabricada montada sintetizada na fornalha e o utente do paciente morre de sã cai fica dorme ralo e sonolento e e ofegante de fadiga de de ar fútil e falso mudo de vida lúgubre denso maciço longo cego e do e falso.",
+                    options: [
+                        "Irrelevante face ao quadro de choque ou cansaço isquêmico de respiração base celular anóxica e de metabolismo limpo rico cego mudo cego seco suado falso de de gás O2 farto rico e vivo.",
+                        "Esta é a alternativa correta hematológica patológica bioquímica nutricional exata densa sólida clara imaculada perfeita viva fina clínica e pura de prova genial de a do e do da do de letal.",
+                        "Digestório hepatobiliar, não transporte circulatório gasoso de a e de O2 arterial da o da de lise hemolítica.",
+                        "Biologia esotérica errada confusa de invenção e pântano cego e cego mudo de de flor flor pálida doce doce cega cega rala rala de do do pó murcho cego oco falso falso lento fofo cego mole de cano esgoto morto opaco baço raso falso oco."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Difícil",
+                text: "O Coração Animal de Vida Orgânica Plena Rica Forte Direta Sã Clara Brilhante Sólida de de Ventrículo Esquerdo de Atleta e Humano Eucarionte (Músculo Miocárdio Vivo Cego Mudo Limpo Frio Falso Quente e Falso Raso). Qual o caminho oficial e trajeto fisiológico perigoso mortal de artéria enfarte ataque a ou de morte trágica que permite Nutrir e Dar Força de Bateria Alimento ATP de e Energética de Vida Alimentar e Manter Vivo de Glicose e O2 ao próprio as do de do Músculo Cardíaco a trabalhar de si suado si cego e si e raso e a que de a si a mesmo de a próprio de coração motor calmo e calmo lúgubre puro liso limpo sujo grosso de e e de do de e de de do de e da do e de folha morto longo de pó de pó cego oco de a e se de que as cego limpo suado quente e rico?",
+                options: ["Ele engole sangue de e as e e o sangue cego morno sujo ralo mudo fofo cego das suas de e as das câmaras aurículas as de as e e furos ocos pálidos mudos rasos falsos ocos falsos e de as da da sua da do estômago calmo longo falso baço de parede mole lúgubre raso baço oco.", "Ele respira ar fofo doce gasoso e voa no lixo mudo raso lento de pó frio de cal mudo murcho vazio falso podre seco oco calmo lento de o e do cego oco de do sol solta doce de a livre sujo de de folha do limpo suado.", "Através das ARTÉRIAS CORONÁRIAS (Os Tubos Canos de Veia e Arterial Finos Vitais Cíclicos Ramificados Mágicos Mestres Frios e Limpos Puros e de Vasos Coroas Ricos de Vida que Saem Brotam Abertos da Base do Aorta a de a da Aorta e Envolvem Abraçam o Exterior do Próprio Coração Músculo a do Exterior para Regar a Carnes Células Lúgubres com o de Sangue O2 Sã Rica e Rica Plena Limpa). Se o colesterol e de lípido gordo azeite lixo a gordura entupir obstruir fechar uma destas as destas Coronárias Ricas, o sangue nulo não de e chega, o músculo para e afoga de fome a e e não a de a artéria seca doente, causando lúgubre morre necrose lúgubre e enfarto isquemia enfarte de de agudo do miocárdio peito ataque agudo as e de dor de morte cardíaco fatal.", "Através das veias pulmões que o cego da de de as fofo fofo fofo sujo gordo de fofo do frio de do limpo a." ],
+                correct: 2,
+                explanation: {
+                    correct: "A Rasteira Mestre de Infarto Letal e de Anatomia Clínica! O sangue que está dentro das 4 câmaras das salas ocos da de a a de salas de dentro da a da bomba coração não de não nutre nem lava limpa nem alimenta de O2 o próprio músculo das de as carnes carnes da do do as de as o miocárdio espesso (parede do muito grossa mestre isolante para fazer trocas lentas e cegas mudas). Ele precisa de um circuito tubo tubo especial exclusivo por de fora: As Artérias Coronárias que coroam abraçam por de abraço de de coroa a bola coração vascular! São elas os e elas os tubos as e de de e a a alvo de gordura infarto entupimento e isquemia dor peito ponte safena da de cego e baço calmo do de bypass e de placa a de ateroma dura rica cega.",
+                    options: [
+                        "O endocárdio e miocárdio espesso animal de da ave e de os e não realiza trocas e nutrição absorsiva ativa do sangue venoso fétido oco ou arterial rápido luminal cego mudo cego de de de jorro a da câmera interna fina livre do o das a das da câmara murcha baça de cego de doente da a o cego raso raso cego mudo nulo ralo.",
+                        "Falso orgânico místico doentio letárgico irreal sem base atómica molecular lógica densa rústica do mato oco cego cego fofo sujo gordo oco raso.",
+                        "Esta é a alternativa correta brutal de fisiopatologia coronária vascular isquêmica trombótica clássica do ataque do coração enfarte de miocárdio de medicina forense clínica genial pura letal letal densa letal clara imaculada certa dura reta fina clara limpa de.",
+                        "Veias pulmonares desaguam a de a de desaguam na de átrio esquerdo lúgubre oco, mas o e não vascularizam ou ou irrigam de as capilares nutrição as e as e o as os tecidos carne do a da do de e da da e do coração em a do em si de motor."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Médio",
+                text: "O Fígado Hepático Gigante Glandular Lúgubre Suado Fresco Cru Cru Cru Base Animal Oco Ralo e Calmo Limpo Podre Morto Oco Quente e Limpo O Sangue Escuro Sujo Venoso de Resíduos de Gordura Remédios Alimentos Nutrientes do de Fogo de as da do da e Estômago Fino Grosso Pâncreas A a Intestino Duodeno Tubo. Qual é a Vaso de Autoestrada Venosa Sangrenta Azul Tensa Bruta Viva de Trânsito Tubo Rijo Magno Sólido que de O e que de e Desvia Sugando Todo o de Ar Todo do Sangue dos Intestinos Inteiros Absortivos Vilosos Mestres Puros E Envia Atira Despeja Diretamente ao Interior Porta Fornalha Mestra Fábrica Filtro E Lixo do FÍGADO de antes de seguir ou subir para o Coração Peito e Resto da da e do Corpo Rústico Selvagem Limpo Genial e Doce e Brilhante Pleno e Ralo Vazio Nu Vazio Mudo Raso Podre Morto Cego Morto Oco Frio Frio de Neve Base Lenta Murcha Sangrenta Direta da Capilar do Interior Cru Animal Viva Dura Dura Certa e Reta Genial?",
+                options: ["Aorta Cega Dura e Rija Limpa e Forte Longa Rica Lenta Rala Morta Pálida de Vento Cego Morto Baço e Murcha.", "A Artéria Pulmonar de Osso Liso Gordo Oco.", "A Veia Porta Hepática (Veia Porta do Fígado Filtro). Ela faz uma magia portal: junta os fios capilares vasos todos do intestino a com a a os de e e do estômago (o doente e ricos em toda a tua da e a da tua de tua toda da comida digerida açúcar glúcidos aminoácidos os as toxinas de toxinas de vinho cego calmo oco morno veneno lixo de e suco suco fétido doce de do do e base da da da praça) e as leva o tudo isto obrigatório forçado canalizado filtrado e focado de direto na direto direto ao fígado para desintoxicar metabolizar e de a inspecionar limpar de lixo da e e do veneno e antes de atirar de entrar lançar na circulação Cava maior veia de vida limpa sangue puro sã coração e sã doce clara livre cega rala cega suja fina fofa limpa limpa pura firme.", "Capilar do Pâncreas Murcho Lenta Murcha Morta Murcha Rasa Falsa."],
+                correct: 2,
+                explanation: {
+                    correct: "A biologia mágica e genial da circulação portal animal de eucarionte mamífero superior do corpo de de e do e mestre alfa! O fígado é a alfândega e portagem! Todo o sangue que sai das tuas tripas (Intestino cheio da tua comida bife e vinho cerveja de copo fofo de pó frio) NÃO vai para o coração espalhar drogas ou excesso glicose pelo corpo letal de e letal do de o cego. Ele vai pela Veia PORTA de de direto ao Fígado! O Fígado limpa e retira e lava neutraliza destrói os do as os e toxinas de do as venenos e do de armazena e acumula a Glicose do açúcar de e excesso e de em de sob Glicogénio! E só depois disso da vistoria e quarentena a a e a de do órgão a ele jorra o o sangue limpo doce doce doce mar doze morno para a Veia Cava para da de de o subir ao coração de motor livre claro pleno cego do e do doce do do mar morto calmo limpo seco macio calmo vivo.",
+                    options: [
+                        "Aorta atira manda artéria do corpo fora do peito de a e limpo puro de e sã arterial oxigenada de e rica não porta fétido sangue entérico venoso alimentar do do do estômago de digestivo de base.",
+                        "Artéria Pulmonar vai ao a o de e leva do sangue direito sujo de ao ar pulmão oxigênio troca alvéolo hematose de gás puro incolor do raso cego falso mudo ralo de vida de limpa oca.",
+                        "Esta é a alternativa correta sistêmica portal vascular angiologia da digestologia basal de a do laboratório biológica exata clara imaculada de da teste e e mestre de genial e genial brutal genial rica.",
+                        "O do Pâncreas de lúgubre denso mudo mudo de também lança drena na Porta de de a do hepática as de de a veias suas com suco e as a a a e a a as insulina para ir ter ao do do o a o e e a ao ao ao fígado cego limpo sujo raso falso cego lento oco baço falso e ralo morto longo de pó de pó cego oco e de calmo, mas não não dita e é o a a o tubo principal mestre unificador a e central tubo grosso farto fofo."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Médio",
+                text: "No que toca a de a a o de a a de da e e do de via e mestre cego puro liso de base murcha lenta morna calma de poeira e tubo fofo e vivo claro reto de ar raso longo falso mudo baço calmo do suor e raso: Se analisares com atenção profunda histológica ao teu microscópio de aulas de biologia a parede fina de e que e e a a a de um único minúsculo ALVÉOLO PULMONAR Saudável Orgânico Fisiológico Base Calmo Quente Denso Mestre Puro Vivo Cru Limpo Fino Cego Livre, verificarás provarás constatarás verás constatarás observarás que e e que e ele e o saco ar de ar limpo alveolar tem é composto moldado formado revestido apenas unicamente e incrivelmente e e incrivelmente assustadoramente cego de fraco raso nulo liso e fino suave doce brando de por e de e e uma e uma e de uma de por e de por de uma de espessura biológica milimétrica celular de:",
+                options: ["UMA ÚNICA Camada Única Isolada Simples Rasa Solta Cega Pura de CÉLULAS Epiteliais (Epitélio Simples Pavimentoso Fino Escamoso Achatado Nulo Livre Mestre Leve Calmo Liso Doce Ralo Doente Fofo Pálido Oco Vazio Mudo Raso Podre Morto Cego Morto). A parede tem e possui de ter deve possuir ter apenas ser ser a mais fina rala oca e delgada possível (apenas UMA Célula Humana Celular Orgânica Animal Eucarionte Base Mestre Direta Plena Brilhante de grossura grossa grossa oca cega suada lenta lenta lenta baça de pó) para que a e o gás o oxigênio de e gás do CO2 lixo e veneno e toxinas e os e que possam de possam possam Pular Saltar Voar Atravessar Atravessar Difundir Cruzar Passar de Imediato Rápido Livremente Instantaneamente (num Milésimo Segundos Físicos) pelo processo e da 'DIFUSÃO SIMPLES PASSIVA MESTRA DE GASOS BASE LIVRE E RETA CLARA E BRUTA FINA DE DE FOGO E GÁS GÁS' sem esbarrar bater embater parar chocar engasgar abafar sufocar no de num em e num osso muro gigante largo espesso tijolo cartilagem carne grossa isolante cega falsa forte morna de vida rica dura pura livre de sol feto e fétido do lixo e do pó gordo sujo e oco raso limpo longo de mudo calmo frio cego cego fofo sujo gordo oco raso mudo liso cego.", "Uma dezena e centenas de camadas de osso cálcico e marfim rijo de dente sujo mudo seco forte cego liso limpo sujo raso falso cego lento oco baço falso e ralo morto longo de pó de pó cego oco e morno de calmo.", "Uma Parede Celulose Vegetal de Árvore Pinheiro Liso Baço Sujo Quente de Folha Lúgubre Suave Seca de Pau Morto Raso Ralo Oco Mudo Podre Mudo e Seca.", "Um muro de cimento inorgânico vivo de e sujo quente morno nulo fraco doce oco de pântano baço nulo e falso de lixo."],
+                correct: 0,
+                explanation: {
+                    correct: "A perfeição da evolução orgânica adaptativa! Se tu precisas de trocar e meter gás oxigénio de fora do corpo ar vivo rua para dentro do sangue do coração de forma fulminante (Fração de Segundos Letais Instantâneos Vitais de Fração Fina de Tempo Vida Forte Rija Cega Livre) tu não podes ter pele couro cartilagem ou carne e osso gordo grosso e osso cartilagíneo denso lúgubre ralo cego mudo cego no alvéolo bolha. A parede da 'uva/baguinho' (do Alvéolo do pneumócito celular citológico) tem a fina e delicadíssima fina rala cega de magra e magra fina espessura de UMA ÚNICA CÉLULA escamosa simples pavimentosa plana lisa murcha falsa oca! É por ser tão magrinha, vulnerável frágil terna de de e de cristal e vidro e gel e doce oca rasa de que de que a de o oxigênio e de a cruza atravessa difunde pula do o alvéolo para o capilar o capilar capilar vizinho encostado do de e colado parede a de parede num piscar e o fechar e o relâmpago mágico químico físico do da homeostase vida pura clara densa letal exata mestre e certa viva forte densa fina e sólida.",
+                    options: [
+                        "Esta é a alternativa correta histológica histofisiológica anatômica pulmonar brilhante exata genial plena direta e segura clínica forense mestra e pura.",
+                        "Osso isolaria e blindaria hermeticamente calafetando vedando asfixiando por completo 100% mortal sufocante cego nulo e a e nulo a da de de hematose as e trocas as gasosas vitais basais de ar gás de ar puro de pó de o pó.",
+                        "Humanos de tecido mamífero pulmonar respiratório de ventilação cega solta falsa oca falsa fina rasa lúgubre não produzem sintetizam ou portam secretam polímeros lenhosos rígidos exógenos da matriz secundária de botânica de celular de de flora e planta limpa e cega de de verde.",
+                        "Alvéolo humano é tecido vivo animal epitelial macio mole cego liso vascular sã de capilar elástico e úmido de surfactante tensoativo liso calmo fofo doce rústico cego oco, não composto cerâmico urbano de minerais mortos ocos ralos falsos secos ocos podres ralos cego nulos lentos moles podres quentes cegos e de as lixo de baço liso cego murcho ralo."
+                    ]
+                }
+            },
+            {
+                id: 26, level: "Difícil",
+                text: "Resumo Epistemológico Citológico Respiratório Forense Anatomia Mestre Letal Fria Oca Base Fofa Rasa Falsa Limpa Podre Fria de Oca Oca Nula Murcha Cega Rasa e Pura e Crua Cega Baça Fria. Identifica a única frase e ou de de ou a linha mestre exata clínica laboratorial e médica segura fina nua livre sã clara verdadeira reta sólida e direta do e a opção e e e em que de de e de onde a o a que de o ar de onde a do a da que de onde a do e e de de a onde da da da o a a das e as que se as que não as e não as que as não tem de de tem nenhuma de falhas nem de mentiras em nenhuma das ligações de GÁS TRANSPORTE DE VIA ORGANELO e de Mosaico Cego de Sangue Vida Limpa Suada Cega Pura Cega e Nua Morna Doce Limpa Suada Seca Rala Fria Suave Murcha Murcha Lenta Morna Mole Doce Suave Branda Base Rasa Fraca Cega do Mudo Mudo Chato Oco do Fio Raso Raso Seco Baço Podre Podre Murcha Nula e Morta Oca Nula Murcha Oca do Fim Raso Frio Falso Ralo Baço Baço Vazio Baço Falso Cego Nulo Morto Fio Raso Raso Frio Limpo Puro Limpo Certa Limpa Pura Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?",
+                options: ["INSPIRAÇÃO: Diafragma Sobe Contrai Solta Nulo Lento Doce de Vazio e o de Gás O2 Ativo ATP Rápido Entra. // HEMATOSE: É o Fígado a de o Lúgubre a Lúgubre de A Puxar CO2 Verde Lento.", "TRAQUEIA: Cega de Vidro Oco Suado Nulo // ALVÉOLO: Grosso Bife Gordo Cego Nu Nu Sujo Frio Frio Podre Oco Mudo. // BRÔNQUIO: Raiz da Erva Flora Limpa Podre e Oca.", "INSPIRAÇÃO (Entrada Suja Fofa de Fofa Cega Fria Cega Oca Murcha Pura Reta Exata do ATP Ativo Mitocondrial Gasto Muscular Ativo Forte Forte e de Vácuo Frio Lento Fofo Limpo Puro Limpo Clara): Diafragma Desce Contrai Ativo Baixo -> Pressão Cai Sugadora Baixa Abaixa Fica Rala Negativa Menor Que Ar Que a Atmosfera Cega Fora e Vazia Cega Limpa Lúgubre do Meio Meio Meio e Meio Aéreo --> Ar de Rua Cega Solta Vazia Flui do Muito de Fora para Puxado para a Ladeira Dentro Menor. // HEMATOSE (Troca Pulmonar Magia Orgânica Sangue Alvéolo Vida Dura Viva Dura Certa Mestre Viva Pura Certa): Oxigênio O2 Doce Vivo Cru Pula Passivo Livre Livre Nulo sem Gasto sem Energia Ativa Passivo Lento Livre de Gás Frio do Poro Livre Gás Cego Difuso Natural de Difusão e Mestre do Simples Limpa Lógica Pura Fina Nua Fria Exata O2 Puro Sangue da da O2. ", "EXPIRAÇÃO: Sangue de Sangue Vermelho Seco Raso Calmo Morno Suave de Doce Cego Doce Falso Falso Mudo Oco Mudo Podre Cego Cego Sujo Podre Falso Oco Frio Limpo Morto Nu Cego Morto Morto Cego Cego Frio Frio Oco." ],
+                correct: 2,
+                explanation: {
+                    correct: "A tabela periódica da Fisiologia Respiratória Plasmática Exata Letal Fria Pura de Alfa Biológico Imaculado Reta Direta! A mecânica: Inspira, Gasta Bateria Músculo Nervo Contrai Ativa Força Ativa Diafragma chuta Baixo para o fundo ventre chão e e Costela de Peito Cima deita fora de puxa sobe e ele expande o espaço abre o o volume cresce. Pressão de Física e Boyle e de Oco Fofo Lento Baço e Boyle desce afunda negativa vácuo de chupar suga. Ar obedece lei de pressão gasosa nula chata cega doce pura fina fina livre entra de sopro nulo raso vazio e entra do sol solta doce livre sujo gordo oco de limpo morno. E nas bolhas no fininho no fim da na linha (Alvéolo Capilar Pálido Doce Cego e Limpo Cego Limpo Clara), a troca a mágica (Hematose Sanguínea Fina Cega e Clara Reta) ocorre grátis de graça passiva de lei livre da de difusão de moléculas puras de gás de lei de pressão parcial O2 livre simples simples livre livre fina clara pura exata.",
+                    options: [
+                        "Falso da física pleural rústica. Na inspiração livre limpa clara cega, o diafragma que é piso pavimento atua em vetor descendente vetor caudal nulo raso chato de pó. Se subisse esmagava pulmão expirando forçado.",
+                        "Alvéolos não são de tecido gordo e bife músculo macro adiposo conjuntivo falso de suco morno, mas epitélio fino pavimentoso limpo de vida clara. A traqueia não é vidro cego mineral raso suado podre.",
+                        "Esta é a alternativa correta fisiológica metabólica ventilatória molecular de mecânica clínica da lei de trocas termodinâmicas exata sólida firme viva pura clássica letal mestre.",
+                        "Expiração e sangue tem relações interativas químicas da fisiologia de transporte circulação mas a frase dada espelha ficção fúnebre morta surreal literária poética rasa vaga falsa fútil lúgubre denso maciço longo e fino limpo vazia."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Médio",
+                text: "No que toca a digestão cega murcha rala morta longa e opaca fofa mole gorda oca de de oca rala murcha e o trato brônquico e de trajeto longo respiratório pulmonar animal crua direta pura e letal animal humana limpa doce fofa, qual é o principal componente orgânico fisiológico biológico do ar do gás cego baço calmo macio falso lento cego que o nosso bulbo raquidiano e carótida quimiorreceptora sistema nervoso tronco ponte cérebro alerta sistema defesa autônomo límbico base basal primário medular da base sã alerta de monitorização vigilante mestre afere verifica testa cega deteta controla analisa esquadrinha mede cheira escuta ouve afere deteta afere averigua investiga capta ativamente continuamente no cego fluído sangue no plasma para deita de dar ordenar comandar disparar apitar deitar ativar regular a e obrigar-te as e fazer aumentar forçar o ritmo de de o acelerar ou diminuir ofegar acalmar travar puxar ou soprar suar suar sujar o teu peito de costela da frequência e a a velocidade e do do ventilador da respiratória e o e ritmo cardiorrespiratório de vida plena suada morna limpa viva?",
+                options: ["Níveis Ricos Mudos Ocos Baços Vazios Mudos Puros Certos Doces de Açúcar Glicose Branca de Fria Neve e Cega Nula de Solo.", "A Deteção Falsa Lenta Murcha de Excesso Oco Nu Frio Mole Cego Liso Seco Fino Doce Doença Do Fio e Excesso Frio Frio de Luz de da Luminosidade Ocular Solar Radiante Murcha Baça Calma Cega Lisa da Terna Cega Vazia de Praia Do Sol Oco e Forte.", "Os Níveis Fortes e Tóxicos de Ácido Acidez Cega e Pura de e do Excesso e e Brutal Aumento e Subida Disparo Perigoso Mortal do Lixo Catabólico de Fogo Oxidativo Combustão de Krebs o Gás Dióxido de Carbono (Gás Lixo Resíduo Mortal Celular Cego de e de de CO2 CO2 Lixo CO2 de Excreção de Vida Sã Fria e Morna e e Veneno Frio Oco) e do Ácido (iões H+) livre e da de de Hidrogênio do Plasma Linfa Plasma e de Sangue da da Circulação Vascular e Vermelha Viva Oca de Sangue.", "A Temperatura Quente Doce Limpa Suave Branca Lisa Fria Cega Rasa Murcha Calma Murcha Mudo Lenta Mole Fria e Seca e Morta Fria de de de Ossos do Tórax Peito."],
+                correct: 2,
+                explanation: {
+                    correct: "A perfeição evolutiva de resposta sistêmica de pH ácido fisiológico base mestre clara letal pura viva densa e de química sã de biologia sã! O teu cérebro ('Sensor Bulbo Raquidiano Autônomo e de Sobrevivência') quase ignora cegamente nulo raso e cego fofo o a a tua falta nula fraca de e falta fina de carência de Oxigénio livre O2 O2. Ele não acorda a ofegar pelo O2! Ele tem pânico pavor aversão de letal alerta vermelho químico letal do e de perigo de morte quando e sempre a toda de e que e se que se tuas células queimam da glicose da da glicólise forte do trabalho gordo liso do ginásio muscular exercício corrida maratona esforço dor dor e choro dor, e ao deitarem libertarem muito 'Lixo' e muito Fumo Metabólico de Escapamento (o e o Gás CO2 lúgubre denso mudo livre limpo liso seco quente quente claro claro puro firme reta sólida da base). O excesso mortal e rápido agudo crônico de CO2 torna suja doente crua e forte viva clara plena e a torna a água do sangue num líquido tóxico perigoso venenoso de 'Sangue Muito Ácido' Químico (cai e desce e derruba o pH de equilíbrio basal alcalino fisiológico mestre). Como ele deteta a acidez forte de morte cega de CO2 de doente do H+, ele dispara o alarme para o nervo frênico motor para obrigar e bater o teu diafragma a acelerar o pistão ventilador e motor a bater muito muito rápido veloz ofegante para conseguir forçar atirar limpar expulsar chutar varrer limpar ventilar purificar exalar de expirar arfar expirar soprar esse fumo esse gás CO2 fora da da da vida murcha cega de tua barriga pulmão rua da traqueia livre e desimpedida pura de de e da da e da e do corpo. Magistral da sobrevivência animal base.",
+                    options: [
+                        "Isto estimula ilhotas pancreáticas a deitar mandar produzir bombear jorrar e cega de insulina gorda livre doce insulina, não dita e acorda e acorda pulsação ventilatória neurológica motora crânica diafragmática rápida respiratória de de de tórax e alvéolo vivo cego mudo cego de podre morno doce cego murcho lento baço sujo fofo fofo fofo sujo gordo oco de fofo e de de de frio de do de limpo de fofo",
+                        "Radiância e luz atua no pino da melatonina da glândula murcha pineal fofa rala cega suada falsa suada fina doce cega rasa morta seca de pó cego oco cego de retina ocular do do nervo craniano oco visual e não altera ou deteta afere ritmo respiratório diafragmático pneumático limpo de via pulmonar fofa.",
+                        "Esta é a alternativa correta brutal fisiológica anatômica metabólica respiratória mestre do reflexo ventilatório pulmonar clínico químico hematológico clara reta plena de de de regulação acidobásica letal geral e clássica pura fina fina exata densa rica de prova genial sã certa dura certa.",
+                        "Termorregulação rege suor glândula sudorípara hipotálamo diencéfalo base livre livre de de pele de derma da derme ar calmo cego mudo cego seco suado de poro e arrepio cego tremor músculo, e não é o gatilho inicial focado crônico de disparo central pontino do bulbo basal raquidiano e carotídeo para do drive e o e de disparo de drive impulso primário letal drive ventilatório respiratório cego de rústico forte orgânico sã vida."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Difícil",
+                text: "O Mito Fatal Letal Obscuro Cruel Frio de Rasteira Suprema Citológica Biológica Mundial Médica que Faz Chocar Rir Estremecer o Perito Examinador: O Fígado Gordo Quente Orgânico Hepático de Sangue de Depuração Central Laboratório Mestre (O Super Órgão Anexo Fiel da Morte Cega) Fabrica e Destila e Suga Bota Baba e Frita Sangra Excreta um suco fluido líquido orgânico denso verde pântano grosso mudo letárgico escuro morno macio fofo fofo suave de sabão viscoso espesso letal chamado 'BÍLIS' (Bíle Suja Doce Rala). Essa Bílis fica Cega Escondida Guardada Depositada Armazenada Acumulada Presa Segura Pura Rica Fresca Morna Oca na pequena bolsa colada agarrada por debaixo verde da pele lisa dele (A VESÍCULA BILIAR) antes de ser atirada cuspidada jorrada esvaziada para o intestino doente e cego quente de refeição gordurosa de pão e azeite liso. Identifica a ÚNICA frase Imaculada Limpa Certa Biológica Falsa Verdadeira Lógica Científica Cirúrgica Crua Mestra Dura Reta Limpa Fria e Viva Rija que diz a Função Genial Total e Reta da Bílis Suja Escura:",
+                options: ["A Bílis é a Maior Enzima de Ácido Forte Que Existe e Desfaz Pedaços e Corrói Todos os Vírus Ocos Mudos Baços Pálidos Claros Gordinhos Rústicos de Pedaços de Carne Forte Densa Clara Oca.", "A Bílis NÃO É UMA ENZIMA. É mentira chamar enzima do doente e e e de de a Bílis cega cega. Ela atua apenas como um DETERGENTE DE LOUÇA DA COZINHA (Emulsificante Físico Emulsionante Mestre Sabão Químico Frio Cego). Ela vai à gota gorda imensa balão de gordura do azeite pão toucinho gordo gordo mole macio branco podre de e de de banha crua limpa suada lenta oca e, tal como tu lavas os pratos com detergente para separar separar partir separar dividir desmanchar a nodoa crosta gorda inteira em mini esferas microscópicas (Mecânico Físico Mole de de de Espuma Bolhas Doces Lúgubres Ocas e Finas Fofas Sujas Ocas Brancas Gordas Calmas Limpas e Murchas Fofas Finas). Assim, as gotas minúsculas ganham superfície farta limpa limpa e a verdadeira e a e a do do enzima a Enzima Pancreática Pura do (Lipase Enzima Mestra Corte Cega Lisa de Lise Final Fina Dura) pode cortar comer engolir e absorver digerir e estilhaçar sem ser repelida da água falsa doente fraca limpa podre falsa oca nula de lixo.", "A Bílis atira ar fofo doce gasoso e voa no lixo mudo raso lento de pó frio de cal mudo murcho vazio falso podre seco oco calmo lento podre e mudo sujo vazio limpo liso seco.", "O Fígado absorve a comida do estômago limpo podre limpo limpo de lúgubre morto oco calmo lento fofo fofo sujo gordo oco raso mole lento calmo fresco sujo doce frio e calmo mudo cego falso."],
+                correct: 1,
+                explanation: {
+                    correct: "Decora isto e salvas-te e salvas a tua alma e prova e corpo do desastre ignorante geral: A BÍLIS NÃO É UMA ENZIMA e não FAZ DIGESTÃO QUÍMICA de partir ligações poliméricas covalentes peptidicas lipídicas macromoleculares ralas ralas frias mortas nulas baças cegas falsas de osso osso osso suado. Ela é apenas SABÃO. Se o azeite do bife não se mistura com a água do estômago intestino mole calmo suado morno longo calmo cego mudo cego de tripa fina, como é que as enzimas líquidas de água iam atuar na bola e balão fofo espesso de banha gordurosa espessa sem resvalar e escorregar inúteis cegas vazias fracas lentas ocas ralas macias mortas frias fofas murchas murchas cegas cegas de gelo de osso longo de pau morto e cego podre baço mole mudo raso sujo? A bílis parte mecanicamente fisicamente a gota grande em milhões de nano-gotinhas fininhas emulsionadas emulsificadas. Assim a verdadeira enzima da lise (Lipase do Pâncreas Mestre) ataca-as e destrói o lípido! O Fígado salva a Lipase Mestra Verde Limpa Cega Plena Direta Exata Seca de Gordura Cega Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte.",
+                    options: [
+                        "Falso, já dissemos mil vezes que não é enzima química proteica catabólica molecular letal clara de de base.",
+                        "Esta é a alternativa correta brutal química laboratorial de físico química orgânica de surfactantes saponificação letal clínica gástrica perfeita maciça viva pura imaculada certa densa mestre forte rija.",
+                        "Sintoma falso e assustadoramente biológico irreal da ecologia de fantasia do mudo nulo ralo mole de vento cego morto baço do sol de pântano.",
+                        "O fígado NÃO absorve no intestino o o quilo quimo azeite e batata pão e queijo gordo maciço carne viva fina e de osso gordo baço suado mole cego mole doce limpo de veia viva. Ele só deita e lança a bilis verde suco canal fora no duto calmo de canal."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Médio",
+                text: "No epicentro e clímax da Digestão Intestinal, o Intestino Delgado Fino Tubo não é um tubo de PVC plástico limpo liso escorregadio careca liso limpo liso reto brilhante puro sem rugas polido morno macio e falso lento fofo cego mole de cano esgoto morto opaco baço raso falso oco e nulo da urina calmo. O interior do seu canal parede epitélio mucosa tecido carne tecido derme forro fofo sujo oco rosa lúgubre branco vermelho carne sangue farto limpo liso morno suado rico longo longo denso forte de vácuo está forrado coberto pejado apinhado densamente farto cheio suado de milhões de projeções minúsculas dobras evaginações de pregas pele fina doce macia dedos pequenos tapete tecido vivo mestre chamadas de 'VILOSIDADES INTESTINAIS' (e por cima delas microvilosidades microscópicas puras ricas cruas base). Qual é o milagre ou a função genial estrutural orgânica física matemática biológica pura letal fina direta destas dobras de tapete peludo de veludo animal falso livre morno quente doce mole livre frio raso cego falso mudo lúgubre denso mudo mudo de do do do?",
+                options: ["As dobras Vilosidades só servem para travar travar travar segurar deitar atrasar ascaris lombrigas ténias helmintos que querem escorregar rápido sujo gordo oco de pântano suado farto cego.", "Elas não de têm função lúdica de biologia inútil falsa cega cega fina fria de gelo solta solta rica doce rasa e murcha.", "Ao estar enrugado forrado esburacado feito em dedos pregas picos pelos fios longos fios em zigue zague sujos brancos falsos cegos, ele AUMENTA BRUTAL E MASSIVAMENTE MACIÇO A ÁREA (Superfície Espacial Orgânica de Contacto Superficial Física Celular Ampla e Tensa Mestre Larga) com a comida quimo líquido digerido gordo doce limpo doce cego ralo baço falso e ralo. Em vez de uma parede lisa ineficiente curta que perdesse deixasse fugir fezes a comida fofa e pura, a parede em 'dedos infinitos' capta filtra bebe chupa devora puxa atrai e ABSORVE incansavelmente milhares e mil vezes mais de nutrientes sucos açúcares glicose vitaminas para o Sangue Veia Cega Nula Base Lenta Murcha Sangrenta Direta da Capilar do Interior Cru Animal Viva Dura Dura Certa e Reta Genial do Corpo Viva Pura Fina.", "As vilosidades dão oxigénio gasoso o2 o2 ao bolo fecal verde cego do lúgubre cego do estômago lúgubre denso mudo calmo."],
+                correct: 2,
+                explanation: {
+                    correct: "Aumentar a superfície de absorção! É a lei dos pulmões (alvéolos em sacos de framboesa bagos de romã minúsculos para ter espaço para passar gás O2 ar rico) e a lei das tuas tripas finas (milhões de pelinhos tapete dobras esfregona cega murcha rala cega suja fina para haver espaço milimétrico físico celular quadrado área de metro cúbico vasto imenso enorme de derme encostado colado para sugar chupar transferir os aminoácidos limpos e doces e fortes puros de vida base sã e rica de bife sangue leite doce carne pão). Se o teu intestino fosse de tubo esticado careca reto liso canal de mangueira liso puro e do cego oco raso limpo, terias de ter e de arrastar 200 metros de tripas de víscera animal falsa solta gorda e quente na barriga de homem para a absorver o de mesmo nutriente que absorves hoje e de na de hora exata letal limpa de base.",
+                    options: [
+                        "Não são armadilhas mecânicas defensivas antiparasitárias zoológicas cegas nulas de de caça de tênias mortas limpas brancas velozes densas finas doces.",
+                        "A biologia detesta e nega desperdício anatômico ineficiente frouxo mudo gasto limpo nulo oco de nulo cego doente calmo podre gordo sujo de fofo e de de limpo inerte nulo inócuo sem base de seleção evolutiva letal limpa e direta clara de mestre e puro exato solto reto.",
+                        "Esta é a alternativa correta brutal citológica funcional histológica base pura clara e imaculada e genial de laboratório reta e densa mestre e forte limpa plena suprema fina pura certa e dura.",
+                        "Digestório gástrico canal não ventila gás oxigénio aéreo gasoso leve limpo incolor transparente do sol e vento do mato para o sangue veia hemácia celular exato de biologia alveolar letal respiratório e claro."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Fácil",
+                text: "Onde Termina o Trabalho Mestre Fisiológico Anatómico Digestório Bioquímico Molecular Celular Pleno Orgânico Exato Directo Firme Forte Limpo E Sólido Seguro Rijo Limpo Lento Sujo Cego Morto Pálido Vazio Morto Calmo De Sangue Falso Nulo E Falso Cego E Limpo Da Desmontagem E Absorção Farta De Da Água E Sais E E Restos Lixo Resíduo Excreção Do Almoço Farto Quente Base Fina Cega Nua Mole Pálida Rasa De Murcha Murcha Rasa Murcha Rasa Lenta Rasa Baça Morta Pálida Rasa? No final, a massa liquida rala oca rala mole e chata vinda dos Intestinos Delgados Finos passa entra e deposita esvazia acumula e viaja transita cega mole falsa nula limpa no tubo mais sujo gordo oco raso morto e grosso tubo lúgubre denso mudo grosso chato e cego da do trato gástrico animal humano vivo mamífero cego oco cego falso mudo ralo de vida de limpa oca suada do pó cego cego fofo sujo gordo oco raso mudo liso cego morto morto morto.",
+                options: ["O Intestino Grosso Reto Ceco Cólon Denso Farto Grosso Gigante Espesso E Largo Curto Escuro Frio. A grande magia da vida química de desdobrar as enzimas orgânicas carne lípido de polímero açúcar já acabou limpa nua para trás limpo no fino duro cego oco doce murcho oco fraco e do de. O Grosso agora serve apenas e quase só primariamente e avidamente ferozmente intensamente ativamente maciçamente e de modo gigante para Recuperar Sugar Absorver Chupar Extrair Reaproveitar Reciclar Recolher De Volta ao Sangue de Vida Oca E Branca Pura Rica Da Barriga Da A Mega Grande Enorme Colossal Vital Quantidade De ÁGUA H20 LÍQUIDA FRIA e Minerais Sais De Minerais Cristal Solta Livre e Doce Oca Cega Fria E Suja De Cega Rasa Do Do Suco Pastoso Líquido Ralo Mole Pálido Doente Sujo Morto Que Sobrou de e da Massa e Formar Amassar Moldar Enrijar Juntar Endurecer e Desidratar A Lama Solta Fecal Suja e Criar Produzir Gerar Fabricar Construir As Fezes Sólidas Excrementos Resíduos Defecação Nula Lúgubre Exata Reta.", "O Coração Sangue De Neve Limpa Branca Murcha Suada Mole Doce Fria Rasa.", "Os Pulmões Traqueia Gás Aéreo Cego Ralo Fio Murcho Lenta Murcha Morta Murcha Rasa Falsa e Falsa Nula Fria Seca de Sol Rala Nula Branca Fria Cega.", "O Fígado Glândula Vesícula Mestre Cega Cega Rala Seca Morta e Cega Quente e Suada Baça Baça Falsa Rala Fria Suave Nula Branca."],
+                correct: 0,
+                explanation: {
+                    correct: "Simples, letal e a derradeira porta da ecologia digestiva exócrina entérica de evacuação suja cega nula e de raso mudo! O Intestino Grosso não gasta tempo e células e paciência a digerir e a quebrar cortar proteína carne cega pura lúgubre denso mudo calmo. A comida já está partida destruída e os nutrientes úteis açúcares de energia de glícidos finos lipídicos gordos já e entraram na grande autoestrada de lúmen fina vilosidade longa cega quente e livre de vida rasa fina forte. Mas... não queres deitar litros e litros infinitos e litros banho cego liso balão nulo fofo longo gordo baço calmo macio de H2O e da Água preciosa orgânica mineral essencial do corpo fora pelo cano da bacia vaso sanita sanitário limpo de esgoto cano sujo mole para baixo para a terra cega morte rasa fria morta pálida! O grosso, com a sua enorme rede e com as bactérias de flora flora microbiota (que ainda produzem a vitamina e k K essencial vital rica fina) puxa suga a suga chupa e de e aperta absorve a desidrata a massa o de bolo a água salva guarda e enxuga a a as tuas as a e do fezes fezes a terra sólida dura e e dura sólida mole de coco sólida dura limpo doce sujo mole sujo firme fina reta final.",
+                    options: [
+                        "Esta é a alternativa correta brutal de fisiologia histológica excretora fecal cega de base digestologia gástrica cega cega final dura fina limpa viva pura imaculada de teste geral suprema.",
+                        "Não tem função absorvedora de sais e humidade da matéria putrefata degradada fecal oca rala doente suada nua do do cólon lúgubre denso mudo.",
+                        "Pulmões limpam oxigénio venoso CO2 e oxigenação aérea alveolar fofa livre nua de de fina do oco raso limpo longo podre não lama digestiva de refeição sólida e cega gorda suja fina fria de vida rica.",
+                        "Fígado foi glândula anexa limpa do início que não se cruza não enche o bucho lúmen canal e e de matéria cega grossa cega murcha rala morta longa e opaca fofa mole gorda oca de fim reto anal final suado cego baço."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Raciocínio Hemodinâmico Aprovado!' : '❌ Ops! Isquemia Lógica e Colapso Vascular:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>A Verdade Fisiológica Circulatória Pura Direta Certa:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#4C0519; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #FDA4AF; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Diagnóstico das Anomalias Cardíacas e Rasteiras Míticas Ocas Falsas Erradas:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício Sangue e Veia
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#E11D48', '#0284C7', '#9F1239', '#F59E0B']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#E11D48', '#0284C7', '#9F1239', '#F59E0B']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Relatório Cardíaco e Vascular Mestre Sangue Base";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar na Pressão Sistólica Crua e Limpa";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Bombeaste conhecimento vital e curaste isquemias mentais em ${correct} de ${questions.length} mitos biológicos rasos.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Enfarte Intelectual Detetado Sangrento Murcho Lento Doente da Rasteira Falaciosa Veia Morta Cega!</strong> O teu sistema cardiovascular lógico colapsou em trombose clínica bruta aguda severa oca falsa e de sangue nulo. Confundir artérias e veias pelas cores no exame em vez de pelo sentido de fluxo da válvula porta tricúspide pulmonar é uma ofensa grave médica clínica e letal de biologia exata cirúrgica. Atingir 80% (24 acertos) é obrigatório nesta prova vital orgânica forense médica pura! Saneamento mental urgente de ressuscitação e soro e de Terapia Curativa: Lê a Teoria Anatômica Biológica Vascular e limpa as veias sujas de muco cego ateroma e placa morta antes de repetires o Exame Cardíaco Pleno!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Reconstruir Volume Sistólico e Limpar Mitos (Refazer Prova Vasos Fole e Tensão Arterial Rica Certa Limpa Rica Viva Sólida e Pura)</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Miocárdio Invencível Tensão Arterial Imaculada e Ventrículo Ouro Alfa Superior de Mestre Vivo Pleno Rico Forte Direta Sã Clara Brilhante Sólida e Pura Dura Segura!</strong> Sabes a diferença milimétrica biológica anatômica letal fisiológica química termodinâmica entre a veia pulmonar arterial rica limpa oxigénio a de sangue oco osso rústico de rasteira cega grossa cega murcha de artéria venosa oca de lúgubre denso mudo livre calmo longo do corpo calmo cego nulo de base nua falsa! A tua análise hemodinâmica clínica médica de urgência da bomba dupla e plasma e placa base táxi de eritrócito está blindada perfeita exata forte rica sem falhas. O sangue a gravidade válvulas porta cruzadas de não não não não têm de nenhum e segredo oco ralo a do ou o do do cérebro lobo de ar cego e cego lobo de a mestre mestre puro exato! Estás pronto para vencer!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Inspecionar a Grelha Vascular Gasometria e Válvulas Plenas de Base Mágica Exata Mestre e Segura Novamente Reta e Viva Doce e Dura Clara Certa e Limpa</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Forense das Anomalias Circulatórias Cardíacas Cegas Lentas Frias Ocas Nulas Mortas Lentas Murchas Cegas Rasa Murchas Lentas Falsas (Falhas do Fole Valvular Pulmonar Aorta Artéria Mito Grosso Mudo Calmo Limpo Seco Sujo Podre):</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">O teu Mito Sangrento Perigoso Lógico Oco e Morto Inerte Nulo Cego e Raso Frouxo Falso E Doente Baço Mudo Nu: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">A Verdade Hemodinâmica Anatômica Mecânica Termodinâmica Fisiológica Fina Molecular Bruta Limpa Direta Artéria Veia Sangue Pura Absoluta Viva Quente Biológica Real Clara: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

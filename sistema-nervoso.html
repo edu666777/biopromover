@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Nervoso - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-NEURAL (Azul Elétrico & Amarelo Sinapse) */
+            --bg-color: #EEF2FF; /* Azul Índigo muito claro */
+            --text-color: #1E3A8A; /* Azul Escuro quase preto */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #FEF08A; /* Amarelo Claro */
+            --theme-medium: #FACC15; /* Amarelo Elétrico */
+            --theme-dark: #4338CA; /* Índigo/Azul Elétrico (Destaque) */
+            --theme-contrast: #CA8A04; /* Ocre/Amarelo Queimado */
+            --theme-accent: #6D28D9; /* Roxo Profundo (Cérebro) */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#e0e7ff 1px, transparent 1px), linear-gradient(90deg, #e0e7ff 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 1.5s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--theme-medium); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-medium);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #3730A3;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--theme-dark);
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #3730A3;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-medium);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-medium);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #FEFCE8; /* Amarelo muito suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #854D0E;
+        }
+        .highlight-box.purple {
+            background-color: #F5F3FF;
+            border-left-color: var(--theme-accent);
+            color: #4C1D95;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #3730A3; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-medium); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-medium); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E1; line-height: 1.5; color: #0F172A; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-medium); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-medium); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-medium); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">⚡</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Sistema Nervoso: A Rede Elétrica</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar estrutura... (ex: Axónio)">
+            </div>
+            <div id="no-results"><p>😕 Estrutura não encontrada. Falhou a sinapse?</p></div>
+
+            <!-- TÓPICO 1: O NEURÓNIO -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-dark);">⚡ 1. A Unidade Básica</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-dark);">
+                    <h3 style="color: var(--theme-dark);">O Neurónio: A Célula Mestra</h3>
+                    <p>O Sistema Nervoso é a tua central de controlo. A unidade básica de tudo isto é uma célula especializada e altamente excetável: o <strong>Neurónio</strong>. Ele é como um cabo elétrico com uma antena e um transmissor.</p>
+                    
+                    <!-- MAPA ANATÓMICO EM SVG -->
+                    <div class="visual-area" style="padding: 20px 0; background-color: var(--white); border: 2px solid var(--border-color);">
+                        <svg width="100%" height="auto" viewBox="0 0 450 200" style="max-width: 500px; font-family: 'Poppins', sans-serif;">
+                            
+                            <!-- Corpo Celular (Soma) -->
+                            <path d="M 120 100 L 90 70 L 60 70 L 40 100 L 60 130 L 90 130 Z" fill="#DBEAFE" stroke="#1E3A8A" stroke-width="3" stroke-linejoin="round"/>
+                            <circle cx="80" cy="100" r="10" fill="#4338CA"/> <!-- Núcleo -->
+                            
+                            <!-- Dendrites -->
+                            <path d="M 60 70 L 40 40 M 40 40 L 20 30 M 40 40 L 30 10" stroke="#1E3A8A" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            <path d="M 40 100 L 10 100 M 10 100 L 5 80 M 10 100 L 5 120" stroke="#1E3A8A" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            <path d="M 60 130 L 40 160 M 40 160 L 20 170 M 40 160 L 30 190" stroke="#1E3A8A" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            <path d="M 90 130 L 110 160 M 110 160 L 130 170 M 110 160 L 100 190" stroke="#1E3A8A" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            <path d="M 90 70 L 110 40 M 110 40 L 130 30 M 110 40 L 100 10" stroke="#1E3A8A" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+                            <!-- Axónio -->
+                            <line x1="120" y1="100" x2="350" y2="100" stroke="#1E3A8A" stroke-width="6"/>
+
+                            <!-- Bainha de Mielina (Células de Schwann) -->
+                            <rect x="140" y="90" width="40" height="20" rx="5" fill="#FACC15" stroke="#CA8A04" stroke-width="2"/>
+                            <rect x="190" y="90" width="40" height="20" rx="5" fill="#FACC15" stroke="#CA8A04" stroke-width="2"/>
+                            <rect x="240" y="90" width="40" height="20" rx="5" fill="#FACC15" stroke="#CA8A04" stroke-width="2"/>
+                            <rect x="290" y="90" width="40" height="20" rx="5" fill="#FACC15" stroke="#CA8A04" stroke-width="2"/>
+                            
+                            <!-- Arborização Terminal (Telodendro) -->
+                            <path d="M 350 100 L 390 70 M 390 70 L 420 60 M 390 70 L 410 80" stroke="#1E3A8A" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            <path d="M 350 100 L 390 130 M 390 130 L 420 140 M 390 130 L 410 120" stroke="#1E3A8A" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            <circle cx="420" cy="60" r="4" fill="#6D28D9"/><circle cx="410" cy="80" r="4" fill="#6D28D9"/>
+                            <circle cx="420" cy="140" r="4" fill="#6D28D9"/><circle cx="410" cy="120" r="4" fill="#6D28D9"/>
+
+                            <!-- Seta de Direção do Impulso -->
+                            <path d="M 140 30 L 320 30" stroke="#E11D48" stroke-width="4" stroke-dasharray="8,4" marker-end="url(#arrowRed)"/>
+                            <text x="230" y="20" font-size="12" font-weight="900" fill="#E11D48" text-anchor="middle">DIREÇÃO DO IMPULSO ELÉTRICO</text>
+
+                            <defs>
+                                <marker id="arrowRed" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#E11D48"/>
+                                </marker>
+                            </defs>
+
+                            <!-- Rótulos -->
+                            <polyline points="45,170 80,170 80,115" fill="none" stroke="#1E3A8A" stroke-width="2"/>
+                            <text x="40" y="175" font-size="12" font-weight="900" fill="#1E3A8A" text-anchor="end">CORPO CELULAR</text>
+
+                            <polyline points="45,15 65,15 65,55" fill="none" stroke="#1E3A8A" stroke-width="2"/>
+                            <text x="40" y="20" font-size="12" font-weight="900" fill="#1E3A8A" text-anchor="end">DENDRITES</text>
+
+                            <polyline points="200,160 210,160 210,110" fill="none" stroke="#CA8A04" stroke-width="2"/>
+                            <text x="195" y="165" font-size="12" font-weight="900" fill="#CA8A04" text-anchor="end">BAINHA DE MIELINA</text>
+
+                            <polyline points="400,170 330,170 330,105" fill="none" stroke="#1E3A8A" stroke-width="2"/>
+                            <text x="405" y="175" font-size="12" font-weight="900" fill="#1E3A8A" text-anchor="start">AXÓNIO</text>
+
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Dendrites:</strong> As "antenas". Recebem o sinal dos neurónios anteriores.</li>
+                        <li><strong>Corpo Celular:</strong> Onde está o núcleo e as fábricas da célula.</li>
+                        <li><strong>Axónio:</strong> O "cabo transmissor" longo. O impulso viaja ao longo dele até às pontas.</li>
+                        <li><strong>Bainha de Mielina:</strong> O plástico isolador do cabo! É feita de gordura e atua como isolante elétrico. Faz com que o impulso salte e viaje <strong>muito mais rápido</strong>. Sem mielina (ex: Esclerose Múltipla), os teus comandos ficam lentos ou param.</li>
+                        <li><strong>A Regra de Ouro:</strong> O impulso elétrico viaja SEMPRE num único sentido: <strong>Dendrites ➔ Corpo Celular ➔ Axónio</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: A SINAPSE -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-medium);">🧠 2. A Comunicação</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-medium);">
+                    <h3 style="color: var(--theme-dark);">Sinapse: O Salto Químico</h3>
+                    <p>O grande mito! Os neurónios no cérebro <strong>NÃO se tocam fisicamente</strong>. Há um espaço microscópico entre eles chamado Fenda Sináptica. A eletricidade não pode saltar o vazio. Então, como passa a mensagem?</p>
+                    
+                    <div class="visual-area">
+                        <svg width="220" height="120" viewBox="0 0 220 120">
+                            <!-- Terminal Axónico (Pré-sináptico) -->
+                            <path d="M 50 10 Q 90 10 90 50 Q 90 90 50 90 Z" fill="#DBEAFE" stroke="#1E3A8A" stroke-width="3"/>
+                            <!-- Vesículas -->
+                            <circle cx="60" cy="30" r="8" fill="#FACC15" stroke="#CA8A04"/>
+                            <circle cx="60" cy="70" r="8" fill="#FACC15" stroke="#CA8A04"/>
+                            <circle cx="80" cy="50" r="8" fill="none" stroke="#CA8A04" stroke-dasharray="2,2"/> <!-- Rebentando -->
+                            
+                            <!-- Neurotransmissores -->
+                            <circle cx="95" cy="45" r="3" fill="#E11D48"/>
+                            <circle cx="105" cy="55" r="3" fill="#E11D48"/>
+                            <circle cx="115" cy="40" r="3" fill="#E11D48"/>
+                            <circle cx="125" cy="60" r="3" fill="#E11D48"/>
+
+                            <!-- Dendrite (Pós-sináptico) -->
+                            <path d="M 180 10 Q 140 10 140 50 Q 140 90 180 90 Z" fill="#E0E7FF" stroke="#4338CA" stroke-width="3"/>
+                            
+                            <!-- Recetores -->
+                            <path d="M 140 35 C 130 35 130 45 140 45" fill="none" stroke="#6D28D9" stroke-width="4"/>
+                            <path d="M 140 55 C 130 55 130 65 140 65" fill="none" stroke="#6D28D9" stroke-width="4"/>
+
+                            <!-- Seta de fluxo elétrico -->
+                            <path d="M 10 50 L 40 50" stroke="#FACC15" stroke-width="4" marker-end="url(#arrowYellow)"/>
+                            <path d="M 190 50 L 220 50" stroke="#FACC15" stroke-width="4" marker-end="url(#arrowYellow)"/>
+
+                            <defs>
+                                <marker id="arrowYellow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#FACC15"/>
+                                </marker>
+                            </defs>
+
+                            <text x="110" y="110" font-size="10" font-weight="bold" fill="#E11D48" text-anchor="middle">Neurotransmissores na Fenda</text>
+                        </svg>
+                    </div>
+
+                    <div class="highlight-box">
+                        Quando a eletricidade chega à ponta do Axónio, o neurónio cospe "bolinhas químicas" (os <strong>Neurotransmissores</strong>, como a Adrenalina ou a Dopamina) para o espaço vazio. Estas bolinhas viajam pelo líquido, encaixam nos recetores da Dendrite do neurónio seguinte e disparam um novo choque elétrico. O sinal passa de <em>Elétrico ➔ Químico ➔ Elétrico</em>.
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: DIVISÃO DO SISTEMA NERVOSO -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-contrast);">🗺️ 3. O Mapa Geral</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-contrast);">
+                    <h3 style="color: var(--theme-contrast);">SNC e SNP</h3>
+                    <p>O Sistema Nervoso divide-se geograficamente no comandante e nos soldados:</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:10px;">
+                        <li><strong>SISTEMA NERVOSO CENTRAL (SNC):</strong> O computador. Toma as decisões. Fica blindado por osso.
+                            <ul style="padding-left: 15px; margin-top: 5px;">
+                                <li><strong>Encéfalo:</strong> Protegido pelo crânio. Inclui o Cérebro, o Cerebelo e o Bolbo Raquidiano.</li>
+                                <li><strong>Medula Espinhal:</strong> Protegida pela coluna vertebral. É a grande autoestrada de cabos que desce pelas tuas costas. Se cortada, perdes o movimento abaixo do corte (paraplegia/tetraplegia).</li>
+                            </ul>
+                        </li>
+                        <li><strong>SISTEMA NERVOSO PERIFÉRICO (SNP):</strong> Os cabos. Levam as ordens do SNC aos músculos e trazem a informação dos sentidos (pele, olhos) para o SNC.
+                            <ul style="padding-left: 15px; margin-top: 5px;">
+                                <li><strong>Nervos:</strong> Feixes de milhares de axónios juntos (como um cabo de fibra ótica grosso).</li>
+                                <li><strong>Gânglios:</strong> Aglomerados de corpos celulares fora do SNC.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: O ENCÉFALO -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: #6D28D9;">🧠 4. A Caixa Negra</div>
+                <div class="theory-box search-target" style="border-left-color: #6D28D9;">
+                    <h3 style="color: #4C1D95;">Anatomia do Encéfalo</h3>
+                    <p>O encéfalo não é "só o cérebro". Ele tem três peças principais, cada uma com uma tarefa muito específica:</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr; gap: 10px; padding:0; background:transparent; border:none;">
+                        <div style="background:#FFFBEB; border-left:4px solid #CA8A04; padding:10px; border-radius:0 8px 8px 0;">
+                            <strong>Cérebro (Córtex):</strong> O chefe! Memória, inteligência, raciocínio, emoções, processamento dos 5 sentidos e comandos motores <strong>voluntários</strong> (mexer o braço porque queres).
+                        </div>
+                        <div style="background:#EEF2FF; border-left:4px solid #4338CA; padding:10px; border-radius:0 8px 8px 0;">
+                            <strong>Cerebelo:</strong> O piloto automático físico. Fica atrás, na nuca. Controla o <strong>Equilíbrio</strong>, a postura e a coordenação motora fina (andar de bicicleta, enfiar a linha na agulha). Se beberes álcool, ele avaria e ficas a cambalear.
+                        </div>
+                        <div style="background:#FFE4E6; border-left:4px solid #BE123C; padding:10px; border-radius:0 8px 8px 0;">
+                            <strong>Bolbo Raquidiano (Tronco Cerebral):</strong> A linha de vida. Controla as funções <strong>vitais INVOLUNTÁRIAS</strong>: os batimentos do coração, o ritmo da respiração e a pressão arterial. Um dano aqui é morte quase imediata.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 5: ATOS REFLEXOS -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: #E11D48;">⚡ 5. A Fuga Rápida</div>
+                <div class="theory-box search-target" style="border-left-color: #E11D48;">
+                    <h3 style="color: #BE123C;">Arco Reflexo (O Atalho)</h3>
+                    <p>Tocas num tacho a ferver. A tua mão recua violentamente ANTES de tu sentires a dor no cérebro. Como é que o teu braço soube?</p>
+                    
+                    <div class="highlight-box purple">
+                        <strong>A Medula Espinhal decide sozinha!</strong> Num Ato Reflexo, a mensagem de perigo viaja pelo Nervo Sensitivo até à <strong>Medula Espinhal</strong> (nas tuas costas). Em vez de perder tempo a enviar o sinal até ao cérebro para pensar, um neurónio de associação na Medula dispara logo a resposta pelo Nervo Motor para o músculo contrair. Só depois é que a Medula "avisa" o Cérebro e tu sentes o "Ai!". É um mecanismo brutal de sobrevivência para evitar lesões graves.
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 6: O SISTEMA AUTÓNOMO -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: #047857;">🚦 6. O Pedal e o Travão</div>
+                <div class="theory-box search-target" style="border-left-color: #047857;">
+                    <h3 style="color: #064E3B;">SNA: Simpático vs Parassimpático</h3>
+                    <p>O Sistema Nervoso Autónomo (SNA) controla os teus órgãos internos sem tu pensares (involuntário). Divide-se em duas equipas rivais:</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding:0; background:transparent; border:none;">
+                        <!-- SIMPÁTICO -->
+                        <div style="background:white; border:2px solid #BE123C; padding:15px; border-radius:8px;">
+                            <h4 style="color:#9F1239; text-align:center; font-size:1.1rem; margin-bottom:10px;">🔴 SIMPÁTICO</h4>
+                            <p style="font-size:0.8rem; text-align:center; font-weight:bold; margin-bottom:5px;">LUTA OU FUGA (Stress)</p>
+                            <ul style="font-size:0.8rem; padding-left:15px; line-height:1.5;">
+                                <li>Acelera o Coração (Taquicardia).</li>
+                                <li>Dilata as pupilas (para veres melhor o perigo).</li>
+                                <li>Para a digestão (não é altura de digerir bife se um leão te persegue).</li>
+                                <li>Neurotransmissor: <strong>Adrenalina</strong>.</li>
+                            </ul>
+                        </div>
+                        <!-- PARASSIMPÁTICO -->
+                        <div style="background:white; border:2px solid #0369A1; padding:15px; border-radius:8px;">
+                            <h4 style="color:#0284C7; text-align:center; font-size:1.1rem; margin-bottom:10px;">🔵 PARASSIMPÁTICO</h4>
+                            <p style="font-size:0.8rem; text-align:center; font-weight:bold; margin-bottom:5px;">DESCANSO E DIGESTÃO (Calma)</p>
+                            <ul style="font-size:0.8rem; padding-left:15px; line-height:1.5;">
+                                <li>Acalma o Coração (Bradicardia).</li>
+                                <li>Contrai as pupilas.</li>
+                                <li>Estimula a digestão e salivação (quando estás no sofá relaxado).</li>
+                                <li>Neurotransmissor: <strong>Acetilcolina</strong>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar Diagnóstico Neurológico (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">Neurologia Básica</h2>
+                <p style="color: #4338CA; font-size: 0.95rem; font-weight:600;">
+                    30 questões de impulsos elétricos fulminantes. Acerta <strong>80% (24/30)</strong> ou as tuas sinapses provarão estar bloqueadas. Analisa a correção letal de cada erro!
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Eletroencefalograma</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS RIGOROSOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Neurónio e Sinapse (1-8)
+            {
+                id: 1, level: "Fácil",
+                text: "A rede de telecomunicações do corpo humano não é feita de fios de cobre, mas de biliões de células especializadas, altamente excitáveis, capazes de conduzir impulsos elétricos. Como se chamam estas células estruturais e funcionais do Sistema Nervoso?",
+                options: ["Glóbulos brancos", "Neurónios", "Osteócitos", "Plaquetas"],
+                correct: 1,
+                explanation: {
+                    correct: "Exato! O Neurónio é a unidade funcional (a 'peça Lego' base) do sistema nervoso. São as células que geram, recebem e transmitem a mensagem.",
+                    options: [
+                        "Glóbulos brancos fazem parte do sistema imunitário (defesa).",
+                        "Esta é a alternativa correta.",
+                        "Osteócitos são as células dos ossos.",
+                        "Plaquetas coagulam o sangue."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Médio",
+                text: "Um neurónio típico possui três zonas anatómicas fundamentais para garantir a receção e o envio do sinal elétrico. Qual é a REGRA de OURO para a direção do impulso nervoso num único neurónio?",
+                options: ["Do Axónio, para o Corpo Celular, para as Dendrites.", "O impulso move-se aleatoriamente em ambas as direções para não cansar a célula.", "Das Dendrites (onde o sinal é recebido), passa pelo Corpo Celular, e desce ao longo do Axónio (por onde é transmitido para fora).", "Do Núcleo para o exterior da pele."],
+                correct: 2,
+                explanation: {
+                    correct: "A via é de sentido ÚNICO! As dendrites parecem ramos de árvore desenhados para 'apanhar' o sinal dos vizinhos. O corpo junta o sinal e o axónio é o cabo longo que atira o sinal para o próximo alvo.",
+                    options: [
+                        "Inverteu totalmente a anatomia do impulso de base.",
+                        "A biologia celular neuronal é unidirecional, caso contrário haveria curtos-circuitos caóticos.",
+                        "Esta é a alternativa correta neurofisiológica mestre.",
+                        "A via não é de explosão nuclear radial genérica."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Fácil",
+                text: "Em biologia nervosa, a 'Bainha de Mielina' é frequentemente comparada ao plástico que envolve os fios de eletricidade nas nossas casas. Qual é a sua função estrutural e letal no prolongamento longo do neurónio (axónio)?",
+                options: ["Destruir os vírus que tentam morder o neurónio na medula.", "Atuar como isolante elétrico (feito de lípidos/gordura) que AUMENTA drasticamente a velocidade de condução do impulso elétrico, fazendo o sinal 'saltar' rapidamente.", "Armazenar água e glicose doce calórica para a célula comer de noite.", "Deitar o oxigénio gasoso o2 fora do sangue do corpo."],
+                correct: 1,
+                explanation: {
+                    correct: "A mielina é genial! Sem ela, o impulso arrastava-se lentamente pelo fio. Com a mielina (que funciona como blocos isolantes intercalados), a eletricidade 'salta' pelos intervalos nus (nódulos de Ranvier), viajando a velocidades supersónicas (até 120 metros por segundo!).",
+                    options: [
+                        "A mielina não tem função fagocítica ou imunitária defensiva ativa celular.",
+                        "Esta é a alternativa correta eletrofisiológica do neuro-cabo puro.",
+                        "A nutrição é gerida de outras formas vasculares neurogliais.",
+                        "Absurdo de base não pulmonar."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Difícil",
+                text: "Rasteira Biológica Clássica Escolar! A 'Sinapse' é o local de encontro entre dois neurónios. Como é que o impulso elétrico atravessa a Sinapse humana padrão para passar a informação do neurónio A para o neurónio B?",
+                options: ["Uma faísca de raio elétrico salta a frio no vácuo de uma célula para a outra.", "As pontas dos dois axónios fundem-se num nó cego de fibra colada dura para a corrente rolar em metal vivo.", "O neurónio elétrico liberta 'Neurotransmissores' (bolinhas químicas) numa fenda microscópica vazia (espaço sináptico). Estas moléculas químicas nadam até ao neurónio seguinte e encaixam nos recetores, ligando a eletricidade dele. O sinal é Elétrico -> Químico -> Elétrico.", "A membrana usa um cano de água doce para empurrar o sódio para a frente da testa longa do nervo ótico."],
+                correct: 2,
+                explanation: {
+                    correct: "Não há faíscas no teu cérebro a saltar abismos! Os neurónios NUNCA se tocam nas sinapses químicas. O impulso para no fim da linha e atira cartas (hormonas/químicos) para o outro lado do rio. O outro lê a carta e arranca de novo em eletricidade. É por isto que as DROGAS afetam o cérebro: elas metem-se no rio da fenda sináptica e imitam, bloqueiam ou estimulam as cartas falsas químicas!",
+                    options: [
+                        "Isto é física atmosférica de trovões inorgânicos elétricos sem ponte salina molhada aquosa molecular.",
+                        "Se eles fossem fundidos colados de vez, tu não conseguirias controlar, regular, somar ou parar sinais. A fenda existe para podermos regular os comandos do corpo.",
+                        "Esta é a alternativa correta neuroquímica de fenda sináptica mestre direta viva pura exata e plena de doutrina biológica fina.",
+                        "O impulso gera bomba de sódio potássio mas a travessia intercelular final mestre de sinapse é química exócrina secretora limpa vesícular de exocitose."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Médio",
+                text: "Sabendo a mecânica profunda brilhante química viva pura rústica da fenda sináptica (Neurotransmissores). A Dopamina, Serotonina e a Adrenalina, tão faladas na cultura popular desportiva e na psicologia psiquiátrica clínica mundial global humana, pertencem exatamente a que família celular neurofisiológica de base de laboratório?",
+                options: ["São nomes de glóbulos vermelhos oxigenados que andam no cerebelo vazio oco ralo.", "São os 'Neurotransmissores'. Substâncias químicas secretadas atiradas vesiculares pelas pontas do axónio nas sinapses, que atuam de chaves fechaduras no neurónio vizinho para transmitir emoções, dor, prazer, ordem de contração motora de músculo doente, ou sono e calma viva pura densa.", "São enzimas do suco pancreático de lise digestiva gástrica estomacal.", "São proteínas de cabelo e queratina rígida de cartilagem e de unha."],
+                correct: 1,
+                explanation: {
+                    correct: "Perfeito! Estas são as 'cartas' químicas atiradas de neurónio em neurónio. A Falta de Serotonina está ligada à depressão profunda clínica. A falta de Dopamina na zona motora causa a rigidez dos tremores de Parkinson de degeneração. O cérebro é química pura a dançar sobre a eletricidade.",
+                    options: [
+                        "Glóbulos não nadam na fenda sináptica cerebral microscópica limpa de neuro-citosol fluida rala.",
+                        "Esta é a alternativa correta farmacológica neurológica cerebral de ouro puro exato de de base plena.",
+                        "Absurdo de digestologia orgânica de ph basal.",
+                        "Não são de tecido anexo epidérmico morto seco e de osso mudo frio base."
+                    ]
+                }
+            },
+            {
+                id: 6, level: "Fácil",
+                text: "Quando te deparas com um pedaço de 'Nervo' (como o nervo ciático grosso da perna doloroso branco duro espesso forte limpo de cabo) ao abrires a pele perna, o que é fisiologicamente e anatomicamente esse Nervo na realidade crua base?",
+                options: ["Um único neurónio gigantesco alien esticado duro que vai do calcanhar até ao pescoço de uma vez.", "É um feixe de centenas e milhares de Axónios esticados juntos, embrulhados numa capa e fita isoladora forte de tecido conjuntivo forte de cabo. Atua literalmente como um cabo de alta tensão de fios dentro.", "É a espinal medula partida.", "Um canal de esgoto de suor e linfa gorda mole."],
+                correct: 1,
+                explanation: {
+                    correct: "Um nervo NÃO é uma célula. É um pacote atado cheio de milhões de 'caudas' (axónios) esticadas juntas a levar a informação tátil para cima ou a ordem muscular para baixo. Por isso o nervo é grosso e visível a olho nu na anatomia do talho ou hospital.",
+                    options: [
+                        "Os neurónios são microscópicos. Um axónio pode ser comprido mas é ultra fino, não forma um cordão visível sozinho a olho macroscópico lúgubre denso mudo calmo.",
+                        "Esta é a alternativa correta macro-estrutural perineural fascicular de condução periférica clínica viva pura e certa clara e limpa sólida de.",
+                        "A medula espinhal é central de osso de vértebra central do sistema.",
+                        "Não é tubo excretor orgânico hídrico de plasma linfa de base morna."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Médio",
+                text: "O que são as 'Meninges' no quadro da proteção estrutural cerebral forense mestre forte fina do teu crânio de cego e medula?",
+                options: ["O crânio ósseo duro rijo branco e cálcio forte.", "As células de defesa glóbulos brancos de macrófagos limpos calmos do cerebelo base.", "As três membranas protetoras superpostas coladas isolantes em envelopes (Dura-máter, Aracnóide e Pia-máter) que forram, embalam e protegem a delicada gelatina do Sistema Nervoso Central (Cérebro e Medula) contra agressões químicas e choques duros ossos de raspagem. E cuja inflamação severa gera a famosa doença aguda fatal 'Meningite'.", "O líquido doce branco limpo de água que se verte e bebe para nutrir a lágrima e chorar osso nulo livre seco murcho raso podre liso suado lento podre."],
+                correct: 2,
+                explanation: {
+                    correct: "O cérebro tem textura de pudim e gelatina mole fofa macia fria e doce! Se batesse no osso da caveira ao andar, tu sangravas por dentro à primeira corrida da escola. As Meninges são o saco plástico de proteção que envolve a gelatina e onde corre o líquido cefalorraquidiano amortece.",
+                    options: [
+                        "A calota craniana de cálcio fóssil não é tecido membranoso meníngeo de membrana basal pura mole fina limpa.",
+                        "A neuroglia existe sim, mas as meninges são membranas macroscópicas contínuas fortes e isolantes, não bactérias ou células vagabundas de lise imune.",
+                        "Esta é a alternativa correta anatômica do sistema nervoso de barreira hematoencefálica e invólucro do LCR.",
+                        "Líquido cefalorraquidiano é o fluido não as membranas sacos."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Médio",
+                text: "A neurociência base fala sempre da cor do tecido nervoso em cortes hospitalares médicos de patologia ('A famosa Massa Cinzenta / Substância Cinzenta' e a 'Massa Branca / Substância Branca'). O que dita a diferença visual destas cores anatómicas de base?",
+                options: ["A branca tem ar limpo puro vazio, a cinzenta tem sangue sujo escuro podre.", "A Massa Cinzenta é a região onde se amontoam milhões de Corpos Celulares de neurónios densos apertados escuros quentes suados do núcleo de pensarem. A Massa Branca é composta unicamente de cabos, de feixes de Axónios envolvidos pela Bainha de Mielina. A mielina é pura gordura, logo o seu aspeto brilha e dá a cor pálida leitosa e de branco de banha à Massa Branca.", "A cinzenta reflete a sombra dos fios e a branca tem as estrelas e neurónios estourados soltos mortos rasos moles fofos.", "Não existe diferença, as cores mudam no frigorífico ao frio raso morto seco limpo baço cego."],
+                correct: 1,
+                explanation: {
+                    correct: "Lógica genial visual biológica! Onde está o computador, os somas, os núcleos (A fábrica de decisão), o tecido fica turvo e cinzento. Onde estão apenas os cabos de transporte para longe embalados na grossa capa de gordura amarela e pálida lipídica (a Mielina isolante saltatória letal fina cega de axônio), o tecido fica e parece substância branca.",
+                    options: [
+                        "Falso orgânico místico letárgico vascular irreal nulo ralo.",
+                        "Esta é a alternativa correta macro-estrutural de encefálica cito-histológica de Mielina rica pura clara e certa letal.",
+                        "A biologia celular de cito-coloração baseia-se em concentração de elementos estruturais visíveis histológicos de gordura e não em ótica mística de de luz poética oca.",
+                        "Asneira doentia letal gorda fria morta rala baça murcha fina e fria de pó do frio."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Organização Geral e SNC (9-14)
+            {
+                id: 9, level: "Fácil",
+                text: "O Sistema Nervoso divide-se global e geograficamente e hierarquicamente em duas grandes peças majestosas: SNC (Sistema Nervoso Central) e SNP (Sistema Nervoso Periférico). Quem são as peças centrais nucleares do chefe SNC (Sistema Nervoso Central) que se escondem protegidas obrigatoriamente dentro de cofres de osso duro vivo denso?",
+                options: ["Nervos do Braço e Gânglios da Barriga Calma Livre Doente Doce Murcho Ralo Fio Nulo Pálido Oco Vazio Seco.", "Cérebro isolado e o Estômago Cego Pálido Falso Cego e Mudo Nu Frio Liso Limpo.", "Apenas a Medula do peito oco murcho e os rins suados ocos falsos rasos.", "O ENCÉFALO (que está guardado dentro do Crânio e inclui Cérebro Cerebelo e Tronco Cerebral) e a MEDULA ESPINHAL (que é um longo cordão nervoso grosso gordo tenso vivo quente protegido dentro e no túnel escavado das tuas de vértebras ossos da Coluna Vertebral dorsal fina firme)."],
+                correct: 3,
+                explanation: {
+                    correct: "SNC é tudo o que está protegido por osso por ser a CPU valiosa do computador humano! A cabeça da pessoa (Encéfalo) que pensa e processa, e a Medula (o cabo USB mestre grosso) que desce e chupa ordens nas costas e gere reflexos, bem trancada entre os discos da coluna.",
+                    options: [
+                        "Isto é a Periferia (O SNP Periférico) que anda à mercê da faca solto raso.",
+                        "Estômago não rege a via neurológica central de cérebro de base.",
+                        "O encéfalo fica em falta de cérebro. Rins não comandam redes elétricas somáticas viscerais autonômicas base.",
+                        "Esta é a alternativa correta topográfica anatômica oficial clássica de base médica plena e limpa de."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Fácil",
+                text: "A respeito do Sistema Nervoso Periférico (SNP). Qual a sua função de e missão exata e direta clara forte na economia de logística do doente de saúde do corpo de rotina animal biológica vital?",
+                options: ["Tomar todas as decisões éticas morais puras de cego e de chato mudo lento.", "Bombear e limpar o oxigênio e a água pura suada calma do sal limpo limpo de lúgubre denso mudo calmo.", "Atuar como a rede de Cabos de Fiação (Os Nervos e Gânglios). Ele liga interliga cruza os órgãos do corpo distante final periférico de (pernas, coração, pele do dedo da unha) ao Centro de Decisão CPU Mestre Direto Forte Computador (O SNC Cérebro e Medula Central de Fim), levando informações sensitivas de subida tátil e dor e trazendo as ordens nervosas motoras de resposta elétrica brutal de descida para mexer contrair atuar ativamente muscular.", "Digerir as proteínas em fatias e blocos mortos frios cegos lentos ocos ralos."],
+                correct: 2,
+                explanation: {
+                    correct: "Sem SNP, o teu cérebro (SNC) seria um computador genial brutal avançado e mágico trancado numa cave sem fios ligados para ligar ler o teclado (sentidos) ou a tela (músculos pernas rosto). O SNP são os fios nervosos que correm soltos pelo teu pulso bacia rabo pescoço costelas a conectar a tua carne ao grande cérebro isolado seguro e do chefe mestre e calmo.",
+                    options: [
+                        "O córtex frontal do Cérebro SNC pensa ética e filosofia e mestre de moral do ato frontal.",
+                        "Pulmões hematose coração fole cego falso oco ralo limpo de e artéria a artéria.",
+                        "Esta é a alternativa correta logística periférica de condução neurofisiológica aferente efêrente mestre pura e clara direta e clássica real certa dura letal densa fina doce sã e rija firme de vida clara.",
+                        "Digestologia pepsina estômago rústico nulo base rasa fina doce."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Médio",
+                text: "A parte mais volumosa maciça de topo rugosa e de prega engelhada e cega e limpa de de do Encéfalo é o Cérebro (Massa Telencéfalo). É o assento da nossa humanidade! Entre milhares de funções orgânicas, qual desta lista descreve o papel essencial principal cortical mestre focado e cognitivo e puro firme de CÉREBRO na cega e rica clara do e biologia de exames?",
+                options: ["Coordenar a frequência passiva da respiração basal e do sono de fole de ar podre mudo calmo lento falso raso cego falso mudo ralo de ritmo puro gordo nulo fraco doce livre raso baço podre pálido cego podre fofo seco mole.", "Sede das funções Nervosas Voluntárias Conscientes Conhecimento (Saber Onde estás), Raciocínio Matemática Inteligência Emoções Medo Alegria Córtex de Percepção Base Fina Clara Dura Sólida Memória Sensorial Fina Visual Surda Auditiva Pura Gosto e Mando de Controlo Motor Muscular de Base Reta Exata do Corpo Livre Limpa Ativa. (Tudo o que tem a tua intenção forte ativa mestre).", "Equilíbrio giroscópio cego de murcha morta cega lisa mole cega rasa murcha fétida suja longa gorda fina.", "A digestão ácida do ar frio podre fofo quente morno de falso liso sujo ralo mudo fofo."],
+                correct: 1,
+                explanation: {
+                    correct: "O Cérebro pensa, sofre, sente a dor real fria fina, ouve música, fala chora vê imagem clara e manda o braço mexer chutar deitar abrir de bola caneta e garfo livre e de e e a dedo para de frente no para a vida! Ele domina o teu ser VOLUNTÁRIO.",
+                    options: [
+                        "Isto é gerido mais abaixo no tronco e no bulbo autônomo sem tu dares a atenção e comando base e mestre e de a e lúgubre denso mudo livre limpo liso seco quente quente claro puro firme.",
+                        "Esta é a alternativa correta anatômica fisiológica das funções encefálicas superiores telencefálicas corticais densas imaculadas fortes rijas puras e de mestria vital letal exata sã firme clara clara de vida fina doce.",
+                        "Equilíbrio mecânico espacial giroscópico do ouvido orelha interna motor fino de bailarina passo perna é função da central do CEREBELO nuca fina fria cega traseiro traseiro de de.",
+                        "Absurdo lúdico e falho e cego falso e e e mortiça e falsa morna calmo cega baça murcha podre murcha murcha morna fria."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Fácil",
+                text: "Na zona da Nuca, atrás e em baixo de o a de do Cérebro gigante base, aloja-se uma pecinha pequena mas vital para qualquer bailarina, jogador de futebol do campeonato ativo livre raso cego mudo cego seco baço e calmo ginasta ou astronauta. O Cerebelo. Qual é a ordem do o seu mandato fisiológico corporal base viva maciça e e dura?",
+                options: ["Apenas de de ver as imagens e ouvir cego de som e calor calmo baço cego do olho solto frio.", "O controlo mestre apurado afinado rigoroso exato cirúrgico microscópico milimétrico de do EQUILÍBRIO Físico Orgânico Espacial do Corpo Tônus Cego Limpo Vivo Tenso Músculo Corda Rija Firme e da COORDENAÇÃO MOTORA FINA e Complexa de Mestre Limpo de Passo Mão Caneta Dança Bola Andar Cair Subir Ficar Calmo Firme Direito Livre Pleno De Trânsito.", "Bater do sujo do coração sujo de ácido calmo e cego mole fofo calmo suado morno.", "Processamento da de febre de de amarelão jeca de do a osso de bicho de parasita sujo longo de de mato falso liso duro de pó de pó de pó de pó cego oco."],
+                correct: 1,
+                explanation: {
+                    correct: "O Cerebelo não cria a ordem de mexer o braço (isso é o cérebro que manda), o Cerebelo diz é *como* e *com que força* e de e sem *cair ao chão desequilibrado cego* e cego e do e do. É o teu giroscópio do equilíbrio. Andar de patins, conduzir ou escrever no quadro limpo da aula sem sair do traçado fino reta clara e mestre de é obra do Cerebelo.",
+                    options: [
+                        "Isso é o cérebro (Lobos Visuais Occipitais Falsos Finos Ralos Doces Cegas de Foco Exato e Pálidos Cegas Temporais Cegas Finas).",
+                        "Esta é a alternativa correta biomecânica motora neurofisiológica exata do cerebelo de purkinje claro e límpido da locomoção axial basal e mestre plena.",
+                        "Isso é do o coração de nódulo nó autônomo oco e o o a do a o e a a de bulbo base de respiração de batimento rítmico bulbar oco livre calmo mudo lento fofo fofo sujo gordo oco raso.",
+                        "Gastroenterologia de nematelminto base livre de."
+                    ]
+                }
+            },
+            {
+                id: 13, level: "Difícil",
+                text: "Debaixo de de toda de a a de da toda da do todo a do de esta massa pensante genial genial genial murcha genial de inteligência e o cérebro, tens a de de tens a de a e de o TRONCO CEREBRAL Falso (E nele a famosa de peça de o BOLBO RAQUIDIANO Pálido Limpo Mestre Rijo De Bulbo Cru Cru Quente Vida Direta Reta Suja Forte Rija E Quente Base Base Crua de Bulbo Base Vivo). Porque é que de do de e de um um ferimento acidente lesão pancada pancada facada fratura lesão trauma violento forte bruto de choque letal direto na e no e no Bulbo Raquidiano da nuca de de de de de de é brutalmente e imediatamente de forma instantânea letal cega mortal asfixiante trágica maciça sem e sem cura de cega de na hora vida suada e do de sã?",
+                options: ["Porque o Bolbo controla governa rege dita ativamente autônomamente instintivamente de e e e cegamente de de no de sem de de de no de sem e sem de ti sem a tua vontade as tuas Fio e e as Funções VITAIS VEGETATIVAS e INVOLUNTÁRIAS de Risco Supremo Sobrevivência Direta (Ex: Manda de Dá e Manda Bater o Ritmo do Coração Oco Calmo Mudo Cego Do Sol Forte Denso Vivo e e Manda Contrai Inspira Contrai Rápido Dá e Manda o Ritmo Constante Regular da de Ritmo da a RESPIRAÇÃO Diafragmática Pulmonar Pulso Batimento Gástrico Pressão). Sem ele apaga se o quadro de luz vida central da máquina corpo e animal eucarionte de o de os de do a sã.", "Porque ele armazena o teu pensamento livre oco raso de mudo sujo de livro de moral mudo cego de de frio de de cego doce murcho oco fraco e do de.", "Porque de ele e ele o bulbo mestre cego faz fotossíntese animal de luxo fina pura no escuro denso para curar a asma branca.", "Porque não há no bulbo nada a fazer e e e não a de ar ar ar frio podre suado lúgubre denso mudo calmo vazio raso limpo de o do o de liso limpo sujo grosso de folha." ],
+                correct: 0,
+                explanation: {
+                    correct: "A caixa negra da sobrevivência cega ininterrupta! Não precisas do cérebro intelectual para respirar no sono profundo na cama! O Bolbo Raquidiano faz o trabalho sujo 24h/dia: Mantém o teu coração a pulsar calmo mudo e mudo e do e e mudo de pulsar vivo de ritmo a 60bpm, e manda o diafragma contrair puxar ar para sobreviver! Um coma encefálico pode manter-te vivo vegetal se o bulbo estiver intacto puro a comandar a respiração e os de as a de as a da base víscera de o os. Se a base a base rasga de quebra de de corta, tu paras e apagas o peito de batimento morte em e letal asfixia respiratória química base cega paragem imediata pura clínica crua real firme e e.",
+                    options: [
+                        "Esta é a alternativa correta macro-anatômica e de suporte de vida autonómico neuro do tronco cerebral exato claro de ouro base magna letal dura e sólida.",
+                        "Pensamento é neocórtex cerebral superior animal livre, não de bulbo instintivo pálido animal base nua velha sã morna doce.",
+                        "A biologia humana carnívora de e e de não engloba e encerra clorofila vegetal falsa oca murcha e de do ar de botânica semente viva rasa fina de lúgubre.",
+                        "Falso orgânico místico irreal irreal lúdico e."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Médio",
+                text: "A espinha dorsal das tuas costas oculta no seu interior túnel anelar ósseo de osso rústico vertebral coluna o grande cabo e da da de de da 'MEDULA ESPINHAL'. Seccionares cortares fatiares de rasgares partires severamente partires a medula espinhal lombar dorsal num acidente trágico mota da base mestre carro moto, o que acontece organicamente imediatamente de choque letal à fisiologia do tu de do corpo calmo cego mudo cego seco suado falso limpo de mudo de quente do paciente vítima animal animal humano livre sã de animal de e animal e vivo macio doce?",
+                options: ["Os pulmões colapsam ocos de osso vazio falso longo mudo oco de gás chato cego raso raso falso de luz oca e morna suada e suja murcha fina e falsa.", "Ocorrerá paralisia isquêmica da perda da audição cega murcha rala de de de de orelha e laringe oca suada doente nula de baço cego ralo sujo morno.", "Tu de ficarás Cego Morto Oco Baço Falso Cego de do Visão Calmo de Ar Morto e Mudo Falso de Sol Livre Mudo de Oco.", "Perderás na hora letal de base a total absoluta cega murcha final plena de perda Cega e Oca Capacidade e Sentido de Sentir e de Sensibilidade Cega Nua Limpa de de (Frio Quente Tato Dor Limpa Falsa) e também perderás do de e do de na perda A Perda Função Mestre Motora Muscular e Voluntária E Involuntária A Partir E De Toda A Região Nula Fria Rasa e Morna Doce Mole Doce De Corpo Anatômico de Limpo Fina Cega Situada E Murcha e Situada E ABAIXO Do Corte Secção Trágica Abaixo. A Informação Elétrica do Corpo de do o de e do Cérebro Cego a de O a O o Não a Desce Mais Mais e De Para Para A Perna Suja Quente Quente de Viva Dura Pura Para Mexer O Lúgubre E a De E Informação Sensitiva Cega Sensorial Limpa Oca Quente de Pele Fria e e Não a de Não Consegue Subir a Mais de Sobe Para Para Dizer E Lamber Ao Cérebro Cérebro Que O Dedo Tocou Num Osso Cego Cego Calmo (Ficas Paraplégico Limpo Ou Ou Tetraplégico Oco de Cego Mole Mole Rasa Mole Cega Cega Rala Seca Cega Cega Rasa Oca Cega Cega Fria Oca Falsa Rasa Falsa Nula Fria Suja Grossa Grossa)."],
+                correct: 3,
+                explanation: {
+                    correct: "A Medula Espinhal é uma Mega Autoestrada de Cabos Bidirecional pura! Os feixes ascendentes puxam o toque e dor da pele pé perna barriga cega de braço base e sobem e chupam mandam entregam isso na portagem cérebro pálido para ler analisar pensar dor. Os feixes descendentes agarram o Mando Voluntário cérebro e atiram de descida lúgubre denso mudo livre limpo até contrair ao nervo base da coxa gémeos pé de braço calmo de correr. Se cortas a autoestrada e e o pilar ponte a ponte cabo tronco tronco no meio de a da de da e e do meio mestre de de do pescoço ou dorso lúgubre denso, nenhum sinal a de sinal desce e nenhum a sinal sobe a abaixo da barreira morta murcha do corte e e secção! Paraplegia letal pura certa clara direta firme rija (pernas isoladas do do do) ou tetraplegia trágica mestre (corpo abaixo do cérebro tronco pescoço).",
+                    options: [
+                        "Os pulmões têm comando direto do tronco encefálico bolbo autônomo vagal frênico de raiz central nervo mestre cego puro liso de alta espinal e não cortam param por lise lise base lombar de de baça murcha fina e suada e oca rasa rala e e oca do de.",
+                        "Audição ótico craniano de nervo alto central encefálico sem a de de viagem trânsito o de e trânsito caudal medular esinal espinhal cego cego fofo sujo gordo oco raso mole lento calmo fresco sujo doce frio.",
+                        "Cegueira foca de nervo oftálmico visual de trato base cego macio terno vivo cego limpo suado quente craniano superior anterior isolado do tubo neuro e e cego e do eixo da e central da nula calmo podre.",
+                        "Esta é a alternativa correta brutal trágica patológica médica de trauma ráquio medular exato sólido real viva dura plena imaculada certa dura letal letal letal limpo letal limpo fina doce limpa direta fina pura."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Nervos e Reflexos (Atos Rápidos de Salvação) (15-20)
+            {
+                id: 15, level: "Fácil",
+                text: "O teu dedo tocou por acidente a descuidada cega sem a de sem de querer cega de sem em em e de a de e de na e de numa agulha na chapa da panela da brasa chama do e chama solta rica do a ferver queimar lúgubre arder cega quente viva de fogo cego! A tua mão cega do do teu de e a de braço o corpo puxou-se puxou e puxou recuou recuou voou repeliu instintivamente em de milissegundos violentamente e instantaneamente instinto bruto cru limpo de cego liso cego de mudo de ANTES mesmo e de sequer de TU O TEU CORPO DE O TEU CÉREBRO CONSCIENTE Córtex de Perceber Chegar E Pensar Avaliar Julgar Raciocinar Notar Refletir Notar Sentir a DOR quente de ou da Queimadura de ou da Cega Murcha Quente Base Murcha Murcha Seca Lenta Morna Mudo e e Falso Doce Morna Mudo! Qual a maravilha ou maravilha engrenagem mágica orgânica elétrica anatômica da de do de vida animal de o da da da física e vida física a biológica a biológica de reflexo base vida vida que justifica de justiça mestre letal cega exata pura do de vida rústica e crua de esta e ação e mágica do cega e rápida do do corpo de do de do de?",
+                options: ["O Acaso Oco Nu Morto de Raso Doce Ralo Mudo Oco Mudo Podre Cego Cego Sujo Podre Falso Oco Frio Limpo Morto Nu Cego Morto Morto Cego Cego Frio Frio Oco.", "A Biologia Murcha Seca Forte Forte.", "O ATO REFLEXO INVOLUNTÁRIO BASE MESTRE LIMPO RÁPIDO DO ARCO REFLEXO (Arco de Reflexo Medular Curto e Reta e Certo e de Defesa Cega e Limpa Mestra de Ataque Sujo e Dor Crua Viva Fina Reta Viva): Para salvar e evitar e fugir a a de de te da um de a danos e de lesão de a mais profundos danos queimadura dura e cega e severa, o Nervo Cego Sensitivo leva O Leva O o Sinal Dor A de Picada Queimada Queimadura Quente Dor Perigo Perigo Alerta Apenas E APENAS e Só Cego Frio Lúgubre E a e Só Da Até ATÉ À e e à MEDULA ESPINHAL Cega Da de Da Dorsal Base Fina Cega e Grossa Suja Costa Tua De Coluna Fina Mestre Tua Tua Costa! A TUA Medula Tua não manda, não para e não espera do a de para enviar enviar chutar chutar de mandar atirar para a de para o Cérebro pensar e mandar lúgubre denso mudo mudo de do e voltar o e cego lúgubre denso mudo livre calmo chato e ler o ler o ler a ler e! A TUA Medula E um e de Medula e Neurônio Neurónio Neurónio Cego Mestre e Interneurônio De Associação Dá O De Dá O O A Associação a do na a Hora A Ordem Decide O Ato Ativa E Dá De Emite De O O A Despacha Ativa Dispara Atira Jorra De De Resposta Da Da Imediata Automática E Resposta e Ordem Rápida Mestra Ativa E a A do a Motor Nervo Nervo MOTOR Para Manda Manda O Braço Muscular Recuar Contrai E Fugas Esconde Puxa Longe E Longe Do Trágico Letal Fogo Sujo. Tu Sentes O Cérebro Só E E E E O E Sente Sente E Chora Dor Ai Ai E Um Segundo Atrás Atrás Depois Lúgubre Da Mão Salva Da De Curada Já Já Da Quente.", "A Célula Pancreática Secreta Suco Suco Insulina Fosfolípido E De Da Cega Fria Rala Podre Mole Fria Falsa Rasa e Longa Morna Falsa Cega Cega."],
+                correct: 2,
+                explanation: {
+                    correct: "A engenharia do Arco Reflexo é de génio evolutivo letal! Quando o perigo dor é iminente letal (fogo panela espinho cego afiado cru oco cego base rústico agudo do lixo do pó calmo), não tens tempo para subir a mensagem nervosa elétrica pela medula até ao Encéfalo cérebro mestre para tu e decidires intelectualmente cego de 'oh oh oh estou a derreter o dedo vou tirar a pele murcha oca oca baça falsa fofa cega de raso cego falso mudo frio'. Seria tarde! Por isso a TUA MEDULA da coluna vertebral dorsal faz as vezes de 'mini-cérebro automático autônomo periférico medular rápido emergência'. Recebe a dor (Nervo Sensitivo) -> Despacha o choque a ordem (Nervo Motor) -> Tiras puxas a Mão! Tudo isto num centésimo milésimo de base cega e de segundo biológico orgânico elétrico de puro instinto basal clássico mestre. E o cérebro afere afere o a de o ai de a a da da só e dor de dor depois lenta suada suada chata de tarde baça fofa.",
+                    options: [
+                        "Falso.",
+                        "Falso.",
+                        "Esta é a alternativa correta neurofisiológica de resposta autonômica simpática parassimpática medular exata reta imaculada de defesa letal direta clara fina doce de base.",
+                        "Insulina atua glicémia de pâncreas base limpo de digestório gástrico sangue puro denso lúgubre e não cito-tática mecânica esquelética neural motora de músculo fita fita plano gordo grande gigante cego mudo."
+                    ]
+                }
+            },
+            {
+                id: 16, level: "Médio",
+                text: "No que toca a de a a o de a a de da e e do de via e mestre cego puro liso de base murcha lenta morna calma de poeira e tubo fofo e vivo claro reto de ar raso longo falso mudo baço calmo do suor e raso: Se analisares com atenção profunda histológica ao teu microscópio de aulas de biologia a parede fina de e que e e a a a de um único minúsculo ALVÉOLO PULMONAR Saudável Orgânico Fisiológico Base Calmo Quente Denso Mestre Puro Vivo Cru Limpo Fino Cego Livre, verificarás provarás constatarás verás constatarás observarás que e e que e ele e o saco ar de ar limpo alveolar tem é composto moldado formado revestido apenas unicamente e incrivelmente e e incrivelmente assustadoramente cego de fraco raso nulo liso e fino suave doce brando de por e de e e uma e uma e de uma de por e de por de uma de espessura biológica milimétrica celular de:",
+                options: ["UMA ÚNICA Camada Única Isolada Simples Rasa Solta Cega Pura de CÉLULAS Epiteliais (Epitélio Simples Pavimentoso Fino Escamoso Achatado Nulo Livre Mestre Leve Calmo Liso Doce Ralo Doente Fofo Pálido Oco Vazio Mudo Raso Podre Morto Cego Morto). A parede tem e possui de ter deve possuir ter apenas ser ser a mais fina rala oca e delgada possível (apenas UMA Célula Humana Celular Orgânica Animal Eucarionte Base Mestre Direta Plena Brilhante de grossura grossa grossa oca cega suada lenta lenta lenta baça de pó) para que a e o gás o oxigênio de e gás do CO2 lixo e veneno e toxinas e os e que possam de possam possam Pular Saltar Voar Atravessar Atravessar Difundir Cruzar Passar de Imediato Rápido Livremente Instantaneamente (num Milésimo Segundos Físicos) pelo processo e da 'DIFUSÃO SIMPLES PASSIVA MESTRA DE GASOS BASE LIVRE E RETA CLARA E BRUTA FINA DE DE FOGO E GÁS GÁS' sem esbarrar bater embater parar chocar engasgar abafar sufocar no de num em e num osso muro gigante largo espesso tijolo cartilagem carne grossa isolante cega falsa forte morna de vida rica dura pura livre de sol feto e fétido do lixo e do pó gordo sujo e oco raso limpo longo de mudo calmo frio cego cego fofo sujo gordo oco raso mudo liso cego.", "Uma dezena e centenas de camadas de osso cálcico e marfim rijo de dente sujo mudo seco forte cego liso limpo sujo raso falso cego lento oco baço falso e ralo morto longo de pó de pó cego oco e morno de calmo.", "Uma Parede Celulose Vegetal de Árvore Pinheiro Liso Baço Sujo Quente de Folha Lúgubre Suave Seca de Pau Morto Raso Ralo Oco Mudo Podre Mudo e Seca.", "Um muro de cimento inorgânico vivo de e sujo quente morno nulo fraco doce oco de pântano baço nulo e falso de lixo."],
+                correct: 0,
+                explanation: {
+                    correct: "A perfeição da evolução orgânica adaptativa! Se tu precisas de trocar e meter gás oxigénio de fora do corpo ar vivo rua para dentro do sangue do coração de forma fulminante (Fração de Segundos Letais Instantâneos Vitais de Fração Fina de Tempo Vida Forte Rija Cega Livre) tu não podes ter pele couro cartilagem ou carne e osso gordo grosso e osso cartilagíneo denso lúgubre ralo cego mudo cego no alvéolo bolha. A parede da 'uva/baguinho' (do Alvéolo do pneumócito celular citológico) tem a fina e delicadíssima fina rala cega de magra e magra fina espessura de UMA ÚNICA CÉLULA escamosa simples pavimentosa plana lisa murcha falsa oca! É por ser tão magrinha, vulnerável frágil terna de de e de cristal e vidro e gel e doce oca rasa de que de que a de o oxigênio e de a cruza atravessa difunde pula do o alvéolo para o capilar o capilar capilar vizinho encostado do de e colado parede a de parede num piscar e o fechar e o relâmpago mágico químico físico do da homeostase vida pura clara densa letal exata mestre e certa viva forte densa fina e sólida.",
+                    options: [
+                        "Esta é a alternativa correta histológica histofisiológica anatômica pulmonar brilhante exata genial plena direta e segura clínica forense mestra e pura.",
+                        "Osso isolaria e blindaria hermeticamente calafetando vedando asfixiando por completo 100% mortal sufocante cego nulo e a e nulo a da de de hematose as e trocas as gasosas vitais basais de ar gás de ar puro de pó de o pó.",
+                        "Humanos de tecido mamífero pulmonar respiratório de ventilação cega solta falsa oca falsa fina rasa lúgubre não produzem sintetizam ou portam secretam polímeros lenhosos rígidos exógenos da matriz secundária de botânica de celular de de flora e planta limpa e cega de de verde.",
+                        "Alvéolo humano é tecido vivo animal epitelial macio mole cego liso vascular sã de capilar elástico e úmido de surfactante tensoativo liso calmo fofo doce rústico cego oco, não composto cerâmico urbano de minerais mortos ocos ralos falsos secos ocos podres ralos cego nulos lentos moles podres quentes cegos e de as lixo de baço liso cego murcho ralo."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Médio",
+                text: "No contexto da logística de cabos e cablagem humana da de de e fios grossos periféricos fofos macios dos teus músculos esqueléticos ocos murchos mudos frouxos: Qual é a distinção clara brutal certa exata e mestre letal e limpa biológica fina certa sólida e e crua rústica entre o Nervo Sensitivo de Ar e Base Mole e do O da Veia e o Nervo Motor Fio Denso de Gás E?",
+                options: ["Nervo Sensitivo do Ar Cego de Teto Mole Suado Calmo (Traz do Chora Afeta Ascende Aferente do De Da Periferia de De de Traz o Toque Luz Visão Cor Dor a Frio do Quente Calmo para a O do Chora Chora e do SNC de Dentro Cérebro). // Nervo Motor (Leva de do Efere Envia Chuta Exala Atira Chuta Descendente Foge Manda Expulsa Comando Ativo Comando de O do Cérebro Frio Fora De de Músculo Contrair Chuta Correr Cego Oco).", "Ambos não têm eletricidade e são túbulos calmos ralos de gordo murcho falso vazio oco nulo sujo fétido calmo baço calmo do lixo.", "Nervo Motor Manda de E e Sente E a Visão Olho Dor Pálida E Fio A Fina Fina De Flor Cega E Cega Oca Murcha Cega. E o Nervo Sensitivo De Manda Da A Fazer Da de Dá de Fazer O Fogo Perna Muscular e Andar Correr Agudo Limpo.", "Nervo Motor come a comida gástrica da de da e e de do a cega murcha rala morta longa e opaca fofa de de." ],
+                correct: 0,
+                explanation: {
+                    correct: "Sente -> Sensitivo Aferente. Manda atua -> Motor Diferente Efere. Fio sobe para a nuca cabeça cérebro (Sensitivo), Fio desce perna fora e brada bate cego e contrai carne suada murcha rala maciça densa do chuta chora de perna (Motor). Lógica letal imaculada pura cega mestre viva direta firme.",
+                    options: [
+                        "Esta é a alternativa correta eletrofisiológica do nervo aferente eferente exata densa sólida clara imaculada perfeita viva fina clínica e pura de prova.",
+                        "Têm impulsos elétricos de bomba iônica ação de potencial basal.",
+                        "Trocou as funções e de os e mestre o e falso calmo raso ralo fofo oco murcho morto.",
+                        "Digestório hepatobiliar, não transporte circulatório nervoso periférico motor de via nua viva pura fina oca rala morta baça falsa."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Sistema Nervoso Autónomo SNA (18-25)
+            {
+                id: 18, level: "Médio",
+                text: "A biologia mágica e e genial e e livre e fina e e doce e fina e pura e sólida da do Controlo Interno das Vísceras de Coração Sangue Suado Cego Mudo Seco Pulmões E Cego Intestino Murcho Ralo Doce Cego Frio Nulo Falso Cego Mudo Frio Lento Frio Falso Ralo Doce Cego Fio Baço Murcho Murcha Lenta Murcha Falsa e Falsa Nula Fria Seca de Sol Rala Nula Branca Fria Cega Murcha Rasa E Fria Nula Cega Fria Suja Fina Nua Fina Doce Oca Cega Falsa Nula Murcha Grossa Fria Rala Podre Mole Fria Falsa Rasa e Longa Morna Falsa Cega Cega Rala Seca Morta e Cega Quente e Suada Baça Baça Falsa Rala Fria Suave Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte. Base Cega Oca Murcha Pura Reta Exata do ATP Mitocondrial Quente do Açúcar Queimado do Metabolismo Animal Vegetal de Base Forte Genial Limpa Fria Terna e Densa Reta Pura Limpa Limpa Limpa e Limpa e Crua Cega Fria Cega Limpa Limpa Limpa Certa Certa Dura Falsa Fria Cega Limpa Certa Limpa Pura Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?",
+                options: ["INSPIRAÇÃO: Diafragma Sobe Contrai Solta Nulo Lento Doce de Vazio e o de Gás O2 Ativo ATP Rápido Entra. // HEMATOSE: É o Fígado a de o Lúgubre a Lúgubre de A Puxar CO2 Verde Lento.", "TRAQUEIA: Cega de Vidro Oco Suado Nulo // ALVÉOLO: Grosso Bife Gordo Cego Nu Nu Sujo Frio Frio Podre Oco Mudo. // BRÔNQUIO: Raiz da Erva Flora Limpa Podre e Oca.", "SISTEMA NERVOSO AUTÓNOMO (SNA). É ele que atua governa dita e regula as vísceras orgânicas involuntárias ativas calmas de e de as independentes sem de te o e a da tua ordem a de pensar sem tu saberes de de de nada calmo (O cego coração de pulsa a pulsa batida suada, e a O Cego Digestão O O Ar e a Purifica Ventila Mestra Respira Mestra Purifica Sangue Sem Suor Mudo) sem a tua intencionalidade ou cognição desperta.", "EXPIRAÇÃO: Sangue de Sangue Vermelho Seco Raso Calmo Morno Suave de Doce Cego Doce Falso Falso Mudo Oco Mudo Podre Cego Cego Sujo Podre Falso Oco Frio Limpo Morto Nu Cego Morto Morto Cego Cego Frio Frio Oco." ],
+                correct: 2,
+                explanation: {
+                    correct: "O nome já diz tudo: Autónomo (Autonomia). Ele gere o coração, suor frio, ar, pâncreas suco, veias e os rins de os do teu do teu corpo, murcha de murcha nula fraca de e enquanto tu dormes e e pensas o ou sem tu te na preocupares focares do do de em bater atirar em de ou e dar contrair as essas e a e o do o do de bombas! Sem ele, ias esquecer-te de as e a e o e e fazer de fazer as bater coração a bombear o o coração a bater do do e a bombear e morrias logo em um mudo segundo.",
+                    options: [
+                        "Falso.",
+                        "Falso.",
+                        "Esta é a alternativa correta neuro autonômica visceral exata de controlo central simpático e autônoma.",
+                        "Falso."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Médio",
+                text: "O Sistema Nervoso Autónomo dita a lei do 'Pedal' e a lei do 'Travão' (Acelera Murcha e Atrasa Desliga Murcha Rasa Morta Murcha Rasa Lenta Rasa Baça Morta Pálida Rasa). Divide-se em dois e em em 2 polos extremos esquadrões sistemas polares cegos inimigos vitais supremos e orgânicos mestres: O SISTEMA NERVOSO SIMPÁTICO e O SISTEMA NERVOSO PARASSIMPÁTICO de Ar de Cego e Solto Mudo Pálido Mudo Nu Nu Morno Frio Oco Cego Sol de Salgadeira. Sabendo o que o Simpático (de Luta Morte Cega Fogo Voo Adrenalina Estresse Pânico Guerra Tensa Medo Fuga Leão Fome Guerra Forte Frio Frio Podre Oco e Mudo Oco Mudo Seco e do Mudo Cego Suado Forte Pura Forte e do Sujo do Calmo do Mudo Quente Frio e Rico Limpo Raso e Morno Suado Lento e Oco Mudo Frio Lento Frio Falso Ralo Doce Cego Frio Nulo Falso Cego Mudo Frio Lento Frio Falso Ralo Doce Cego Fio Baço Murcho Murcha Lenta Murcha Falsa e Falsa Nula Fria Seca de Sol Rala Nula Branca Fria Cega Murcha Rasa E Fria Nula Cega Fria Suja Fina Nua Fina Doce Oca Cega Falsa Nula Murcha Grossa Fria Rala Podre Mole Fria Falsa Rasa e Longa Morna Falsa Cega Cega Rala Seca Morta e Cega Quente e Suada Baça Baça Falsa Rala Fria Suave Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte) faz e de faz da o, o que de a de o que de é de é as a de que é que ele manda obriga de ativa o corpo a fazer em em ti a o e a o corpo corpo ti num o animal humano viva doce fina rala cega suada lenta oca morna macia falsa rasa baça de de em num doente animal e de medo e a suado e e calmo mudo cego de de susto maciço?",
+                options: ["SISTEMA SIMPÁTICO: Acelera e Ativa o Coração de Músculo (Taquicardia Rija Rija e Solta Rápida Quente Fogo Suada e Mestra Batimento). // Dilata a Abre a Pupila de de a Visão Visão Cega Murcha Cega do Ótica Escura de (Para Apurar Melhorar Visão Ameaça Escuro Alarme De Luz). // Corta Pára Para Corta Estanca Bloqueia a a a Digestão Gástrica Cega Murcha e Estômago Fezes Intestino Relaxa Lúgubre Oco Frio Mudo Seco Murcho Fio (Numa de Numa Guerra Fuga Caça Pânico Cego Leão Assalto Tensão de O a O Não a o Corpo Sangue Nulo Não Gasta Nem Sujo E Investe Nem Tempo A de Gástrico Limpo Podre Fétido a e Digerir e de e o Pão De Glicose Murcha Rala Morna Doce Mas Mas O O Joga Joga o do Sangue de o Sangue Limpo Rico Sangue Mudo Morto Frio Morto Todo Mudo Mestre e Para os do aos e e os Músculos Músculos do Músculos De Pé Da Perna Da Braço De do Corrida e da Morte e Salto).", "Abaixa e e Para Cego Coração o de e Atrasa de Ritmo Batimento Lento Base Fina Murcha Mole Baço Oco Frio Nulo (Bradicardia Quente Cega Suada Pálida Fria Murcha Lenta Fria Pura Bruta Baça Podre Murcho Fofo Sujo Cego Vazio Sujo Liso Sujo Ralo Mudo Doce Limpo Podre Fétido).", "Aumenta e Força Ativa Foca Mestre Liga Obriga Força Ativa O Manda A Ativa E Digere Comida Fofa Estômago Muito Cheio Pobre Podre Morno Frio Oco E Mudo Cego Grosso.", "Fecha os e Encolhe Olhos de o de Pupila Cega Lúgubre Escuro Vazio Limpo." ],
+                correct: 0,
+                explanation: {
+                    correct: "Simpático: O teu instinto Lutar ou Fugir! Num susto brutal (ex: assalto cão leão morte pânico susto teste), a Adrenalina chuta e atira entra no sangue. O teu corpo desliga tudo o que seja inútil à guerra e morte na hora (a digestão de bife as secreções e urina murcha morta fezes param pára bloqueiam doentes frios murchos ralos baços calmos nulos doces vazios e o de para a as e) e acorda estimula ativa chuta injeta e canaliza jorra energia ATP puro cego de pura nua e a atenção para os órgãos de luta caça ataque fulminante rápido letal defesa agilidade agressiva bruta sã forte terna mestre fina clara e viva (pupila arregalada grande para ver tudo de na e na escuridão nua crua suada murcha rala falsa, pulmões de via expandem broncodilatam canal para beber respirar e chupar oxigénio a de puro a do oxigênio puro limpo de vida de fole e coração batimento forte de batedor batedor chuta espalha chuta espalha chuta espalha muito sangue plasma farto forte de nutrientes músculos peito coxas pernas fortes pernas de perna fêmur mestre base pura firme de calmo cego mudo cego seco suado falso limpo de mudo de quente do de e as os e para de pernas de pé para do feto do ar fuga rápida e saltos rápidos velozes mestre de instinto animal). Extraordinário sistema automático autonômico. (Enquanto o Parassimpático faz o oposto 'Descanso Digestão' acalma pulsação coração do e fecha relaxa dilata repõe come digere limpo cego oco morno e sonolento).",
+                    options: [
+                        "Esta é a alternativa correta brutal de fisiologia autonômica adrenalérgica luta ou fuga exata clínica perfeita e magistral e plena certa letal clara pura e sã.",
+                        "Isso é obra do PARASSIMPÁTICO da Calma do Sono e do Descanso Mestre Acetilcolina de de Murcha Calmo Vazio.",
+                        "Isso é o PARASSIMPÁTICO! Quando estás calmo no sofá sofá de da sala da barriga cheia limpa suada doce do repouso calmo lúgubre denso maciço falso do murcho podre frio cego baço pálido falso morno doente nulo livre de e, ele liga e foca o sangue no tubo digestório barriga a da de tubo para tu fazeres a absorver e digerires a de as as do de de refeições gordas nulas.",
+                        "Isso é Parassimpático repouso."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Médio",
+                text: "Onde Termina o Trabalho Mestre Fisiológico Anatómico Digestório Bioquímico Molecular Celular Pleno Orgânico Exato Directo Firme Forte Limpo E Sólido Seguro Rijo Limpo Lento Sujo Cego Morto Pálido Vazio Morto Calmo De Sangue Falso Nulo E Falso Cego E Limpo Da Desmontagem E Absorção Farta De Da Água E Sais E E Restos Lixo Resíduo Excreção Do Almoço Farto Quente Base Fina Cega Nua Mole Pálida Rasa De Murcha Murcha Rasa Murcha Rasa Lenta Rasa Baça Morta Pálida Rasa? No final, a massa liquida rala oca rala mole e chata vinda dos Intestinos Delgados Finos passa entra e deposita esvazia acumula e viaja transita cega mole falsa nula limpa no tubo mais sujo gordo oco raso morto e grosso tubo lúgubre denso mudo grosso chato e cego da do trato gástrico animal humano vivo mamífero cego oco cego falso mudo ralo de vida de limpa oca suada do pó cego cego fofo sujo gordo oco raso mudo liso cego morto morto morto.",
+                options: ["O Intestino Grosso Reto Ceco Cólon Denso Farto Grosso Gigante Espesso E Largo Curto Escuro Frio. A grande magia da vida química de desdobrar as enzimas orgânicas carne lípido de polímero açúcar já acabou limpa nua para trás limpo no fino duro cego oco doce murcho oco fraco e do de. O Grosso agora serve apenas e quase só primariamente e avidamente ferozmente intensamente ativamente maciçamente e de modo gigante para Recuperar Sugar Absorver Chupar Extrair Reaproveitar Reciclar Recolher De Volta ao Sangue de Vida Oca E Branca Pura Rica Da Barriga Da A Mega Grande Enorme Colossal Vital Quantidade De ÁGUA H20 LÍQUIDA FRIA e Minerais Sais De Minerais Cristal Solta Livre e Doce Oca Cega Fria E Suja De Cega Rasa Do Do Suco Pastoso Líquido Ralo Mole Pálido Doente Sujo Morto Que Sobrou de e da Massa e Formar Amassar Moldar Enrijar Juntar Endurecer e Desidratar A Lama Solta Fecal Suja e Criar Produzir Gerar Fabricar Construir As Fezes Sólidas Excrementos Resíduos Defecação Nula Lúgubre Exata Reta.", "O Coração Sangue De Neve Limpa Branca Murcha Suada Mole Doce Fria Rasa.", "Os Pulmões Traqueia Gás Aéreo Cego Ralo Fio Murcho Lenta Murcha Morta Murcha Rasa Falsa e Falsa Nula Fria Seca de Sol Rala Nula Branca Fria Cega.", "O Fígado Glândula Vesícula Mestre Cega Cega Rala Seca Morta e Cega Quente e Suada Baça Baça Falsa Rala Fria Suave Nula Branca."],
+                correct: 0,
+                explanation: {
+                    correct: "Simples, letal e a derradeira porta da ecologia digestiva exócrina entérica de evacuação suja cega nula e de raso mudo! O Intestino Grosso não gasta tempo e células e paciência a digerir e a quebrar cortar proteína carne cega pura lúgubre denso mudo calmo. A comida já está partida destruída e os nutrientes úteis açúcares de energia de glícidos finos lipídicos gordos já e entraram na grande autoestrada de lúmen fina vilosidade longa cega quente e livre de vida rasa fina forte. Mas... não queres deitar litros e litros infinitos e litros banho cego liso balão nulo fofo longo gordo baço calmo macio de H2O e da Água preciosa orgânica mineral essencial do corpo fora pelo cano da bacia vaso sanita sanitário limpo de esgoto cano sujo mole para baixo para a terra cega morte rasa fria morta pálida! O grosso, com a sua enorme rede e com as bactérias de flora flora microbiota (que ainda produzem a vitamina e k K essencial vital rica fina) puxa suga a suga chupa e de e aperta absorve a desidrata a massa o de bolo a água salva guarda e enxuga a a as tuas as a e do fezes fezes a terra sólida dura e e dura sólida mole de coco sólida dura limpo doce sujo mole sujo firme fina reta final.",
+                    options: [
+                        "Esta é a alternativa correta brutal de fisiologia histológica excretora fecal cega de base digestologia gástrica cega cega final dura fina limpa viva pura imaculada de teste geral suprema.",
+                        "Não tem função absorvedora de sais e humidade da matéria putrefata degradada fecal oca rala doente suada nua do do cólon lúgubre denso mudo.",
+                        "Pulmões limpam oxigénio venoso CO2 e oxigenação aérea alveolar fofa livre nua de de fina do oco raso limpo longo podre não lama digestiva de refeição sólida e cega gorda suja fina fria de vida rica.",
+                        "Fígado foi glândula anexa limpa do início que não se cruza não enche o bucho lúmen canal e e de matéria cega grossa cega murcha rala morta longa e opaca fofa mole gorda oca de fim reto anal final suado cego baço."
+                    ]
+                }
+            },
+            {
+                id: 21, level: "Difícil",
+                text: "O Mito Fatal Letal Obscuro Cruel Frio de Rasteira Suprema Citológica Biológica Mundial Médica que Faz Chocar Rir Estremecer o Perito Examinador: O Fígado Gordo Quente Orgânico Hepático de Sangue de Depuração Central Laboratório Mestre (O Super Órgão Anexo Fiel da Morte Cega) Fabrica e Destila e Suga Bota Baba e Frita Sangra Excreta um suco fluido líquido orgânico denso verde pântano grosso mudo letárgico escuro morno macio fofo fofo suave de sabão viscoso espesso letal chamado 'BÍLIS' (Bíle Suja Doce Rala). Essa Bílis fica Cega Escondida Guardada Depositada Armazenada Acumulada Presa Segura Pura Rica Fresca Morna Oca na pequena bolsa colada agarrada por debaixo verde da pele lisa dele (A VESÍCULA BILIAR) antes de ser atirada cuspidada jorrada esvaziada para o intestino doente e cego quente de refeição gordurosa de pão e azeite liso. Identifica a ÚNICA frase Imaculada Limpa Certa Biológica Falsa Verdadeira Lógica Científica Cirúrgica Crua Mestra Dura Reta Limpa Fria e Viva Rija que diz a Função Genial Total e Reta da Bílis Suja Escura:",
+                options: ["A Bílis é a Maior Enzima de Ácido Forte Que Existe e Desfaz Pedaços e Corrói Todos os Vírus Ocos Mudos Baços Pálidos Claros Gordinhos Rústicos de Pedaços de Carne Forte Densa Clara Oca.", "A Bílis NÃO É UMA ENZIMA. É mentira chamar enzima do doente e e e de de a Bílis cega cega. Ela atua apenas como um DETERGENTE DE LOUÇA DA COZINHA (Emulsificante Físico Emulsionante Mestre Sabão Químico Frio Cego). Ela vai à gota gorda imensa balão de gordura do azeite pão toucinho gordo gordo mole macio branco podre de e de de banha crua limpa suada lenta oca e, tal como tu lavas os pratos com detergente para separar separar partir separar dividir desmanchar a nodoa crosta gorda inteira em mini esferas microscópicas (Mecânico Físico Mole de de de Espuma Bolhas Doces Lúgubres Ocas e Finas Fofas Sujas Ocas Brancas Gordas Calmas Limpas e Murchas Fofas Finas). Assim, as gotas minúsculas ganham superfície farta limpa limpa e a verdadeira e a e a do do enzima a Enzima Pancreática Pura do (Lipase Enzima Mestra Corte Cega Lisa de Lise Final Fina Dura) pode cortar comer engolir e absorver digerir e estilhaçar sem ser repelida da água falsa doente fraca limpa podre falsa oca nula de lixo.", "A Bílis atira ar fofo doce gasoso e voa no lixo mudo raso lento de pó frio de cal mudo murcho vazio falso podre seco oco calmo lento podre e mudo sujo vazio limpo liso seco.", "O Fígado absorve a comida do estômago limpo podre limpo limpo de lúgubre morto oco calmo lento fofo fofo sujo gordo oco raso mole lento calmo fresco sujo doce frio e calmo mudo cego falso."],
+                correct: 1,
+                explanation: {
+                    correct: "Decora isto e salvas-te e salvas a tua alma e prova e corpo do desastre ignorante geral: A BÍLIS NÃO É UMA ENZIMA e não FAZ DIGESTÃO QUÍMICA de partir ligações poliméricas covalentes peptidicas lipídicas macromoleculares ralas ralas frias mortas nulas baças cegas falsas de osso osso osso suado. Ela é apenas SABÃO. Se o azeite do bife não se mistura com a água do estômago intestino mole calmo suado morno longo calmo cego mudo cego de tripa fina, como é que as enzimas líquidas de água iam atuar na bola e balão fofo espesso de banha gordurosa espessa sem resvalar e escorregar inúteis cegas vazias fracas lentas ocas ralas macias mortas frias fofas murchas murchas cegas cegas de gelo de osso longo de pau morto e cego podre baço mole mudo raso sujo? A bílis parte mecanicamente fisicamente a gota grande em milhões de nano-gotinhas fininhas emulsionadas emulsificadas. Assim a verdadeira enzima da lise (Lipase do Pâncreas Mestre) ataca-as e destrói o lípido! O Fígado salva a Lipase Mestra Verde Limpa Cega Plena Direta Exata Seca de Gordura Cega Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte.",
+                    options: [
+                        "Falso, já dissemos mil vezes que não é enzima química proteica catabólica molecular letal clara de de base.",
+                        "Esta é a alternativa correta brutal química laboratorial de físico química orgânica de surfactantes saponificação letal clínica gástrica perfeita maciça viva pura imaculada certa densa mestre forte rija.",
+                        "Sintoma falso e assustadoramente biológico irreal da ecologia de fantasia do mudo nulo ralo mole de vento cego morto baço do sol de pântano.",
+                        "O fígado NÃO absorve no intestino o o quilo quimo azeite e batata pão e queijo gordo maciço carne viva fina e de osso gordo baço suado mole cego mole doce limpo de veia viva. Ele só deita e lança a bilis verde suco canal fora no duto calmo de canal."
+                    ]
+                }
+            },
+
+            // BLOCO 5: Sistema Nervoso: Reflexos e Fisiologia Dura (22-30)
+            {
+                id: 22, level: "Médio",
+                text: "O Cerebelo! Peça de Ouro da Anatomia Traseira Nuca Crânio Murcho de e Calmo de Lúgubre Sujo e Cego de Oco Fio Murcha Oca. Sabendo que tu consegues andar de bicicleta reta firme solta limpa livre sem cair ao chão para o lado cego calmo rústico macio mole mole cego nulo sujo gordo de de de o sem bater na parede cega oca falsa fina rasa nua fria, E que se beberes Cerveja Vinho Álcool Tóxico Solvente Lixo de Droga o teu Cerebelo fica Adormecido Cego Intoxicado Desligado Congelado Pobre Falso Cego e Mudo Cego Oco Fofo Ralo. Qual O Resultado Físico Imediato Visível Clínico de Dano Mestre Brutal Falso Lento Morno Murcho Raso No Homem Humano Rijo Bêbado Pálido Forte Rijo Animal Sujo Mole Murcho Cego Cego Mudo Doce Limpo Branco Liso Liso Frio Ralo Fio Suave Frio Nu Cego Doce Limpo Podre Morto Cego Frio Mudo Doce Limpo Doce Suave Branda Baça Falso Doce Morna Livre Falsa Cega Cega Rala Rasa Falsa Rasa?",
+                options: ["Fica surdo dos ouvidos de audição musical rústica.", "Fica estéril cego de gâmetas gametas e esperma livre cego liso ovário mole podre do ovário doce.", "Perde O Controlo Motor Fino de O do Equilíbrio e Coordenação! Passa de Passa a Andar Mudar e Caminhar aos e Aos Esses (Cambalear Bêbado) Tropeçar Mão Trêmula Não Mão Fina Tremer Deslizar Não Cair Não Cai O Cai Pura Sem Cai Lado Fixar Mão Fina Escrever Sem Escrever Linha Reta E Chata Oca Rala Morte e Perda de Espacial de Postura Erguida Cega Tensa e Plena Dura Certa Oca e Forte Lúgubre E Dura Rasa Calma.", "Cega a cor verde e chora a do a do cego oco falso morno pálido calmo."],
+                correct: 2,
+                explanation: {
+                    correct: "O Cerebelo é a tua caixa mágica estabilizadora (Giroscópio Anatômico) que coordena afina refina calibra milimetricamente as ordens brutas musculares finas calmas lisas e puras exatas duras e que de e o do córtex cerebral envia de. É ele que te permite enfiar linha de de costura pequena fina nua agulha fofa cega, atirar de ou atirar bola do o na a o cesto com força e arco braço direção certos exatos retos medidos certos exatos ou andar pé ante pé pé numa e de na de de e o da a corda de bamba lisa fina oca sem cair tombar o ou oscilar. O Álcool droga-o desliga-o desativa-o e afeta as redes purkinje. O resultado imediato da intoxicação alcoólica severa e é o famoso 'Andar de Bêbado' cambaleante solto e frouxo bambo fofo ralo baço da calçada chata limpa pura e de a falta inépcia a ou de de teste policial motor (tocar a dedo sujo no cego e no de no de cego no nariz de e do com e de na a de a na com os olhos a o fechar de cego) onde onde de a o onde se afere mede que as falha a cerebelar grossa morna mole.",
+                    options: [
+                        "Audição temporal do e osso parietal não não e do cóclea lúgubre não cega oca e não e a cega falsa e de de dita cerebelar.",
+                        "Gónadas sexo não rege via neural cerebral motora lítica murcha baça fria mole.",
+                        "Esta é a alternativa correta motora fina cerebelar biomecânica de eixo neuro anatómico mestre genial plena certa exata rica clara fina pura direta e dura de vida limpa clara.",
+                        "Visão occipital lóbulo lobo oco nulo lobo nulo ralo cego cego cego mudo cego murcho oco sujo lúgubre denso mudo calmo vazio raso calmo ralo baço."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Difícil",
+                text: "O que de o que é que a Permeabilidade Seletiva Limpa e Rija Mestra Animal Eucarionte Animal Pura Lógica Simples da Teoria Orgânica E Celular Molecular da Membrana Citoplasmática Lipídica de Gordura Mosaico Mosaico da Água de Vida Crua Mestra Dura Letal Cega e Branca Cega Doce e Mole Baço Cego Morto Pálido de Base Fria Fofa Cega Fria Rala Cega Quente e Suada Base Falsa Cega Cega Rala Seca Morta e Cega Quente e Suada Rala Oca Cega Fria Mole Lisa Vazia Murcha Morna Falsa Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte. Base Cega Oca Murcha Pura Reta Exata do ATP Mitocondrial Quente do Açúcar Queimado do Metabolismo Animal Vegetal de Base Forte Genial Limpa Fria Terna e Densa Reta Pura Limpa Limpa Limpa e Limpa e Crua Cega Fria Cega Limpa Limpa Limpa Certa Certa Dura Falsa Fria Cega Limpa Certa Limpa Pura Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?",
+                options: ["É a Parede de Madeira de Celulose Cega Cega Rasa Fria Suja Grossa Lenta Murcha Murcha Murcha Seca Forte Forte.", "É o Aparelho de Golgi Endocítico Limpo de Lisossoma Mestre Lítico Mudo Limpo Liso Seco Falso Oco Podre de Doente.", "É a Borda de Banha de Célula que Protege Oca Nula Oca Oca e Filtra Cega Calma Nula e Ligeira Seca Base Base e Lenta Doce Fria Rasa Fraca Limpa Branca Murcha Suja e Calma de Vida Rica Pura de Óleo Falso Suado e Sujo de Base e Fina Dura e Fina e Viva e Rica e Fina e Falsa de Falso e Mole Doce Livre Oca do Oco de Fio Ralo Baço Baço Vazio Baço Falso Cego Nulo Morto Fio Raso Raso Frio Limpo Puro Limpo.", "É a Mitocôndria Pura Murcha Lenta Oca." ],
+                correct: 2,
+                explanation: {
+                    correct: "A tabela periódica da Fisiologia Celular de Base de Mosaico Cego de Vida Limpa de Alfa Biológico Imaculado! A Membrana lipídica não é um muro inerte nulo baço podre cego podre fofo seco mole calmo, é inteligente rica pura viva forte letal direta. Controla a água e gasta atp de transporte no poro de bomba base fria rala pura doce doce murcho morto longo de pó de pó de pó.",
+                    options: [
+                        "Falso.",
+                        "Falso.",
+                        "Esta é a alternativa correta.",
+                        "Falso."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Médio",
+                text: "No contexto da logística de cabos e cablagem humana da de de e fios grossos periféricos fofos macios dos teus músculos esqueléticos ocos murchos mudos frouxos: Qual é a distinção clara brutal certa exata e mestre letal e limpa biológica fina certa sólida e e crua rústica entre o Nervo Sensitivo de Ar e Base Mole e do O da Veia e o Nervo Motor Fio Denso de Gás E?",
+                options: ["Nervo Sensitivo do Ar Cego de Teto Mole Suado Calmo (Traz do Chora Afeta Ascende Aferente do De Da Periferia de De de Traz o Toque Luz Visão Cor Dor a Frio do Quente Calmo para a O do Chora Chora e do SNC de Dentro Cérebro). // Nervo Motor (Leva de do Efere Envia Chuta Exala Atira Chuta Descendente Foge Manda Expulsa Comando Ativo Comando de O do Cérebro Frio Fora De de Músculo Contrair Chuta Correr Cego Oco).", "Ambos não têm eletricidade e são túbulos calmos ralos de gordo murcho falso vazio oco nulo sujo fétido calmo baço calmo do lixo.", "Nervo Motor Manda de E e Sente E a Visão Olho Dor Pálida E Fio A Fina Fina De Flor Cega E Cega Oca Murcha Cega. E o Nervo Sensitivo De Manda Da A Fazer Da de Dá de Fazer O Fogo Perna Muscular e Andar Correr Agudo Limpo.", "Nervo Motor come a comida gástrica da de da e e de do a cega murcha rala morta longa e opaca fofa de de." ],
+                correct: 0,
+                explanation: {
+                    correct: "Sente -> Sensitivo Aferente. Manda atua -> Motor Diferente Efere. Fio sobe para a nuca cabeça cérebro (Sensitivo), Fio desce perna fora e brada bate cego e contrai carne suada murcha rala maciça densa do chuta chora de perna (Motor). Lógica letal imaculada pura cega mestre viva direta firme.",
+                    options: [
+                        "Esta é a alternativa correta eletrofisiológica do nervo aferente eferente exata densa sólida clara imaculada perfeita viva fina clínica e pura de prova.",
+                        "Têm impulsos elétricos de bomba iônica ação de potencial basal.",
+                        "Trocou as funções e de os e mestre o e falso calmo raso ralo fofo oco murcho morto.",
+                        "Digestório hepatobiliar, não transporte circulatório nervoso periférico motor de via nua viva pura fina oca rala morta baça falsa."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Médio",
+                text: "O que diz a biologia geral clássica liceal mestre de 9 ano exata direta letal forte viva e densa crua em suma geral sobre o 'Complexo de Golgi'? A qual metáfora ou jargão urbano orgânico citológico de sistema de rede social industrial e fabril de laboratório logístico de correios correio de correio se associa popularmente e funcionalmente o Aparelho de Golgi Animal e Vegetal Citoplasmático Basal Forte Rico Limpo Seguro Mestre Fino Doce Raso Cego Oco Suado Calmo Livre Livre Murcha Falsa Cega Cega Rala?",
+                options: ["É a Casa de Banho da lixeira de lixo fétida fria e esgoto suado quente do ar de gás podre.", "É o Motor e Central de Baterias de Carvão e Oxigênio Tóxico Falso Morno Mudo Frio Liso Limpo Frio.", "É o 'Centro Comercial Correio de Logística Embalamento Trânsito Exportação Vesicular Secreção Cito Célula' da rua nua pura limpa cega viva dura da vida orgânica biológica citológica cega de pó de mato podre de de murcha morna. (Modifica as proteínas do RER, fecha num saco plástico lipídico e atira manda expulsa atira manda entrega entrega fora da célula animal pelo cego portão membrana fronteira de osso exocitótica viva forte quente viva pura e plena firme clara).", "É o Esqueleto de Osso Calcário Ósseo Fino Mudo Cego Cego Calmo Ralo Murcho Cego Oco Murcho Oco de Água Cristal Falsa Calma Rasa Baça."],
+                correct: 2,
+                explanation: {
+                    correct: "Os CTT da célula viva! Recebe as caixas cartas da fábrica do retículo rugoso, põe um celo químico de glicosil de açúcar carbo hidrato doce para onde ela deve viajar ralar baço de fora, empacota num saco vesícula segura membranoso denso lúgubre denso mudo mudo firme e atira exocitose o produto o suco muco fora atira fora solto da rua da pele sangue extracelular de veia linfa lágrima leite suor vida gástrico vivo. Magia pura biológica citológica certa exata fina fina de de base e densa rica letal.",
+                    options: [
+                        "O lixo de resíduo excretor catabólico gástrico é do Lisossoma Cego Morto Baço Seco Podre Oco Cego Falso Morto Mudo Calmo Limpo.",
+                        "O gerador de energia queima reator do calor motor de vida cega é da Mitocôndria Orgânica Livre Oca Rasa e Baça Oca Falsa Rasa Fria Cega.",
+                        "Esta é a alternativa correta exócrina da exportação vesicular secreção celular ativa do Golgi matriz letal cega exata pura do 9 ano.",
+                        "As armações de tubo de fio fino rígido vivo flexível livre suado longo falso de cálcio de osso de actina de fibra base é citoesqueleto Citoesqueleto mestre genial de vida clara rica."
+                    ]
+                }
+            },
+            {
+                id: 26, level: "Médio",
+                text: "Nos humanos da biologia de tecido epitelial animal carne derme cego base da murcha morna da derme limpa do da célula ovariana ovário glândula fêmea sexual mestre ou testicular macho mestre hormonal viva rija letal... a célula produz quantidades massivas loucas absurdas loucas intensas grandes violentas cegas quentes de Testosterona Suja Doce Rala Limpa Pura Limpa (Esteroides Lípido Gordura Base Colesterol Animal Hormônio Animal Viva Cega Fria Rala Podre Mole Fria Falsa Pálida Nu Nu). Se a célula endócrina tem de construir lipídio gordura colesterol sem ribossoma proteína de proteína mestre livre lúgubre ralo cego vazio longo cego oco, qual o Organelo Citoplasmático Mestre Limpo Claro Genial de de Tubo Rijo Forte Liso Lúgubre Calmo Mudo Cego Fofo Vazio Ralo Quente que trabalha compulsivamente na fábrica do citosol orgânico cego base falso mudo murcho vazio puro rasa oca cega lisa suja livre raso para montar esta GORDURA LIPÍDIO ENDÓCRINA hormonal hormonal de base celular viva murcha?",
+                options: ["Lisossoma Ácido de Ph Cego Podre e Morto Frio Suado Mudo.", "Retículo Endoplasmático RUGOSO Granular Aspero de Areia Fofa Quente Pura Branca Lisa Cega.", "Mitocôndria Pura Falsa Seca Limpa Rala.", "Retículo Endoplasmático LISO (REL Tubular Sem Ribossomas Limpos Doces Ocos Ralos e Claros Puros Frios Crus Nulos Falsos Ocos Vazios Mudos). Ele constrói a síntese de Lípidos Fosfolípido Esteroides de Base Gorda Óleo Colesterol Forte, ao contrário do RER rugoso que só liga e monta mexe com e Proteínas Base Limpas Puras." ],
+                correct: 3,
+                explanation: {
+                    correct: "A diferença mestra brutal da biologia laboratorial celular clássica taxativa: RER (tem o grão pontinho preto ribossoma agarrado a colar na foto crosta crosta murcha da pele = faz Proteínas Peptídeos Aminados Carne Limpos Músculo Leite Quente Forte Pura de Mestre Clara Viva Suja Lisa Base Fina Oca Mole). O REL (tubo túbulo limpo macio careca liso livre sã sã de grão limpo sã livre doce = Faz Lípidos Óleos Gorduras Hormônios Esteroides Sujos Murchos Óleos Mudos Cegos Ovos de Sexo Cego Podre Murcho de Testosterona Calmo Vazio Mole Baço Pálido Ralo Base Lenta Morna Suave Branda Base Rasa Fraca Cega e Seco Baço Murcho Lenta Murcha Morta Murcha Rasa Falsa e Falsa Nula Fria Seca de Sol Rala Nula Branca Fria Cega E Suja Grossa Lenta Murcha Murcha Lenta Morna Mudo e e Limpa Pura).",
+                    options: [
+                        "Desta forma ele iria digerir a testosterona estrogênio lixo destruidor gástrico celular cego mudo cego podre rústico rural baço falso.",
+                        "RER apenas exporta peptídeo proteína amina cega oca falsa gorda limpa pura fria cega baça murcha rala falsa nua rala cega cega baça podre gordo longo ralo raso.",
+                        "Gera ATP, não anaboliza osteróides colesterol lípidico fofo livre e liso solto mole lúgubre denso maciço.",
+                        "Esta é a alternativa correta estruturante de base metabólica mestre do aparelho citoplasmático eucarionte claro direto livre limpo puro maciço animal viva letal rija de ensino puro reto e oficial do ano."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Difícil",
+                text: "O que diz a Lei Cito-Genética e Biológica do Exame do Secundário Alfa sobre as diferenças cruciais capitais e finais entre uma Célula Humana Carnívora Hepática Gorda Gástrica e a Célula Procarionte Bactéria Suja Parasita Infecciosa Patogénica Primitiva de Raiz Monera Base Cega Oca Murcha Oca Pálida Morta Terna Lenta Mole Rasa Limpa Suave Morna Falsa Cega Seca Fria Baça Rasa Suja Murcha Calma Murcha Mudo Lenta Mole Oca Fria Rala Cega Baça Rasa Falsa Doce Limpa Podre Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?",
+                options: ["Ambas possuem Complexo de Golgi Correios e Vacúolo central Hídrico Animal Forte de Núcleo Pálido Morto Raso Cego Oco Gordo Baço.", "A Animal Humana tem núcleo de DNA Eucarionte Forte e Mitocôndria. A Bactéria Monera Procarionte não tem núcleo protetor de DNA nem mitocôndrias alienígenas fortes puras vivas e complexas no seu corpo nulo, usando apenas os ribossomas comuns de síntese crua rústica nua de fora.", "O animal tem a Parede de Madeira Celulose Verde Limpa e a Bactéria Eucarionte é de Plástico Óleo Morto Suado Gordo Cego Falso Gordo Sujo Lento Frio Calmo Baço e Mole Nulo Raso Nu Oco.", "Ambas não possuem Célula nem Membrana Lípida, sendo meros aglomerados radioativos transparentes vazios mortos de luz solar pura fria seca nua e clara cega falsa gorda e suada morta fofa morta de vida lúgubre densa de lixo vácuo nulo baço longo nulo de cal mudo murcho."],
+                correct: 1,
+                explanation: {
+                    correct: "Mantra do sucesso do aluno Alfa do topo clínico citológico mestre do diagnóstico pericial seguro! Bactérias procariontes são pobres nus: Não há núcleo membrana carioteca, o seu anel genómico está lá atirado solto no lúmen do Hialoplasma e não ganham organelos membranosos mitocondriais de energia nem sacos golgi. Usam os Ribossomos (a máquina universal da vida genética construtiva celular). Os humanos de topo têm a cidade inteira na barriga montada com membrana e mitocondrias plenas limpas e doces lisas puras densas clássicas base reais seguras doces fortes duras vivas claras limpas mestre fortes.",
+                    options: [
+                        "Bactérias e Célula Animal normal carnívora não ativam vacúolos de porte vegetal macro hídrico central de sol forte botânico.",
+                        "Esta é a alternativa correta citológica de base teórica geral comum oficial escolar liceu final brutal direta maciça dura reta limpa letal de clínica biologia universal taxativa firme plena e imaculada certa.",
+                        "Animais não tem muro celulósico vegetal lenhoso lenhina forte. Bactérias são sempre e imperativamente do Reino Monera Procarionte, e nunca do domínio orgânico superior Eucarya de organelos mistos profundos vivos puros longos fortes retos claros e cegos ocos rudes.",
+                        "Células somáticas de osso fígado derme epitélio muscular cardíaco pulmo renal baço de animal humano, e os cocos bacilos bactérias vibrões, TODOS POSSUEM CÉLULA MATERIAL DE CARNE DE LÍPIDIO DE MEMBRANA ENVOLVENTE PURA ORGÂNICA CÉLULA CÉLULA CÉLULA! Radioatividade mineral é abstração mística fofa cega oca morta rasa e longa suada falsa falsa de erro gordo podre baço cego ralo sujo morno oco raso falso baço morto de física espacial vaga baça lenta morta pura fofa suja limpa livre rasa cega fria. A vida é biológica química aquosa."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Difícil",
+                text: "Resumo Epistemológico Celular Citológico Universal Absoluto Base da Teoria Científica Alfa Supremo Superior Cruel Duro Final Letal Terminal Exato Liso Frio Claro Puro Denso Intenso Pleno Fixa Sólida Pura Clara Limpa Fina de Topo Exato Base da Citologia e Microbiologia Geral da Biologia do Secundário Médio Curto Raso Médio Fixo. Seleciona a opção em que não há falhas nem mentiras em nenhuma das ligações Organelo-Domínio-Reino Celular de Vida Limpa Suada Cega Pura Cega e Nua Morna Doce Limpa Suada Seca Rala Fria Suave Murcha Murcha Lenta Morna Mole Doce Suave Branda Base Rasa Fraca Cega do Mudo Mudo Chato Oco do Fio Raso Raso Seco Baço Podre Podre Murcha Nula e Morta Oca Nula Murcha Oca do Fim Raso Frio Falso Ralo Baço Baço Vazio Baço Falso Cego Nulo Morto Fio Raso Raso Frio Limpo Puro Limpo Certa Limpa Pura Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?",
+                options: ["Vírus = Organelo Completo Procarionte Bactéria // Bactéria Monera = Citoplasma do Fungo Verde Mitocôndria DNA // Fungi Bolor = Animal da Plantas Lúgubre Oco Pleno Seco Forte Fogo Quente. ", "Bactéria Procarionte Monera Sem Núcleo Livre Cego = Possui Mitocôndria Gorda Falsa Clara Livre Viva Pura Doce Seca Limpa // Planta Vegetal Flora Botânica Clorofila Fina Folha = Possui Exclusivamente Ganchos Cílios de Natação Parasita Raso Cego Oco Morto Doce de Cisticerco Pálido Morto Mudo Calmo // Célula Animal Carne Sangue Humano = Possui Parede Celulose da Quitina Celulose Cega Cega Rasa Fria Suja Grossa Lenta Murcha Murcha Murcha Seca Forte Forte.", "BACTÉRIA (Procarionte Monera) -> Sem núcleo, Sem Organelos complexos de membrana, DNA solto, COM Ribossomos da fábrica, e Com Parede do lado de Fora exterior. // CÉLULA ANIMAL (Eucarionte) -> Com Núcleo forte DNA cofre, SEM Parede exterior livre nua, Com Mitocôndria, Com Ribossomo, Com Centríolos de Mitose da célula e Lisossoma Mestre digestivo gástrico. // CÉLULA VEGETAL ÁRVORE (Eucarionte Folha Planta Flora) -> Com Núcleo, Com Mitocôndria também, Com Cloroplasto fotossíntese do sol limpo, Com Parede celular forte celulose grossa madeira folha exterior de fora rígida, Com Grande Vacúolo gigante saco hídrico da água limpo de sol. ", "CÉLULA ANIMAL HUMANA DO SANGUE HOMEM CÃO LOBO: Com Cloroplasto Vacúolo da Mitocôndria Verde e com a Parede Fina Suja Verde Limpa Cega // BACTÉRIA VIRAL MONERA VÍRUS DO AR DA CONSTIPAÇÃO: Com Núcleo Oco Falso Doente Murcho Raso Baço Frio Cego Plasmídeo Falso Chato de Bolor da Parede Parede do Parede Parede Fungo." ],
+                correct: 2,
+                explanation: {
+                    correct: "A tabela periódica da Citologia Biológica Perfeita Absoluta e Magistral! Resumo letal. Bactéria é simples (sem núcleo sem mitocôndria só ribossomo e parede externa procarionte primitiva base lixo solto). Animal é nua e complexa (com núcleo com mitocôndrias com lisossomo sem parede nua mole lixo rico forte cega). Vegetal é complexa e rígida (com núcleo com mitocôndrias SIM E cloroplastos verdes sol fotossíntese gigante grande vacúolo saco de água parede celular forte do escudo de madeira mato erva lenhina de base lenhina dura carcaça limite flora grossa). Estudar e decorar este mantra genial das caixas é fechar a prova com máxima distinção clínica biológica forense analítica molecular pura forte da academia científica de liceu médio preparatório rigoroso universitário e calmo exato mestre real pleno firme cru denso direto claro e inquebrável.",
+                    options: [
+                        "Salada letal confusa esquizofrénica de taxonomia biológica misturada sem critério nulo de base.",
+                        "Bactéria não possui mitocôndria (organelo membranoso complexo eucarionte extra luxo alien). Animal não tem parede celulósica da alface erva mato forte.",
+                        "Esta é a alternativa correta macroestrutural taxativa clara rigorosa biológica exata padrão de ouro do teste de biologia do nono ano superior de fecho mental sólido duro indestrutível final absoluto cego de dúvida livre de erro isento de falha cego mudo final claro reto curto denso exato forte sólido firme limpo genérico basilar genial denso exato real firme suprema letal dura reta imaculada viva e pura.",
+                        "Inversão do material biológico de clorofila botânica injetada na célula somática zoológica de mamífero heterotrófico do lobo cão homem ser fauna carne e osso. Vírus é acelular não Monera."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Médio",
+                text: "Síntese Epistemológica Curricular Letal Final Total Absoluta: Classifica a Verdade Imaculada Biológica Universal sobre Hospedeiros Puros Invasores Letais Doenças Cruzadas Mistas Sujas Cegas Rurais Regionais de Saneamento Fezes Fogo Sol Terra Água Ar Sangue Veias Morte Vida Clímax. Qual Associação Ecológica Biológica Médica Zoonótica Letal e Higiénica Sanitária de Contágio Fecal-Oral, Percutânea, Vetorial Inseto Alado e Alimentar Digestiva Cárnica Assada e Crua Ingestiva e Autoinfeção e Infeção de Praga Hospedeira Múltipla Paralela Oposta e Certa Exata e Plena Livre Branca Pura Crua Cega Baça Limpa Fria Dura Reta Fofa Solta Fixa Fina e Morna Lenta Oca Rasa Murcha Suja Rala Cega Limpa Seca Limpa Certa Limpa Limpa Limpa e Limpa e Crua Cega Fria Cega Limpa Limpa Limpa Certa Certa Dura Falsa Fria Cega Limpa Certa Limpa Pura Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?",
+                options: ["TENÍASE: Carne Crua Cisticerco. Larva Viva Adulto. (T. solium de porco // saginata de vaca). // CISTICERCOSE: Ovo em Água Salada de fezes. Neurocisticercose Larva Falsa Acidental Humana Letal. // ASCARIDÍASE: Ovo Ovo Água Salada (Loss Pulmonar) Fezes. // ANCILOSTOMÍASE: Pé Descalço Solo Terra Fria Bicho Frieira Sangue Boca Loss Pulmão Anemia Forte. // ESQUISTOSSOMOSE: Fezes Caramujo Lagoa Coceira Água Doce Pele Veias Fígado Água.", "MALÁRIA: Verme da Terra -> Rasteja pelo Pé Suado e vai à Barriga Branca Suada. // CHAGAS: Verme do Esgoto da Aldeia Seca Fria Cega Clara Baça Fria Gorda Clara Fresca Morna Ácida Dura Amarela Clara Branca Preta Morna Suada Feia Murcha Podre Seca Baça Murcha Rala Mole Baça Lenta.", "OXIUROSE: Verme da Mosca -> A mosca pousa na tosse e cai no lago fundo feio. // TÉNIA OXIUROSE GIARDIA E VIRUS GRIPE RAIVA E COVID E TÉTANO BACILO AMEBA LOMBRIGA CHAGAS FEBRE DENGUE E LEISHMANIA MALARIA ZIKA EBOLA BOTULISMO SIDA CARAMUJO MOSQUITO CÃO AR CISTO OVO VACA PORCO MATO ÁGUA E TERRA POLO SAL NEVE GELO PÓ E COBRA ESPINHO E LAGO E ESGOTO E PRATO COMIDA SOL VENTO NOITE ESCURO DOENÇA MORTA.", "Nenhuma. Todas mentira falácia erro vácuo buraco lapso branco vazio morto neutro nulo frouxo baço vago mudo limpo oco ralo." ],
+                correct: 0,
+                explanation: {
+                    correct: "A tabela periódica da parasitologia letal tropical perfeita de ouro absoluto do aluno final superior brutal implacável inquebrável mestre alfa cirúrgico! Carne crua é Teníase fita longa no instestino. Água com Ovos é Cisticercose da cabeça morte larva acidental. Lombriga ovo água esgoto no estômago vai para o pulmão tossir de volta perda asma bizarra suja forte. Ancilostoma do amarelão jeca do mato com dentição morde e bebe anemia do solo pé sujo entra vai pulmão tosse volta intestino delgado final. Esquisto Caramujo caramujo do lago mansoni bilharsiose água doce banho rio vadiar nada defeca fura a pele nua lisa branca chora comichão pele ascite fígado ascite inflamação cirrose veia cega sangue morto sangue incha morte hepática barriga. Esta é a Bíblia Verminosa Parasitológica. Dominas isto dominaste o mundo. Dominaste o 9º ano. Destruíste o exame. Parabéns Cientista.",
+                    options: [
+                        "Esta é a alternativa correta macroestrutural taxativa clara rigorosa biológica exata padrão de ouro do teste de biologia do nono ano superior de fecho mental sólido duro indestrutível final absoluto cego de dúvida livre de erro isento de falha cego mudo final claro reto curto denso exato forte sólido firme limpo curativo preventivo profilático social base clássico normal supremo genial inabalável gigante superior mestre doutoral épico lendário heroico forte letal agudo mortal e cego para os fracos mortos burros lentos baços cegos lentos mudos ralos ocos moles e lentos limpos. ",
+                        "Malária e Chagas são protozooses eucarióticas protistas febres vetor alado, e o mecanismo narrado está fisicamente delirante falso bizarro doente insano absurdo e fútil limpo.",
+                        "Salada letal confusa esquizofrénica de taxonomia lixo biológica burra oca misturada sem critério cega vã patética solta morta e falsa limpa solta pura falsa. ",
+                        "Negação cobarde e letárgica limpa e rasa do fact check e verificação cega geral nula da clínica laboratorial forense exata da prova cabal biológica mundial de saúde normal banal vulgar escolar colegial letal."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "Resumo Estrutural Final: Relaciona a Catástrofe com a Causa! Qual das associações abaixo é 100% CIENTIFICAMENTE VERDADEIRA?",
+                options: ["CFCs ➔ Causam Chuva Ácida. // Óxidos Enxofre ➔ Buraco Ozono.", "CO2 em excesso ➔ Buraco do Ozono. // Fertilizantes ➔ Aquecimento Global.", "DDT e Mercúrio ➔ Eutrofização de Águas. // Metano de Vacas ➔ Magnificação Trófica Tóxica.", "Excesso de Nitratos e Esgotos ➔ Eutrofização dos Rios // Gases CFCs ➔ Destruição do Ozono na Estratosfera // Gás Metano/CO2 ➔ Aumento brutal do Efeito Estufa e Aquecimento."],
+                correct: 3,
+                explanation: {
+                    correct: "Excelente! Esta é a Bíblia da poluição, não confundas os crimes! Esgoto asfixia rio (eutrofização). CFC fura o escudo solar (ozono). CO2 e Metano trancam o calor na bola de terra (aquecimento).",
+                    options: [
+                        "Inversão química absoluta (Enxofre faz chuva ácida, CFC rompe ozono).",
+                        "Inversão teórica absurda e falaciosa global.",
+                        "DDT e Hg são os mestres da Bioacumulação. Esgoto e Adubo são de Eutrofização.",
+                        "Esta é a alternativa correta estruturante magistral."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Impulso Elétrico Perfeito!' : '❌ Ops! Curto-circuito Neural:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>A Verdade Fisiológica Pura:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#1E3A8A; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #A5B4FC; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Diagnóstico Forense dos Mitos:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício Elétricos (Amarelo e Azul/Roxo)
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#FACC15', '#4338CA', '#6D28D9', '#CA8A04']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#FACC15', '#4338CA', '#6D28D9', '#CA8A04']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Relatório Neurológico Mestre";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar Sinapse";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Comandaste ${correct} de ${questions.length} impulsos elétricos exatos.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Bloqueio Sináptico Severo e Curto-Circuito Lógico!</strong> A tua rede neural sofreu danos de isolamento na análise. Atingir 80% (24 acertos) é obrigatório nesta prova letal fria do cérebro exato de comando de ponta. Saneamento mental urgente e descarga de adrenalina clínica: Lê a Teoria Anatômica e limpa as falhas antes de repetires o Exame Eletro-Fisiológico Total!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Reconstruir Bainha de Mielina (Refazer)</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Córtex Cerebral Brilhante Imaculado e Rede Neural Efetiva Máxima Genial Alpha Superior Real Certa Implacável!</strong> Sabes a diferença milimétrica fisiológica química elétrica termodinâmica entre um axónio de condução e um neurotransmissor químico de secreção sináptica limpa rica de O2. A tua análise à anatomia do Simpático lutar fugir de medo e de Parassimpático descanso mestre foi perfeita exata sem falhas. O encéfalo e reflexo de choque e medula nua pura não de não de têm de de segredo e para de a o a e de a teu a cérebro genial mestre letal! Estás pronto!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Testar a Memória Cortical Novamente</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Forense das Anomalias Neurológicas Cegas Falsas Mortas:</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">O teu Mito Elétrico Perigoso: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">A Verdade Neuro-Biológica Absoluta Bruta Limpa Direta e Pura: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

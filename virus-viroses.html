@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vírus e Viroses - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-VIRAL (Roxo Ameaça & Verde Imunidade) */
+            --bg-color: #F5F3FF; /* Roxo muito claro */
+            --text-color: #2E1065; /* Roxo quase preto */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #DDD6FE; /* Roxo Claro */
+            --theme-medium: #8B5CF6; /* Roxo Vibrante */
+            --theme-dark: #4C1D95; /* Roxo Profundo */
+            --theme-contrast: #10B981; /* Verde Esmeralda (Saúde/Prevenção) */
+            --theme-accent: #E11D48; /* Vermelho Alerta (Vírus/Doença) */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#ddd6fe 1px, transparent 1px), linear-gradient(90deg, #ddd6fe 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--theme-accent); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #4C1D95;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #6D28D9;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-accent);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-accent);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #FFF1F2; /* Vermelho muito suave */
+            border-left: 4px solid var(--theme-accent);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #4C0519;
+        }
+        .highlight-box.green {
+            background-color: #ECFDF5;
+            border-left-color: var(--theme-contrast);
+            color: #064E3B;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #6D28D9; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-accent); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-accent); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E1; line-height: 1.5; color: #334155; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-accent); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-accent); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-accent); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🦠</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Vírus e Viroses: Os Parasitas Invisíveis</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: SIDA)">
+            </div>
+            <div id="no-results"><p>😕 Nenhum conceito encontrado. Tenta outra palavra.</p></div>
+
+            <!-- TÓPICO 1: O QUE SÃO VÍRUS? -->
+            <div class="content-group">
+                <div class="section-badge">🧬 1. O Que São os Vírus?</div>
+                <div class="theory-box search-target">
+                    <h3>No Limite da Vida</h3>
+                    <p>Os vírus são os agentes biológicos mais misteriosos do planeta. Muitos cientistas nem sequer os consideram "seres vivos". Porquê? Porque eles <strong>não têm células (são Acelulares)</strong> e não têm metabolismo próprio.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="150" height="150" viewBox="0 0 150 150">
+                            <!-- Estrutura do Vírus (tipo Coronavírus) -->
+                            <circle cx="75" cy="75" r="40" fill="#E11D48" stroke="#000" stroke-width="2"/>
+                            <!-- RNA no centro -->
+                            <path d="M 55 75 Q 65 55 75 75 T 95 75" fill="none" stroke="#FDE047" stroke-width="3"/>
+                            <text x="75" y="90" text-anchor="middle" font-size="8" font-weight="bold" fill="#FDE047">DNA ou RNA</text>
+                            
+                            <!-- Espículas (Glicoproteínas) -->
+                            <line x1="75" y1="35" x2="75" y2="15" stroke="#000" stroke-width="4"/>
+                            <circle cx="75" cy="15" r="5" fill="#4C1D95" stroke="#000"/>
+                            
+                            <line x1="75" y1="115" x2="75" y2="135" stroke="#000" stroke-width="4"/>
+                            <circle cx="75" cy="135" r="5" fill="#4C1D95" stroke="#000"/>
+                            
+                            <line x1="35" y1="75" x2="15" y2="75" stroke="#000" stroke-width="4"/>
+                            <circle cx="15" cy="75" r="5" fill="#4C1D95" stroke="#000"/>
+                            
+                            <line x1="115" y1="75" x2="135" y2="75" stroke="#000" stroke-width="4"/>
+                            <circle cx="135" cy="75" r="5" fill="#4C1D95" stroke="#000"/>
+                            
+                            <line x1="47" y1="47" x2="32" y2="32" stroke="#000" stroke-width="4"/>
+                            <circle cx="32" cy="32" r="5" fill="#4C1D95" stroke="#000"/>
+                            
+                            <line x1="103" y1="103" x2="118" y2="118" stroke="#000" stroke-width="4"/>
+                            <circle cx="118" cy="118" r="5" fill="#4C1D95" stroke="#000"/>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Estrutura Simples:</strong> Um vírus é basicamente material genético (DNA ou RNA) protegido por uma "casca" de proteínas chamada <strong>Capsídeo</strong>.</li>
+                        <li><strong>Parasitas Intracelulares Obrigatórios:</strong> Como não têm "fábricas" de energia, eles são obrigados a invadir uma célula de outro ser vivo para conseguirem multiplicar-se.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: COMO ATACAM? -->
+            <div class="content-group">
+                <div class="section-badge">🏴‍☠️ 2. O Ataque Celular</div>
+                <div class="theory-box search-target">
+                    <h3>O Sequestro da Célula</h3>
+                    <p>Os vírus são autênticos piratas. Quando entram no teu corpo, eles procuram uma célula específica (a Célula Hospedeira) e iniciam o ataque.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="250" height="120" viewBox="0 0 250 120">
+                            <!-- Célula -->
+                            <path d="M 80 10 Q 150 10 180 60 Q 150 110 80 110" fill="#D1FAE5" stroke="#059669" stroke-width="3"/>
+                            <circle cx="120" cy="60" r="15" fill="#3B82F6"/>
+                            <text x="120" y="95" text-anchor="middle" font-size="10" font-weight="bold" fill="#059669">Célula Hospedeira</text>
+                            
+                            <!-- Vírus a Injetar -->
+                            <polygon points="20,40 40,30 60,40 60,60 40,70 20,60" fill="#4C1D95" stroke="#000" stroke-width="2"/>
+                            <line x1="40" y1="70" x2="40" y2="90" stroke="#000" stroke-width="3"/>
+                            <!-- DNA viral a entrar -->
+                            <path d="M 40 80 Q 60 80 80 60" fill="none" stroke="#E11D48" stroke-width="3" marker-end="url(#arrow)"/>
+                            <text x="40" y="20" text-anchor="middle" font-size="10" font-weight="bold" fill="#E11D48">Vírus</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Injeção:</strong> O vírus acopla-se à célula e injeta o seu DNA/RNA lá para dentro.</li>
+                        <li><strong>A Fábrica:</strong> A célula, enganada pelo código do vírus, para de fazer as suas funções normais e começa a fabricar milhões de cópias do vírus.</li>
+                        <li><strong>A Lise:</strong> A célula fica tão cheia de novos vírus que rebenta (lise celular) e morre. Os novos vírus ficam livres para infetar outras células.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: PRINCIPAIS DOENÇAS -->
+            <div class="content-group">
+                <div class="section-badge">🤒 3. As Principais Viroses</div>
+                <div class="theory-box search-target">
+                    <h3>Doenças Virais Frequentes</h3>
+                    <p>As viroses transmitem-se de várias formas. Conhecer o inimigo é a melhor forma de prevenção.</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding:0; background:transparent; border:none;">
+                        
+                        <div style="background:white; border:2px solid var(--theme-dark); padding:10px; border-radius:8px;">
+                            <h4 style="color:var(--theme-accent); font-size:1rem; margin-bottom:5px;">Ar e Gotículas 🤧</h4>
+                            <p style="font-size:0.8rem; margin:0;">Transmitidas por espirros, tosse ou ar contaminado. <br><strong>Ex:</strong> Gripe, Constipação, COVID-19, Sarampo, Varicela.</p>
+                        </div>
+                        
+                        <div style="background:white; border:2px solid var(--theme-dark); padding:10px; border-radius:8px;">
+                            <h4 style="color:var(--theme-accent); font-size:1rem; margin-bottom:5px;">Vetores (Insetos) 🦟</h4>
+                            <p style="font-size:0.8rem; margin:0;">Precisam da picada de um animal (vetor) para entrar no sangue. <br><strong>Ex:</strong> Dengue, Febre Amarela, Zika (transmitidas por mosquitos).</p>
+                        </div>
+                        
+                        <div style="background:white; border:2px solid var(--theme-dark); padding:10px; border-radius:8px;">
+                            <h4 style="color:var(--theme-accent); font-size:1rem; margin-bottom:5px;">Fluidos Sexuais / Sangue 🩸</h4>
+                            <p style="font-size:0.8rem; margin:0;">Transmissão por relações sexuais desprotegidas ou sangue contaminado. <br><strong>Ex:</strong> SIDA (vírus VIH), Hepatite B e C, HPV.</p>
+                        </div>
+                        
+                        <div style="background:white; border:2px solid var(--theme-dark); padding:10px; border-radius:8px;">
+                            <h4 style="color:var(--theme-accent); font-size:1rem; margin-bottom:5px;">Mordida de Animais 🐕</h4>
+                            <p style="font-size:0.8rem; margin:0;">O vírus ataca o sistema nervoso central e está presente na saliva do animal infetado. <br><strong>Ex:</strong> Raiva.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: O GRANDE ALERTA -->
+            <div class="content-group">
+                <div class="section-badge">🚫 4. Antibióticos Não Funcionam!</div>
+                <div class="theory-box search-target">
+                    <h3>O Maior Erro Médico</h3>
+                    <p>Se tiveres uma virose (como a Gripe ou a Covid-19), o médico nunca te vai receitar um <strong>Antibiótico</strong>. Porquê?</p>
+                    
+                    <div class="visual-area">
+                        <svg width="200" height="100" viewBox="0 0 200 100">
+                            <!-- Comprimido -->
+                            <rect x="50" y="30" width="100" height="40" rx="20" fill="#3B82F6" stroke="#000" stroke-width="2"/>
+                            <rect x="100" y="30" width="50" height="40" fill="#FFF" stroke="#000" stroke-width="2" clip-path="inset(0 0 100% 0)"/> <!-- Half pill -->
+                            <line x1="100" y1="30" x2="100" y2="70" stroke="#000" stroke-width="2"/>
+                            <text x="100" y="90" text-anchor="middle" font-size="10" font-weight="bold">Antibiótico</text>
+                            
+                            <!-- Proibição -->
+                            <circle cx="100" cy="50" r="40" fill="none" stroke="#E11D48" stroke-width="6"/>
+                            <line x1="70" y1="20" x2="130" y2="80" stroke="#E11D48" stroke-width="6"/>
+                        </svg>
+                    </div>
+
+                    <div class="highlight-box">
+                        <strong>Anti = Contra | Bio = Vida.</strong> Os antibióticos foram criados para destruir a parede celular das <strong>BACTÉRIAS</strong>. Como os vírus não têm células (são acelulares), os antibióticos não lhes fazem absolutamente nada! Tomar antibiótico para uma constipação só destrói a tua flora intestinal e cria bactérias super-resistentes. Para vírus, usamos <strong>Vacinas</strong> (prevenção) e, em alguns casos raros, <em>Antivirais</em>.
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar a Análise Viral (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">Diagnóstico de Viroses</h2>
+                <p style="color: #4C1D95; font-size: 0.95rem; font-weight:600;">
+                    30 questões críticas. Precisas de atingir <strong>80% de acertos (24/30)</strong> para provares que o teu sistema intelectual tem anticorpos contra a ignorância!
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Relatório Médico</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS DETALHADOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: O Que São os Vírus (1-7)
+            {
+                id: 1, level: "Fácil",
+                text: "Na biologia celular, como são classificados estruturalmente os vírus?",
+                options: ["São seres procariontes, como as bactérias.", "São seres vivos pluricelulares muito pequenos.", "São agentes acelulares (não possuem células).", "São seres eucariontes com núcleo definido."],
+                correct: 2,
+                explanation: {
+                    correct: "Exato! O prefixo 'A-' significa não. Os vírus não têm membrana celular, citoplasma ou organelos. São apenas cápsulas com código genético.",
+                    options: [
+                        "Bactérias têm célula (são procariontes). O vírus não.",
+                        "Eles nem sequer têm UMA célula, muito menos várias.",
+                        "Esta é a alternativa correta.",
+                        "Não têm núcleo nem célula."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Fácil",
+                text: "Devido ao facto de não possuírem metabolismo próprio, os vírus são biologicamente conhecidos como:",
+                options: ["Produtores primários", "Parasitas intracelulares obrigatórios", "Decompositores de matéria orgânica", "Simbiontes mutualistas"],
+                correct: 1,
+                explanation: {
+                    correct: "Perfeito. Eles são obrigados a invadir o interior (intra) de uma célula viva para se conseguirem reproduzir e funcionar.",
+                    options: [
+                        "Eles não fazem fotossíntese.",
+                        "Esta é a alternativa correta.",
+                        "Eles não reciclam matéria morta como os fungos.",
+                        "A simbiose/mutualismo é benéfica. O vírus só destrói (parasita)."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Médio",
+                text: "A estrutura básica de qualquer vírus é muito simples. Do que é feito o 'corpo' de um vírus?",
+                options: ["Apenas de água e açúcar.", "Uma parede celular rígida feita de celulose.", "Material genético (DNA ou RNA) envolvido por uma cápsula de proteínas chamada capsídeo.", "Um pequeno núcleo e algumas mitocôndrias soltas."],
+                correct: 2,
+                explanation: {
+                    correct: "O vírus é, essencialmente, um 'pen drive' (DNA/RNA) dentro de uma caixa de plástico (a proteína do capsídeo).",
+                    options: [
+                        "Isto seria um rebuçado, não um vírus.",
+                        "A parede celular de celulose existe nas plantas.",
+                        "Esta é a alternativa correta.",
+                        "Eles não possuem organelos como as mitocôndrias."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Médio",
+                text: "Porque é que existe um debate intenso na comunidade científica sobre se os vírus são ou não 'Seres Vivos'?",
+                options: ["Porque eles respiram debaixo de água.", "Porque eles não se mexem sozinhos, mas têm cérebro.", "Porque fora de uma célula eles são partículas inertes (como poeira), mas dentro da célula reproduzem-se e sofrem mutações genéticas.", "Porque eles vêm do espaço exterior."],
+                correct: 2,
+                explanation: {
+                    correct: "É o grande paradoxo viral! Um vírus na maçaneta de uma porta não consome energia nem faz nada (parece morto). Mas quando entra no corpo, 'ganha vida' e multiplica-se.",
+                    options: [
+                        "Eles não têm sistema respiratório.",
+                        "Eles não têm sistema nervoso.",
+                        "Esta é a alternativa correta.",
+                        "Teorias de ficção científica (Panspermia) não justificam este debate biológico básico."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Difícil",
+                text: "Os vírus que têm a capacidade exclusiva de atacar e destruir BACTÉRIAS têm um nome específico na biologia. Como se chamam?",
+                options: ["Retrovírus", "Bacteriófagos (ou Fagos)", "Adenovírus", "Vírus da Gripe"],
+                correct: 1,
+                explanation: {
+                    correct: "O sufixo '-fago' significa 'aquele que come/destrói'. Os bacteriófagos parecem pequenos módulos lunares e injetam o seu DNA nas bactérias, matando-as.",
+                    options: [
+                        "Retrovírus têm RNA e transcriptase reversa (ex: VIH).",
+                        "Esta é a alternativa correta.",
+                        "Causam constipações/gastroenterites em humanos.",
+                        "Atacam as vias respiratórias animais."
+                    ]
+                }
+            },
+            {
+                id: 6, level: "Médio",
+                text: "O que é a 'Especificidade Viral'?",
+                options: ["O facto de os vírus só atacarem à noite.", "O facto de os vírus serem sempre do mesmo tamanho exato.", "A capacidade que um vírus tem de infetar apenas um tipo muito específico de célula (ex: o vírus da Hepatite só ataca células do fígado).", "A cor específica que cada vírus tem ao microscópio."],
+                correct: 2,
+                explanation: {
+                    correct: "As proteínas por fora do vírus funcionam como uma CHAVE. Se a chave for para a fechadura do fígado (Hepatite), ele não consegue invadir uma célula do pulmão.",
+                    options: [
+                        "A biologia viral não depende da luz solar para o ataque interno.",
+                        "Tamanhos variam muito entre espécies virais.",
+                        "Esta é a alternativa correta.",
+                        "Os vírus são demasiado pequenos para terem cor visível na luz normal."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Fácil",
+                text: "Qual das seguintes estruturas NÃO está presente em nenhum vírus do mundo?",
+                options: ["Material Genético (DNA ou RNA)", "Membrana Proteica (Capsídeo)", "Mitocôndrias e Ribossomas", "Algumas enzimas isoladas"],
+                correct: 2,
+                explanation: {
+                    correct: "Como são acelulares, os vírus NÃO têm as fábricas de energia (mitocôndrias) nem as fábricas de proteínas (ribossomas). É por isso que têm de roubar as da célula hospedeira!",
+                    options: [
+                        "Eles têm sempre material genético.",
+                        "Têm sempre capsídeo.",
+                        "Esta é a alternativa correta.",
+                        "Alguns (como o VIH) carregam enzimas essenciais próprias."
+                    ]
+                }
+            },
+
+            // BLOCO 2: O Ciclo da Infeção (8-12)
+            {
+                id: 8, level: "Fácil",
+                text: "O que acontece à célula humana depois de o vírus a usar para fabricar milhares de cópias de si mesmo?",
+                options: ["A célula fica mais forte e imune.", "A célula rompe-se (Lise Celular) e morre, libertando os novos vírus para o sangue.", "A célula transforma-se num novo órgão.", "A célula adormece."],
+                correct: 1,
+                explanation: {
+                    correct: "Este é o ciclo lítico! O vírus entra, usa as peças da célula até a esgotar, e quando a célula está cheia de novos vírus bebés, rebenta como um balão.",
+                    options: [
+                        "Pelo contrário, é fatal para a célula.",
+                        "Esta é a alternativa correta.",
+                        "Mutações podem causar cancro, mas não um órgão funcional.",
+                        "A célula é destruída."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Médio",
+                text: "Qual é o primeiro passo que o vírus tem de dar para conseguir infetar uma célula do nosso corpo?",
+                options: ["Adsorção (Fixar-se e encaixar-se nas proteínas recetoras da membrana da célula).", "Beber água para ganhar energia.", "Esperar que a célula se divida.", "Destruir os glóbulos vermelhos."],
+                correct: 0,
+                explanation: {
+                    correct: "O vírus tem de 'aterrar' e colar as suas espículas (chaves) nas fechaduras da célula. Se ele não conseguir colar-se, não consegue injetar o seu DNA.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Vírus não bebem água nem têm metabolismo.",
+                        "Eles injetam em células ativas ou em repouso.",
+                        "Esse é o trabalho da Malária (que é um protozoário, não um vírus)."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Difícil",
+                text: "No Ciclo Lisogénico, o vírus comporta-se de forma muito 'sorrateira'. O que faz ele?",
+                options: ["Mata a célula no primeiro minuto.", "Injeta o seu DNA na célula, que se mistura com o DNA humano, e fica lá escondido a 'dormir' e a multiplicar-se silenciosamente enquanto a célula humana se divide ao longo de anos.", "Sai do corpo pela urina rapidamente.", "Produz toxinas instantâneas."],
+                correct: 1,
+                explanation: {
+                    correct: "No ciclo lisogénico, o vírus é um ninja. Mistura o seu código no teu e espera. É o que acontece com o vírus do Herpes: fica 'a dormir' nos nervos e só ataca (ciclo lítico) quando tens stress.",
+                    options: [
+                        "Isso é o Ciclo Lítico rápido.",
+                        "Esta é a alternativa correta.",
+                        "Ele fica alojado no DNA celular.",
+                        "A produção letal ocorre no ciclo lítico."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Difícil",
+                text: "A SIDA (Síndrome da Imunodeficiência Adquirida) é causada pelo vírus VIH. O VIH é um 'Retrovírus'. O que significa ter esta classificação?",
+                options: ["Significa que é um vírus muito antigo (retro).", "Significa que o seu material genético é RNA e ele possui uma enzima (Transcriptase Reversa) que obriga a célula humana a fabricar DNA a partir desse RNA.", "Significa que ele ataca andando para trás.", "Significa que ataca exclusivamente animais velhos."],
+                correct: 1,
+                explanation: {
+                    correct: "A biologia normal é: DNA -> faz RNA -> faz proteína. O retrovírus vira a biologia do avesso (faz marcha-atrás)! Ele traz RNA e obriga a célula a fazer DNA novo para o esconder.",
+                    options: [
+                        "Não tem a ver com a idade da descoberta.",
+                        "Esta é a alternativa correta.",
+                        "Retro não se refere a movimento físico.",
+                        "Ataca humanos jovens e adultos."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Fácil",
+                text: "Quando apanhas um vírus como o da Gripe, o teu corpo reage com Febre. A febre é uma doença?",
+                options: ["Sim, a febre é o vírus a andar pelo sangue.", "Não, a febre é um mecanismo de defesa do teu corpo, que aumenta a temperatura para tentar 'cozer' e dificultar a multiplicação do vírus.", "Sim, é um veneno libertado pelo vírus.", "Não, a febre acontece apenas porque estava calor lá fora."],
+                correct: 1,
+                explanation: {
+                    correct: "A febre é o teu corpo em modo de guerra! O cérebro manda aquecer o sangue porque os vírus e bactérias multiplicam-se pior em ambientes muito quentes.",
+                    options: [
+                        "A febre não é a entidade viral.",
+                        "Esta é a alternativa correta.",
+                        "É uma resposta imunitária tua, não veneno.",
+                        "O clima não dita a temperatura interna biológica."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Principais Viroses e Transmissão (13-22)
+            {
+                id: 13, level: "Fácil",
+                text: "Das seguintes doenças comuns, qual DELAS é causada por um VÍRUS?",
+                options: ["Cólera", "Tuberculose", "Gripe", "Cárie dentária"],
+                correct: 2,
+                explanation: {
+                    correct: "A Gripe é provocada pelo vírus Influenza. As outras doenças mencionadas são todas provocadas por bactérias.",
+                    options: [
+                        "Bactéria (Vibrio cholerae).",
+                        "Bactéria (Bacilo de Koch).",
+                        "Esta é a alternativa correta.",
+                        "Bactérias (Streptococcus mutans)."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Fácil",
+                text: "O que têm em comum o Dengue, a Febre Amarela, a doença de Zika e a Chikungunya?",
+                options: ["São todas transmitidas pela picada de mosquitos (como o Aedes aegypti).", "São todas transmitidas por beber água suja.", "São viroses que se apanham com espirros (via aérea).", "Só atacam animais de estimação."],
+                correct: 0,
+                explanation: {
+                    correct: "Estas são as 'Arboviroses' clássicas tropicais. O vírus não voa sozinho, precisa que uma fêmea de mosquito pique uma pessoa doente e leve o vírus para a próxima vítima.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "A água suja transmite cólera ou febre tifoide.",
+                        "Nenhuma delas se transmite de pessoa para pessoa por tosse.",
+                        "Atacam severamente humanos."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Médio",
+                text: "A raiva é uma virose fatal que ataca o sistema nervoso central (cérebro). Como é que os seres humanos costumam ser infetados com este vírus?",
+                options: ["Comendo carne de porco mal cozinhada.", "Através de uma ferida ou mordedura de um animal infetado (como cão, morcego ou raposa), pois o vírus concentra-se na saliva do animal.", "Apanhando chuva ácida.", "Através de mosquitos no verão."],
+                correct: 1,
+                explanation: {
+                    correct: "O vírus da raiva desce pelos nervos do animal até às glândulas salivares. Quando ele morde, a saliva mortal entra no sangue humano e viaja até ao cérebro.",
+                    options: [
+                        "Isso transmite parasitas (ténia).",
+                        "Esta é a alternativa correta.",
+                        "Chuva não traz vírus.",
+                        "A raiva não é transmitida por insetos."
+                    ]
+                }
+            },
+            {
+                id: 16, level: "Médio",
+                text: "O vírus do VIH (causador da SIDA) é assustadoramente perigoso para o corpo humano. Porquê? Porque ele ataca um tipo muito específico de células.",
+                options: ["Ele ataca as células dos pulmões, impedindo a respiração.", "Ele ataca os glóbulos vermelhos, causando anemia profunda.", "Ele ataca e destrói os Linfócitos T4 (glóbulos brancos), que são os 'generais' do nosso sistema imunitário, deixando o corpo sem defesas.", "Ele ataca o estômago."],
+                correct: 2,
+                explanation: {
+                    correct: "O VIH é genial e cruel. Ele ataca exatamente as células que nos deviam defender. Ao matar os Linfócitos T, o teu corpo fica de portas abertas. Uma simples constipação pode matar um paciente com SIDA avançada.",
+                    options: [
+                        "Isso seria o Coronavírus ou Gripe.",
+                        "Isso seria a Malária.",
+                        "Esta é a alternativa correta.",
+                        "Isso seriam os Rotavírus."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Fácil",
+                text: "O Sarampo, a Rubéola e a Varicela são doenças virais comuns na infância que partilham a mesma principal forma de transmissão. Qual é?",
+                options: ["Partilha de seringas contaminadas.", "Contacto sexual desprotegido.", "Via aérea, por gotículas de saliva no ar ao tossir, espirrar ou falar.", "Ingestão de alimentos fora do prazo."],
+                correct: 2,
+                explanation: {
+                    correct: "São doenças extremamente contagiosas pelo ar. Um simples espirro de uma criança com sarampo numa sala de aulas pode infetar todas as outras que não estejam vacinadas.",
+                    options: [
+                        "Típico da Hepatite C ou VIH.",
+                        "Típico do HPV ou Herpes.",
+                        "Esta é a alternativa correta.",
+                        "Típico de viroses intestinais (Gastroenterites)."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Fácil",
+                text: "Qual é o principal meio de prevenção global contra o vírus do HPV (Papilomavírus Humano), que pode causar cancro do colo do útero?",
+                options: ["Usar protetor solar.", "Tomar a vacina (disponível no plano nacional de vacinação para jovens) e usar preservativo.", "Beber muita água no inverno.", "Evitar nadar no mar."],
+                correct: 1,
+                explanation: {
+                    correct: "O HPV é uma Infeção Sexualmente Transmissível (IST). A vacina dada na adolescência é uma ferramenta milagrosa, pois é a primeira vacina que previne diretamente um tipo de Cancro provocado por vírus!",
+                    options: [
+                        "Isso previne cancro de pele pelos raios UV.",
+                        "Esta é a alternativa correta.",
+                        "Bom para os rins, mas não previne vírus sexuais.",
+                        "A água do mar não transmite o HPV."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Médio",
+                text: "Diz-se frequentemente que 'ter o vírus' e 'ter a doença' não é a mesma coisa no caso da SIDA. Qual é a diferença?",
+                options: ["Não há diferença.", "Ter o VIH (o vírus) significa que ele está no sangue. A SIDA (a doença) é a fase terminal, quando o sistema imunitário já colapsou após anos de infeção não tratada.", "SIDA é o nome do vírus e VIH é o nome da doença.", "Quem tem o vírus fica curado numa semana, quem tem SIDA tem febre."],
+                correct: 1,
+                explanation: {
+                    correct: "Exatamente! Uma pessoa com VIH que tome os medicamentos antirretrovirais todos os dias pode viver 80 anos saudáveis e nunca desenvolver a doença (SIDA).",
+                    options: [
+                        "Há uma diferença clínica vital.",
+                        "Esta é a alternativa correta.",
+                        "É exatamente o inverso.",
+                        "Infelizmente, o corpo não cura o VIH em 1 semana."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Médio",
+                text: "Como é que as equipas de saúde pública evitam grandes epidemias de Dengue nas cidades tropicais?",
+                options: ["Vacinar os mosquitos.", "Eliminando pontos de água parada (pneus velhos, vasos, caixas d'água destapadas) onde a fêmea do mosquito põe os ovos.", "Deitando sal no rio principal da cidade.", "Evitando as saídas à rua de noite."],
+                correct: 1,
+                explanation: {
+                    correct: "O Aedes aegypti (mosquito vetor) precisa de água limpa e parada para a sua larva nascer. Sem água parada, não há mosquito. Sem mosquito, o vírus não chega até ti.",
+                    options: [
+                        "Impossível logisticamente.",
+                        "Esta é a alternativa correta.",
+                        "Salgar um rio mata o ecossistema e não afeta os vasos das casas.",
+                        "O mosquito da Dengue tem hábitos predominantemente DIURNOS (pica de dia)."
+                    ]
+                }
+            },
+            {
+                id: 21, level: "Difícil",
+                text: "A COVID-19 causou uma pandemia global a partir de 2019. O vírus responsável por esta doença pertence a qual família de vírus?",
+                options: ["Retrovírus (da família do VIH).", "Coronavírus (SARS-CoV-2).", "Adenovírus.", "Vírus Influenza (Gripe)."],
+                correct: 1,
+                explanation: {
+                    correct: "A família Coronavírus chama-se assim porque, ao microscópio, as proteínas em volta do vírus formam um desenho parecido com uma coroa (corona) solar.",
+                    options: [
+                        "A Covid não usa transcriptase reversa para atacar.",
+                        "Esta é a alternativa correta.",
+                        "Usados como 'vetores' em algumas vacinas, mas não é a família da doença original.",
+                        "São doenças respiratórias semelhantes, mas os vírus são de famílias distintas."
+                    ]
+                }
+            },
+            {
+                id: 22, level: "Fácil",
+                text: "Que doença grave do fígado, transmissível por seringas partilhadas, sexo desprotegido e de mãe para filho, é causada por um vírus e tem vacina obrigatória à nascença?",
+                options: ["Hepatite B", "Diabetes", "Cólera", "Tétano"],
+                correct: 0,
+                explanation: {
+                    correct: "A Hepatite (Hepato = Fígado, ite = inflamação) tipo B é viral e afeta o fígado gravemente, podendo causar cirrose. A vacina é supereficiente.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Doença metabólica, não infecciosa.",
+                        "Bactéria da água suja.",
+                        "Bactéria de feridas no solo (bacilo de Nicolaier)."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Tratamentos e Mitos (23-27)
+            {
+                id: 23, level: "Fácil",
+                text: "Foste ao médico com uma Constipação brutal (provocada por um Rinovírus). Tens o nariz entupido e febre. Podes exigir que o médico te receite um Antibiótico (ex: Amoxicilina)?",
+                options: ["Sim, porque os antibióticos curam qualquer doença rapidamente.", "Não! Os antibióticos matam exclusivamente BACTÉRIAS. Como os vírus não têm células, o antibiótico não lhes faz nada.", "Sim, mas só se a constipação durar mais de dois dias.", "Não, porque os antibióticos só curam dores de ossos."],
+                correct: 1,
+                explanation: {
+                    correct: "É a Regra de Ouro da Biologia: NUNCA se toma antibiótico para uma virose. Tomar isso para a gripe só vai destruir as bactérias boas da tua barriga e deixar o vírus intocado.",
+                    options: [
+                        "Falso, antibióticos não são poções mágicas genéricas.",
+                        "Esta é a alternativa correta.",
+                        "O tempo não altera a imunologia da medicação.",
+                        "Antibióticos lidam com infeções, não fraturas."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Médio",
+                text: "Se a medicina não usa antibióticos contra vírus, como tratamos as viroses mais comuns como a gripe ou a constipação?",
+                options: ["Com uma cirurgia aos pulmões.", "Deixamos o nosso Sistema Imunitário fazer o trabalho ao longo dos dias, dando-lhe apenas descanso, água e remédios para a febre/dores (tratamento dos sintomas).", "Transfusões de sangue semanais.", "Engolindo gelo para matar o vírus de frio."],
+                correct: 1,
+                explanation: {
+                    correct: "O melhor médico contra a gripe é a tua própria Célula Branca (Linfócito). O xarope ou o paracetamol só tiram as dores enquanto o corpo destrói a doença.",
+                    options: [
+                        "Extremamente desproporcional e não atua na virose.",
+                        "Esta é a alternativa correta.",
+                        "Não curaria a causa viral no tecido pulmonar.",
+                        "Não afeta a temperatura central interna do corpo a esse ponto de forma segura."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Médio",
+                text: "Existe uma categoria de medicamentos raros e difíceis de produzir, que são os únicos capazes de combater diretamente os vírus a multiplicar-se no corpo. Qual o nome?",
+                options: ["Antifúngicos", "Analgésicos", "Antivirais", "Probióticos"],
+                correct: 2,
+                explanation: {
+                    correct: "Os antivirais (ex: Aciclovir para o Herpes, ou os 'cocktails' para o VIH) não matam o vírus diretamente, mas 'encravam' a máquina celular, impedindo que o vírus se multiplique lá dentro.",
+                    options: [
+                        "Esses matam os fungos.",
+                        "Esses cortam a dor de cabeça.",
+                        "Esta é a alternativa correta.",
+                        "Esses repõem as bactérias boas nos intestinos."
+                    ]
+                }
+            },
+            {
+                id: 26, level: "Fácil",
+                text: "Para evitar ficar doente com Sarampo ou Polioide (Poliomielite), a ação de saúde mais eficaz e recomendada em todo o mundo é:",
+                options: ["Lavar o cabelo todos os dias.", "A Vacinação na infância.", "Comer muita laranja.", "Usar botas de borracha no campo."],
+                correct: 1,
+                explanation: {
+                    correct: "A vacinação previne que a doença sequer comece! As tuas células de memória destroem o vírus do sarampo mal ele bate à porta do teu corpo.",
+                    options: [
+                        "Higiene capilar não impede contágio aéreo profundo.",
+                        "Esta é a alternativa correta.",
+                        "A Vitamina C ajuda a imunidade, mas não cria anticorpos específicos contra o vírus letal.",
+                        "Protege de cobras e tétano, mas não do vírus do ar (sarampo)."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Difícil",
+                text: "Por que motivo tens de tomar a vacina da Gripe todos os invernos, se as células de memória duram anos (como acontece com a vacina do Sarampo)?",
+                options: ["Porque o governo quer ganhar dinheiro com agulhas.", "Porque o teu sistema imunitário 'esquece-se' de propósito.", "Porque o vírus da Gripe (Influenza) tem uma Taxa de Mutação elevadíssima. Ele muda a 'cara' (antigénios) todos os anos, e as tuas defesas antigas não o reconhecem no ano seguinte.", "Porque a vacina da gripe derrete com o sol de verão no teu corpo."],
+                correct: 2,
+                explanation: {
+                    correct: "O vírus da gripe é um mestre dos disfarces! Ele copia o seu RNA com muitos erros, mudando as proteínas da casca. O anticorpo que fabricaste no ano passado já não encaixa na nova fechadura mutante deste inverno.",
+                    options: [
+                        "Teorias da conspiração infundadas.",
+                        "O sistema imunitário lembra-se perfeitamente da versão velha do vírus.",
+                        "Esta é a alternativa correta.",
+                        "Fisiologicamente absurdo."
+                    ]
+                }
+            },
+
+            // BLOCO 5: Casos Especiais e Desafios (28-30)
+            {
+                id: 28, level: "Difícil",
+                text: "Alguns vírus, chamados Oncovírus, são perigosos porque, ao invadirem o DNA da tua célula hospedeira, desregulam as instruções genéticas, fazendo a tua célula multiplicar-se descontroladamente. O que provoca isso?",
+                options: ["Asma", "Cancro (Tumores)", "Diabetes", "Osteoporose"],
+                correct: 1,
+                explanation: {
+                    correct: "Onco = Cancro. Quando o vírus mexe no código da célula, ela esquece-se de parar de se dividir. Forma-se um amontoado de células loucas: um Tumor. É o que o vírus HPV faz no colo do útero.",
+                    options: [
+                        "Doença inflamatória respiratória.",
+                        "Esta é a alternativa correta.",
+                        "Doença metabólica da insulina.",
+                        "Enfraquecimento dos ossos."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Difícil",
+                text: "O Vírus Ebola é uma das doenças virais mais assustadoras (com alta taxa de letalidade) na África, causando a febre hemorrágica. Que medida imediata é tomada para travar um surto de Ebola numa aldeia?",
+                options: ["Dar antibióticos pesados nas escolas.", "Isolamento rigoroso (Quarentena) dos doentes, rastreio de contactos e equipamento de proteção total para médicos, pois transmite-se pelo toque direto nos fluidos e sangue.", "Lançar inseticida para matar mosquitos no céu.", "Fazer todos beberem água do rio."],
+                correct: 1,
+                explanation: {
+                    correct: "O Ebola transmite-se brutalmente pelo sangue, suor, lágrima e vómito (mesmo de pessoas falecidas recentemente). Não voa no ar como a gripe, pelo que a quarentena com fatos protetores detém o surto localmente.",
+                    options: [
+                        "Antibióticos não matam vírus da febre hemorrágica.",
+                        "Esta é a alternativa correta.",
+                        "Não é transmitido por mosquitos (diferente da dengue).",
+                        "Água de rio não cura viroses fulminantes e pode estar poluída."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "Síntese Final: Assinala a afirmação CIENTIFICAMENTE CORRETA sobre a relação entre Vírus e Células.",
+                options: ["O Vírus ataca bactérias para ajudar os humanos e depois transforma-se num animal aquático.", "Os Vírus não têm enzimas nem ribossomas suficientes, por isso funcionam como 'piratas de DNA', assaltando uma célula saudável, roubando as suas fábricas para criar mais vírus e causando a Lise (morte) dessa célula no fim do ciclo.", "O Vírus é uma bactéria amigável que respira oxigénio na atmosfera.", "As células humanas conseguem apanhar o vírus com as mãos e fechá-lo num frasco no fígado."],
+                correct: 1,
+                explanation: {
+                    correct: "Excelente! Esta frase resume todo o módulo! Os vírus estão no limiar da vida: só ganham 'função' quando invadem e roubam os recursos dos vivos, espalhando morte celular na sua rota de multiplicação parasitária.",
+                    options: [
+                        "Não ocorrem transmutações evolutivas mágicas instantâneas de partículas para pluricelulares complexos marinhos.",
+                        "Esta é a alternativa correta.",
+                        "Vírus NÃO é bactéria. Não respira oxigênio nem sequer tem metabolismo fora da célula.",
+                        "Metáfora fantasiosa infantil para a fagocitose celular imunológica, mas cientificamente imprecisa no seu texto final."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Sistema Imunitário Eficiente!' : '❌ Ops! Infeção no Raciocínio:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>Solução de Cura:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#0F172A; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #CBD5E1; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Diagnóstico das Erradas:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício com cores Roxo e Verde Imunidade
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#8B5CF6', '#10B981', '#E11D48', '#4C1D95']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#8B5CF6', '#10B981', '#E11D48', '#4C1D95']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Diagnóstico";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Destruíste ${correct} de ${questions.length} vírus da ignorância.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Alerta de Epidemia!</strong> As tuas defesas não foram suficientes. Precisas de 80% (24 acertos) para bloqueares este vírus. Lê a Teoria novamente e fortalece os teus conhecimentos!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Tomar a Vacina e Repetir</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Imunidade Total!</strong> O teu diagnóstico está clinicamente impecável. Estás vacinado contra os erros desta matéria!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Patrulhar Novamente</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Clínico dos Teus Erros:</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">O que escolheste: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">A Verdade Científica: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

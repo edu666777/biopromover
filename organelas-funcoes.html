@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organelos e Funções - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-MAQUINARIA (Azul Cobalto & Rosa-Choque) */
+            --bg-color: #EFF6FF; /* Azul gelo muito claro */
+            --text-color: #0F172A; /* Slate quase preto */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #DBEAFE; /* Azul claro */
+            --theme-medium: #3B82F6; /* Azul base */
+            --theme-dark: #1E3A8A; /* Azul Cobalto Profundo */
+            --theme-contrast: #E11D48; /* Rosa-Choque / Carmim (Destaque) */
+            --theme-accent: #F59E0B; /* Âmbar (Energia) */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#dbeafe 1px, transparent 1px), linear-gradient(90deg, #dbeafe 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #1E3A8A;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #1E3A8A;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #F8FAFC;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #FFF1F2; /* Carmim suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #4C0519;
+        }
+        .highlight-box.blue {
+            background-color: #EFF6FF;
+            border-left-color: var(--theme-medium);
+            color: #1E3A8A;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #1E3A8A; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E1; line-height: 1.5; color: #0F172A; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">⚙️</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Organelos e a Maquinaria Celular</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar organelo... (ex: Golgi)">
+            </div>
+            <div id="no-results"><p>😕 Organelo não encontrado no citosol. Verifica a ortografia.</p></div>
+
+            <!-- TÓPICO 1: O NÚCLEO E A PRODUÇÃO -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-dark);">🧠 1. O Centro de Comando</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-dark);">
+                    <h3 style="color: var(--theme-dark);">Núcleo e Ribossomas</h3>
+                    <p>Nas células eucariontes, o genoma não está ao abandono. A célula possui uma infraestrutura rígida para guardar a informação e usá-la na síntese de proteínas.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="220" height="120" viewBox="0 0 220 120">
+                            <!-- Núcleo -->
+                            <circle cx="60" cy="60" r="40" fill="#DBEAFE" stroke="#1E3A8A" stroke-width="4" stroke-dasharray="10, 5"/>
+                            <text x="60" y="30" font-size="8" fill="#1E3A8A" text-anchor="middle">Poros</text>
+                            
+                            <!-- Nucléolo -->
+                            <circle cx="60" cy="60" r="15" fill="#1E3A8A"/>
+                            <path d="M 45 50 Q 60 30 75 50 T 80 70 T 40 70 Z" fill="none" stroke="#E11D48" stroke-width="2"/> <!-- Cromatina -->
+                            
+                            <!-- RNAm a sair e Ribossomas -->
+                            <path d="M 85 85 Q 120 70 140 90" fill="none" stroke="#E11D48" stroke-width="2" marker-end="url(#arrow)"/>
+                            <text x="110" y="75" font-size="8" fill="#E11D48">RNAm</text>
+                            
+                            <!-- Ribossomas -->
+                            <circle cx="160" cy="90" r="6" fill="#F59E0B"/>
+                            <circle cx="160" cy="80" r="4" fill="#F59E0B"/>
+                            <text x="160" y="110" text-anchor="middle" font-size="9" font-weight="bold" fill="#000">Ribossoma</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Núcleo (Carioteca):</strong> Envolve o DNA (cromatina). Tem poros que permitem a saída de RNA mensageiro.</li>
+                        <li><strong>Nucléolo:</strong> Mancha densa dentro do núcleo. É a "fábrica que faz as fábricas", ou seja, produz o RNA ribossómico (a estrutura dos ribossomas).</li>
+                        <li><strong>Ribossomas:</strong> Organelos NÃO-membranosos. A sua única e vital função é a <strong>síntese de proteínas</strong>, lendo a fita de RNAm enviada pelo núcleo.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: A LINHA DE MONTAGEM -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-medium);">🏭 2. A Linha de Montagem e Exportação</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-medium);">
+                    <h3 style="color: var(--theme-dark);">Retículo Endoplasmático e Golgi</h3>
+                    <p>O que a célula produz precisa de ser transportado e refinado. Para isso serve a complexa rede de membranas internas (Sistema Endomembranar).</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding:0; background:transparent; border:none;">
+                        <!-- Retículos -->
+                        <div style="background:white; border:2px solid #3B82F6; padding:15px; border-radius:8px;">
+                            <h4 style="color:#1E3A8A; text-align:center; font-size:1rem; margin-bottom:5px;">Retículos (RER e REL)</h4>
+                            <p style="font-size:0.8rem; line-height:1.5; margin:0;">
+                                O <strong>RER (Rugoso)</strong> está cravejado de ribossomas. Transporta as proteínas recém-feitas. <br>
+                                O <strong>REL (Liso)</strong> não tem ribossomas. A sua função é a síntese de lípidos (gorduras) e a <strong>desintoxicação</strong> celular (álcool, drogas). É abundante no fígado!
+                            </p>
+                        </div>
+                        <!-- Complexo de Golgi -->
+                        <div style="background:white; border:2px solid #E11D48; padding:15px; border-radius:8px;">
+                            <h4 style="color:#BE123C; text-align:center; font-size:1rem; margin-bottom:5px;">Complexo de Golgi</h4>
+                            <p style="font-size:0.8rem; line-height:1.5; margin:0;">
+                                Os "Correios". Uma pilha de sacos achatados (cisternas) que recebe proteínas do RER, as empacota, modifica e as expulsa (secreção celular) em vesículas. Também forma o <strong> acrossoma </strong> dos espermatozóides.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: BIOENERGÉTICA -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-contrast);">⚡ 3. As Centrais Termoelétricas</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-contrast);">
+                    <h3 style="color: var(--theme-contrast);">Mitocôndrias e Cloroplastos</h3>
+                    <p>Sem energia orgânica, o sistema colapsa. A teoria da endossimbiose defende que estes dois organelos já foram bactérias livres, pois ambos possuem <strong>DNA próprio circular</strong>, ribossomas e membrana dupla.</p>
+                    
+                    <div class="visual-area" style="flex-direction:row; gap: 15px;">
+                        <!-- Mitocôndria -->
+                        <div style="text-align:center; width:45%;">
+                            <svg width="100" height="60" viewBox="0 0 100 60">
+                                <ellipse cx="50" cy="30" rx="40" ry="20" fill="#FEF3C7" stroke="#F59E0B" stroke-width="3"/>
+                                <!-- Cristas mitocondriais -->
+                                <path d="M 15 30 Q 30 10 40 30 T 60 30 T 80 30" fill="none" stroke="#B45309" stroke-width="2"/>
+                                <path d="M 15 30 Q 30 50 40 30 T 60 30 T 80 30" fill="none" stroke="#B45309" stroke-width="2"/>
+                            </svg>
+                            <p style="font-size:0.8rem; font-weight:bold; margin-top:5px; color:#B45309;">Mitocôndria</p>
+                            <p style="font-size:0.7rem; line-height:1.2;">Faz a <strong>Respiração Celular</strong> (queima glicose com O2 para gerar ATP). Presente em animais e plantas.</p>
+                        </div>
+                        
+                        <!-- Cloroplasto -->
+                        <div style="text-align:center; width:45%;">
+                            <svg width="100" height="60" viewBox="0 0 100 60">
+                                <ellipse cx="50" cy="30" rx="40" ry="20" fill="#D1FAE5" stroke="#059669" stroke-width="3"/>
+                                <!-- Grana (Pilhas de tilacoides) -->
+                                <rect x="30" y="20" width="8" height="20" fill="#047857"/>
+                                <rect x="50" y="15" width="8" height="30" fill="#047857"/>
+                                <rect x="70" y="22" width="8" height="15" fill="#047857"/>
+                                <line x1="38" y1="30" x2="50" y2="30" stroke="#047857" stroke-width="1"/>
+                                <line x1="58" y1="30" x2="70" y2="30" stroke="#047857" stroke-width="1"/>
+                            </svg>
+                            <p style="font-size:0.8rem; font-weight:bold; margin-top:5px; color:#059669;">Cloroplasto</p>
+                            <p style="font-size:0.7rem; line-height:1.2;">Exclusivo da Botânica. Realiza a <strong>Fotossíntese</strong> (transforma luz solar em glicose).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: DIGESTÃO E LIMPEZA -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: #8B5CF6;">🗑️ 4. Limpeza e Armazenamento</div>
+                <div class="theory-box search-target" style="border-left-color: #8B5CF6;">
+                    <h3 style="color: #4C1D95;">Lisossomas, Peroxissomas e Vacúolos</h3>
+                    <p>O citoplasma não pode acumular resíduos tóxicos. A eliminação das substâncias obedece a regras restritas da fisiologia eucariota.</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Lisossomas (O estômago celular):</strong> Vesículas que brotam do Complexo de Golgi cheias de enzimas ácidas fortes. Fazem a <strong>digestão intracelular</strong> de partículas engolidas ou reciclam organelos velhos da própria célula (Autofagia). Se o lisossoma rebentar em massa, a célula suicida-se (Autólise/Apoptose).</li>
+                        <li><strong>Peroxissomas:</strong> São os guardas de segurança. O seu interior contém a enzima <em>catalase</em> que quebra rapidamente a perigosa <strong>água oxigenada (H2O2)</strong> — lixo tóxico do metabolismo — em água e oxigénio inofensivos.</li>
+                        <li><strong>Vacúolo Central:</strong> Exclusivo das plantas. Ocupa 80% do espaço, armazenando água, pigmentos e detritos ácidos. Nas plantas, ele assume grande parte das funções líticas (digestivas) dos lisossomas animais.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar Auditoria Citológica (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">Microscopia Aplicada: Organelos</h2>
+                <p style="color: #0F172A; font-size: 0.95rem; font-weight:600;">
+                    30 questões de fisiologia celular severa. Atingir <strong>80% (24/30)</strong> é imperativo se não queres ver a tua nota biológica digerida por um lisossoma. Lê o relatório forense das tuas falhas!
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Relatório Citológico</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS RIGOROSOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Ribossomas e Núcleo (1-6)
+            {
+                id: 1, level: "Fácil",
+                text: "Qual é a função exclusiva dos Ribossomas na biologia celular?",
+                options: ["Armazenar água e sais solúveis minerais densos.", "Sintetizar as proteínas, 'lendo' a mensagem genética que chega do núcleo na forma de RNA mensageiro.", "Realizar a fotossíntese de glicose através de fotões luminosos.", "Destruir organelos velhos através de ácidos ribossômicos fortes."],
+                correct: 1,
+                explanation: {
+                    correct: "A única função dos ribossomas é a tradução da síntese proteica. Eles juntam os aminoácidos como peças de lego na ordem que o RNA manda. Sem proteínas, não há enzimas, nem membranas, nem vida.",
+                    options: [
+                        "Isso é o vacúolo.",
+                        "Esta é a alternativa correta científica rigorosa.",
+                        "Isso é a função da clorofila no cloroplasto.",
+                        "Isso é o trabalho dos lisossomas e das suas enzimas hidrolíticas."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Médio",
+                text: "Os Ribossomas detêm uma característica estrutural notável que os permite existir tanto na complexa célula humana como na simples célula bacteriana. O que os diferencia dos outros 'organelos' tradicionais?",
+                options: ["São formados por ouro biológico líquido.", "Não possuem NENHUMA membrana lipídica a envolvê-los, sendo apenas complexos macromoleculares de RNA ribossómico e proteínas compactadas.", "Possuem duas membranas lipídicas isolantes fortes.", "Estão localizados exclusivamente fora da célula."],
+                correct: 1,
+                explanation: {
+                    correct: "As bactérias (procariontes) não têm organelos com membranas, mas têm ribossomas! Logo, os ribossomas não podem ser membranosos. São 'grãos' puros de RNA e proteína aglutinada.",
+                    options: [
+                        "A biologia não usa ouro na sua estrutura base.",
+                        "Esta é a alternativa correta estrutural exata da citologia molecular.",
+                        "Mitocôndrias, cloroplastos e núcleo têm membranas duplas. O Ribossoma é nu.",
+                        "Os ribossomas operam estritamente no meio intracelular e no RER."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Fácil",
+                text: "O núcleo eucarionte possui, na sua zona interna mais densa e escura, uma estrutura chamada Nucléolo. Qual é a principal missão metabólica do Nucléolo?",
+                options: ["Respirar oxigénio gasoso e produzir ATP calórico no sangue venoso.", "Produzir lípidos e colesterol esteroide lipofílico.", "Montar e sintetizar os componentes (RNA ribossómico) que irão formar os próprios Ribossomas da célula antes de estes saírem pelos poros da carioteca.", "Criar cromossomas a partir do zero."],
+                correct: 2,
+                explanation: {
+                    correct: "A fábrica de fábricas! O nucléolo não tem membrana própria, é a região do núcleo onde o código genético está ativamente a ser lido para imprimir as subunidades do ribossoma.",
+                    options: [
+                        "O metabolismo respiratório oxidativo dá-se na mitocôndria, não no núcleo central.",
+                        "A produção de gorduras complexas dá-se no Retículo Endoplasmático Liso.",
+                        "Esta é a alternativa correta da genética citoplasmática e nuclear cruzada.",
+                        "Cromossomas não se 'criam' do nada, são a compactação da cromatina (DNA parental pré-existente)."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Médio",
+                text: "Porque é que os Glóbulos Vermelhos maduros (Hemácias) dos mamíferos, incluindo o ser humano, não duram muito tempo na corrente sanguínea e são incapazes de se dividir em novas células?",
+                options: ["Porque os mamíferos têm veneno no sangue circulante.", "Porque as hemácias expulsaram o seu próprio Núcleo e mitocôndrias durante o seu desenvolvimento para terem mais espaço para transportar o Oxigénio (Hemoglobina). Sem o 'cérebro' do DNA, são células com dias contados.", "Porque o coração queima e frita a sua estrutura no ventrículo.", "Porque elas transformam-se espontaneamente em glóbulos brancos."],
+                correct: 1,
+                explanation: {
+                    correct: "A hemácia humana é um eucarionte bizarro: perdeu o núcleo de propósito! Como o objetivo dela é apenas carregar oxigênio, ela despeja o núcleo e as mitocôndrias no lixo. Ao fim de 120 dias no sangue, esgota-se e o baço destrói-a, sendo reposta pela medula.",
+                    options: [
+                        "Falso.",
+                        "Esta é a alternativa correta evolutiva de hematologia eucariótica especializada excecional.",
+                        "A bomba cardíaca é mecânica hemodinâmica, não destrutiva térmica celular de base letal.",
+                        "Falso histológico e embriológico irreversível em biologia de diferenciação tecidual limpa."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Difícil",
+                text: "Observando ao microscópio, nota-se que existem ribossomas a flutuar 'LIVRES' no citoplasma gel hialoplasmático e existem ribossomas 'AGARRADOS' colados à parede do Retículo Endoplasmático Rugoso. Existe uma diferença tática fisiológica nas proteínas que cada um destes grupos produz?",
+                options: ["Não, a posição é aleatória e as proteínas misturam-se caóticas e nulas cegas.", "Sim. Os ribossomas LIVRES produzem proteínas que a célula vai usar no seu PRÓPRIO interior (citosol). Os ribossomas AGARRADOS ao retículo produzem proteínas destinadas a serem EXPORTADAS da célula para fora (secreção ou lisossomas).", "Os ribossomas livres produzem glicose e os agarrados produzem lípidos finos puros.", "Os ribossomas livres estão inativos mortos e secos de falhas."],
+                correct: 1,
+                explanation: {
+                    correct: "Pura engenharia logística! Se a proteína for para consumo caseiro interno (ex: enzima da glicólise), o ribossoma solto fá-la e deita no chão citosólico. Se for uma hormona para o sangue (ex: insulina), o ribossoma tem de estar cravado no Retículo para a atirar logo para os túneis de embalamento do Golgi para a rua.",
+                    options: [
+                        "A biologia celular é extremamente compartimentada e rigorosa, não caótica aleatória difusa lúgubre rala.",
+                        "Esta é a alternativa correta proteômica clássica da compartimentação espacial ribossomal magna.",
+                        "Ribossomas NUNCA produzem glícidos ou lípidos. Isso é um erro capital grave de síntese botânica ou reticular lisa.",
+                        "Todos os polirribossomas são ativos na tradução funcional do código mRNA basal limpo livre."
+                    ]
+                }
+            },
+            {
+                id: 6, level: "Fácil",
+                text: "Onde se localiza o genoma, isto é, todo o código vital primário do DNA e cromatina, numa célula animal típica não-mitótica, no período calmo normal de interfase base?",
+                options: ["Disperso solto à boiar na membrana plástica oleosa.", "No lisossoma para ser digerido.", "Protegido no interior do Núcleo Celular, cercado por uma dupla membrana furada (carioteca).", "Escondido nas espículas do complexo fuso acromático flagelar duro cego murcho."],
+                correct: 2,
+                explanation: {
+                    correct: "Nos eucariontes, o tesouro hereditário e de instruções fica sempre no cofre-forte (O Núcleo). A carioteca impede que enzimas destruidoras do citoplasma toquem nos valiosos filamentos da cromatina base.",
+                    options: [
+                        "Isso é o cenário procarionte (bactérias), não a organização animal.",
+                        "Isso resultaria na morte imediata celular e degradação fatal destrutiva do código base ácido.",
+                        "Esta é a alternativa correta citológica mestre fundamental simples clara direta de base liceal pura.",
+                        "Flagelos são cordas de locomoção citosólica periférica distal, sem conteúdo genómico central primário de cópia."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Sistema Endomembranar (RER, REL, Golgi) (7-13)
+            {
+                id: 7, level: "Fácil",
+                text: "O Retículo Endoplasmático divide-se visual e funcionalmente em dois subtipos: o Rugoso (com ribossomas) e o Liso (sem ribossomas). Qual é a principal missão metabólica de um Retículo Endoplasmático Liso (REL) comum?",
+                options: ["Fabricar RNA viral e espinhos de bactéria do lixo cego.", "Queimar moléculas de oxigénio gasoso e ATP.", "Sintetizar Lípidos (Gorduras) e atuar na potente DESINTOXICAÇÃO celular de drogas tóxicas alheias.", "Cortar as proteínas ao meio para digerir a carne crua e rija forte pura fina."],
+                correct: 2,
+                explanation: {
+                    correct: "Sendo liso (sem ribossomas), não pode fazer proteínas. A sua máquina interior, pelo contrário, monta esteroides e colesterol (lípidos), e é mestre em partir toxinas no fígado. Drogaste-te ou bebeste álcool? O REL do teu fígado vai ter de suar para limpar o sangue.",
+                    options: [
+                        "As bactérias e vírus são exógenos infeciosos alheios à citologia normal e sana e basal do retículo próprio.",
+                        "Isso é o perfil laboratorial exclusivo mitocondrial aeróbico puro e letal da queima metabólica oxidativa e não reticular liso anabólico base.",
+                        "Esta é a alternativa correta clássica lipídica e detoxificante mestre final clara.",
+                        "Quem digere (corta) com sucos proteolíticos é o Lisossoma gástrico rústico ácido ácido."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Difícil",
+                text: "Fisiologia celular de caso: Um homem foi internado no hospital com alcoolismo crónico agressivo severo diário de longo curso de anos fio. Se os peritos fizessem uma biópsia e analisassem os hepatócitos (células do seu fígado) ao microscópio eletrónico, iriam reparar numa impressionante e brutal hipertrofia dilatada adaptativa (um enorme crescimento super funcional de sobrevivência orgânica celular de defesa imune citológica limpa clara). Que organelo estaria anormalmente gigante a trabalhar nestas células de tentativa de cura de fígado alcoólico?",
+                options: ["O Cloroplasto, para sugar a luz azul neon do teto e luz forte do ecrã.", "O Retículo Endoplasmático Liso (REL), pois é ele quem desdobra e destrói o veneno do álcool etanol na biologia animal humana limpa.", "O Fuso Acromático de separação do DNA baço cego fraco nulo raso vazio.", "A Parede de Celulose Botânica lenhosa da derme rija pálida cega cega da porta e do osso rígido forte."],
+                correct: 1,
+                explanation: {
+                    correct: "Raciocínio lógico perfeito! O álcool é uma toxina para o corpo. O REL é o filtro de desintoxicação. Num alcoólatra, o REL no fígado cresce desesperadamente e cria mais enzimas (tolerância medicamentosa) para tentar acompanhar o nível doentio de veneno de etanol a circular livre no plasma cego cru baço e morto.",
+                    options: [
+                        "Humanos carnívoros onívoros não portam cloroplastos fotoelétricos ou de espetro botânico rural.",
+                        "Esta é a alternativa correta forense metabólica clínica de citotoxicidade clássica dura e forte exata.",
+                        "O fuso mitótico não digere ou filtra toxinas metabólicas no fígado, e apenas puxa material cromossómico no ato esporádico efêmero da mitose.",
+                        "Célula do fígado é ANIMAL, não há celulose rija botânica nem parede nem osso lenhoso de mato rústico flor planta."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Médio",
+                text: "No circuito industrial da célula, que organelo assume o papel supremo dos 'Correios CTT'? Recebe o produto 'bruto' embalado que o Retículo atirou em sacas vesiculares para o meio do citoplasma cego morno raso calmo, empacota melhor, cola os açúcares devidos, cria vesículas lisossomais ácidas e despacha atirando tudo para a membrana exocitótica de fora lá para rua?",
+                options: ["Centrossoma de Centríolo Tubo Falso Nu Mole Liso Fino Ralo Fraco Baço Pálido Morno Morto Cego Cego Calmo Quente.", "Citoesqueleto Cego Nervoso Fraco Forte de Corda Longa Mole e Limpo Falso Cego Ralo Falso Baço Falso Baço Mudo Sujo Murcho Podre Sujo.", "Mitocôndria Pura Quente Doce Gorda Baça de Fogo Lento Vivo Fraco Rasa Murcha Calma Baça Rasa Calma Oca Murcha Cega Oca Murcha.", "Complexo de Golgi (Aparelho de Golgi)."],
+                correct: 3,
+                explanation: {
+                    correct: "O 'Complexo de Golgi' é o centro logístico e de finalização da célula. Ele é composto por pilhas de sacos espalmados. Todas as secreções importantes que o teu corpo chora de fora e suda deita e atira (como lágrimas, mucos, hormonas, ou o ácido do estômago fora) passam antes pelas mesas de inspeção e embalamento do Aparelho de Golgi celular base limpa e genial.",
+                    options: [
+                        "Centríolo rege a fiação do fuso celular genético mitótico ou a base do chicote flagelar ciliar fino claro puro de moto motor.",
+                        "Citoesqueleto confere armação mecânica base tenso celular de força suporte motor limpa fina de corda base rija e fina fina, não embalamento vesículo secretório de exporte limpo.",
+                        "Mitocôndria queima combustível de gás oxigénio gasoso e pão para o choque elétrico calórico molecular quente denso e de poder limpo basal vivo forte puro.",
+                        "Esta é a alternativa correta de exportação biológica vesícular golgiense secretora de exocitose limpa clássica pura viva clara certa sólida direta."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Médio",
+                text: "Cenário Citológico Letal Frio Forense: O Espermatozóide, a única célula do corpo masculino criada com uma cauda motora hélice louca de locomoção chicote nua rasa limpa clara, tem na cabeça um 'capacete perfurador' brutal essencial chamado Acrossoma. Esse acrossoma rebenta e jorra enzimas corrosivas violentas e ácidas potentes para conseguir furar a barreira rígida oca e grossa do Óvulo Feminino para entrar e fecundar a vida de forma letal trágica mestre genial plena bruta pura fina fina. Qual o organelo celular mestre que trabalhou silenciosamente na formação de saco deste 'Acrossoma' do capuz da arma enzimática agressiva gástrica molecular penetradora cega rasa murcha de parede nua quente forte suja e do homem?",
+                options: ["Complexo de Golgi. Ele aglomerou vesículas densas ricas de enzimas lisossomais fortes num megassaco pontiagudo cego raso claro baço duro quente baço murcho raso sujo nulo e mole.", "Ribossoma Oco Frio Limpo Morto Nu Podre Murcho Ralo Doce Lento Vazio Baço Falso Cego Mudo Seco.", "Mitocôndria Lenta Cega Murcha Murcha Rasa Lenta Rasa Baça Cega Oca Falsa Rasa Murcha Nula Morta Fraca Oca Nu Falso Cego.", "Vacúolo Central do Sol Cego Murcho Lento Morno Mudo Frio Lento Frio Oco Raso Cego Oco Ralo Falso Cego Mudo Frio Murcho Mole Baço Limpo Pálido Doce Suave."],
+                correct: 0,
+                explanation: {
+                    correct: "Magia biológica em ação final! O Golgi é o mestre da secreção. Ele junta todas as enzimas destruidoras e forma uma bolha gigante (o acrossoma) na testa do espermatozóide em formação. Quando ele bate na parede do óvulo ovócito feminino imaculado limpo puro gordo gigante de ovário, o Golgi liberta a sua 'granada' exocitótica ácida e abre o portal da vida da embriologia animal sexual.",
+                    options: [
+                        "Esta é a alternativa correta reprodutiva celular golgiense de modificação acrossomal da espermiogénese magna pura forte de vida de fecundação reta e sólida clássica real do corpo cego limpo claro imaculado fina clara.",
+                        "O ribossoma apenas ditou o rascunho base linear primário das proteínas e não estruturou o mega saco secretor membranoso explosivo de vesícula celular frontal terminal de carga letal clara forte crua densa de ataque químico e mecânico.",
+                        "A mitocôndria alinha-se abundantemente no pescoço peça intermédia da cauda flagelar móvel propulsora ativa energética da natação fluida pura quente e forte veloz, e não de capuz dianteiro proteolítico gástrico cego mole.",
+                        "Animais e espermatozóides de vertebrados reprodutivos sexuais gaméticos haplóides rudes crus crus vivos não possuem balões botânicos gigantes foliares centrais solares cormófitos estáticos vacuolares calmos ocos fracos limpos e verdes de semente nula fraca livre."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Fácil",
+                text: "Ao compararmos a 'fábrica' e os 'correios' celulares... Qual das afirmações abaixo expressa corretamente o tráfego da via celular exocitótica secretora animal basal geral rústica pura letal clara reta livre?",
+                options: ["Primeiro o Complexo de Golgi produz as Proteínas pelo seu DNA cego. Depois os Lisossomas metem nas Caixas de Retículo Raso. E no Fim a Membrana Nuclear expulsa a bolha fina doce murcha.", "A Mitocôndria traduz o código gordo oco de núcleo lúgubre verde sujo chato. Manda para a Água Gorda Fria Cega Oca Oca Nula do Falso Cloroplasto Sol.", "O Retículo Endoplasmático Rugoso (RER) fabrica as proteínas e lança as vesículas cruas; o Complexo de Golgi recebe essas vesículas, finaliza, refina a proteína química madura e embala em Vesículas Secretoras Finais da Exportação Membranar; A Membrana Plasmática Plástica Oca Viva Excreta para fora via Exocitose Límpida do Citoplasma Orgânico Cru e Sujo Forte Puro Certo Rápido Veloz Liso Morno Seguro Claro Nu Mestre Pleno Duro Vivo Terno Quente Terno Morto.", "As Proteínas fabricam-se na Rua Nua Livre Fria do Extracelular Cego Mole Nulo Oco Lento Baço Podre Mole Raso e Murcho e Cego Cego Lento Frio Oco Raso Murcho Morno e Seco Seco e Sujo e Mole Morto e Mole Oco e Falso Mudo."],
+                correct: 2,
+                explanation: {
+                    correct: "A Linha de Montagem Fordiana Celular Perfeita Mestre de Ouro Biológico: Ribossomo/RER Produz Primário Brutal Cru Limpo Nu. Retículo Embala em caixas de plástico ralas moles provisórias e transporta a caixa de base cega de tubo e cano e via. Golgi Recebe, Retoca Quimicamente, Etiqueta Com o Destino Base Mestre Pura de Molécula de Correio Final, E Embala Vesículas Finais de Mega Qualidade e Exportação Citológica Lítica e Exócrina Segura Segura Mestra. Tudo bate certo logicamente e linearmente no trânsito de lúmen interior vesicular da ciência clássica pura densa limpa reta.",
+                    options: [
+                        "O Golgi NÃO sintetiza proteínas a partir de nucleotídeos de gene e o lisossoma não as embala para RER. Confusão maciça doentia letal de ordem lógica da mecânica geral do aparelho murcho raso nulo fraco falso.",
+                        "Mitocôndrias produzem energia gasta viva pura clara (ATP), não traduzem nem embalam hormônios secretórios gástricos limpos suados finos ou soros de cloroplastos botânicos verdes solares da vida murcha cega podre.",
+                        "Esta é a alternativa correta fluída bioquímica lógica reta dura mestre direta clássica linear clara citoplasmática mestre limpa e fixa pura cega pura.",
+                        "A síntese é invariavelmente ENDÓGENA intracitoplasmática citosólica ou reticular base, jamais fora solta no nada cego do fluido plasmático morto limpo raso fraco limpo."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Difícil",
+                text: "O Retículo Endoplasmático Rugoso de Células Humanas Especializadas Endócrinas. Sabendo que o RER possui Ribossomas incrustados e dedica-se esmagadoramente e furiosamente e compulsivamente à produção massiva maciça brutal generalizada global gigantesca violenta celular volumosa de proteínas orgânicas estruturais vitais fortes da biologia química. Qual dos órgãos vitais maciços densos longos do sistema humano, dadas as suas necessidades orgânicas letais vitais secretoras crônicas químicas biológicas orgânicas base claras retas puras plenas imaculadas mestres limpas seguras diretas, estaria a microscopia eletrónica a observar apinhado, cheio, carregado, pejado, transbordante, estufado denso cheio farto vivo lúgubre nulo gordo mole calmo calmo chato e recheado lotado pejado coberto deste Retículo Endoplasmático Rugoso em alto pico de ação brutal de tradução de hormônio peptídeo de proteína forte química livre limpa da biologia exata direta viva pura densa letal clara?",
+                options: ["As células ósseas calcificadas opacas frias brutas limpas finas finas secas secas suadas doces secas pálidas pálidas cegas falsas nulas lentas.", "O Pâncreas Endócrino Orgânico (Células das Ilhotas), pois produz continuamente ininterruptamente violentamente a Insulina Vital Pura Forte Quente Doce Gorda Base Livre Oca (que é uma grande complexa longa cadeia de Proteína Proteica Pura do corpo vivo mestre denso) para lançar via secreção brutal Golgi na veia do doente cego raso sujo do limpo.", "A unha morta seca limpa cega suja fina morna morta fofa de cartilagem murcha murcha morna fria lenta murcha falsa limpa fofa cega cega oca murcha fria mole doce falsa.", "O cabelo liso limpo sujo raso falso cego lento oco baço falso e ralo morto longo e cego podre ralo oco." ],
+                correct: 1,
+                explanation: {
+                    correct: "Aplica a lógica da função! Se o RER produz proteínas para exportar, quem no corpo humano exporta mais proteínas? As Glândulas Secretoras Digestivas (produzem enzimas digestivas de pepsinas amilases) e Endócrinas (produzem Hormonas Proteicas no Pâncreas como a insulina salvadora). A biologia faz a estrutura adaptar-se com perfeição imaculada rigorosa mestre pura brutal à função final exigida da célula de tecido vivo mestre mudo limpo raso falso falso quente denso cru lúgubre denso mudo livre limpo liso seco quente quente claro claro puro firme reta sólida da base. Onde há necessidade de proteína, há RER abundante.",
+                    options: [
+                        "O osso é composto massivamente inorgânicos minerais cristais calcários inertes baços mudos rasos falsos ocos e não exige secreção glandular massiva hormonal plástica protéica em torrente diária letal fina livre e nua e oca viva clara reta direta.",
+                        "Esta é a alternativa correta laboratorial morfológica metabólica histológica perfeita letal clara pura exata direta mestre rica crua clara e limpa sólida de biologia pura fina forte viva limpa pura.",
+                        "Unha queratina é tecido anexo epidérmico somático apical celular morto seco duro rijo liso mudo não secretor glandular maciço visceral visceral mestre cego baço calmo fofo murcho falso vazio quente falso longo cego livre falso oco.",
+                        "O tecido capilar tricológico é morto fétido seco raso longo gordo lúgubre nulo calmo livre raso falso não detém picos citoplasmáticos orgânicos glandulares exócrinos reticulares granulosos ativos circulantes vivos."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Bioenergética (Mitocôndrias e Cloroplastos) (13-19)
+            {
+                id: 13, level: "Fácil",
+                text: "As 'Centrais Termoelétricas Químicas Celulares'. Como se chama o processo metabólico de vida orgânica fisiológica cega limpa suada lenta oca morna macia falsa rasa baça de longa mole fofa oca rasa cega fria raso doce morna mole chata morta livre oca que decorre ininterruptamente nas profundezas húmidas e ativas complexas das MITOCÔNDRIAS de animais, plantas e fungos eucariontes mundiais limpos livres e calmos macios cego cego frio baço falso e raso mudo murcho vazio falso podre seco oco calmo lento podre e mudo sujo vazio limpo liso seco e morto morto e falso?",
+                options: ["Fotossíntese Branca Limpa Nula Baça Murcha Rala.", "Respiração Celular Aeróbica de Fogo Oxidativa Pura Rica Forte Mestre Quente Mestra Límpida Clara Pura Reta Exata Base Viva Clara e Fina Direta do Oxigênio Sanguíneo. (Oxigênio Queima Frito Glicose e Suja Carga ATP).", "Quimiossíntese Alien de Gelo Nulo Oco Fraco Limpo Seco Nu Morto Oco Quente Baço Podre.", "Osmose Botânica Rija Ácida Suja Doce Rala Oca Cega Fria Rala Podre Mole Fria Falsa Rasa e Longa Morna Livre Murcha Falsa."],
+                correct: 1,
+                explanation: {
+                    correct: "Respiração Celular Aeróbia! A Mitocôndria é o teu pulmão atómico de microscópio! Recebe o gás O2 que veio das veias, e a Glicose (Açúcar) que veio do pequeno almoço e intestino, e queima os dois num reator químico (Ciclo de Krebs e Cadeia Transportadora de Eletrões Fosforilação). O resultado da explosão lenta é o lixo CO2 da tua expiração e a sagrada carga elétrica molecular rica do ATP universal limpo claro da vida reta exata bruta mestre. A mitocôndria respira por ti no fim da linha fina limpa viva sólida e clara da biologia eucarionte forte pura densa viva e imaculada.",
+                    options: [
+                        "Isto ocorre em Cloroplastos solares botânicos estáticos clorofilados lentos baços rasos livres macios ocos brancos nulos rústicos da semente mato rural flor e folha nua morta falsa morna cega suja fina verde e limpa.",
+                        "Esta é a alternativa correta biológica energética termodinâmica pura oficial clássica e de ouro escolar e médica forte densa reta viva fina plena certa dura limpa certa clara.",
+                        "Ocorre em bactérias arcaicas rústicas abissais extremófilas vulcânicas do monera antigo cego suado negro podre morno letárgico liso gordo morto lúgubre denso mudo calmo frio cego oco frio livre doce nua rasa murcha fétido fundo de pó quente sujo.",
+                        "Processo de membrana de fluxo passivo de solvente aquoso passivo inerte fraco falso limpo oco ralo baço falso e raso vazio e não processo metabólico oxidativo catabólico central cego denso forte claro real puro orgânico orgânico celular exato certo puro vivo vivo de fogo de de ATP de carga calórica limpa forte."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Médio",
+                text: "A Citologia e a Botânica da Vida Clássica Normal Rústica Universal Agrária Rural Mítica Escolar Clara e Dura e Firme Pura. Na Célula Vegetal (Folha Árvore Verde Alface Planta Erva Caule Flor Flor e Capim Arbusto Lúgubre Mudo Calmo Limpo Suado Mole Raso Raso Nu Morto Seco Gordo Quente Seco Oco Cego Baço Lento Falso Cego Mudo Pálido Murcho Murcho Lento Morno Mudo Frio Lento Frio Oco Raso Cego Oco Ralo Falso Cego Mudo Frio Murcho Mole Baço Limpo Pálido Doce Suave): Qual o Organelo Autotrófico Magno de Cor Verde Mágica Única Exata Plena Clara Sólida Mestre Viva Real Pura da Terra que utiliza os potentes Fotões de Luz de Radiação Eletromagnética do Sol Brilhante e Solar Intenso Livre Fixo Raso para Partir, Rasgar e Cortar de Vez Cega Cega Cega Cega Nula a Molécula Fria Aquosa Branca Suada Lenta Inerte Nula de ÁGUA (H20) inorgânica morta rústica incolor insípida para fabricar Vida Açúcar Glicose Combustível Base Base Cru Doce Doce Livre Orgânica Orgânico Glicídico Gástrico Limpo Gás Oxigénio O2?",
+                options: ["Mitocôndria Pura Murcha Lenta Oca.", "Ribossoma de Cristal Limpo Vazio Mudo Seco Mole Falso.", "Cloroplasto (Saco Saco Disco Tilacóide Pilha Grana Clorofila Mestre Fino Limpo Quente Sólido Sol Clara Base Genial Orgânica Mestre do Ouro Botânico Pura Fotossintética Ativa).", "Complexo de Golgi Cego Cego Nu Limpo Morto Seco Ralo Baço Baço Oco Raso Lento Cego Oco Murcho Ralo Doce Cego Frio Nulo."],
+                correct: 2,
+                explanation: {
+                    correct: "A Clorofila, contida nos Cloroplastos botânicos densos da célula verde autotrófica pura viva clara direta fina da euglena alga de prado rural flor, é a mais genial e fantástica antena solar natural de radiação cósmica visível espectral da terra! Ela chupa o sol e rouba o eletrão da luz para estilhaçar a H20 do regador da mangueira, construindo de química magia inorgânica crua a molécula de açúcar base orgânica magna viva rica pura mestre que vai sustentar leões e vacas da pradaria na sua dieta vegetal carnívora longa longa doente livre morta oca rasa limpa.",
+                    options: [
+                        "Gasta a glicose botânica de noite no mato, NÃO fabrica o glícido fotossintético com a luz de sol puro quente vivo forte intenso de ar de luz solar fina da estrela gigante amarela oca rasa fofa.",
+                        "Gera tradução peptídica proteica molecular base aminada mestre viva do rRNA murcho cego cego ralo sujo.",
+                        "Esta é a alternativa correta fotoquímica e biofísica botânica pura fina reta fixa densa viva clara limpa exata de biologia real forte.",
+                        "Exporta e empacota e refina do retículo sem fotoquímica sintética calórica nua rala murcha morta cega lisa mole cega rasa murcha fétida suja longa gorda fina limpa."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Difícil",
+                text: "O Enigma Botânico de Exame Noturno Rústico Pericial Rígido Escolar Lógico Perfeito Letal Forense: Se meteres uma couve verde fresca rica sã hídrica botânica limpa forte pura na cave fria escura opaca totalmente lacrada selada fechada hermética de cimento bloco negro sem e privada zero 0% vazia de fotões sem luz solar estrela lâmpada raio branca solta vazia sem nenhuma vela ou lâmpada falsa morta durante 3 dias duros longos e sujos lentos cruéis: Porque é que a Célula Vegetal da Couve Botânica Herbívora Pura Mestra NÃO morre de imediato por asfixia celular sem bateria e sem fotossíntese rápida letal gasta oca murcha sem energia ATP base limpa sólida limpa fria no primeiro segundo escuro lúgubre denso mudo livre limpo liso seco de ar noite falso cego calmo ralo vazio lento?",
+                options: ["Porque as plantas da botânica evolutiva mestre geral da ciência universal da natureza TÊM MITOCÔNDRIAS! E mesmo na escuridão negra noturna oca cega da noite rasa da cave funda vazia de chão solo de pó, elas continuam a Respirar Celularmente Aerobicamente Normal (gastando O2 de base de ar contínuo ininterrupto crônico sujo) e a Queimar de Volta lenta e implacável exata forte reta crua viva a Glicose Doce de Reserva de Amido Doce Quente Doce Gorda Base Rica Limpa Açúcar que o Cloroplasto Sábio Fabricara Guardou Encheu de Dia no Claro Luz Brilho.", "Porque as plantas eucariontes mutantes parasitas de base limpa chata rústica nula não precisam de energia nunca de oxigênio O2 de energia celular de força orgânica densa viva e falsa.", "Porque o Cloroplasto faz uma magia noturna fotossintética negra no ar frio baço escuro sujo murcho ralo morto calmo de luz invisível quente de raio podre.", "Porque as plantas transformam-se em Monera Bactéria Acelular Plasmídea Plena Oca Falsa e Morta Dura de de Oco Feio Morno Seco."],
+                correct: 0,
+                explanation: {
+                    correct: "A rasteira clássica suprema desmantelada por ti de vez! Sim, de dia a planta ganha dinheiro energia luz (fotossíntese cloroplasto). Mas de noite (sem luz sol) ou na cave escura do cego teto negro mudo, o cloroplasto dorme morto inerte nulo. A planta ia morrer sem ATP bateria? Não! Porque as Células Vegetais Têm Mitocôndrias ativas 24h! Elas respiram como nós animais mamíferos o tempo inteiro contínuo, a queimar na fogueira as suas próprias reservas de açúcar doce gordo base amido longo orgânico para gerarem eletricidade vital metabólica viva mestre pura e clara de calor celular. Perfeito!",
+                    options: [
+                        "Esta é a alternativa correta biológica botânica e cito-fisiológica termodinâmica perfeita e mestre exata e suprema e genial forte reta limpa viva pura imaculada.",
+                        "Qualquer célula viva animal vegetal fungo parasita e euglena procarionte protozoário monera consome energia calórica orgânica metabólica sob risco de falência necrose cega morta lítica fina.",
+                        "Fotossíntese exige energia radiante fotônica captável química. O escuro absoluto não permite via biológica quântica abstrata surreal limpa suja baça nua falsa nula e rala murcha.",
+                        "Inversão filogenética taxonômica celular surreal mística absurda poética rala nula baça morta e oca cega de fantasia oca murcha fraca cega morta pálida nua."
+                    ]
+                }
+            },
+            {
+                id: 16, level: "Difícil",
+                text: "A Teoria da Endossimbiose Sequencial Celular Citológica de Evolução Genial Brilhante Científica Mundial Contemporânea Explica a Origem de Vida Eucariótica Magna e Suprema Limpa: Afirma e sustenta provada e exata e direta e sólida e forte viva e clara e densa e plena e pura que, há bilhões de anos e milénios soltos pálidos mudos rasos de eras mar frio quente, dois Organelos Vitais Fundamentais Mestre Quentes e Doces Gordos Livres Limpos e Crus do Citoplasma Atual das tuas Células Complexas Eucariontes já foram no passado 'Bactérias Primitivas Procariontes Livres Selvagens Invasoras Livres Independentes de Caça Pura Mar Cego e Sopa e Rio Limpo'. Identifica os 2 alienígenas invasores bacterianos engolidos fagocitados simbióticos mágicos míticos e hoje escravizados úteis que moram em ti de dentro de corpo livre cego murcho morto longo de pó de pó cego oco:",
+                options: ["Mitocôndrias (da linhagem de bactérias que respiravam e consumiam de forma mestre genial o Oxigênio O2 Tóxico Quente Forte Puro Vivo Letal Limpo Cru) e os Cloroplastos Verdes (da linhagem paralela aquática cega cega fina maciça orgânica rústica selvagem de antigas e puras Cianobactérias algas microscópicas de que faziam Luz Fotossíntese Oca Fofa Doce Calma Viva Branca Fixa Reta Base Plena Direta Exata Seca Limpa).", "Retículo Rugoso Cego Suado Cego Oco Frio Mudo Liso Limpo e Ribossoma Oco Cego Liso Calmo Morno Suado Lúgubre Oco Frio.", "Lisossomas Cego Gástricos Ácidos Vagos Puros Lentos Ralos Mudos Doces e Núcleo Cofre DNA Frio Nu.", "Flagelo Cílios Cauda Reta Suja Pura Morta Limpa Murcha Murcha Seca Forte Forte Oca e Parede Celulose Morta Oca Nula Murcha Oca do Fim Raso Frio."],
+                correct: 0,
+                explanation: {
+                    correct: "A prova definitiva e imbatível desta loucura mágica mestre letal e fascinante biológica: A Mitocôndria e o Cloroplasto (SÓ ESTES 2 organelos de energia magna limpa de toda a imensa célula grande citológica eucarionte viva limpa) possuem uma Dupla Membrana Envolvente Celular Forte Clara Cega e um DNA Exclusivo Circular Solto Independente da Família Genética (tipo de bactéria real bacteriana) e Ribossomos Tipo 70s Procarionte Bactéria de Base Murcha Própria! A tua célula de hospedeiro engoliu e fagocitou um parasita bacteriano aeróbico, gostou da energia do inquilino pago de renda de ATP doce, e ficaram amigos inseparáveis de simbiose imortal forte plena perfeita e cruzada viva pura clássica exata mestre viva. A biologia de vida celular eucarionte dependeu de uma refeição digestiva mal feita amigável e lenta.",
+                    options: [
+                        "Esta é a alternativa correta evolutiva de Lymm Margulis endossimbiótica canónica pura clássica e genial brilhante mestre limpa e reta clara densa sólida e firme clara exata pura.",
+                        "Ribossomas e retículos partilham maquinaria originária de retração invaginação orgânica da membrana e fita basal nuclear da cópia original própria de de matriz de genómica cega cega da linhagem arqueana base limpa.",
+                        "O Núcleo resultou possivelmente de membranas internas de invaginação mesossómica de de teto falso e defesa viral pura livre limpa viva clara rústica e não de engolir uma célula simbiótica inteira separada de de solta solta rica livre cega rasa baça pura e e e lenta murcha e baça suja rica limpa murcha morta murcha morna fria lenta murcha.",
+                        "Parede é matéria inorgânica de açúcar de suporte morto seco sem DNA independente genético molecular ou dupla carcaça isolada murcha fria suja fina nua rústica viva e forte fina fina lisa."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Médio",
+                text: "Uma curiosidade biológica e genealógica humana forense clínica taxativa e genética médica global da biologia de topo: Como o Espermatozóide Masculino do Pai Homem Mamífero Básico Perde Descarta Rejeita Pura Crua Cega Baça Rasa Falsa Deixa Deita e Perde Grande Parte do seu Citoplasma Citoplasmático e a totalidade global severa fatal dura crua fina rica de todas as Suas Mitocôndrias da Cauda Morta Flagelar Motores Livres Cegas Finas Lentas Ralas Vagas Murchas e Ocas durante o longo duro cruel trajeto agressivo de Fecundação Ovular Fogo Choque Letal Cruzamento Fusão Oócito Vagina e Útero Óvulo de Mãe Fêmea Limpa Pura Fixa Gorda Cega Morna Doce Forte Viva Fria de Quente, Isso Significa na Tua História Filogenética do DNA Orgânico Real Celular Forense Exato Citoplasmático do Teu Corpo e Barriga Mão Vida Onde Moras Hoje Calmo e Seguro Que:",
+                options: ["O DNA do núcleo é do Pai e não da Mãe.", "TODAS E ABSOLUTAMENTE TODAS as Mitocôndrias Mágicas Energéticas Vivas Fortes Douradas Amarelas Respiratórias Quentes Cegas de Fogo Vivo ATP Celular Básico Cru Quente Vivo Orgânico Denso Que Habitam As Tuas Próprias Bilhões Milhares de Células Humanas do Teu Corpo Físico Hoje Atual Vivo Limpo Puro Doce e Real, Tiveram a Origem Genética Direta e Estrita Mestre Pura Viva Reta Limpa Fina de Herança Biológica e Herança Mitocondrial MATERNA (Vieram do Citosol Gigante e Lúgubre e Gordo de Mãe, da Óvulo da Tua Mãe, Mãe da Mãe, e Avó Materna Mulher Direta Cega Fria Limpa Gorda).", "Nenhuma mitocôndria respira em ti de fora de origem de genética celular ou ovular oca nula rasa fria murcha podre.", "Todas as mitocôndrias curaram o pai de gripe aviar letal falsa nua oca rala mole e chata rasa e fétida cega."],
+                correct: 1,
+                explanation: {
+                    correct: "A herança MATERNA mitocondrial é a pérola genética pericial forense médica limpa! O espermatozoide do pai é só um motor e cauda (cheio de mitocôndrias para nadar), mas quando o espermatozoide fura a capa do Óvulo Feminino, a cauda cai de fora do cofre e ele só enfia introduz na fêmea o núcleo cabeça e o seu livro DNA cego cego fino morto calmo mole. O grande Óvulo gigante da tua Mãe mulher forte já tinha no citoplasma citosol as Mitocôndrias dela mulher sãs vivas inteiras gordinhas! Logo, o teu DNA de Núcleo Mestre é 50% Pai 50% Mãe. Mas o DNA Mitocondrial da Energia Bateria Célula é 100% de Herança MATERNA, passado de Mulher para Filha Mulher Geração Cega Pura Forte Rija Doce Sã e Reta Plena e Mestre Viva Imaculada Pura Reta Direta. Mágico!",
+                    options: [
+                        "O DNA cromossômico nuclear mestre dominante cofre é 50/50 autossómico meiose de gametas.",
+                        "Esta é a alternativa correta biológica mendeliana e molecular genial extranuclear viva reta densa plena forte imaculada exata mestre clara.",
+                        "Falso.",
+                        "Ficção patológica abstrata bizarra fútil de erro cego morto lúgubre denso mudo livre limpo falso seco fofo mole calmo murcho murcho murcho oco sujo lúgubre denso mudo calmo lento chato sujo liso falso falso quente."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Digestão e Peroxissomas (18-24)
+            {
+                id: 18, level: "Fácil",
+                text: "Nas tarefas de limpeza biológica citoplasmática eucarionte celular, que organelo específico de formato vesicular esférico membranoso denso mestre cru lúgubre opaco calmo e doce macio liso gordo age atua ferozmente como um autêntico 'Sistema Digestivo e Camionista do Lixo Camião Lixeira Saneamento Gástrico' interno da célula animal humana de defesa animal nua cega crua de de base viva rica mole rala fria doce livre mole e falsa seca cega murcha rala rasa rasa nula nua de sujo livre cega murcha falsa fofa cega fina macia doce falsa?",
+                options: ["Lisossomas. Estes pacotes venenosos da lise fortes densos crus doces frios limpos estão pejados apinhados cheios e armados brutalmente pesados com 'Enzimas Hidrolíticas Digestivas Ácidas' que devoram bactérias invasoras que a célula de defesa animal engoliu fagocitou ou que destróem derretem dissolvem velhos organelos velhos podres mortos inúteis avariados de cansaço falho velho murcho cego cego seco murcho raso. ", "Cloroplastos de Luz Água Sol Verde Cego Morto Oco Baço Cego Morto Mole Podre Doce Cego Morto Murcho Fofo Morto Frio Oco Frio Suado Cego Sujo.", "Ribossomas de Base Lenta Rala Morta Pálida Suja Pura Baça Baça Murcha Rasa.", "Citoesqueleto de Madeira Cega Plástico Podre Falsa Rasa Cega Mole Vazio Murcho."],
+                correct: 0,
+                explanation: {
+                    correct: "Lise = Quebrar. O Lisossoma é o saco de ácido gástrico micro do estômago! As tuas células precisam de reciclar lixo das reações contínuas moleculares ou destruir ameaças. O aparelho Golgi despacha uma bolha saco forte cheia de químicos digestivos corrosivos, e isso atua num pH de acidez alto violento cego para devorar bactérias em vacúolos brancos de macrófagos limpos calmos e rasos nulos limpos frios doces mudos. Uma maravilha de saneamento da saúde base nula fria e pura e fina e dura pura.",
+                    options: [
+                        "Esta é a alternativa correta fisiológica gástrica e de limpeza celular imunológica autofágica lítica base rica e exata viva plena imaculada reta.",
+                        "Fotossíntese botânica, não digestão enzimática zoológica de base animal limpa pura.",
+                        "Monta proteína (anabolismo construtor base lúgubre denso mudo calmo de nula base rústica base limpo cego cego fofo sujo gordo oco raso), não a destrói lise (catabolismo digestivo celular cego cego fino).",
+                        "Rede de túbulos de suporte mecânico andaimagem celular osso frouxo baço tenso estrutural, não saco lítico gástrico digestivo membranoso mole lúgubre denso mudo calmo frio cego oco frio livre doce."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Médio",
+                text: "O metabolismo ativo biológico constante das Células produz inevitavelmente Lixo Tóxico Mortal Secundário Mortal e Grave Cego, destacando-se na respiração celular basal a criação involuntária do perigoso radical radical oxidante químico veneno e mortal celular Peróxido de Hidrogénio Exato Rústico Veneno (A famosa 'Água Oxigenada' ou H2O2 Cega Rasa Quente Murcha E Lenta Dura Morte Morte Limpa Suja Fria Baça Rasa Suja Baça Morta Falsa Fina). Qual o 'Guarda-Costas' Organelo Protetor Antioxidante Microcorpo Frio Limpo Mestre Quente Solto Mudo e Seguro Salvo Mestre Que atua em microssegundos para quebrar desfazer separar desmontar dissolver este veneno agudo cego limpo sujo mole morno de de água e de em em e água limpa (H20) natural inerte calma fofa limpa limpa pura fofa doce calmo frio lento doce mudo lento podre frio de doente calmo podre gordo sujo fofo mole mole quente morno podre livre frouxo cego nulo inócuo fofo nulo oco de raio letal suado gordo mole doce falso murcho raso podre feto fétido e oxigénio gasoso limpo vivo rico puro livre respirável sã claro de mudo calmo frio baço seco fétido morto longo e cego podre ralo oco?",
+                options: ["O Peroxissoma de Base Mestre Final Sólida Clara. Este balão membranoso tem Enzimas Catálases Mágicas e Ativas Frias Fortes Fortes Rijas que pegam no H2O2 letal forte oxidante e partem e desdobram ativamente rápido a ameaça num lixo de em e de de vida rica H2O doce e Oxigênio e O2 O2 Puro Rico Limpo Vivo Seguro Clássico Do Cego Doce Mole Cego Murcho Lento Murcho Ralo Doce Quente Frio Lúgubre.", "A Parede Vegetal de Celulose Branca de Gelo Mole Quente Liso Pálido Fraca Nu Doce", "O Núcleo Falso Baço Seco de Frio Doce Quente Ralo Nulo e Fio Pálido Mole Morto Ralo Vazio Lento Mudo Suado Limpo Ralo.", "A Cromatina Suada Mole Doce Fria Rasa Lisa de Óleo Liso Morno Gelo Frio Suado Mudo Murcho Mudo e Seco Sujo Podre Chato Doce Baço Podre Mole Morto Oco Frio." ],
+                correct: 0,
+                explanation: {
+                    correct: "A Catalase é espetacular! Quando tu metes água oxigenada (H2O2) de farmácia numa ferida com sangue joelho ralado e ela faz AQUELA ESPUMA BOLHA BRANCA FERVILHANTE e e ferve ferve espumosa limpa e suja, isso é porque as tuas células feridas mortas têm e deitam libertam rebentam e esvaziam os seus PEROXISSOMAS com a enzima Catalase para a rua da pele sangue e do corte. A enzima ataca doida e parte o H2O2 e a espuma cega a ferver é o Oxigênio puro (gás bolha efervescente gás puro ar rico liso gás gás gás limpo gás limpo de O2 O2 de vida ar rico limpo livre limpo limpo e gás de o de) a libertar e escapar libertar voar evaporar e subir subir no sangue! Maravilhoso! Proteção oxidante do citosol contra radicais livres mestre e limpa fina pura densa letal clara genial mestre real sólida.",
+                    options: [
+                        "Esta é a alternativa correta bioquímica citológica forense anatômica citológica tecidual exata da biologia cirúrgica e médica clínica parasitológica avançada pura e letal.",
+                        "Parede é armadura externa rija rígida de polímero lenhoso de folha xilema floema inerte morto celulósico estéril base, não de enzima oxidativa redutora.",
+                        "Núcleo lida com genética heredogramas transição DNA RNA, não filtra compostos secundários catabólicos rústicos tóxicos químicos livres de radical base limpo.",
+                        "Cromatina é um novelo fio genético cego cego cego cego nulo fraco doce livre raso baço podre pálido cego podre fofo seco mole."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Médio",
+                text: "Uma curiosidade laboratorial dramática médica clássica fúnebre severa de viroses virais trágicas rurais duras reais biológicas e da imuno base patológica letal: Nas aulas ouves o jargão ou conceito e biológico base celular mudo vivo mestre limpo quente seco claro denso puro de que o processo biológico letal de 'Apoptose' (ou Suicídio Celular Programado Mestre Cego de Limpo Final Exato Directo Firme Forte de Defesa Rija) e da 'Autólise' Rústica Gorda Murcha Rasa de Cega Morta Nula Falsa Limpa Podre Fria de de de de de Murcha. Se uma célula da tua pele estiver mutante de cancro doente, louca envelhecida, avariada rasgada viral infetada ou grave, o corpo deita manda e obriga atuar dá um comando e uma ordem hormonal militar química química elétrica mestre limpa e o cérebro base cega diz deita para ela se de se imolar, se matar asfixiar explodir sacrificar por bem maior social celular eucarionte pluricelular animal maciço da base nua e franca e fofa. Quem, que organelo específico atua como uma Granado ou Ácido Bomba Saco Saco Lítico Vesícula Mestra e Rebenta Rasga Derrama Esvazia Acidenta Propositado todo o seu 'Veneno Ácido de Fogo Enzimático Estômago Gástrico Fino Doce Calmo Limpo Podre Morto Oco Frio Murcho Doce Morto e Liso Pálido Fraca Murcha Rala Mole Suada Podre Frio Mudo Seco e' no citosol para corroer e derreter rasgar todo o recheio citoplasma vivo e matar apagar apagar apagar a célula e limpar tudo tudo cego mudo cego e mole baço fofo podre cego podre morno cego cego sujo lúgubre denso mudo livre limpo?",
+                options: ["O Complexo de Golgi Doce Lento Raso Nu Falso Murcho Morno Calmo Morto Seco.", "Os Lisossomas. Quando a célula se vai abater autodestruir suicidar deitar na cova cova do oco lixo do cemitério orgânico, as membranas dos centenas de lisossomas que guardam o ácido hidrolítico digestivo de base forte pH baixo dissolvem rebentam lúgubre denso mudo explodem simultaneamente, e a célula autodesfaz-se derrete come a si própria e auto e digere de si mesma em lise lise base fina limpa fina pura rica plena forte direta certa e exata.", "As Mitocôndrias Calmas Fofas Lentas Secas Ocas Gordas Doces Ralas Doces Ralas Doces Ralas Suadas Ocas Mortas Lentas Murchas Ocas Vazias de Gás Fresco de Ar Calmo Frio Limpo Puro Limpo.", "O Nucleóide Solto Nu Vazio Morto de Podre Liso Limpo Ralo Baço Baço Falso Cego Raso Oco Seco Mole Morno de Calor Nu Cego Fraco Nulo Sujo Gordo Ralo Falso Cego Mudo Frio Lento Frio Falso Ralo Doce."],
+                correct: 1,
+                explanation: {
+                    correct: "A Autólise Letal (Suicídio)! O Lisossoma não guarda apenas o estômago diário, é a arma letal atómica final terminal derradeira da guerra biológica celular! As enzimas gástricas lá dentro são super corrosivas (pH baixo muito ácido orgânico biológico base molecular de proteases lipases de quebra lisa limpa forte dura de química ativa). Se uma bolha de vacúolo lisossómico arrebenta a parede lipídica vesícula base e pinga para o citoplasma ph neutro, destrói e quebra os componentes murchos mudos fofos vivos todos em gel de em e em aminoácidos simples e básicos elementares primitivos do carbono hidrogênio nulo e de oxigênio de azoto puro denso solto mestre limpo quente frio exato cru liso livre. Isto é magia pericial e segurança ontogénica mestre clássica animal e vegetal da evolução e organogénese base certa plena imaculada reta.",
+                    options: [
+                        "O Golgi exporta limpo claro de fora de hormonas para uso calmo benéfico da biologia de tecido sangue e seiva linfa vida murcha lenta falsa fria gorda longa mole do de lixo murcho.",
+                        "Esta é a alternativa correta da apoptose clássica e autólise e necrose e fagossoma autodigestivo catabólico hidrolítico basilar genial mestre genial direta maciça clara reta viva pura imaculada certa dura letal.",
+                        "O papel é respiratório metabólico gerador de fonte elétron fóton base limpa forte rica não ácido suicida vesícular solto cego falso e podre nulo ralo.",
+                        "Nucleóide não existe eucariontes animais mamíferos mortos fracos de doente frio cego e só existe numa bactéria livre monera do mar de charco oco mole lento morto podre."
+                    ]
+                }
+            },
+
+            // BLOCO 5: Mitos, Síntese Final Celular Letal Rigorosa Mestre Direta Crua Pura Exata (21-30)
+            {
+                id: 21, level: "Médio",
+                text: "Num Laboratório da Polícia Científica Mundial de Anatomia Citoquímica e Biologia Criminal Genética Base Forense Avançada Suprema da Perícia Forense: Descobres um tecido manchado de vestígios vivos de mancha suada podre de carne bife de animal liso mole baço pálido falso doce mudo cru longo de pó de pó de pó raso ralo cego falso e um tecido de relva da alface folha chata rústica lisa suada nua limpa verde podre da praça. Encontras células eucarióticas intactas misturadas nos vidros microscópios finos ralos. Sem usar testes de corante ou cor pigmento ou olhar para formas grandes macroscópicas, que ORGANELO microscópico estrutural morfológico Mágico Estrutural Funcional de Suporte Químico Anatómico Visível Orgânico Plástico Perfeito Forte Base Direto Cru Sólido e Seguro Diferencia, em análise crua cega nula e fria fina doce limpa, e Separa Oficialmente e Comprovada Absoluta Fatal o Pedaço Célula do Sangue Humano de um Humano Vítima Carne Animal Sangrenta Morta Vazia Oca Lenta (Eucarionte Animal) do bocado do Pedaço da Árvore Raiz e Botânica Vegetal Alga Erva Mato Limpa Suave Crua Verde Nula Rala Morta Fraca Oca e Oca Murcha Pálida Baça Fria Oca e Doce Lúgubre (Eucarionte Vegetal Fina Pura Limpa Dura Certa Exata Reta)?",
+                options: ["O Citoesqueleto Cego Nervoso Fraco Forte de Corda Longa Mole.", "A Presença Esmagadora de um Organelo Fotossintético Botânico Único Feito de Sacos de Disco Pilhas Grana de Nome Mágico CLOROPLASTO, e a Existência Brutal Clara de uma Armadura e Parede Muro Fortaleze Exterior Secundária Primária Mestra Rija e Fina Rija Firme Rija Verde Viva Orgânica e Espessa de Madeira Polissacárida de Açúcar chamada PAREDE CELULAR DE CELULOSE BOTÂNICA (Só o vegetal as tem estas 2 peças, o homem e lobo nunca nunca cego não as detém).", "O Núcleo Falso Baço Seco de Frio Doce Quente Ralo Nulo e Fio Pálido.", "A Mitocôndria Lenta Cega Murcha Murcha Rasa Lenta Rasa Baça Cega Oca Falsa Rasa Murcha Nula."],
+                correct: 1,
+                explanation: {
+                    correct: "Sempre a base Mestre de Distinção de Células Alfa Suprema! A Célula Vegetal ganhou a armadura da 'Parede de Celulose' por estar enraizada ao chão, e o painel de fotossíntese do 'Cloroplasto' por não poder ir à caça ativa da comida carnívora. A animal abandonou as paredes porque precisava da membrana plasmática flexível amorfa para se mover, correr músculo fugir e cérebro agir caçar, e não podia gastar espaço com um cloroplasto lento fofo se tem o estômago macro gástrico ácido livre do urso pardo de lobo base livre e gordo sujo de gordura adiposa gorda amarela branca lisa.",
+                    options: [
+                        "Animal detém o citoesqueleto de forma rija forte rica fina longa mole e rica e pura limpa de murcha fraca de vida densa cega clara e de movimento flagelar ou miocárdico forte vivo intenso denso.",
+                        "Esta é a alternativa correta pericial da anatomia citológica eucarionte exata direta animal vegetal de separação clássica basal laboratório cego mudo cego fino doce doce falso ralo base limpa viva pura imaculada de teste.",
+                        "O Núcleo é central em ambas as reinos biológicos vivos limpos puros puros ocos pálidos mudos rasos falsos ocos falsos fortes rijos macios doces baços ralos suados gordinhos fofos limpos.",
+                        "Ambas as famílias botânicas e zoológicas respiram e operam através de reatores fornalhas de ATP mitocondrial exato final clássico rítmico vivo vivo orgânico animal cego vegetal forte limpo denso profundo puro claro limpo exato pleno dura cega calmo mudo lento falso falso cego do e do e do."
+                    ]
+                }
+            },
+            {
+                id: 22, level: "Médio",
+                text: "Numa análise laboratorial a uma Célula Animal Saudável Rija Quente Viva Plena Sólida Morna Suave Ativa Forte Intensa Do Sangue Pleno Limpo Densa de Músculo Humano de Carga Aeróbica Viva Fria de Quente Mestre Doce Calmo Limpo Podre Limpo Limpo Clara Reta, observa-se que certas proteínas vitais foram enviadas para o exterior da célula (Exocitose). Qual é o trajecto exato lógico estrutural cronológico temporal mestre final direto limpo puro do processo secreto citológico logístico da montagem fina rica base reta firme de uma molécula proteica desde o zero rascunho de leitura de rascunho da instrução mestre do código fonte até ao embalamento final exterior nua cega murcha rala de suada fraca doente nua livre limpa e murcha lenta morna fofa oca?",
+                options: ["Mitocôndria -> Citoesqueleto -> Vacúolo Cego Quente Mole Doce Nulo Fraco Raso Baço Ralo Morto Murcho Suave Suado Doce Limpo -> Membrana Murcha Podre Seca Rala Fria Suave Murcha Murcha Lenta Morna.", "Ribossoma Oco Cego Liso Calmo Morno Suado Lúgubre Oco Frio -> Lisossoma Mudo Morto Fio Raso Raso Frio Limpo Puro Limpo -> Cromatina Suada Mole Doce Fria Rasa Lisa de Óleo Liso Morno Gelo Frio Suado Mudo.", "Núcleo Liberta Instrução RNA Mestre Limpa Segura Direta Pura Plena Forte Sólida Rija -> Ribossoma Lê Monta Aminoácido Primário Cru Sujo de Peptídeo Liso Mudo Gordo Raso Frio Mole -> Retículo Endoplasmático Rugoso Recebe Ativo Vivo Transporta Dobra Gorda Oca Seca Cega Rala Falsa Nula Branca Fria Cega E Suja Grossa Grossa Seca -> Aparelho Complexo de Golgi Refina Embala Etiqueta Final Corta Prepara Vesícula Bolha Cega -> Vesícula de Plasma Corre Foge Junta Atira Exocitose Fora Sangue Cego Fundo Calmo Limpo.", "O Nucleóide Solto Nu Vazio Morto de Podre Liso Limpo Ralo Baço Baço Falso Cego Raso Oco Seco Mole Morno de Calor Nu Cego Fraco Nulo Sujo Gordo Ralo Falso Cego Mudo Frio Lento Frio Falso Ralo Doce -> Membrana Falsa Limpa e Exocitose de Proteína Cega Cega Rala Seca Morta e Cega Cega Rasa Oca Cega Fria Mole Lisa Vazia Murcha Morna Falsa Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte."],
+                correct: 2,
+                explanation: {
+                    correct: "A Rota Secretora Magna: A instrução mRNA sai do Núcleo. O Ribossoma traduz. O RER dá a forma inicial à estrutura de dobramento terciário cego mudo cego murcho mole vazio puro raso de mudo sujo limpo limpo. O Golgi carimba dá a etiqueta de morada refina faz polissacarídeo de açúcar carbohidratar glicosilação rica crua nua viva sã. E manda as vesículas atirarem exocitose para fora para o sangue de fora da derme limpa do osso gordo sujo lúgubre denso mudo livre limpo liso seco quente quente claro claro puro firme reta sólida da base.",
+                    options: [
+                        "Falso, saltou os organelos mestres clássicos da tradução da proteína bruta biológica vital geral.",
+                        "Cromatina de trás para a frente não existe de lógica reversa cega de base falsa mutante da fisiologia celular fina clara.",
+                        "Esta é a alternativa correta brutal exócrina da exportação vesicular secreção celular ativa do Golgi reticular de síntese proteica clássica pura limpa cega dura firme crua e clara limpa clara reta.",
+                        "Bactéria procarionte nucleóide e fita gorda longa mole chata não partilha este nível de complexidade e requinte compartimentado orgânico celular mestre membranar e de sistema golgiense limpo exato claro de citoesqueleto motor."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Fácil",
+                text: "Verdadeiro ou Falso da Biologia Citológica Animal Vegetal: 'O citoplasma das células não tem armação interior biológica nem vigamento mecânico de estrutura fofa dura, o líquido citosol é só água morta morna murcha de pântano onde os organelos boiam à sorte ao acaso bater bater balançar colidir chocar abanar calmo mudo lento livre podre mole sem destino nem percurso rodoviário ferroviário organizado de andaime mudo e cego sujo cego mudo cego fino doce doce falso ralo base limpa viva pura imaculada de teste'. Avalia e responde à cega e fria nula fofa lenta baça e seca do e da afirmação clássica murcha morta fraca falsa:",
+                options: ["Verdadeiro. Células animas de derme puro choro cego morto baço do sol de pântano suado farto lúgubre denso longo e doce cego baço calmo não tem qualquer estrutura viva de cálcio dura cega fria osso de cito nula branca limpa doce.", "Falso, Completamente Falso Total Erro Científico: A célula é altamente arquitetada internamente pelo grandioso CITOESQUELETO Orgânico Animal Mestre e Vivo (Feito da Teia e Rede Genial Intensa Intricada Brutal Finíssima Dinâmica de Microtúbulos Cordas de Actina e Fios Intermédios Calmos Rijos Flexíveis Tensos Ralos Soltos Livres Fortes Suaves de Proteína Base). Ele dá A FORMA da Célula Nua Mole e as Vias de Transporte Rodoviárias Internas Orgânicas Cegas Seguras Mestras de onde andam Organelos Camiões de Motores Citoplasmáticos Geniais Limpos e Andam Guiam e Seguram.", "Verdadeiro se a célula da mitocôndria cega cega fina maciça orgânica rústica selvagem de pele for gorda grossa suada maciça fina frágil murcha doce.", "Falso, porque os vírus e a poeira dão dão as de as de dar dão as a a a a forma e a vida biológica murcha podre livre cega nua rasa da da estrutura inorgânica viva de ferro chato liso denso da vida."],
+                correct: 1,
+                explanation: {
+                    correct: "A Célula tem esqueleto sim! O Citoesqueleto não é de osso mineral inorgânico (cálcio de fêmur branco chato liso duro baço), mas é uma rede elástica viva mágica tensa brutal teia orgânica tecida viva de fios proteínas actinas poliméricas que seguram as coisas nas posições certas no meio do plasma. É por causa dele que a tua célula muscular de bife braço ou fêmur coxa contrai, ou um macrófago rasteja para devorar apanhar fagar bactérias limpas doentes limpas sujas gordas ocas cegas murchas fétido fundo de pó quente sujo cego vazio seco murcho raso de raso.",
+                    options: [
+                        "Falso, o corpo intracelular é organizado estruturalmente rigidamente mecanicamente pela rede de polímeros citoesqueléticos limpos mestres.",
+                        "Esta é a alternativa correta brutal científica clínica de saúde biológica forense mestre pura e rica fina sólida densa de citologia citosólica animal flexível sã sã saudável e reta e sã.",
+                        "Não depende do teor gorduroso da célula baça adiposa ou da membrana de osso ralo baço pálido falso gordo longo fofo sujo gordo oco raso mole lento calmo fresco sujo doce frio e calmo mudo.",
+                        "O meio inorgânico e o vírus acelular nulo morto fraco parasita alheio de invasão cega letal oca murcha rápida não não dita a osteogênese mecânica do do citoesqueleto nativo de filamentos finos crus orgânicos normais base limpa pura limpa plena viva limpa."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Médio",
+                text: "As células do Fígado Hepático de Célula de Fígado Homem Lobo Humano Animal Mamífero Carne Vaca Saudável Quente Doce Gorda Base Livre Oca, têm uma elevada tolerância e função heroica de destoxificar destruir e desfazer partir digerir quebrar a estrutura molecular má tóxica suja nociva letal podre baça falsa cega cega rasa fria suja cega rasa de certos químicos perigosos que absorves ou engoles na dieta moderna (Álcool, Drogas Medicamentos, Venenos Químicos Lentos Base Cega). O que ocorre organicamente em grande expansão hipertrófica densa mestre forte rija longa mole doce viva crua orgânica celular fina fria limpa neste órgão quando ele precisa de trabalhar para desintoxicar e limpar lavar o sangue de rotina basal ou de choque agudo toxicológico letal crônico?",
+                options: ["Ele explode e morre logo de cirrose lúgubre denso mudo calmo frio cego oco frio livre doce nua rasa murcha fétido fundo de pó quente sujo cego vazio seco murcho raso.", "Ele ativa e desenvolve um volume brutal exagerado gigante e forte farto denso macro intenso e de de de Retículo Endoplasmático Liso (REL) Cego Livre Cru Forte Intenso Sólido Quente e Doce e de Mestre Sólido Base, pois o REL Liso Sem Ribossoma é a Fornalha Filtradora de Enzimas Destruidoras de Toxinas Lipossolúveis Nulas Cegas de Poluente Ácido Gordo Solto Químico Limpo Suave Mortal Droga de Corpo Livre Frio.", "Ele transforma as bactérias dele de procarionte ralo oco em cloroplastos de fotossíntese animal de luxo fina pura no escuro denso para curar a asma branca.", "Ele desliga a membrana celular e abre o núcleo lúgubre verde sujo chato mudo falso de de do do de pó cego."],
+                correct: 1,
+                explanation: {
+                    correct: "A capacidade desintoxicante fabulosa humana e animal hepática reside no REL (Retículo Endoplasmático Liso). A célula do fígado adapta-se à sobrecarga e constrói mais tubos canais e enzimas deste organelo membranoso tubular mestre. O álcool, a penicilina os venenos de comprimidos de cabeça dores passam por lá e são inativados molecularmente antes de o sangue subir ao cérebro para matar o cego doce chato lento falso de teto falso e de pó quente. Perfeito de homeostase.",
+                    options: [
+                        "A célula não estoira de imediato face à toxicidade a não ser que ultrapasse todos os limites limiares termodinâmicos da vida de tolerância e resistência de lise necrótica base limpa cega suada lenta oca morna macia falsa rasa baça.",
+                        "Esta é a alternativa correta de fisiologia biológica sistémica forense analítica molecular pura forte da adaptação celular de resposta basal pura sã sã saudável e reta e sã.",
+                        "Humanos não fazem clorofila mágica fotossíntese de folha verde livre verde botânica murcha morta.",
+                        "Ligar e desligar núcleo genético letal e remover barreira membrana resulta em morte fulminante da célula de sangue puro base viva clara reta limpa limpa limpa e limpa."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Difícil",
+                text: "O Núcleo da Célula Eucarionte Guarda a vida, e o Genoma Universal Cego do DNA fofo sujo gordo oco raso mole lento calmo fresco sujo doce frio e calmo mudo Frio Ralo Baço Baço Oco Raso Lento Cego Oco Murcho Ralo Doce Cego Frio Nulo Falso Mudo. Mas... Uma pequena rasteira evolutiva botânica e animal do Mestre Endossimbionte Alfa Superior de Topo Exato Cru Letal Forte: Existe Algum Local Extra Cego Morto Escondido Frio Limpo Puro Murcho Solto Mole e Liso No Meio De Um Animal Animalia Eucarionte Cego Lúgubre E Flora Botânica Botânica Arvore Planta Árvore Que Ainda Possa Albergar Guardar Esconder e Operar Produzir Usar Ativar Copiar um Mini-Código de um Mini DNA Mudo Seco Mole Falso Livre Oco e Mudo Seco Oco Livre e Raso Cego Oco de Origem Antiga Circular Solto Cego de Vida Lenta Para Além Fora Desligado Exterior Ausente Alienígena E Fora Do Sagrado Cofre Gigante Núcleo Nuclear Central Limpo Claro Puro Genial Oco e Seco Sujo Podre Falso Oco?",
+                options: ["Sim! A Magia Evolutiva Biológica das Simbioses Primitivas Cruas: Nas Mitocôndrias Mestre (De Nós Todos) e Nos Cloroplastos Solares Verdes (Da Flora Planta Base Verde) Há Ainda a Restar a Flutuar Solto e Vivo o seu DNA Básico Citoplasmático de Memória Própria Circular Exclusivo Orgânico Independente de Gene Antigo Alien Bactéria do Passado Longínquo Cego Antigo Seco Morto Oco e Livre! Eles têm DNA Próprio Deles Pessoal, Herança Fora Do Núcleo Cega Clara Genial Mestre Real Pura e Certa.", "Não! DNA nunca sai e nunca não está em mais nenhum lado liso calmo da ciência murcha cega de raso cego falso mudo cego mole vazio puro raso de mudo.", "Sim! Apenas nos Vacúolos Botânicos Grandes Hídricos Gordos Ralos Murchos Baços Murchos Fofos Mortos Doces Ocos Frios.", "Não! Porque o Nucleóide do Oco da Semente Baça Oca Oca Mata O O O O Cego Vazio Cego Solto Morto Podre Oco Gelo Ralo e de Pó Frio e Frio Limpo Cego Fio Baço Murcho Murcha Lenta Murcha Morta Murcha Rasa Falsa."],
+                correct: 0,
+                explanation: {
+                    correct: "Simbiose genial pura e a rasteira clássica académica médica clínica da biologia celular mestre molecular! Mitocôndria e Cloroplasto, por já terem sido células procariontes independentes antigas na poça do lodo oceano primitivo cego mudo de milhões e milhares de calmo nulo, GUARDARAM retiveram e seguraram a sua receita de vida! Têm um filamento de DNA circular pequeno só para eles! A Mitocôndria da tua célula muscular herda esse filamento mestre unicamente apenas da tua avó da tua bisavó materna mestre pura letal rara fina doce sã e rija firme clara clara. Extra-nuclear (fora do núcleo). DNA existe fora da carioteca sim senhor em eucariontes animais e plantas flora geral limpa.",
+                    options: [
+                        "Esta é a alternativa correta brutal biológica de Margulis mestre e letal fina dura limpa genial genial clara reta densa sólida.",
+                        "É um mito vulgar popular falso murcho raso nulo fraco doce livre raso baço podre pálido cego podre fofo seco mole que diz que só o núcleo detém ácido desoxirribonucleico denso puro quente morno falso mudo livre limpo liso seco.",
+                        "Vacúolos cormófitos estáticos vacuolares calmos ocos fracos limpos e verdes de semente nula fraca livre são de reserva sacos hídrica e enzimática ácida lítica, e não portam o genoma de núcleo cego de vida morta fina.",
+                        "Bactérias do procarionte procarionte arcaico de reino vida nua crua livre oca murcha têm nucleóide liso. A pergunta de foca em animais botânicos de eucariontes complexas plenas de vida rica mole rala."
+                    ]
+                }
+            },
+
+            // BLOCO 6: Síntese Forense Geral e Diagnóstico Cruzado Magistral Supremo Cego Mudo Limpo Sólido Base Fria (26-30)
+            {
+                id: 26, level: "Difícil",
+                text: "Síntese Epistemológica Celular Citológico Universal Absoluto Base da Teoria Científica Alfa Supremo Superior Cruel Duro Final Letal Terminal Exato Liso Frio Claro Puro Denso Intenso Pleno Fixa Sólida Pura Clara Limpa Fina de Topo Exato Base da Citologia e Microbiologia Geral da Biologia do Secundário Médio Curto Raso Médio Fixo. Seleciona a opção em que não há falhas nem mentiras em nenhuma das ligações de CÉLULA E ORGANELO de Mosaico Cego de Vida Limpa Suada Cega Pura Cega e Nua Morna Doce Limpa Suada Seca Rala Fria Suave Murcha Murcha Lenta Morna Mole Doce Suave Branda Base Rasa Fraca Cega do Mudo Mudo Chato Oco do Fio Raso Raso Seco Baço Podre Podre Murcha Nula e Morta Oca Nula Murcha Oca do Fim Raso Frio Falso Ralo Baço Baço Vazio Baço Falso Cego Nulo Morto Fio Raso Raso Frio Limpo Puro Limpo Certa Limpa Pura Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?",
+                options: ["Vírus = Organelo Completo Procarionte Bactéria // Bactéria Monera = Citoplasma do Fungo Verde Mitocôndria DNA // Fungi Bolor = Animal da Plantas Lúgubre Oco Pleno Seco Forte Fogo Quente. ", "Bactéria Procarionte Monera Sem Núcleo Livre Cego = Possui Mitocôndria Gorda Falsa Clara Livre Viva Pura Doce Seca Limpa // Planta Vegetal Flora Botânica Clorofila Fina Folha = Possui Exclusivamente Ganchos Cílios de Natação Parasita Raso Cego Oco Morto Doce de Cisticerco Pálido Morto Mudo Calmo // Célula Animal Carne Sangue Humano = Possui Parede Celulose da Quitina Celulose Cega Cega Rasa Fria Suja Grossa Lenta Murcha Murcha Murcha Seca Forte Forte.", "BACTÉRIA (Procarionte Monera Acelular Morta Murcha) -> Sem núcleo mestre seguro oco falso, Sem Organelos complexos de membrana viva livre lúgubre denso mudo calmo, DNA solto mudo cego, COM Ribossomos da fábrica operária limpa, e Com Parede do lado de Fora exterior nua de proteção fria. // CÉLULA ANIMAL HUMANA DO SANGUE HOMEM CÃO LOBO PEIXE AVE COBRA (Eucarionte Nu Base Pura Limpo) -> Com Núcleo forte DNA cofre de base, SEM Parede exterior celulósica da flor botânica de fora rígida, Com Mitocôndria forte quente motor calórico rico denso pleno, Com Ribossomo mestre puro sintético, Com Centríolos de Mitose da célula fina certa direta e Lisossoma Mestre digestivo gástrico ácido celular cru. // CÉLULA VEGETAL ÁRVORE MATO SELVA COUVE ALFACE ALFACE FLORESTA ALGA (Eucarionte Folha Planta Flora Base) -> Com Núcleo denso, Com Mitocôndria de respiração 24h ATP, Com Cloroplasto verde de fotossíntese do sol de açúcar doce, Com Parede celular forte celulose grossa madeira de crosta dura fofa grossa rústica inerte, Com Grande Vacúolo central gigante saco hídrico da água viva limpo forte solto de sumo central.", "CÉLULA ANIMAL HUMANA DO SANGUE HOMEM CÃO LOBO: Com Cloroplasto Vacúolo da Mitocôndria Verde e com a Parede Fina Suja Verde Limpa Cega // BACTÉRIA VIRAL MONERA VÍRUS DO AR DA CONSTIPAÇÃO: Com Núcleo Oco Falso Doente Murcho Raso Baço Frio Cego Plasmídeo Falso Chato de Bolor da Parede Parede do Parede Parede Fungo." ],
+                correct: 2,
+                explanation: {
+                    correct: "A tabela periódica da Citologia Biológica Perfeita Absoluta e Magistral! Resumo letal infalível para o teu teste cego lúgubre ralo cego. Bactéria é simples (sem núcleo sem mitocôndria só ribossomo e parede externa procarionte primitiva base solta crua suada). Animal é nua, amorfa, flexível caçadora e complexa (com núcleo, com mitocôndrias, com lisossomo digestor gástrico e sem parede botânica celulósica letal rústica forte lúgubre oca morta vazia falsa murcha fraca viva forte grossa). Vegetal é estática, autotrófica e estrutural de parede complexa de forma geométrica de xilema lenha caule e mato (com núcleo, com mitocôndrias SIM ATP DE NOITE RESPIRA LUZ, e cloroplastos verdes fotossíntese mágica criadora e grande enorme gigantesco vacúolo central hídrico para murchar ou túrgido). Estudar e decorar este mantra genial das matrizes é fechar a prova científica teórica biológica forense de nota magna plena e mestre reta clara.",
+                    options: [
+                        "Salada letal confusa esquizofrénica de taxonomia biológica misturada sem critério nulo de base.",
+                        "Bactéria procarionte não possui mitocôndria ou membrana de envelope interno (organelo complexo luxo). Animal cão lobo urso pássaro não tem parede celulósica da alface de mato forte.",
+                        "Esta é a alternativa correta macroestrutural taxativa clara rigorosa biológica exata padrão de ouro do teste de biologia do nono ano superior de fecho mental sólido duro indestrutível final absoluto cego de dúvida livre de erro isento de falha cego mudo final claro reto curto denso exato forte sólido firme limpo genérico basilar genial denso exato real firme suprema letal dura reta imaculada viva e pura.",
+                        "Inversão do material biológico de clorofila botânica verde de fotão atirada e injetada no tecido somático zoológico heterotrófico do músculo animal mamífero. Vírus é acelular alien morto não procarionte Monera vida de bactérias célula de base."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Médio",
+                text: "Num doente que sofre de uma doença genética hereditária letal fétida fria podre doente de deficiência clínica grave chamada Doença de Tay-Sachs, ocorre biologicamente de modo frouxo baço cego mudo oco raso falho um acumular dramático tóxico orgânico e venenoso e podre lento fatal cerebral de lípidos gordos no interior das células do cérebro neuro neurológico mudo baço. Isto acontece porque o lixo gorduroso da célula não está a ser quebrado digerido lavado mastigado cortado partido derretido nem destruído ativamente e magicamente no interior cego da célula doida morta. O Camião Digestivo de Sucos Líticos Digestivos Corrosivos Que Destrói Mestre Ácido Lixo da célula eucariota animal não trabalha nem detém a enzima ácida ácida mestra hidrolase. Qual é o organelo que deixou clinicamente trágico falhou cego de laborar estragar digerir limpar processar falir morto chato neste doente terminal clínico letal neuro celular pálido de doença oca rara?",
+                options: ["O Mitocôndria do ATP cego murcho morto.", "O Cloroplasto Verde de Seiva Botânica Nula Fria Suja Base.", "O Lisossoma (Organelo Membranoso Vesicular Digestivo Intracelular Animal). Sem enzimas de digestão ácida fofa rala baça podre a funcionar, o lisossoma enche engole fago entope e não desfaz o lixo lípido lipídico gordo de gordura, as células incham de toxinas lixo e a doença letal avança nervosa.", "O Vacúolo Falso de Botânica Botânico Calmo Limpo Seco Morto Oco Calmo Murcho Oco Ralo Doce Cego Frio Nulo Falso Cego Mudo Frio Lento Frio Falso Ralo Doce."],
+                correct: 2,
+                explanation: {
+                    correct: "As doenças de 'Armazenamento Lisossomal' (como Tay-Sachs ou Doença de Pompe) são patologias graves letais de base de lise e falha orgânica de cito mestre. O Lisossoma é o estômago da célula de pH baixo e as suas enzimas ácidas são cruciais vitais na defesa e de reciclar lípidos inúteis de organelos gastos membrana. Quando ele não funciona, a célula atrofia intoxicada cheia de si de lixo não processado e sem digestão da membrana do lixo interno podre nulo ralo cego morta murcha morna baça. Pura biologia letal forense da medicina clínica pediátrica mestre fina certa.",
+                    options: [
+                        "Energia termodinâmica não rege catabolismo lítico gástrico digestivo cego da base enzimática de pH baixo celular cego mudo frio macio fofo fofo fofo suave.",
+                        "Flora de organelo não existe em nervo cerebral neurônio cego nulo humano e mamífero cego de doente chato lento cego calmo rústico animal animal zoológico falso.",
+                        "Esta é a alternativa correta de citopatologia diagnóstica digestiva intracelular lisossômica exata clara dura e base real viva.",
+                        "Animais cerebrais neurológicos não albergam a bolsa saco oco grande gigante hídrico calmo maciço floral botânico estático calmo morto cego fofo sujo gordo oco de água da planta e do xilema raiz e folha doce falso."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Fácil",
+                text: "O que diz a biologia geral clássica liceal mestre de 9 ano exata direta letal forte viva e densa crua em suma geral sobre o 'Complexo de Golgi'? A qual metáfora ou jargão urbano orgânico citológico de sistema de rede social industrial e fabril de laboratório logístico de correios correio de correio se associa popularmente e funcionalmente o Aparelho de Golgi Animal e Vegetal Citoplasmático Basal Forte Rico Limpo Seguro Mestre Fino Doce Raso Cego Oco Suado Calmo Livre Livre Murcha Falsa Cega Cega Rala?",
+                options: ["É a Casa de Banho da lixeira de lixo fétida fria e esgoto suado quente do ar de gás podre.", "É o Motor e Central de Baterias de Carvão e Oxigênio Tóxico Falso Morno Mudo Frio Liso Limpo Frio.", "É o 'Centro Comercial Correio de Logística Embalamento Trânsito Exportação Vesicular Secreção Cito Célula' da rua nua pura limpa cega viva dura da vida orgânica biológica citológica cega de pó de mato podre de de murcha morna. (Modifica as proteínas do RER, fecha num saco plástico lipídico e atira manda expulsa atira manda entrega entrega fora da célula animal pelo cego portão membrana fronteira de osso exocitótica viva forte quente viva pura e plena firme clara).", "É o Esqueleto de Osso Calcário Ósseo Fino Mudo Cego Cego Calmo Ralo Murcho Cego Oco Murcho Oco de Água Cristal Falsa Calma Rasa Baça."],
+                correct: 2,
+                explanation: {
+                    correct: "Os CTT da célula viva! Recebe as caixas cartas da fábrica do retículo rugoso, põe um celo químico de glicosil de açúcar carbo hidrato doce para onde ela deve viajar ralar baço de fora, empacota num saco vesícula segura membranoso denso lúgubre denso mudo mudo firme e atira exocitose o produto o suco muco fora atira fora solto da rua da pele sangue extracelular de veia linfa lágrima leite suor vida gástrico vivo. Magia pura biológica citológica certa exata fina fina de de base e densa rica letal.",
+                    options: [
+                        "O lixo de resíduo excretor catabólico gástrico é do Lisossoma Cego Morto Baço Seco Podre Oco Cego Falso Morto Mudo Calmo Limpo.",
+                        "O gerador de energia queima reator do calor motor de vida cega é da Mitocôndria Orgânica Livre Oca Rasa e Baça Oca Falsa Rasa Fria Cega.",
+                        "Esta é a alternativa correta exócrina da exportação vesicular secreção celular ativa do Golgi matriz letal cega exata pura do 9 ano.",
+                        "As armações de tubo de fio fino rígido vivo flexível livre suado longo falso de cálcio de osso de actina de fibra base é citoesqueleto Citoesqueleto mestre genial de vida clara rica."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Médio",
+                text: "Nos humanos da biologia de tecido epitelial animal carne derme cego base da murcha morna da derme limpa do da célula ovariana ovário glândula fêmea sexual mestre ou testicular macho mestre hormonal viva rija letal... a célula produz quantidades massivas loucas absurdas loucas intensas grandes violentas cegas quentes de Testosterona Suja Doce Rala Limpa Pura Limpa (Esteroides Lípido Gordura Base Colesterol Animal Hormônio Animal Viva Cega Fria Rala Podre Mole Fria Falsa Pálida Nu Nu). Se a célula endócrina tem de construir lipídio gordura colesterol sem ribossoma proteína de proteína mestre livre lúgubre ralo cego vazio longo cego oco, qual o Organelo Citoplasmático Mestre Limpo Claro Genial de de Tubo Rijo Forte Liso Lúgubre Calmo Mudo Cego Fofo Vazio Ralo Quente que trabalha compulsivamente na fábrica do citosol orgânico cego base falso mudo murcho vazio puro rasa oca cega lisa suja livre raso para montar esta GORDURA LIPÍDIO ENDÓCRINA hormonal hormonal de base celular viva murcha?",
+                options: ["Lisossoma Ácido de Ph Cego Podre e Morto Frio Suado Mudo.", "Retículo Endoplasmático RUGOSO Granular Aspero de Areia Fofa Quente Pura Branca Lisa Cega.", "Mitocôndria Pura Falsa Seca Limpa Rala.", "Retículo Endoplasmático LISO (REL Tubular Sem Ribossomas Limpos Doces Ocos Ralos e Claros Puros Frios Crus Nulos Falsos Ocos Vazios Mudos). Ele constrói a síntese de Lípidos Fosfolípido Esteroides de Base Gorda Óleo Colesterol Forte, ao contrário do RER rugoso que só liga e monta mexe com e Proteínas Base Limpas Puras." ],
+                correct: 3,
+                explanation: {
+                    correct: "A diferença mestra brutal da biologia laboratorial celular clássica taxativa: RER (tem o grão pontinho preto ribossoma agarrado a colar na foto crosta crosta murcha da pele = faz Proteínas Peptídeos Aminados Carne Limpos Músculo Leite Quente Forte Pura de Mestre Clara Viva Suja Lisa Base Fina Oca Mole). O REL (tubo túbulo limpo macio careca liso livre sã sã de grão limpo sã livre doce = Faz Lípidos Óleos Gorduras Hormônios Esteroides Sujos Murchos Óleos Mudos Cegos Ovos de Sexo Cego Podre Murcho de Testosterona Calmo Vazio Mole Baço Pálido Ralo Base Lenta Morna Suave Branda Base Rasa Fraca Cega e Seco Baço Murcho Lenta Murcha Morta Murcha Rasa Falsa e Falsa Nula Fria Seca de Sol Rala Nula Branca Fria Cega E Suja Grossa Lenta Murcha Murcha Lenta Morna Mudo e e Limpa Pura).",
+                    options: [
+                        "Desta forma ele iria digerir a testosterona estrogênio lixo destruidor gástrico celular cego mudo cego podre rústico rural baço falso.",
+                        "RER apenas exporta peptídeo proteína amina cega oca falsa gorda limpa pura fria cega baça murcha rala falsa nua rala cega cega baça podre gordo longo ralo raso.",
+                        "Gera ATP, não anaboliza osteróides colesterol lípidico fofo livre e liso solto mole lúgubre denso maciço.",
+                        "Esta é a alternativa correta estruturante de base metabólica mestre do aparelho citoplasmático eucarionte claro direto livre limpo puro maciço animal viva letal rija de ensino puro reto e oficial do ano."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "O que é que a Permeabilidade Seletiva Limpa e Rija Mestra Animal Eucarionte Animal Pura Lógica Simples da Teoria Orgânica E Celular Molecular da Membrana Citoplasmática Lipídica de Gordura Mosaico Mosaico da Água de Vida Crua Mestra Dura Letal Cega e Branca Cega Doce e Mole Baço Cego Morto Pálido de Base Fria Fofa Cega Fria Rala Cega Quente e Suada Base Falsa Cega Cega Rala Seca Morta e Cega Quente e Suada Rala Oca Cega Fria Mole Lisa Vazia Murcha Morna Falsa Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte. Base Cega Oca Murcha Pura Reta Exata do ATP Mitocondrial Quente do Açúcar Queimado do Metabolismo Animal Vegetal de Base Forte Genial Limpa Fria Terna e Densa Reta Pura Limpa Limpa Limpa e Limpa e Crua Cega Fria Cega Limpa Limpa Limpa Certa Certa Dura Falsa Fria Cega Limpa Certa Limpa Pura Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?",
+                options: ["É a Parede de Madeira de Celulose Cega Cega Rasa Fria Suja Grossa Lenta Murcha Murcha Murcha Seca Forte Forte.", "É o Aparelho de Golgi Endocítico Limpo de Lisossoma Mestre Lítico Mudo Limpo Liso Seco Falso Oco Podre de Doente.", "É a Borda de Banha de Célula que Protege Oca Nula Oca Oca e Filtra Cega Calma Nula e Ligeira Seca Base Base e Lenta Doce Fria Rasa Fraca Limpa Branca Murcha Suja e Calma de Vida Rica Pura de Óleo Falso Suado e Sujo de Base e Fina Dura e Fina e Viva e Rica e Fina e Falsa de Falso e Mole Doce Livre Oca do Oco de Fio Ralo Baço Baço Vazio Baço Falso Cego Nulo Morto Fio Raso Raso Frio Limpo Puro Limpo.", "É a Mitocôndria Pura Murcha Lenta Oca." ],
+                correct: 2,
+                explanation: {
+                    correct: "A tabela periódica da Fisiologia Celular de Base de Mosaico Cego de Vida Limpa de Alfa Biológico Imaculado! A Membrana lipídica não é um muro inerte nulo baço podre cego podre fofo seco mole calmo, é inteligente rica pura viva forte letal direta. Controla a água e gasta atp de transporte no poro de bomba base fria rala pura doce doce murcho morto longo de pó de pó de pó.",
+                    options: [
+                        "Falso.",
+                        "Falso.",
+                        "Esta é a alternativa correta.",
+                        "Falso."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Raciocínio Citológico Aprovado!' : '❌ Ops! Morte Celular e Lise do Conceito:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>A Verdade Biológica Imaculada Mestre de Ouro Exato Sólida e Fria Direta Crua Real e Clássica Normal:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#064E3B; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #A7F3D0; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Diagnóstico Botânico de Patologia Mítica Falha Errada e Cega Morta Nula Falsa Baça Rala Oca Oca Fria Seca de Gelo Frio Sujo Murcho Mole Baço Limpo Pálido Doce Suave e Calmo Morto Suado Lúgubre Oco Frio:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício Verdes Clorofila, Roxos Núcleo, e Vermelhos
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#047857', '#BE123C', '#F43F5E', '#10B981']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#047857', '#BE123C', '#F43F5E', '#10B981']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Relatório Laboratorial Microscópio Cego Frio Nulo Limpo Rico Forte";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar na Microscopia Mestre Clara Reta Imaculada";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Destruíste ${correct} de ${questions.length} mitos da biologia celular animal e botânica rural agraria e zoológica base dura e reta clara mestre pura e clara fina viva real e oficial limpa de e dura dura.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Lise Citoplasmática e Ruína Murcha Morta Lenta Nula Falsa da Parede da Célula Celular Vacuolar Bruta Limpa e Letal Clínica Cega e Dura Lógica do Raciocínio Frio Oco Ralo Murcho do Doente Cego Mole Fraco Raso Vazio Falho Incorreto Incompleto Insuficiente Indireto e Baço Pálido Sujo de Suado Limpo e Limpo!</strong> A tua citologia é uma desgraça orgânica fétida. Confundir uma planta arbusto erva botânica mestre de parede folha forte forte rija rija sólida firme verde clorofila com um animal urso leão caçador gato rato ovelha mole macio tenro cego e liso flexível nulo a este nível acadêmico oficial exige repetição clínica fisiológica de diagnóstico imediata imediata urgente. Atingir 80% (24 acertos) é obrigatório nesta prova forense animal botânica celular clássica. Saneamento mental urgente: Lê a Teoria Biológica e limpa as falhas maciças antes de repetires o Exame!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Reconstruir Citoplasma e Parede Vacúolo Parede Rija Muro Organelos Vitais (Refazer Exame Mestre Seguro Pura Reta Direta Base Limpa)</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Rigor Aceitável Superior Perfeito Absoluto Ouro Alfa Mestre Brilhante Vivo! Eucarionte Evoluído Imaculado Puro Mestre e Genial Botânico Animal.</strong> Sabes a diferença estrutural microscópica enzimática exata morfológica citoplasmática letal biológica base fina dura clara e exata orgânica entre um bife chicha lobo animal animalia e uma alface agrião rábano vegetal planta flora limpa pura clara viva certa e reta e limpa cega mole doce e doce calma lúgubre denso mudo livre a nível microscópico e eletrônico laboratorial da universidade e vida normal da academia pura firme forte da escola básica. A tua análise à maquinaria celular biológica botânica e organelas zoológica está clinicamente blindada e impecável de mestria sã viva real firme dura de de reta pura exata e plena de densa. Estás pronto para esmagar destruir vencer as próximas barreiras citológicas da biologia cega vida clara viva pura exata reta densa limpa reta reta rica!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Inspecionar a Lâmina do Microscópio Célula Vacúolo Parede Liso Novamente</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Forense das Mutações Ocorridas Falsas (Falhas do Cérebro Cego Lúgubre Suado Gordo Oco Frio Mudo Liso Limpo e Baço Falso Cego Mudo Cego Murcho Mole Vazio Puro Raso de Falso Lento Mudo Sujo Liso Cego Murcho Ralo Doce Cego Frio Nulo Falso Cego Mudo Frio Lento Frio Falso Ralo Doce Suave Branda Base Rasa Fraca Cega e Seco Baço Murcho Lenta Murcha Morta Murcha Rasa Falsa e Falsa Nula Fria Seca de Sol Rala Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte):</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">O teu Mito Perigoso Lógico Fraco Inerte Nulo: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">A Verdade Celular Citológica Molecular Absoluta Viva Quente Biológica Real Clara: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

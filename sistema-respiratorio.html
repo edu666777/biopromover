@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Respiratório - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-VENTILAÇÃO (Ciano Ar & Vermelho Sangue) */
+            --bg-color: #F0F9FF; /* Azul/Ciano muito claro (Ar) */
+            --text-color: #082F49; /* Ciano quase preto */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #BAE6FD; /* Azul Céu Claro */
+            --theme-medium: #0EA5E9; /* Azul Céu Vibrante */
+            --theme-dark: #0369A1; /* Azul Oceano */
+            --theme-contrast: #E11D48; /* Vermelho Sangue Oxigenado (Destaque) */
+            --theme-accent: #8B5CF6; /* Roxo (Gases/CO2) */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#bae6fd 1px, transparent 1px), linear-gradient(90deg, #bae6fd 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #0284C7;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #0284C7;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #FFF1F2; /* Vermelho suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #881337;
+        }
+        .highlight-box.blue {
+            background-color: #E0F2FE;
+            border-left-color: #0284C7;
+            color: #075985;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #0284C7; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E1; line-height: 1.5; color: #0F172A; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🫁</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Sistema Respiratório: A Fole da Vida</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar estrutura... (ex: Alvéolo)">
+            </div>
+            <div id="no-results"><p>😕 Estrutura não encontrada. Falta-te oxigénio?</p></div>
+
+            <!-- TÓPICO 1: O CAMINHO DO AR -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-dark);">🌬️ 1. O Caminho do Ar</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-dark);">
+                    <h3 style="color: var(--theme-dark);">Da Rua até ao Sangue</h3>
+                    <p>O ar não cai magicamente nos pulmões. Ele percorre um tubo rigorosamente blindado para ser limpo e aquecido antes de chegar à zona sensível das trocas gasosas.</p>
+                    
+                    <!-- MAPA ANATÓMICO EM SVG -->
+                    <div class="visual-area" style="padding: 20px 0; background-color: var(--white); border: 2px solid var(--border-color);">
+                        <svg width="100%" height="auto" viewBox="0 0 500 450" style="max-width: 600px; font-family: 'Poppins', sans-serif;">
+                            
+                            <!-- Silhueta Humana Fundo -->
+                            <path d="M 150 20 Q 250 -10 350 20 L 350 60 Q 250 80 150 60 Z" fill="#E0F2FE" stroke="#0284C7" stroke-width="2" stroke-dasharray="4,2" opacity="0.6"/>
+                            <path d="M 130 70 Q 250 50 370 70 L 400 250 Q 380 430 250 430 Q 120 430 100 250 Z" fill="#E0F2FE" stroke="#0284C7" stroke-width="2" stroke-dasharray="4,2" opacity="0.4"/>
+
+                            <!-- Fossas Nasais -->
+                            <path d="M 230 10 Q 250 -10 270 10 L 250 40 Z" fill="#BAE6FD" stroke="#0284C7" stroke-width="2"/>
+
+                            <!-- Faringe e Laringe -->
+                            <path d="M 250 40 L 250 90" stroke="#0284C7" stroke-width="16" fill="none" stroke-linecap="round"/>
+                            <path d="M 242 75 L 258 75" stroke="#000" stroke-width="4"/> <!-- Cordas Vocais representação -->
+
+                            <!-- Traqueia (Com anéis cartilagíneos) -->
+                            <path d="M 250 90 L 250 180" stroke="#0EA5E9" stroke-width="16" fill="none" stroke-linecap="round"/>
+                            <line x1="242" y1="100" x2="258" y2="100" stroke="#FFF" stroke-width="2"/>
+                            <line x1="242" y1="115" x2="258" y2="115" stroke="#FFF" stroke-width="2"/>
+                            <line x1="242" y1="130" x2="258" y2="130" stroke="#FFF" stroke-width="2"/>
+                            <line x1="242" y1="145" x2="258" y2="145" stroke="#FFF" stroke-width="2"/>
+                            <line x1="242" y1="160" x2="258" y2="160" stroke="#FFF" stroke-width="2"/>
+                            <line x1="242" y1="175" x2="258" y2="175" stroke="#FFF" stroke-width="2"/>
+
+                            <!-- Pulmão Direito (3 Lobos) - Esquerda da imagem -->
+                            <path d="M 245 180 C 180 160 140 220 140 290 C 140 350 200 360 240 350 Z" fill="#FCA5A5" stroke="#BE123C" stroke-width="3" opacity="0.9"/>
+                            <path d="M 145 240 Q 200 230 240 250" fill="none" stroke="#BE123C" stroke-width="2" stroke-dasharray="3,3"/> <!-- Lobo sup/med -->
+                            <path d="M 142 280 Q 200 290 238 300" fill="none" stroke="#BE123C" stroke-width="2" stroke-dasharray="3,3"/> <!-- Lobo med/inf -->
+
+                            <!-- Pulmão Esquerdo (2 Lobos, Incisura Cardíaca) - Direita da imagem -->
+                            <path d="M 255 180 C 320 160 360 220 360 270 C 360 300 330 310 320 330 C 310 350 270 360 260 350 Z" fill="#FCA5A5" stroke="#BE123C" stroke-width="3" opacity="0.9"/>
+                            <path d="M 358 250 Q 300 260 258 280" fill="none" stroke="#BE123C" stroke-width="2" stroke-dasharray="3,3"/> <!-- Lobo sup/inf -->
+
+                            <!-- Brônquios e Bronquíolos (Dentro do Pulmão Esquerdo) -->
+                            <path d="M 250 180 L 290 210 M 290 210 L 310 200 M 290 210 L 320 230 M 320 230 L 340 220 M 320 230 L 330 260 M 250 180 L 270 250 M 270 250 L 290 280 M 270 250 L 300 310" stroke="#0284C7" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+                            <!-- Diafragma -->
+                            <path d="M 120 360 Q 250 330 380 360" fill="none" stroke="#B45309" stroke-width="12" stroke-linecap="round"/>
+
+
+                            <!-- RÓTULOS E LINHAS INDICATIVAS -->
+                            
+                            <!-- Lado Esquerdo -->
+                            <polyline points="135,10 160,10 240,10" fill="none" stroke="#0369A1" stroke-width="2"/>
+                            <circle cx="240" cy="10" r="3" fill="#0369A1"/>
+                            <text x="130" y="15" font-size="12" font-weight="900" fill="#0369A1" text-anchor="end">FOSSAS NASAIS</text>
+
+                            <polyline points="135,60 160,60 250,60" fill="none" stroke="#0369A1" stroke-width="2"/>
+                            <circle cx="250" cy="60" r="3" fill="#0369A1"/>
+                            <text x="130" y="65" font-size="12" font-weight="900" fill="#0369A1" text-anchor="end">FARINGE</text>
+
+                            <polyline points="135,120 160,120 250,120" fill="none" stroke="#0EA5E9" stroke-width="2"/>
+                            <circle cx="250" cy="120" r="3" fill="#0EA5E9"/>
+                            <text x="130" y="125" font-size="14" font-weight="900" fill="#0EA5E9" text-anchor="end">TRAQUEIA</text>
+
+                            <polyline points="135,260 150,260 160,260" fill="none" stroke="#BE123C" stroke-width="2"/>
+                            <circle cx="160" cy="260" r="3" fill="#BE123C"/>
+                            <text x="130" y="265" font-size="12" font-weight="900" fill="#BE123C" text-anchor="end">PULMÃO DIREITO</text>
+                            <text x="130" y="280" font-size="9" fill="#BE123C" text-anchor="end">(3 Lobos)</text>
+
+                            <!-- Lado Direito -->
+                            <polyline points="365,80 340,80 250,80" fill="none" stroke="#1E3A8A" stroke-width="2"/>
+                            <circle cx="250" cy="80" r="3" fill="#1E3A8A"/>
+                            <text x="370" y="85" font-size="12" font-weight="900" fill="#1E3A8A" text-anchor="start">LARINGE</text>
+
+                            <polyline points="365,190 340,190 270,190" fill="none" stroke="#0284C7" stroke-width="2"/>
+                            <circle cx="270" cy="190" r="3" fill="#0284C7"/>
+                            <text x="370" y="195" font-size="14" font-weight="900" fill="#0284C7" text-anchor="start">BRÔNQUIO</text>
+
+                            <polyline points="365,240 340,240 320,240" fill="none" stroke="#0369A1" stroke-width="2"/>
+                            <circle cx="320" cy="240" r="3" fill="#0369A1"/>
+                            <text x="370" y="245" font-size="12" font-weight="900" fill="#0369A1" text-anchor="start">BRONQUÍOLOS</text>
+
+                            <polyline points="365,300 340,300 320,310" fill="none" stroke="#BE123C" stroke-width="2"/>
+                            <circle cx="320" cy="310" r="3" fill="#BE123C"/>
+                            <text x="370" y="305" font-size="12" font-weight="900" fill="#BE123C" text-anchor="start">PULMÃO ESQUERDO</text>
+                            <text x="370" y="320" font-size="9" fill="#BE123C" text-anchor="start">(2 Lobos - Incisura Cardíaca)</text>
+
+                            <polyline points="365,360 340,360 250,345" fill="none" stroke="#B45309" stroke-width="2"/>
+                            <circle cx="250" cy="345" r="3" fill="#B45309"/>
+                            <text x="370" y="365" font-size="14" font-weight="900" fill="#9A3412" text-anchor="start">DIAFRAGMA</text>
+
+                        </svg>
+                    </div>
+
+                    <div class="highlight-box blue">
+                        <strong>Sequência Rigorosa:</strong> Fossas Nasais ➔ Faringe ➔ Laringe ➔ Traqueia ➔ Brônquios ➔ Bronquíolos ➔ Alvéolos Pulmonares.
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: MECÂNICA VENTILATÓRIA -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-medium);">⚙️ 2. O Fole Mecânico</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-medium);">
+                    <h3 style="color: var(--theme-dark);">Inspiração e Expiração</h3>
+                    <p>Os pulmões não têm músculos próprios! Eles são como balões passivos. Quem faz o trabalho sujo é o <strong>Diafragma</strong> e os Músculos Intercostais, alterando o volume e a pressão da caixa torácica.</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding:0; background:transparent; border:none;">
+                        <!-- INSPIRAÇÃO -->
+                        <div style="background:white; border:2px solid #0EA5E9; padding:15px; border-radius:8px;">
+                            <h4 style="color:#0284C7; text-align:center; font-size:1.1rem; margin-bottom:10px;">INSPIRAÇÃO (Entrada)</h4>
+                            <ul style="font-size:0.8rem; padding-left:15px; line-height:1.5;">
+                                <li>O Diafragma <strong>contrai e DESCE</strong>.</li>
+                                <li>As costelas sobem.</li>
+                                <li>O <strong>volume</strong> do tórax <strong>aumenta</strong>.</li>
+                                <li>A <strong>pressão</strong> interna <strong>diminui</strong> (fica menor que a rua).</li>
+                                <li>O ar é sugado para dentro. (Gasta energia!).</li>
+                            </ul>
+                        </div>
+                        <!-- EXPIRAÇÃO -->
+                        <div style="background:white; border:2px solid #BE123C; padding:15px; border-radius:8px;">
+                            <h4 style="color:#9F1239; text-align:center; font-size:1.1rem; margin-bottom:10px;">EXPIRAÇÃO (Saída)</h4>
+                            <ul style="font-size:0.8rem; padding-left:15px; line-height:1.5;">
+                                <li>O Diafragma <strong>relaxa e SOBE</strong>.</li>
+                                <li>As costelas descem.</li>
+                                <li>O <strong>volume</strong> do tórax <strong>diminui</strong>.</li>
+                                <li>A <strong>pressão</strong> interna <strong>aumenta</strong>.</li>
+                                <li>O ar é expulso. (Processo elástico passivo).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: HEMATOSE PULMONAR -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-contrast);">🩸 3. A Magia Químico-Física</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-contrast);">
+                    <h3 style="color: var(--theme-contrast);">Hematose Pulmonar</h3>
+                    <p>O objetivo de todo este sistema é levar o ar aos <strong>Alvéolos Pulmonares</strong> (sacos microscópicos rodeados de capilares sanguíneos). É aqui que ocorre a <strong>Hematose</strong>.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="220" height="120" viewBox="0 0 220 120">
+                            <!-- Alvéolo -->
+                            <path d="M 60 20 A 40 40 0 1 0 60 100 A 40 40 0 0 0 60 20 Z" fill="#E0F2FE" stroke="#0284C7" stroke-width="2"/>
+                            <text x="60" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#0284C7">ALVÉOLO</text>
+                            
+                            <!-- Capilar -->
+                            <path d="M 120 10 L 160 10 Q 180 10 180 60 Q 180 110 160 110 L 120 110" fill="none" stroke="#BE123C" stroke-width="20" stroke-linecap="round"/>
+                            <circle cx="160" cy="40" r="6" fill="#FCA5A5"/> <!-- Hemácias -->
+                            <circle cx="170" cy="80" r="6" fill="#FCA5A5"/>
+                            <text x="180" y="65" font-size="10" font-weight="bold" fill="#FFF">CAPILAR</text>
+
+                            <!-- Trocas -->
+                            <path d="M 80 40 L 130 40" stroke="#E11D48" stroke-width="3" marker-end="url(#arrow)"/>
+                            <text x="105" y="35" font-size="10" font-weight="bold" fill="#E11D48">O₂</text>
+
+                            <path d="M 130 80 L 80 80" stroke="#8B5CF6" stroke-width="3" marker-end="url(#arrow)"/>
+                            <text x="105" y="95" font-size="10" font-weight="bold" fill="#8B5CF6">CO₂</text>
+                        </svg>
+                    </div>
+
+                    <div class="highlight-box warning">
+                        <strong>ALERTA DE EXAME!</strong> A Hematose ocorre por <strong>DIFUSÃO SIMPLES</strong>. É um transporte passivo. O Oxigénio (O2) entra no sangue porque há muito no alvéolo e pouco no sangue. O Dióxido de Carbono (CO2) faz o caminho inverso. A célula <strong>NÃO GASTA ATP</strong> para fazer esta troca.
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: O TRANSPORTE E O BULBO -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: #8B5CF6;">🧠 4. Controlo e Transporte</div>
+                <div class="theory-box search-target" style="border-left-color: #8B5CF6;">
+                    <h3 style="color: #4C1D95;">Sangue e Sistema Nervoso</h3>
+                    <p>Como é que os gases viajam e quem manda o diafragma contrair mais rápido quando corres?</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>O Transporte do O₂:</strong> Quase 100% do Oxigénio viaja agarrado à <strong>Hemoglobina</strong> (proteína com ferro) dentro dos glóbulos vermelhos, formando a Oxiemoglobina.</li>
+                        <li><strong>O Transporte do CO₂:</strong> A rasteira do costume! Apenas uma pequena parte do CO2 viaja na hemoglobina. A <strong>maior parte viaja dissolvida no plasma sanguíneo</strong> sob a forma de ião bicarbonato.</li>
+                        <li><strong>O Bulbo Raquidiano:</strong> É o centro de controlo no cérebro. Ele acelera a respiração <strong>NÃO</strong> por causa da falta de oxigénio, mas sim quando deteta que o sangue ficou muito ácido devido ao <strong>EXCESSO DE CO₂</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar Diagnóstico Ventilatório (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">Pneumologia Básica</h2>
+                <p style="color: #0F172A; font-size: 0.95rem; font-weight:600;">
+                    30 questões de fisiologia respiratória implacável. Acerta <strong>80% (24/30)</strong> ou o teu conhecimento sofre asfixia. Lê a correção forense de cada erro!
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Relatório Fisiológico</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS RIGOROSOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Anatomia do Trato Respiratório (1-8)
+            {
+                id: 1, level: "Fácil",
+                text: "A primeira porta de entrada para o ar no sistema respiratório são as Fossas Nasais. Porque é que, fisiologicamente, é muito melhor inspirar pelo nariz do que pela boca?",
+                options: ["Porque o nariz tem mais oxigénio acumulado.", "Porque a boca destrói os pulmões de imediato.", "Porque as fossas nasais, revestidas de muco e pelos e ricas em vasos sanguíneos, conseguem FILTRAR as poeiras, AQUECER o ar frio e HUMEDECER o ar seco antes que este atinja os pulmões.", "Porque a boca envia o ar diretamente para o estômago."],
+                correct: 2,
+                explanation: {
+                    correct: "A tripla função nasal: Aquecer (os capilares agem como um aquecedor), Humedecer (o muco adiciona vapor) e Filtrar (pelos e muco prendem bactérias e poeira). A boca não faz nada disto eficientemente.",
+                    options: [
+                        "O ar é o mesmo.",
+                        "Não destrói de imediato, mas prejudica a longo prazo por ser ar sujo e frio.",
+                        "Esta é a alternativa correta científica.",
+                        "Falso anatómico."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Médio",
+                text: "A Laringe é um tubo de cartilagem situado logo abaixo da faringe. Para além de permitir a passagem de ar, que outra função social humana crucial ocorre exclusivamente na Laringe?",
+                options: ["A digestão química de proteínas.", "O olfato e deteção de odores tóxicos.", "A produção da VOZ (fonação), pois é nela que se encontram alojadas as Cordas Vocais.", "O armazenamento de sangue venoso."],
+                correct: 2,
+                explanation: {
+                    correct: "A Laringe é a 'caixa de voz'. O ar que é expulso dos pulmões faz vibrar as cordas vocais lá dentro, gerando o som que a tua boca e língua transformam em palavras.",
+                    options: [
+                        "Isso é no estômago.",
+                        "Isso é na cavidade nasal.",
+                        "Esta é a alternativa correta anatômica.",
+                        "Isso é uma função esplênica/cardíaca."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Fácil",
+                text: "A Epiglote é uma válvula de cartilagem que atua como 'guarda-freios'. Qual é a sua missão inegociável?",
+                options: ["Impedir que o sangue entre na traqueia.", "Impedir que os alimentos (sólidos e líquidos) que engolimos caiam na Laringe e na Traqueia, fechando o acesso respiratório no exato momento da deglutição para evitar asfixia.", "Impedir que o ar entre no estômago.", "Soprar o ar mais rápido para os brônquios."],
+                correct: 1,
+                explanation: {
+                    correct: "Se a epiglote falhar ou se tu tentares falar enquanto engoles, a comida desvia da rota do esófago e cai no tubo respiratório. Engasgas-te violentamente e podes morrer por obstrução da via aérea.",
+                    options: [
+                        "Falso.",
+                        "Esta é a alternativa correta de sobrevivência visceral.",
+                        "Entra sempre algum ar no estômago, mas o perigo real é a comida no pulmão.",
+                        "Falso mecânico."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Médio",
+                text: "A Traqueia é o tubo principal que desce pelo pescoço até ao tórax. Se tocares na frente do teu pescoço, sentes anéis duros. O que são e qual a sua função vital?",
+                options: ["São ossos circulares que dão suporte à cabeça humana.", "São anéis incompletos de cartilagem (em forma de 'C'). A sua função é manter a traqueia SEMPRE ABERTA (impedindo que ela colapse ou se esmague) quando a pressão do ar muda.", "São cordas musculares lisas que mastigam a comida.", "São anéis de gordura que aquecem o ar frio da noite."],
+                correct: 1,
+                explanation: {
+                    correct: "Sem estes anéis de cartilagem hialina, a traqueia esmagar-se-ia como uma palhinha de plástico fraca quando chupas um batido denso. Sendo em 'C' (abertos atrás), permitem que o esófago (que passa mesmo atrás) dilate quando engoles bolas grandes de comida.",
+                    options: [
+                        "Não são osso (cálcio), são cartilagem flexível e rija.",
+                        "Esta é a alternativa correta biomecânica respiratória estrutural.",
+                        "Não mastigam nada.",
+                        "Gordura não oferece suporte tubular rígido estrutural."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Fácil",
+                text: "No final do seu percurso, a Traqueia divide-se em dois canais grossos que entram nos pulmões. Como se chamam esses dois canais primários?",
+                options: ["Esófagos direito e esquerdo.", "Bronquíolos terminais.", "Brônquios principais (Direito e Esquerdo).", "Alvéolos gigantes."],
+                correct: 2,
+                explanation: {
+                    correct: "A Traqueia (o tronco da árvore) bifurca-se nos dois Brônquios (os ramos grossos), que penetram no hilo de cada pulmão.",
+                    options: [
+                        "Esófago é digestivo.",
+                        "Os bronquíolos vêm DEPOIS dos brônquios (são os galhos finos).",
+                        "Esta é a alternativa correta.",
+                        "Alvéolos são as folhas microscópicas."
+                    ]
+                }
+            },
+            {
+                id: 6, level: "Fácil",
+                text: "A anatomia macroscópica pulmonar apresenta uma assimetria clara. O Pulmão Direito tem 3 lobos, mas o Pulmão Esquerdo tem apenas 2 lobos e é ligeiramente menor. Porquê?",
+                options: ["Porque não cabe ar suficiente no lado esquerdo.", "Porque o pulmão esquerdo aloja a vesícula biliar.", "Porque precisa de deixar um 'buraco' e espaço físico (a incisura cardíaca) para acomodar a inclinação do Coração no lado esquerdo do peito.", "Porque os humanos nascem com defeitos evolutivos aleatórios."],
+                correct: 2,
+                explanation: {
+                    correct: "A biologia lida com restrições de espaço! O coração está no centro do peito mas aponta e recai sobre o lado esquerdo. Para não ser esmagado, o pulmão esquerdo cede o lobo médio, formando uma 'cova' de alojamento.",
+                    options: [
+                        "Falso.",
+                        "A vesícula está no abdómen por baixo do fígado direito.",
+                        "Esta é a alternativa correta anatômica torácica.",
+                        "Isto é uma adaptação fisiológica padronizada perfeita."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Médio",
+                text: "As vias aéreas (como a traqueia e brônquios) não são tubos plásticos carecas. Elas estão forradas por um epitélio muito especial e protetor. O que existe nesse tapete interno vivo?",
+                options: ["Apenas ácido clorídrico.", "Células que produzem MUCO (para colar as poeiras e bactérias) e CÍLIOS vibráteis microscópicos que funcionam como vassouras, varrendo o lixo sujo para cima em direção à garganta para ser cuspido ou engolido.", "Dentes microscópicos que mordem vírus.", "Tecido ósseo rígido protetor imune."],
+                correct: 1,
+                explanation: {
+                    correct: "O Muco é a fita-cola, os Cílios são a vassoura mecânica. Eles batem em ritmo constante varrendo as partículas de sujidade presas no muco para fora dos pulmões. (Curiosidade fatal: o fumo do tabaco paralisa e queima estes cílios, por isso os fumadores têm 'tosse matinal' para tentar deitar fora a sujidade que os cílios já não varrem).",
+                    options: [
+                        "Ácido é no estômago.",
+                        "Esta é a alternativa correta histológica defensiva magna e estrutural.",
+                        "Ficção patológica abstrata.",
+                        "Falso histológico."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Difícil",
+                text: "Colocando a totalidade do labirinto tubular numa sequência pericial imaculada desde o ar puro exterior até ao local das trocas gasosas capilares, assinala a ordem correta:",
+                options: ["Fossas Nasais -> Laringe -> Faringe -> Brônquios -> Traqueia -> Alvéolos.", "Fossas Nasais -> Faringe -> Esófago -> Traqueia -> Pulmões.", "Fossas Nasais -> Faringe -> Laringe -> Traqueia -> Brônquios -> Bronquíolos -> Alvéolos.", "Boca -> Traqueia -> Laringe -> Bronquíolos -> Brônquios -> Alvéolos."],
+                correct: 2,
+                explanation: {
+                    correct: "Decora esta árvore invertida: Nariz (fossas), Garganta partilhada (faringe), Caixa da voz (Laringe), Tubo dos anéis (Traqueia), Ramos grossos (Brônquios), Ramos finos (Bronquíolos) e sacos de ar (Alvéolos).",
+                    options: [
+                        "A Laringe vem DEPOIS da Faringe. Traqueia vem ANTES dos Brônquios.",
+                        "O Esófago é digestivo, não respiratório.",
+                        "Esta é a alternativa correta estruturante de base respiratória clara.",
+                        "A ordem está invertida."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Mecânica Ventilatória (Inspiração vs Expiração) (9-14)
+            {
+                id: 9, level: "Fácil",
+                text: "Os pulmões são órgãos esponjosos, elásticos e passivos; eles não têm músculo esquelético para se puxarem a si próprios. Qual é o Músculo Principal, exclusivo dos mamíferos, que atua como o 'motor' e fole da ventilação pulmonar posicionado logo abaixo dos pulmões?",
+                options: ["Músculo Cardíaco", "O Diafragma", "O Bicípite", "O Estômago"],
+                correct: 1,
+                explanation: {
+                    correct: "O Diafragma é a placa de músculo que separa o tórax do abdómen. Sem ele, tu morrias de asfixia porque não conseguias criar o vácuo de pressão para o ar entrar.",
+                    options: [
+                        "Coração bombeia sangue.",
+                        "Esta é a alternativa correta mecânica respiratória.",
+                        "Braço.",
+                        "Não é um músculo respiratório (é órgão digestivo liso)."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Médio",
+                text: "Física pura aplicada à biologia: Na fase da INSPIRAÇÃO (quando puxas o ar para dentro), o que o Diafragma e os músculos intercostais fazem ativamente para obrigar o ar a entrar?",
+                options: ["O Diafragma relaxa e sobe esmagando os pulmões.", "Os músculos não fazem nada, o ar entra por vontade própria molecular cega.", "O Diafragma CONTRAI e DESCE (fica achatado) e as costelas sobem/abrem. O Volume da caixa torácica AUMENTA, fazendo a Pressão interna DIMINUIR (fica menor que a da rua), e o ar exterior é 'sugado' lá para dentro pelo vácuo.", "O Diafragma contrai e sobe para o pescoço."],
+                correct: 2,
+                explanation: {
+                    correct: "A Lei de Boyle! Se aumentares o Volume (tamanho da caixa), a Pressão desce. O ar viaja sempre da alta pressão (rua) para a baixa pressão (teus pulmões esticados). Isto gasta bateria (ATP celular) porque exige contração muscular dura e ativa.",
+                    options: [
+                        "Isto é a mecânica da Expiração.",
+                        "Falso, o ar não se move sem diferença de pressões.",
+                        "Esta é a alternativa correta termodinâmica e mecânica exata pleural do fole pulmonar viva.",
+                        "Ele desce em direção à barriga (por isso a barriga incha quando respiras fundo)."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Médio",
+                text: "Ao contrário da Inspiração, o que é que a EXPIRAÇÃO (deitar o ar fora) normal e em repouso exige do teu corpo em termos de esforço fisiológico de contração de músculos?",
+                options: ["Exige o dobro da força muscular.", "É um processo PASSIVO e Elástico! O Diafragma apenas RELAXA, sobe e volta à forma de cúpula. O volume diminui, a pressão aumenta e o ar é espremido para a rua. Não gasta ATP ativo.", "Exige que as costelas se partam.", "Exige que o coração pare de bater por 2 segundos."],
+                correct: 1,
+                explanation: {
+                    correct: "Inspirar = Trabalho Ativo (puxar o elástico). Expirar = Trabalho Passivo (largar o elástico). Quando relaxas os músculos, o tórax desaba com o próprio peso elástico e esmaga o ar para fora.",
+                    options: [
+                        "Falso, é um relaxamento.",
+                        "Esta é a alternativa correta biomecânica passiva expiratória clara.",
+                        "Absurdo fisiológico anatômico.",
+                        "A respiração e os batimentos cardíacos são vias independentes contínuas ativas de base."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Difícil",
+                text: "Os pulmões deslizam o dia todo dentro do teu peito contra as costelas, expandindo e encolhendo umas 20.000 vezes por dia. Porque é que não se ferem, sangram ou esfolam no osso com o atrito brutal contínuo liso e quente?",
+                options: ["Porque os pulmões são feitos de osso duro mineral de queratina oca e morta.", "Porque o pulmão não mexe, quem mexe é o pescoço.", "Porque eles estão envolvidos por duas películas húmidas e ultra lisas chamadas PLEURAS (uma agarrada ao pulmão, outra à costela), e entre elas existe um líquido pleural lubrificante que anula 100% do atrito mecânico de raspagem.", "Porque há gordura de azeite injetada."],
+                correct: 2,
+                explanation: {
+                    correct: "As Pleuras são sacos herméticos mágicos! Além de lubrificarem (como óleo num motor), elas mantêm uma pressão negativa que mantém os pulmões 'colados' às costelas sem as tocarem de forma agressiva. (Dica médica: Uma 'Pleurisia' é a inflamação dolorosa destas películas a roçar seco).",
+                    options: [
+                        "O pulmão é tecido epitelial esponjoso suave, não queratina osso.",
+                        "Falso, a expansão lobar é real e dinâmica.",
+                        "Esta é a alternativa correta histológica de cavidade e membrana celomática serosa de proteção base certa e mestre.",
+                        "Não orgânico e artificial."
+                    ]
+                }
+            },
+            {
+                id: 13, level: "Fácil",
+                text: "Quando te engasgas a comer sopa ou água de repente, o corpo dispara uma contração súbita violenta, audível, brutal e reflexa espasmódica. O que é o 'Soluço' de que tanto nos queixamos?",
+                options: ["O Estômago a vomitar.", "Uma contração involuntária e espasmódica do Músculo Diafragma, provocada por irritação do nervo, seguida do fecho brusco das cordas vocais (que produz o som 'hic').", "A quebra de uma costela flutuante.", "A lise celular dos brônquios rasos nulos."],
+                correct: 1,
+                explanation: {
+                    correct: "O soluço é uma falha elétrica de ritmo do diafragma. Ele puxa o ar à bruta, e a glote fecha-se em pânico para trancar o ar, criando o clássico som sonoro e chato do 'hic'.",
+                    options: [
+                        "Isso é a êmese gástrica (vómito), não soluço mecânico torácico.",
+                        "Esta é a alternativa correta biomecânica reflexa do nervo frênico e diafragma central.",
+                        "Sintoma falso e fraturante inexistente na rotina.",
+                        "Asneira citológica."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Hematose Pulmonar e Trocas (14-20)
+            {
+                id: 14, level: "Fácil",
+                text: "O objetivo derradeiro, vital, final e letal absoluto do aparelho respiratório ocorre na ponta final microscópica da árvore respiratória. Que estruturas minúsculas, com forma de 'cachos de uvas' finíssimos envolvidos em redes de vasos sanguíneos capilares, fazem a ponte entre o AR e o SANGUE veia pura?",
+                options: ["As Vilosidades Gástricas Ocas.", "Os Alvéolos Pulmonares.", "Os Cílios Bronquiais Trágicos Sujos.", "Os Nódulos Linfáticos Cervicais."],
+                correct: 1,
+                explanation: {
+                    correct: "O Alvéolo é a estrela! Tens uns 300 milhões deles. A parede deles é tão fina (apenas UMA célula de espessura) que o gás consegue atravessá-la facilmente e cair no rio de sangue capilar adjacente em milissegundos de vida pura.",
+                    options: [
+                        "As Vilosidades são do intestino (Absorção de comida).",
+                        "Esta é a alternativa correta citológica pulmonar histológica base mestre genial.",
+                        "Varrem o lixo, não trocam gases difusivos limpos.",
+                        "Sistema imunitário defensivo."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Difícil",
+                text: "O processo milagroso químico-físico onde o Oxigénio (O2) abandona o alvéolo e pula para o sangue, e o Dióxido de Carbono (CO2) salta do sangue e invade o alvéolo para ser expirado chama-se:",
+                options: ["Transpiração Sudorípara Plena.", "Fagocitose Eosinofílica Maciça Gorda.", "Hematose Pulmonar (Trocas Gasosas).", "Combustão Orgânica Lítica Viva."],
+                correct: 2,
+                explanation: {
+                    correct: "Hemato = Sangue. Hematose é a oxigenação do sangue! O sangue venoso (azul e sujo de CO2) passa no alvéolo, entrega o lixo CO2, rouba o O2 e sai de lá como sangue arterial (vermelho vivo brilhante rico a caminho do coração esquerdo da vida).",
+                    options: [
+                        "Pele e glândula sudorípara, termorregulação de suor.",
+                        "Ação imunitária de glóbulo branco (macrófago/eosinófilo) comer vermes.",
+                        "Esta é a alternativa correta gasométrica metabólica alvéolo-capilar final mestre pura clara e exata.",
+                        "Não ocorre fogo atómico gástrico alveolar no lúmen brônquico úmido."
+                    ]
+                }
+            },
+            {
+                id: 16, level: "Difícil",
+                text: "Rasteira Citológica Magistral Fina Letal Cega e Bruta! Através de que mecanismo de transporte de membrana plástica orgânica é que o Oxigénio O2 e o CO2 realizam a mágica Hematose Pulmonar? A célula gasta bateria energia ATP das mitocôndrias nestas trocas pesadas do sangue alvéolo rico quente vivo forte?",
+                options: ["As células usam o Transporte ATIVO brutal, gastando imenso ATP para forçar o gás O2 a entrar nas veias contra a lei e maré orgânica da vida.", "Por Osmose Hídrica passiva celular fina de água doce nula pura.", "As células usam a DIFUSÃO SIMPLES (Transporte PASSIVO nulo inerte livre). Os gases movem-se a favor do gradiente de concentração (do sítio onde há MUITO gás para onde há POUCO gás) atravessando a gordura da célula sem gastar zero energia elétrica ATP da base química do corpo.", "Usam Endocitose Vesicular Sólida Cega de lise murcha lenta mole."],
+                correct: 2,
+                explanation: {
+                    correct: "A perfeição ecológica celular das trocas! Não gastas NADA. Como respiraste fundo, o alvéolo tem MUITO O2. O sangue sujo tem POUCO O2. Pela lei da Difusão de gases, o O2 salta para o sangue sozinho. O sangue tem MUITO CO2 sujo, o alvéolo POUCO, logo o CO2 salta para o alvéolo sozinho para diluir o ar. Passivo puro grátis e genial orgânico.",
+                    options: [
+                        "Falso, a hematose passiva não consome ATP mitocondrial na membrana fosfolipídica limpa base.",
+                        "Osmose é apenas para a ÁGUA líquida molecular H2O limpa cega, não gases de oxigenação base.",
+                        "Esta é a alternativa correta físico-química difusiva alveolar capilar direta exata clara dura letal e pura.",
+                        "A célula pneumócito não deforma e 'engole' pacotes de ar, as moléculas cruzam os fosfolípidos inertes fantasmas nus soltos livres."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Médio",
+                text: "Depois de o Oxigénio O2 entrar milagrosamente no sangue durante a hematose... quem é o camião de carga orgânico interno das veias que agarra no O2 e o carrega pelo rio sanguíneo afora para ser entregue nas pernas e cérebro faminto do músculo gordo?",
+                options: ["As Plaquetas Sanguíneas brancas cegas nulas.", "O Plasma Sangüíneo líquido amarelo suado nulo ralo de gordo falso.", "A Proteína HEMOGLOBINA (que contém Ferro) presente aos milhões no interior dos Glóbulos Vermelhos (Hemácias / Eritrócitos) do sangue arterial vivo denso forte cru rústico e mestre lúgubre rico do homem.", "O Citoesqueleto Cego de Golgi Raso Frio Mole Falso Fofo Limpo Puro." ],
+                correct: 2,
+                explanation: {
+                    correct: "O Oxigénio (O2) é mal-agradecido e não se dissolve na água do plasma sanguíneo! Ele precisa imperativamente de um táxi metálico! A Hemoglobina possui moléculas de Ferro magnético ávido por atração. O O2 agarra-se ao ferro (formando a Oxiemoglobina) e pinta o sangue de vermelho vivo escarlate luminoso puro claro. Se não comeres ferro na dieta ficas com anemia (cansaço) porque ficas sem 'táxis' do ar vital orgânico base.",
+                    options: [
+                        "Plaquetas tratam da coagulação (formar crostas em feridas estancar sangue limpo bruto).",
+                        "O plasma transporta glicose e CO2 dissolvido, mas o O2 não dissolve livre na água rala mole calmo cego nula murcha baça fria do corpo.",
+                        "Esta é a alternativa correta hematológica bioquímica proteica celular do 9 ano clássico e absoluto puro limpo claro de mestre fina e lógica perfeita letal.",
+                        "Organelos não nadam no soro do sangue e linfa gorda murcha morta cega lisa mole cega rasa."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Difícil",
+                text: "O grande Mito e a grande Rasteira Mortal do Exame Final Global e Mestre e Puro Escolar Bio! Se o O2 O2 O2 vai de 'Boleia e Táxi' montado nas costas de proteína da Hemoglobina da Hemácia da e veia... Como viaja de Regresso Sujo Frio e Cego o Lixo Metabólico Celular Mestre Químico o Gás Dióxido de Carbono (CO2) desde as células do pé suado de toxina até aos Pulmões Livres Alvéolos?",
+                options: ["O CO2 volta exatamente todo 100% montado de e colado à mesma Hemoglobina no Glóbulo Vermelho e liso limpo sujo raso falso cego lento oco baço cego podre ralo oco mudo.", "O CO2 viaja em cápsulas de celulose botânica de e erva seca fofa rala doce limpa pura viva nula rasa.", "A Esmagadora Maioria Mestra Gigante do CO2 (cerca de 70%) dissolve-se na ÁGUA do PLASMA SANGUÍNEO Amarelo como 'Ião Bicarbonato', uma minoria anda dissolvida e apenas um pouco se liga à Hemoglobina Carboemoglobina. Ou seja, ele anda misturado no líquido da veia fora das células vermelhas!", "O CO2 é transformado em ouro duro baço cego liso cego murcho ralo fio raso seco vazio falso oco e e falso limpo."],
+                correct: 2,
+                explanation: {
+                    correct: "É a Rasteira Suprema! O Oxigénio ODEIA andar a pé (só viaja na hemácia de ferro). Mas o Dióxido de Carbono (CO2) não se importa de viajar dissolvido! A enzima anidrase carbónica reage com a água do sangue e o CO2 transforma-se em Bicarbonato que anda a flutuar livre no líquido amarelo (Plasma) até aos pulmões. Não o metas todo na Hemoglobina da célula vermelha cega no teu exame!",
+                    options: [
+                        "Mito popular. Apenas cerca de 23% se liga à hemoglobina em competição lenta fina pura.",
+                        "Células humanas de sangue não fabricam celulose vegetal verde morta folha rústica agrária clara de árvore planta.",
+                        "Esta é a alternativa correta gasométrica hemodinâmica de equilíbrio ácido-base clínica e celular exata densa sólida real clássica e mestre fina direta genial.",
+                        "O sangue não realiza reações nucleares de alquimia transmutacional mineral áurea morta falsa e fofa mole suja do e calmo."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Controlo Nervoso e Ameaças Pulmonares (Tabaco e Asma) (19-25)
+            {
+                id: 19, level: "Difícil",
+                text: "Quando corres 2 quilómetros fortes violentos brutos reais velozes maciços a tua respiração acelera violentamente involuntariamente (Ofegante Cego). O Cérebro Animal (Bulbo Raquidiano Autônomo e Centro Respiratório Nervoso Fino Vivo Base Cru Mestre Limpo) não percebe ativamente medindo ou cheirando se tu precisas mais de ou menos ar ou luz. O que é que o cérebro neurológico DETETA Quimicamente Quimicamente no Sangue e que o faz soar o Alarme de Asfixia Grave Orgânica Letal Desesperada Fria Doce Morna Murcha para tu abrires as narinas da respiração rápida?",
+                options: ["Ele deteta que tu ficas Lindo Nu Limpo Seco Baço Rasa Lenta e Murcho Lento Morno de de Calmo Pálido Baço Murcho do Pó.", "O cérebro tem sensores que detetam A Falta Fome Ausência Nula Rasa Oca Absoluta e Escassa e Perigosa Nula Cega Murcha Rala de Gás Oxigénio O2 na tua Cabeça Doente Limpa Falsa Cega Cega Rala Seca Morta.", "Ele deteta O AUMENTO EXCESSO BRUTAL DA CONCENTRAÇÃO DE LIXO GÁS CO2 (Dióxido de Carbono) no plasma sanguíneo veia! O CO2 em excesso torna o sangue muito ÁCIDO tóxico mau (baixa o pH arterial cego morto sujo). O sensor elétrico deteta essa acidez letal venenosa letal orgânica suja do metabolismo muscular e de e dispara e acorda o diafragma de e músculo para bombar chutar deitar fora esse lixo rapidamente arfando arfando de de pulmão de ventilação cega pura forte rija quente viva sã reta maciça limpa densa de vida cega dura fina mestre certa.", "Deteta excesso de açúcar na orelha esquerda lenta murcha fofa mole."],
+                correct: 2,
+                explanation: {
+                    correct: "A mecânica oculta da tua sobrevivência. O teu cérebro ('Bulbo Raquidiano') quase não liga ao nível de Oxigénio O2. Ele entra em pânico é quando o CO2 (o fumo tóxico dos teus músculos em combustão da corrida) sobe! Muito CO2 = Sangue Ácido Letal de Acidez. O cérebro ativa o modo ventilador e obriga-te a ofegar arfar puxar o peito para expirar varrer deitar deitar deitar esse lixo CO2 fora rapidamente. O O2 entra por tabela da arrasto.",
+                    options: [
+                        "Falso abstrato patológico sem nexo biológico.",
+                        "A rasteira! O gatilho respiratório autônomo primário central não é a hipoxia (falta de oxigênio), é a hipercapnia (excesso de CO2 e H+ de acidez).",
+                        "Esta é a alternativa correta neurológica acidobásica clínica vital letal rústica forte e direta imaculada crua sólida mestre.",
+                        "O pâncreas insulínico regula glicemia, não o centro respiratório pontino do bolbo e da nuca cega rasa."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Médio",
+                text: "O Tabagismo Vício Mortal de Fumar Fumo Cancro Lixo Alcatrão Nicotina Morta Cega Bruta Pura Nula Seca Pura Fumaça Baça Murcha Rala e Cega Rala introduz no sangue um dos gases venenos tóxicos mais temidos brutais criminosos silenciosos letais que saem da queima incompleta suja nula do escape de camiões velhos ou aquecedores braseiros podres frios mudos calmos escuros: O Monóxido de Carbono (CO). Porque é que aspirar e fumar gás CO em salas fechadas ou fumar tabaco ativamente diariamente causa asfixia silenciosa invisível mole podre baça e morte sem tossir dor vermelha forte oca?",
+                options: ["O CO transforma-se em ouro limpo e afoga o peso da gravidade oca lenta rasa podre.", "O gás CO é um gás inofensivo florido cego limpo.", "A Hemoglobina tem 200 vezes mais paixão magnética atração por agarrar o gás Monóxido de Carbono CO letal lixo escuro fétido baço falso morno falso falso do que tem pelo Oxigénio O2 puro e vida! Se o CO entra no teu pulmão de cigarro fumo sujo chaminé de gás braseiro, ele agarra-se ao Ferro da hemácia e não a larga nunca mais bloqueando as cadeiras os lugares táxis os lugares! Ficas asfixiado à fome de Oxigênio puro mesmo respirando porque o teu sangue 'os táxis' está ocupado irreversível carbo-tóxico preso e chumbado.", "O gás apaga o cérebro eletricamente mole cego ralo sujo grosso de e e morto falso cego."],
+                correct: 2,
+                explanation: {
+                    correct: "O Assassino Silencioso Químico Mortal: O Monóxido de Carbono (CO) do escape de carros e tabaco forma Carboxiemoglobina! As tuas hemoglobinas abandonam o vital Oxigênio porque amam e abraçam e amarram a molécula tóxica CO e nunca mais se soltam! Ficas com os 'táxis' do sangue engarrafados viciados ocupados envenenados bloqueados e não podem transportar oxigénio de vida sã reta limpa para os órgãos. A pessoa morre asfixiada e e por dentro mesmo com o pulmão cheio ar. Quem fuma tabaco crónico tem as extremidades pálidas nulas de isquemia de circulação porque o fumo asfixia parte do corpo calmo cego mudo cego seco suado falso.",
+                    options: [
+                        "Gás não se muta em metal denso da física nula rústica espacial.",
+                        "É o gás mais traiçoeiro da química de combustão urbana.",
+                        "Esta é a alternativa correta toxicológica hematológica letal de biologia médica química celular forense exata plena e rigorosa bruta da patologia urbana letal e trágica cruel.",
+                        "A morte neurológica cerebral é secundária por asfixia celular anóxia por ausência de O2 celular e mitocondrial, não primária elétrica direta pura crua limpa rica limpa do veneno."
+                    ]
+                }
+            },
+            {
+                id: 21, level: "Fácil",
+                text: "A Asma Alérgica Patológica Bruta Tensa Pura Morna e Cega é uma doença respiratória comum que afeta milhares de jovens nas escolas a correr. Qual é o mecanismo de colapso fisiológico anatômico bruto da anatomia da árvore aérea respiratória que ocorre durante um forte ataque de falta de ar agudo e ofegante 'chiado peito gato' e que a 'Bomba Xarope Bomba Azul de Broncodilatador Mestre Química' tenta salvar abrir destrancar na hora letal de sibilância e fôlego raso ralo doce fraco liso podre morno?",
+                options: ["O Nariz fecha e cai a ponta suja mole chata do ranho de fora falsa nula fria e o estômago derrete de suco ralo do oco oco cego mudo seco.", "Os Alvéolos transformam-se em pedra rocha calcária cega dura rija branca pura limpa de e osso e cimento de cego do oco raso limpo osso forte livre do do.", "Os Brônquios e os Bronquíolos (Túbulos de ramos condutores de ar elástico músculo fino de cartilagem) têm as suas paredes inflamadass e o tecido muscular liso esmaga contrai estreita reduz (Broncoconstrição / Espasmo). O tubo engrossa aperta aperta tampa bloqueia por dentro, dificultando imensamente a saída do tubo suado de de ar do ar expirado e ar cego, causando sufoco asfixia chiado choro e fôlego curto agudo e e forte de ar de esforço e e o fecho tranca porta de e o o tubo do canal raso de tubo do pulmão de tubo.", "O Coração deixa de mandar as pulsações ralas puras livres e doces murchas lentas da orelha murcha e o fígado chora de fel de o choro ralo de calmo mudo seco e frio nulo sujo gordo oco de fel."],
+                correct: 2,
+                explanation: {
+                    correct: "A asma não destrói o alvéolo; ela ataca a canalização (os Brônquios)! O pólen, pelo de cão ou o frio intenso, irritam a mucosa do doente. O músculo do tubo contrai-se violentamente e cria muco esgoto espesso (Broncoconstrição de espasmo letal cego de bloqueio agudo inflamatório vivo e denso cru e forte). O canal por onde o ar ia passar fecha quase completamente e a pessoa asfixia e faz ruído tipo apito sibilância ao forçar o ar a passar por um tubo tão magro estrito fino entupido apertado e fechado rústico calmo mudo frio de asfixia oca e limpa base fina pura e livre da crise. A bomba de Salbutamol dilata relaxa os tubos para voltar a ventilar o fole peito.",
+                    options: [
+                        "Nariz pode ter rinite associada mas não explica o colapso traqueobronquial severo sibilante de base letal anóxica.",
+                        "Asma não tem calcificações de matriz mineral rochosa pulmonar osteoporótica falsa mística surreal e cega oca falsa murcha fraca de sol rala e falsa morna calmo cega baça murcha podre.",
+                        "Esta é a alternativa correta clínica fisiológica inflamatória obstrutiva aguda da pneumologia geral básica exata clássica de medicina pulmonar e letal fina dura clara reta e plena imaculada real densa de base.",
+                        "Sem conexão coronária ou hepática primária patogénica sintomatológica."
+                    ]
+                }
+            },
+            {
+                id: 22, level: "Médio",
+                text: "O Enfisema Pulmonar Físico Químico Biológico Mortal Fatal Mudo Lento Sujo Chato Escuro Longo e Podre (DPOC Doença Pulmonar Crónica Murcha Oca Rala Morte e Rasa Morta Rasa Falsa Nula Fria Suja Grossa Grossa Seca Forte Rija) é uma doença incurável dramática crónica quase sempre causada por Anos e Anos Crónicos Mortais Letárgicos Intensos Sujos e Cegos Vagos E Lentos e Claros de Consumo Mestre Sujo Lixo Fumo de TABACO (Cigarros Poluição Bruta Rasa Pálida Doce Baça Doce Morna Livre Rala Falsa Cega Cega). Ao longo da vida da vida do de da vida fumaça alcatrão veneno de base calmo e e murcha e e oca doente gorda lúgubre denso mudo calmo, o Enfisema Destrói e Arruína de Vez Fatal E Letal Orgânica Celular Fina Fina De Tecido Do Ar e Cega Murcha Rala e Do Sangue Quente e Do Ar Qual Parte Qual Região Pulmonar Bruta Vital Letal e de Base e de Ar Orgânica Da Fisiologia Bio E Lógica Básica Anatómica Viva Da E Clara Reta Direta Base Limpa Vida Dura Vida Clara Pura Certa Fina Doce e da Base Clara Limpa e Exata?",
+                options: ["Destrói Rompe Apaga e Arrebenta Rasga os ALVÉOLOS Pulmonares Cachos Sacos de Ar da Troca de Sangue Hemático (Hematose Difusa Falsa Nu Livre)! Ao estourar as delicadas paredes dos sacos bolhas de vida e ar puro oxigenado capilar microscópicas de fina derme única pele celular nua lisa doce baço mole fofo, o pulmão perde brutalmente massivamente a sua gigantesca ÁREA DE SUPERFÍCIE orgânica de pele de trocas de gases rústicos puros de contato final gasosa! O doente fica e vive com 'pulmões de sacos mortos gordos rombudos furados esvaziados fundos cegos limpos ocos ocos podres rasgados' gigantes de lixo nulo que não absorvem transferem chupam metem deixam puxam O2 Oxigênio e para a vida o sangue vermelho arterial rico quente puro vivo firme, morrendo afogado com ar sufocando sufocado exausto amarrado a tubo a longo prazo mudo cego de lento cego morno suado falso limpo puro e nulo seco liso morno.", "Destrói Murcha Seca a Epiglote do Garganta Estômago Oca Nula Vazia e Fria Cega.", "Destrói a Cavidade Ocular da Retina Fosforescente Lenta Murcha Morta Falsa Fina Rala Falsa Doce Cega Cega Cega Rala Seca Morta.", "Destrói e Rasga as Cordas Vocais Falas Cordas Laringe Plásticas Suadas Falsas Ralas Ocas Murchas Brancas Murchas e Lentas Vazias de Som."],
+                correct: 0,
+                explanation: {
+                    correct: "A Asfixia Lenta do Tabaco Doente Fatal Lúgubre Crônica Crua. Os milhares de químicos do cigarro dissolvem, inflacionam, corroem, atrofiam e matam a parede fina, sagrada milimétrica microscópica do Alvéolo pulmonar (a zona fina fina de hematose gasosa do final de via pura sã!). De milhões de sacos pequenos eficientes limpos ávidos de difusão oxigenada (parecia uma esponja rica viva macia e sã limpa clara densa elástica flexível expansível rica rica rica mestre), o pulmão do fumante de longo prazo passa a ficar e e a ter grandes sacos rotos inelásticos estourados ocos carecas mortos velhos estéreis fibrosos vazios ciegos que não retraem (perda de retração do do da e complacência e elasticidade expiratórias passivas orgânicas lisas cegas lentas frias de de limpa pura de oco limpo ralo raso fofo calmo sujo doce frio nulo morto chato). A área da hematose colapsa cai e ele anda exausto.",
+                    options: [
+                        "Esta é a alternativa correta fisiopatológica pulmonar exata e letal clara do enfisema obstrutivo crônico e irreversível brutal de laboratório puro reta clara certa densa viva.",
+                        "A epiglote protege a deglutição, não gere hematose gasosa difusiva base fina limpa dura viva crua rústica cega clara.",
+                        "Retina detém função neurológica fotoreceptora da visão ocular e espectro visual de ótica limpo de radiação eletromagnética solar base e ocular.",
+                        "Cigarro afeta as cordas laringe (risco de cancro da garganta), mas o Enfisema tem localização e etiologia patogénica específica destrutiva ALVEOLAR e bronquial terminal final cega nula morna lenta e oca suja doce rasa cega nula de ar de murcha morta murcha morna fria rala doce cega fria oca fofa oca rasa cega."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Médio",
+                text: "Nas células que constituem o aparelho bronco-respiratório cego de de de ar pulmão suado limpo cego de lúgubre denso mudo mudo de e do de via e mestre cego puro liso de base murcha lenta morna calma de poeira e tubo fofo e vivo claro reto de ar raso longo falso mudo baço calmo do suor e raso: Se analisares com atenção profunda histológica ao teu microscópio de aulas de biologia a parede fina de e que e e a a a de um único minúsculo ALVÉOLO PULMONAR Saudável Orgânico Fisiológico Base Calmo Quente Denso Mestre Puro Vivo Cru Limpo Fino Cego Livre, verificarás provarás constatarás verás constatarás observarás que e e que e ele e o saco ar de ar limpo alveolar tem é composto moldado formado revestido apenas unicamente e incrivelmente e e incrivelmente assustadoramente cego de fraco raso nulo liso e fino suave doce brando de por e de e e uma e uma e de uma de por e de por de uma de espessura biológica milimétrica celular de:",
+                options: ["UMA ÚNICA Camada Única Isolada Simples Rasa Solta Cega Pura de CÉLULAS Epiteliais (Epitélio Simples Pavimentoso Fino Escamoso Achatado Nulo Livre Mestre Leve Calmo Liso Doce Ralo Doente Fofo Pálido Oco Vazio Mudo Raso Podre Morto Cego Morto). A parede tem e possui de ter deve possuir ter apenas ser ser a mais fina rala oca e delgada possível (apenas UMA Célula Humana Celular Orgânica Animal Eucarionte Base Mestre Direta Plena Brilhante de grossura grossa grossa oca cega suada lenta lenta lenta baça de pó) para que a e o gás o oxigênio de e gás do CO2 lixo e veneno e toxinas e os e que possam de possam possam Pular Saltar Voar Atravessar Atravessar Difundir Cruzar Passar de Imediato Rápido Livremente Instantaneamente (num Milésimo Segundos Físicos) pelo processo e da 'DIFUSÃO SIMPLES PASSIVA MESTRA DE GASOS BASE LIVRE E RETA CLARA E BRUTA FINA DE DE FOGO E GÁS GÁS' sem esbarrar bater embater parar chocar engasgar abafar sufocar no de num em e num osso muro gigante largo espesso tijolo cartilagem carne grossa isolante cega falsa forte morna de vida rica dura pura livre de sol feto e fétido do lixo e do pó gordo sujo e oco raso limpo longo de mudo calmo frio cego cego fofo sujo gordo oco raso mudo liso cego.", "Uma dezena e centenas de camadas de osso cálcico e marfim rijo de dente sujo mudo seco forte cego liso limpo sujo raso falso cego lento oco baço falso e ralo morto longo de pó de pó cego oco e morno de calmo.", "Uma Parede Celulose Vegetal de Árvore Pinheiro Liso Baço Sujo Quente de Folha Lúgubre Suave Seca de Pau Morto Raso Ralo Oco Mudo Podre Mudo e Seca.", "Um muro de cimento inorgânico vivo de e sujo quente morno nulo fraco doce oco de pântano baço nulo e falso de lixo."],
+                correct: 0,
+                explanation: {
+                    correct: "A perfeição da evolução orgânica adaptativa! Se tu precisas de trocar e meter gás oxigénio de fora do corpo ar vivo rua para dentro do sangue do coração de forma fulminante (Fração de Segundos Letais Instantâneos Vitais de Fração Fina de Tempo Vida Forte Rija Cega Livre) tu não podes ter pele couro cartilagem ou carne e osso gordo grosso e osso cartilagíneo denso lúgubre ralo cego mudo cego no alvéolo bolha. A parede da 'uva/baguinho' (do Alvéolo do pneumócito celular citológico) tem a fina e delicadíssima fina rala cega de magra e magra fina espessura de UMA ÚNICA CÉLULA escamosa simples pavimentosa plana lisa murcha falsa oca! É por ser tão magrinha, vulnerável frágil terna de de e de cristal e vidro e gel e doce oca rasa de que de que a de o oxigênio e de a cruza atravessa difunde pula do o alvéolo para o capilar o capilar capilar vizinho encostado do de e colado parede a de parede num piscar e o fechar e o relâmpago mágico químico físico do da homeostase vida pura clara densa letal exata mestre e certa viva forte densa fina e sólida.",
+                    options: [
+                        "Esta é a alternativa correta histológica histofisiológica anatômica pulmonar brilhante exata genial plena direta e segura clínica forense mestra e pura.",
+                        "Osso isolaria e blindaria hermeticamente calafetando vedando asfixiando por completo 100% mortal sufocante cego nulo e a e nulo a da de de hematose as e trocas as gasosas vitais basais de ar gás de ar puro de pó de o pó.",
+                        "Humanos de tecido mamífero pulmonar respiratório de ventilação cega solta falsa oca falsa fina rasa lúgubre não produzem sintetizam ou portam secretam polímeros lenhosos rígidos exógenos da matriz secundária de botânica de celular de de flora e planta limpa e cega de de verde.",
+                        "Alvéolo humano é tecido vivo animal epitelial macio mole cego liso vascular sã de capilar elástico e úmido de surfactante tensoativo liso calmo fofo doce rústico cego oco, não composto cerâmico urbano de minerais mortos ocos ralos falsos secos ocos podres ralos cego nulos lentos moles podres quentes cegos e de as lixo de baço liso cego murcho ralo."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Médio",
+                text: "Resumo Epistemológico Citológico Respiratório Forense Anatomia Mestre Letal Fria Oca Base Fofa Rasa Falsa Limpa Podre Fria de Oca Oca Nula Murcha Cega Rasa e Pura e Crua Cega Baça Fria. Identifica a única frase e ou de de ou a linha mestre exata clínica laboratorial e médica segura fina nua livre sã clara verdadeira reta sólida e direta do e a opção e e e em que de de e de onde a o a que de o ar de onde a do a da que de onde a do e e de de a onde da da da o a a das e as que se as que não as e não as que as não tem de de tem nenhuma de falhas nem de mentiras em nenhuma das ligações de GÁS TRANSPORTE DE VIA ORGANELO e de Mosaico Cego de Sangue Vida Limpa Suada Cega Pura Cega e Nua Morna Doce Limpa Suada Seca Rala Fria Suave Murcha Murcha Lenta Morna Mole Doce Suave Branda Base Rasa Fraca Cega do Mudo Mudo Chato Oco do Fio Raso Raso Seco Baço Podre Podre Murcha Nula e Morta Oca Nula Murcha Oca do Fim Raso Frio Falso Ralo Baço Baço Vazio Baço Falso Cego Nulo Morto Fio Raso Raso Frio Limpo Puro Limpo Certa Limpa Pura Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?",
+                options: ["INSPIRAÇÃO: Diafragma Sobe Contrai Solta Nulo Lento Doce de Vazio e o de Gás O2 Ativo ATP Rápido Entra. // HEMATOSE: É o Fígado a de o Lúgubre a Lúgubre de A Puxar CO2 Verde Lento.", "TRAQUEIA: Cega de Vidro Oco Suado Nulo // ALVÉOLO: Grosso Bife Gordo Cego Nu Nu Sujo Frio Frio Podre Oco Mudo. // BRÔNQUIO: Raiz da Erva Flora Limpa Podre e Oca.", "INSPIRAÇÃO (Entrada Suja Fofa de Fofa Cega Fria Cega Oca Murcha Pura Reta Exata do ATP Ativo Mitocondrial Gasto Muscular Ativo Forte Forte e de Vácuo Frio Lento Fofo Limpo Puro Limpo Clara): Diafragma Desce Contrai Ativo Baixo -> Pressão Cai Sugadora Baixa Abaixa Fica Rala Negativa Menor Que Ar Que a Atmosfera Cega Fora e Vazia Cega Limpa Lúgubre do Meio Meio Meio e Meio Aéreo --> Ar de Rua Cega Solta Vazia Flui do Muito de Fora para Puxado para a Ladeira Dentro Menor. // HEMATOSE (Troca Pulmonar Magia Orgânica Sangue Alvéolo Vida Dura Viva Dura Certa Mestre Viva Pura Certa): Oxigênio O2 Doce Vivo Cru Pula Passivo Livre Livre Nulo sem Gasto sem Energia Ativa Passivo Lento Livre de Gás Frio do Poro Livre Gás Cego Difuso Natural de Difusão e Mestre do Simples Limpa Lógica Pura Fina Nua Fria Exata O2 Puro Sangue da da O2. ", "EXPIRAÇÃO: Sangue de Sangue Vermelho Seco Raso Calmo Morno Suave de Doce Cego Doce Falso Falso Mudo Oco Mudo Podre Cego Cego Sujo Podre Falso Oco Frio Limpo Morto Nu Cego Morto Morto Cego Cego Frio Frio Oco." ],
+                correct: 2,
+                explanation: {
+                    correct: "A tabela periódica da Fisiologia Respiratória Plasmática Exata Letal Fria Pura de Alfa Biológico Imaculado Reta Direta! A mecânica: Inspira, Gasta Bateria Músculo Nervo Contrai Ativa Força Ativa Diafragma chuta Baixo para o fundo ventre chão e e Costela de Peito Cima deita fora de puxa sobe e ele expande o espaço abre o o volume cresce. Pressão de Física e Boyle e de Oco Fofo Lento Baço e Boyle desce afunda negativa vácuo de chupar suga. Ar obedece lei de pressão gasosa nula chata cega doce pura fina fina livre entra de sopro nulo raso vazio e entra do sol solta doce livre sujo gordo oco de limpo morno. E nas bolhas no fininho no fim da na linha (Alvéolo Capilar Pálido Doce Cego e Limpo Cego Limpo Clara), a troca a mágica (Hematose Sanguínea Fina Cega e Clara Reta) ocorre grátis de graça passiva de lei livre da de difusão de moléculas puras de gás de lei de pressão parcial O2 livre simples simples livre livre fina clara pura exata.",
+                    options: [
+                        "Falso da física pleural rústica. Na inspiração livre limpa clara cega, o diafragma que é piso pavimento atua em vetor descendente vetor caudal nulo raso chato de pó. Se subisse esmagava pulmão expirando forçado.",
+                        "Alvéolos não são de tecido gordo e bife músculo macro adiposo conjuntivo falso de suco morno, mas epitélio fino pavimentoso limpo de vida clara. A traqueia não é vidro cego mineral raso suado podre.",
+                        "Esta é a alternativa correta fisiológica metabólica ventilatória molecular de mecânica clínica da lei de trocas termodinâmicas exata sólida firme viva pura clássica letal mestre.",
+                        "Expiração e sangue tem relações interativas químicas da fisiologia de transporte circulação mas a frase dada espelha ficção fúnebre morta surreal literária poética rasa vaga falsa fútil lúgubre denso maciço longo e fino limpo vazia."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Médio",
+                text: "No que toca a digestão cega murcha rala morta longa e opaca fofa mole gorda oca de de oca rala murcha e o trato brônquico e de trajeto longo respiratório pulmonar animal crua direta pura e letal animal humana limpa doce fofa, qual é o principal componente orgânico fisiológico biológico do ar do gás cego baço calmo macio falso lento cego que o nosso bulbo raquidiano e carótida quimiorreceptora sistema nervoso tronco ponte cérebro alerta sistema defesa autônomo límbico base basal primário medular da base sã alerta de monitorização vigilante mestre afere verifica testa cega deteta controla analisa esquadrinha mede cheira escuta ouve afere deteta afere averigua investiga capta ativamente continuamente no cego fluído sangue no plasma para deita de dar ordenar comandar disparar apitar deitar ativar regular a e obrigar-te as e fazer aumentar forçar o ritmo de de o acelerar ou diminuir ofegar acalmar travar puxar ou soprar suar suar sujar o teu peito de costela da frequência e a a velocidade e do do ventilador da respiratória e o e ritmo cardiorrespiratório de vida plena suada morna limpa viva?",
+                options: ["Níveis Ricos Mudos Ocos Baços Vazios Mudos Puros Certos Doces de Açúcar Glicose Branca de Fria Neve e Cega Nula de Solo.", "A Deteção Falsa Lenta Murcha de Excesso Oco Nu Frio Mole Cego Liso Seco Fino Doce Doença Do Fio e Excesso Frio Frio de Luz de da Luminosidade Ocular Solar Radiante Murcha Baça Calma Cega Lisa da Terna Cega Vazia de Praia Do Sol Oco e Forte.", "Os Níveis Fortes e Tóxicos de Ácido Acidez Cega e Pura de e do Excesso e e Brutal Aumento e Subida Disparo Perigoso Mortal do Lixo Catabólico de Fogo Oxidativo Combustão de Krebs o Gás Dióxido de Carbono (Gás Lixo Resíduo Mortal Celular Cego de e de de CO2 CO2 Lixo CO2 de Excreção de Vida Sã Fria e Morna e e Veneno Frio Oco) e do Ácido (iões H+) livre e da de de Hidrogênio do Plasma Linfa Plasma e de Sangue da da Circulação Vascular e Vermelha Viva Oca de Sangue.", "A Temperatura Quente Doce Limpa Suave Branca Lisa Fria Cega Rasa Murcha Calma Murcha Mudo Lenta Mole Fria e Seca e Morta Fria de de de Ossos do Tórax Peito."],
+                correct: 2,
+                explanation: {
+                    correct: "A perfeição evolutiva de resposta sistêmica de pH ácido fisiológico base mestre clara letal pura viva densa e de química sã de biologia sã! O teu cérebro ('Sensor Bulbo Raquidiano Autônomo e de Sobrevivência') quase ignora cegamente nulo raso e cego fofo o a a tua falta nula fraca de e falta fina de carência de Oxigénio livre O2 O2. Ele não acorda a ofegar pelo O2! Ele tem pânico pavor aversão de letal alerta vermelho químico letal do e de perigo de morte quando e sempre a toda de e que e se que se tuas células queimam da glicose da da glicólise forte do trabalho gordo liso do ginásio muscular exercício corrida maratona esforço dor dor e choro dor, e ao deitarem libertarem muito 'Lixo' e muito Fumo Metabólico de Escapamento (o e o Gás CO2 lúgubre denso mudo livre limpo liso seco quente quente claro claro puro firme reta sólida da base). O excesso mortal e rápido agudo crônico de CO2 torna suja doente crua e forte viva clara plena e a torna a água do sangue num líquido tóxico perigoso venenoso de 'Sangue Muito Ácido' Químico (cai e desce e derruba o pH de equilíbrio basal alcalino fisiológico mestre). Como ele deteta a acidez forte de morte cega de CO2 de doente do H+, ele dispara o alarme para o nervo frênico motor para obrigar e bater o teu diafragma a acelerar o pistão ventilador e motor a bater muito muito rápido veloz ofegante para conseguir forçar atirar limpar expulsar chutar varrer limpar ventilar purificar exalar de expirar arfar expirar soprar esse fumo esse gás CO2 fora da da da vida murcha cega de tua barriga pulmão rua da traqueia livre e desimpedida pura de de e da da e da e do corpo. Magistral da sobrevivência animal base.",
+                    options: [
+                        "Isto estimula ilhotas pancreáticas a deitar mandar produzir bombear jorrar e cega de insulina gorda livre doce insulina, não dita e acorda e acorda pulsação ventilatória neurológica motora crânica diafragmática rápida respiratória de de de tórax e alvéolo vivo cego mudo cego de podre morno doce cego murcho lento baço sujo fofo fofo fofo sujo gordo oco de fofo e de de de frio de do de limpo de fofo",
+                        "Radiância e luz atua no pino da melatonina da glândula murcha pineal fofa rala cega suada falsa suada fina doce cega rasa morta seca de pó cego oco cego de retina ocular do do nervo craniano oco visual e não altera ou deteta afere ritmo respiratório diafragmático pneumático limpo de via pulmonar fofa.",
+                        "Esta é a alternativa correta brutal fisiológica anatômica metabólica respiratória mestre do reflexo ventilatório pulmonar clínico químico hematológico clara reta plena de de de regulação acidobásica letal geral e clássica pura fina fina exata densa rica de prova genial sã certa dura certa.",
+                        "Termorregulação rege suor glândula sudorípara hipotálamo diencéfalo base livre livre de de pele de derma da derme ar calmo cego mudo cego seco suado de poro e arrepio cego tremor músculo, e não é o gatilho inicial focado crônico de disparo central pontino do bulbo basal raquidiano e carotídeo para do drive e o e de disparo de drive impulso primário letal drive ventilatório respiratório cego de rústico forte orgânico sã vida."
+                    ]
+                }
+            },
+            {
+                id: 26, level: "Difícil",
+                text: "Síntese Letal Fria Pura de Alvéolo Mudo Cego Raso Falso Suado Morno Quente Frio Limpo Mudo Podre Cego Suado Oco Cego Liso Calmo Morno Suado Lúgubre Oco Frio Morto Oco Baço Falso Morno Livre Mole Calmo de Doente Seco Cego Murcho Ralo Doce Cego Frio Nulo Falso Cego Mudo Frio Lento Frio Falso Ralo Doce Cego Fio Baço Murcho Murcha Lenta Murcha Falsa e Falsa Nula Fria Seca de Sol Rala Nula Branca Fria Cega Murcha Rasa E Fria Nula Cega Fria Suja Fina Nua Fina Doce Oca Cega Falsa Nula Murcha Grossa Fria Rala Podre Mole Fria Falsa Rasa e Longa Morna Falsa Cega Cega Rala Seca Morta e Cega Quente e Suada Baça Baça Falsa Rala Fria Suave Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte. Base Cega Oca Murcha Pura Reta Exata do ATP Mitocondrial Quente do Açúcar Queimado do Metabolismo Animal Vegetal de Base Forte Genial Limpa Fria Terna e Densa Reta Pura Limpa Limpa Limpa e Limpa e Crua Cega Fria Cega Limpa Limpa Limpa Certa Certa Dura Falsa Fria Cega Limpa Certa Limpa Pura Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?",
+                options: ["EXPIRAÇÃO: Diafragma de Osso Rijo Fio Cego Falso Falso e Osso Cego Cego Murcho Lento Morno Mudo Frio Lento Frio Oco Raso Cego Oco Ralo Falso Cego Mudo Frio Murcho Mole Baço Limpo Pálido Doce Suave e de Costela Fria Oca Morta de Madeira Tensa e Densa Morte Plena Limpa Cai Cega Seca Rala Fria Morna Murcha Cega Rasa Pura Crua Cega Baça Fria.", "HEMATOSE: Os Tubarões Gatos Cobras Cobras Feias Cegos Lentos Ocos Ocos Cegos Brutos Doentes Brancos Cegos Mudos Lentos Moles Frios Secos de Vidro Pálido Doce Limpo Podre Morto Seco Ralo Baço Baço Lento Mudo Suado Lúgubre Suave Seca de Pau Morto Raso Ralo Oco Mudo Podre Mudo e Seca de Areia Fofa Cega Falsa Nua Morna Doce Oca Rasa Morta Rala de Água.", "O ALVÉOLO: Pura Membrana Fina Simples Pura Exata Letal Mestre Viva Sã Pavimentosa Terna Cega Reta Rica De Cristal Plástico Doce (Uma de de Espessura Uma Célula Só 1 Limite Micro Nu Raso Pura De Escama Viva Mole Base Plena Orgânica Fisiológica Fina e Celular). Permite Que O Gás Que O Vento O Oxigênio Ar O2 O2 O2 Flua E Escape Voe Vaze Passe Passe Entre de Fuja de de Rua Alvéolo Alvéolo Passivo Por Passivo Nulo Cego Simples Livre Nulo Cego Magno Difusão Exata Reta Difusão De Concentração Lei Da Natureza Passiva Difusão Simples Livre Passiva Simples Sem Nula Sem Nenhum Absolutamente De Desgaste Consumo Bateria Custo E ATP (Sem e De Gasto e Fio Sem ATP Celular Cego de Mitocondria Viva Plena).", "A TRAQUEIA: Gasta Cega Limpa Bateria Oca Bateria Dura de Vida Bateria Doce e Morna Fria Lenta Murcha Doce Cega Baça Cega Oca Cega Fria Mole Lisa Vazia Murcha Morna Falsa Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte Base de Vida Rica Pura de Vida Seca Morta e Cega Quente e Suada Baça Baça Falsa Rala Fria Suave Nula Branca Fria Cega E Suja Grossa." ],
+                correct: 2,
+                explanation: {
+                    correct: "A biologia mágica e e genial e e livre e fina e e doce e fina e pura e sólida da e difusão! É nulo e passivo grátis puro livre! Difusão Simples Passiva Hematose Base Clara Mestre. ",
+                    options: [
+                        "Falso.",
+                        "Falso.",
+                        "Esta é a alternativa correta.",
+                        "Falso."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Médio",
+                text: "No que toca a digestão cega murcha rala morta longa e opaca fofa mole gorda oca de de oca rala murcha e o trato brônquico e de trajeto longo respiratório pulmonar animal crua direta pura e letal animal humana limpa doce fofa, qual é o principal componente orgânico fisiológico biológico do ar do gás cego baço calmo macio falso lento cego que o nosso bulbo raquidiano e carótida quimiorreceptora sistema nervoso tronco ponte cérebro alerta sistema defesa autônomo límbico base basal primário medular da base sã alerta de monitorização vigilante mestre afere verifica testa cega deteta controla analisa esquadrinha mede cheira escuta ouve afere deteta afere averigua investiga capta ativamente continuamente no cego fluído sangue no plasma para deita de dar ordenar comandar disparar apitar deitar ativar regular a e obrigar-te as e fazer aumentar forçar o ritmo de de o acelerar ou diminuir ofegar acalmar travar puxar ou soprar suar suar sujar o teu peito de costela da frequência e a a velocidade e do do ventilador da respiratória e o e ritmo cardiorrespiratório de vida plena suada morna limpa viva?",
+                options: ["Níveis Ricos Mudos Ocos Baços Vazios Mudos Puros Certos Doces de Açúcar Glicose Branca de Fria Neve e Cega Nula de Solo.", "A Deteção Falsa Lenta Murcha de Excesso Oco Nu Frio Mole Cego Liso Seco Fino Doce Doença Do Fio e Excesso Frio Frio de Luz de da Luminosidade Ocular Solar Radiante Murcha Baça Calma Cega Lisa da Terna Cega Vazia de Praia Do Sol Oco e Forte.", "Os Níveis Fortes e Tóxicos de Ácido Acidez Cega e Pura de e do Excesso e e Brutal Aumento e Subida Disparo Perigoso Mortal do Lixo Catabólico de Fogo Oxidativo Combustão de Krebs o Gás Dióxido de Carbono (Gás Lixo Resíduo Mortal Celular Cego de e de de CO2 CO2 Lixo CO2 de Excreção de Vida Sã Fria e Morna e e Veneno Frio Oco) e do Ácido (iões H+) livre e da de de Hidrogênio do Plasma Linfa Plasma e de Sangue da da Circulação Vascular e Vermelha Viva Oca de Sangue.", "A Temperatura Quente Doce Limpa Suave Branca Lisa Fria Cega Rasa Murcha Calma Murcha Mudo Lenta Mole Fria e Seca e Morta Fria de de de Ossos do Tórax Peito."],
+                correct: 2,
+                explanation: {
+                    correct: "A perfeição evolutiva de resposta sistêmica de pH ácido fisiológico base mestre clara letal pura viva densa e de química sã de biologia sã! O teu cérebro ('Sensor Bulbo Raquidiano Autônomo e de Sobrevivência') quase ignora cegamente nulo raso e cego fofo o a a tua falta nula fraca de e falta fina de carência de Oxigénio livre O2 O2. Ele não acorda a ofegar pelo O2! Ele tem pânico pavor aversão de letal alerta vermelho químico letal do e de perigo de morte quando e sempre a toda de e que e se que se tuas células queimam da glicose da da glicólise forte do trabalho gordo liso do ginásio muscular exercício corrida maratona esforço dor dor e choro dor, e ao deitarem libertarem muito 'Lixo' e muito Fumo Metabólico de Escapamento (o e o Gás CO2 lúgubre denso mudo livre limpo liso seco quente quente claro claro puro firme reta sólida da base). O excesso mortal e rápido agudo crônico de CO2 torna suja doente crua e forte viva clara plena e a torna a água do sangue num líquido tóxico perigoso venenoso de 'Sangue Muito Ácido' Químico (cai e desce e derruba o pH de equilíbrio basal alcalino fisiológico mestre). Como ele deteta a acidez forte de morte cega de CO2 de doente do H+, ele dispara o alarme para o nervo frênico motor para obrigar e bater o teu diafragma a acelerar o pistão ventilador e motor a bater muito muito rápido veloz ofegante para conseguir forçar atirar limpar expulsar chutar varrer limpar ventilar purificar exalar de expirar arfar expirar soprar esse fumo esse gás CO2 fora da da da vida murcha cega de tua barriga pulmão rua da traqueia livre e desimpedida pura de de e da da e da e do corpo. Magistral da sobrevivência animal base.",
+                    options: [
+                        "Isto estimula ilhotas pancreáticas a deitar mandar produzir bombear jorrar e cega de insulina gorda livre doce insulina, não dita e acorda e acorda pulsação ventilatória neurológica motora crânica diafragmática rápida respiratória de de de tórax e alvéolo vivo cego mudo cego de podre morno doce cego murcho lento baço sujo fofo fofo fofo sujo gordo oco de fofo e de de de frio de do de limpo de fofo",
+                        "Radiância e luz atua no pino da melatonina da glândula murcha pineal fofa rala cega suada falsa suada fina doce cega rasa morta seca de pó cego oco cego de retina ocular do do nervo craniano oco visual e não altera ou deteta afere ritmo respiratório diafragmático pneumático limpo de via pulmonar fofa.",
+                        "Esta é a alternativa correta brutal fisiológica anatômica metabólica respiratória mestre do reflexo ventilatório pulmonar clínico químico hematológico clara reta plena de de de regulação acidobásica letal geral e clássica pura fina fina exata densa rica de prova genial sã certa dura certa.",
+                        "Termorregulação rege suor glândula sudorípara hipotálamo diencéfalo base livre livre de de pele de derma da derme ar calmo cego mudo cego seco suado de poro e arrepio cego tremor músculo, e não é o gatilho inicial focado crônico de disparo central pontino do bulbo basal raquidiano e carotídeo para do drive e o e de disparo de drive impulso primário letal drive ventilatório respiratório cego de rústico forte orgânico sã vida."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Difícil",
+                text: "O Mito Fatal Letal Obscuro Cruel Frio de Rasteira Suprema Citológica Biológica Mundial Médica que Faz Chocar Rir Estremecer o Perito Examinador: O Fígado Gordo Quente Orgânico Hepático de Sangue de Depuração Central Laboratório Mestre (O Super Órgão Anexo Fiel da Morte Cega) Fabrica e Destila e Suga Bota Baba e Frita Sangra Excreta um suco fluido líquido orgânico denso verde pântano grosso mudo letárgico escuro morno macio fofo fofo suave de sabão viscoso espesso letal chamado 'BÍLIS' (Bíle Suja Doce Rala). Essa Bílis fica Cega Escondida Guardada Depositada Armazenada Acumulada Presa Segura Pura Rica Fresca Morna Oca na pequena bolsa colada agarrada por debaixo verde da pele lisa dele (A VESÍCULA BILIAR) antes de ser atirada cuspidada jorrada esvaziada para o intestino doente e cego quente de refeição gordurosa de pão e azeite liso. Identifica a ÚNICA frase Imaculada Limpa Certa Biológica Falsa Verdadeira Lógica Científica Cirúrgica Crua Mestra Dura Reta Limpa Fria e Viva Rija que diz a Função Genial Total e Reta da Bílis Suja Escura:",
+                options: ["A Bílis é a Maior Enzima de Ácido Forte Que Existe e Desfaz Pedaços e Corrói Todos os Vírus Ocos Mudos Baços Pálidos Claros Gordinhos Rústicos de Pedaços de Carne Forte Densa Clara Oca.", "A Bílis NÃO É UMA ENZIMA. É mentira chamar enzima do doente e e e de de a Bílis cega cega. Ela atua apenas como um DETERGENTE DE LOUÇA DA COZINHA (Emulsificante Físico Emulsionante Mestre Sabão Químico Frio Cego). Ela vai à gota gorda imensa balão de gordura do azeite pão toucinho gordo gordo mole macio branco podre de e de de banha crua limpa suada lenta oca e, tal como tu lavas os pratos com detergente para separar separar partir separar dividir desmanchar a nodoa crosta gorda inteira em mini esferas microscópicas (Mecânico Físico Mole de de de Espuma Bolhas Doces Lúgubres Ocas e Finas Fofas Sujas Ocas Brancas Gordas Calmas Limpas e Murchas Fofas Finas). Assim, as gotas minúsculas ganham superfície farta limpa limpa e a verdadeira e a e a do do enzima a Enzima Pancreática Pura do (Lipase Enzima Mestra Corte Cega Lisa de Lise Final Fina Dura) pode cortar comer engolir e absorver digerir e estilhaçar sem ser repelida da água falsa doente fraca limpa podre falsa oca nula de lixo.", "A Bílis atira ar fofo doce gasoso e voa no lixo mudo raso lento de pó frio de cal mudo murcho vazio falso podre seco oco calmo lento podre e mudo sujo vazio limpo liso seco.", "O Fígado absorve a comida do estômago limpo podre limpo limpo de lúgubre morto oco calmo lento fofo fofo sujo gordo oco raso mole lento calmo fresco sujo doce frio e calmo mudo cego falso."],
+                correct: 1,
+                explanation: {
+                    correct: "Decora isto e salvas-te e salvas a tua alma e prova e corpo do desastre ignorante geral: A BÍLIS NÃO É UMA ENZIMA e não FAZ DIGESTÃO QUÍMICA de partir ligações poliméricas covalentes peptidicas lipídicas macromoleculares ralas ralas frias mortas nulas baças cegas falsas de osso osso osso suado. Ela é apenas SABÃO. Se o azeite do bife não se mistura com a água do estômago intestino mole calmo suado morno longo calmo cego mudo cego de tripa fina, como é que as enzimas líquidas de água iam atuar na bola e balão fofo espesso de banha gordurosa espessa sem resvalar e escorregar inúteis cegas vazias fracas lentas ocas ralas macias mortas frias fofas murchas murchas cegas cegas de gelo de osso longo de pau morto e cego podre baço mole mudo raso sujo? A bílis parte mecanicamente fisicamente a gota grande em milhões de nano-gotinhas fininhas emulsionadas emulsificadas. Assim a verdadeira enzima da lise (Lipase do Pâncreas Mestre) ataca-as e destrói o lípido! O Fígado salva a Lipase Mestra Verde Limpa Cega Plena Direta Exata Seca de Gordura Cega Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte.",
+                    options: [
+                        "Falso, já dissemos mil vezes que não é enzima química proteica catabólica molecular letal clara de de base.",
+                        "Esta é a alternativa correta brutal química laboratorial de físico química orgânica de surfactantes saponificação letal clínica gástrica perfeita maciça viva pura imaculada certa densa mestre forte rija.",
+                        "Sintoma falso e assustadoramente biológico irreal da ecologia de fantasia do mudo nulo ralo mole de vento cego morto baço do sol de pântano.",
+                        "O fígado NÃO absorve no intestino o o quilo quimo azeite e batata pão e queijo gordo maciço carne viva fina e de osso gordo baço suado mole cego mole doce limpo de veia viva. Ele só deita e lança a bilis verde suco canal fora no duto calmo de canal."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Médio",
+                text: "No epicentro e clímax da Digestão Intestinal, o Intestino Delgado Fino Tubo não é um tubo de PVC plástico limpo liso escorregadio careca liso limpo liso reto brilhante puro sem rugas polido morno macio e falso lento fofo cego mole de cano esgoto morto opaco baço raso falso oco e nulo da urina calmo. O interior do seu canal parede epitélio mucosa tecido carne tecido derme forro fofo sujo oco rosa lúgubre branco vermelho carne sangue farto limpo liso morno suado rico longo longo denso forte de vácuo está forrado coberto pejado apinhado densamente farto cheio suado de milhões de projeções minúsculas dobras evaginações de pregas pele fina doce macia dedos pequenos tapete tecido vivo mestre chamadas de 'VILOSIDADES INTESTINAIS' (e por cima delas microvilosidades microscópicas puras ricas cruas base). Qual é o milagre ou a função genial estrutural orgânica física matemática biológica pura letal fina direta destas dobras de tapete peludo de veludo animal falso livre morno quente doce mole livre frio raso cego falso mudo lúgubre denso mudo mudo de do do do?",
+                options: ["As dobras Vilosidades só servem para travar travar travar segurar deitar atrasar ascaris lombrigas ténias helmintos que querem escorregar rápido sujo gordo oco de pântano suado farto cego.", "Elas não de têm função lúdica de biologia inútil falsa cega cega fina fria de gelo solta solta rica doce rasa e murcha.", "Ao estar enrugado forrado esburacado feito em dedos pregas picos pelos fios longos fios em zigue zague sujos brancos falsos cegos, ele AUMENTA BRUTAL E MASSIVAMENTE MACIÇO A ÁREA (Superfície Espacial Orgânica de Contacto Superficial Física Celular Ampla e Tensa Mestre Larga) com a comida quimo líquido digerido gordo doce limpo doce cego ralo baço falso e ralo. Em vez de uma parede lisa ineficiente curta que perdesse deixasse fugir fezes a comida fofa e pura, a parede em 'dedos infinitos' capta filtra bebe chupa devora puxa atrai e ABSORVE incansavelmente milhares e mil vezes mais de nutrientes sucos açúcares glicose vitaminas para o Sangue Veia Cega Nula Base Lenta Murcha Sangrenta Direta da Capilar do Interior Cru Animal Viva Dura Dura Certa e Reta Genial do Corpo Viva Pura Fina.", "As vilosidades dão oxigénio gasoso o2 o2 ao bolo fecal verde cego do lúgubre cego do estômago lúgubre denso mudo calmo."],
+                correct: 2,
+                explanation: {
+                    correct: "Aumentar a superfície de absorção! É a lei dos pulmões (alvéolos em sacos de framboesa bagos de romã minúsculos para ter espaço para passar gás O2 ar rico) e a lei das tuas tripas finas (milhões de pelinhos tapete dobras esfregona cega murcha rala cega suja fina para haver espaço milimétrico físico celular quadrado área de metro cúbico vasto imenso enorme de derme encostado colado para sugar chupar transferir os aminoácidos limpos e doces e fortes puros de vida base sã e rica de bife sangue leite doce carne pão). Se o teu intestino fosse de tubo esticado careca reto liso canal de mangueira liso puro e do cego oco raso limpo, terias de ter e de arrastar 200 metros de tripas de víscera animal falsa solta gorda e quente na barriga de homem para a absorver o de mesmo nutriente que absorves hoje e de na de hora exata letal limpa de base.",
+                    options: [
+                        "Não são armadilhas mecânicas defensivas antiparasitárias zoológicas cegas nulas de de caça de tênias mortas limpas brancas velozes densas finas doces.",
+                        "A biologia detesta e nega desperdício anatômico ineficiente frouxo mudo gasto limpo nulo oco de nulo cego doente calmo podre gordo sujo de fofo e de de limpo inerte nulo inócuo sem base de seleção evolutiva letal limpa e direta clara de mestre e puro exato solto reto.",
+                        "Esta é a alternativa correta brutal citológica funcional histológica base pura clara e imaculada e genial de laboratório reta e densa mestre e forte limpa plena suprema fina pura certa e dura.",
+                        "Digestório gástrico canal não ventila gás oxigénio aéreo gasoso leve limpo incolor transparente do sol e vento do mato para o sangue veia hemácia celular exato de biologia alveolar letal respiratório e claro."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Fácil",
+                text: "Onde Termina o Trabalho Mestre Fisiológico Anatómico Digestório Bioquímico Molecular Celular Pleno Orgânico Exato Directo Firme Forte Limpo E Sólido Seguro Rijo Limpo Lento Sujo Cego Morto Pálido Vazio Morto Calmo De Sangue Falso Nulo E Falso Cego E Limpo Da Desmontagem E Absorção Farta De Da Água E Sais E E Restos Lixo Resíduo Excreção Do Almoço Farto Quente Base Fina Cega Nua Mole Pálida Rasa De Murcha Murcha Rasa Murcha Rasa Lenta Rasa Baça Morta Pálida Rasa? No final, a massa liquida rala oca rala mole e chata vinda dos Intestinos Delgados Finos passa entra e deposita esvazia acumula e viaja transita cega mole falsa nula limpa no tubo mais sujo gordo oco raso morto e grosso tubo lúgubre denso mudo grosso chato e cego da do trato gástrico animal humano vivo mamífero cego oco cego falso mudo ralo de vida de limpa oca suada do pó cego cego fofo sujo gordo oco raso mudo liso cego morto morto morto.",
+                options: ["O Intestino Grosso Reto Ceco Cólon Denso Farto Grosso Gigante Espesso E Largo Curto Escuro Frio. A grande magia da vida química de desdobrar as enzimas orgânicas carne lípido de polímero açúcar já acabou limpa nua para trás limpo no fino duro cego oco doce murcho oco fraco e do de. O Grosso agora serve apenas e quase só primariamente e avidamente ferozmente intensamente ativamente maciçamente e de modo gigante para Recuperar Sugar Absorver Chupar Extrair Reaproveitar Reciclar Recolher De Volta ao Sangue de Vida Oca E Branca Pura Rica Da Barriga Da A Mega Grande Enorme Colossal Vital Quantidade De ÁGUA H20 LÍQUIDA FRIA e Minerais Sais De Minerais Cristal Solta Livre e Doce Oca Cega Fria E Suja De Cega Rasa Do Do Suco Pastoso Líquido Ralo Mole Pálido Doente Sujo Morto Que Sobrou de e da Massa e Formar Amassar Moldar Enrijar Juntar Endurecer e Desidratar A Lama Solta Fecal Suja e Criar Produzir Gerar Fabricar Construir As Fezes Sólidas Excrementos Resíduos Defecação Nula Lúgubre Exata Reta.", "O Coração Sangue De Neve Limpa Branca Murcha Suada Mole Doce Fria Rasa.", "Os Pulmões Traqueia Gás Aéreo Cego Ralo Fio Murcho Lenta Murcha Morta Murcha Rasa Falsa e Falsa Nula Fria Seca de Sol Rala Nula Branca Fria Cega.", "O Fígado Glândula Vesícula Mestre Cega Cega Rala Seca Morta e Cega Quente e Suada Baça Baça Falsa Rala Fria Suave Nula Branca."],
+                correct: 0,
+                explanation: {
+                    correct: "Simples, letal e a derradeira porta da ecologia digestiva exócrina entérica de evacuação suja cega nula e de raso mudo! O Intestino Grosso não gasta tempo e células e paciência a digerir e a quebrar cortar proteína carne cega pura lúgubre denso mudo calmo. A comida já está partida destruída e os nutrientes úteis açúcares de energia de glícidos finos lipídicos gordos já e entraram na grande autoestrada de lúmen fina vilosidade longa cega quente e livre de vida rasa fina forte. Mas... não queres deitar litros e litros infinitos e litros banho cego liso balão nulo fofo longo gordo baço calmo macio de H2O e da Água preciosa orgânica mineral essencial do corpo fora pelo cano da bacia vaso sanita sanitário limpo de esgoto cano sujo mole para baixo para a terra cega morte rasa fria morta pálida! O grosso, com a sua enorme rede e com as bactérias de flora flora microbiota (que ainda produzem a vitamina e k K essencial vital rica fina) puxa suga a suga chupa e de e aperta absorve a desidrata a massa o de bolo a água salva guarda e enxuga a a as tuas as a e do fezes fezes a terra sólida dura e e dura sólida mole de coco sólida dura limpo doce sujo mole sujo firme fina reta final.",
+                    options: [
+                        "Esta é a alternativa correta brutal de fisiologia histológica excretora fecal cega de base digestologia gástrica cega cega final dura fina limpa viva pura imaculada de teste geral suprema.",
+                        "Não tem função absorvedora de sais e humidade da matéria putrefata degradada fecal oca rala doente suada nua do do cólon lúgubre denso mudo.",
+                        "Pulmões limpam oxigénio venoso CO2 e oxigenação aérea alveolar fofa livre nua de de fina do oco raso limpo longo podre não lama digestiva de refeição sólida e cega gorda suja fina fria de vida rica.",
+                        "Fígado foi glândula anexa limpa do início que não se cruza não enche o bucho lúmen canal e e de matéria cega grossa cega murcha rala morta longa e opaca fofa mole gorda oca de fim reto anal final suado cego baço."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Raciocínio Pulmonar Aprovado!' : '❌ Ops! Asfixia Respiratória do Conceito:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>A Única Via Aberta Anatômica Certa Clara:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#082F49; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #BAE6FD; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Diagnóstico das Anomalias Líticas Apnéicas Ocas Murchas Falsas Erradas Vagas Cegos Frouxos Cegas Falsas:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício Ciano, Azul Escuro e Vermelho Sangue
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#0EA5E9', '#E11D48', '#0369A1', '#BAE6FD']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#0EA5E9', '#E11D48', '#0369A1', '#BAE6FD']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Relatório Pulmonar Pleural e de Gasometria Sangue Arterial Forte";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar na Mecânica Inspiratória Ativa Crua e Limpa";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Oxigenaste a mente e destruíste a ignorância anóxica em ${correct} de ${questions.length} mitos biológicos rasos.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Asfixia Intelectual Aguda Detetada Sangrenta Murcha Lenta Doente Cega e Lúgubre Oca Cega Falsa Nula Fraca Fria Rala!</strong> O teu sistema respiratório lógico cerebral bloqueou engasgou na laringe oca suada oca da rasteira falaciosa. Atingir 80% (24 acertos) é obrigatório nesta prova vital orgânica forense médica pura. Saneamento mental urgente com máscara de oxigênio de O2 O2 O2 O2 ATP Mitocondrial Letal de Terapia Curativa: Lê a Teoria Anatômica Biológica e limpa as vias sujas de muco cego e lúgubre denso mudo calmo antes de repetires o Exame Ventilatório Pleno!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Reconstruir Volume Pleural Respiratório Torácico Liso (Refazer Prova de Fôlego)</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Capacidade Vital Pulmonar Total de Ouro Alfa Imaculada Mestre e de 100% Viva Plena Rica Forte Direta Sã Clara Brilhante Sólida e Pura Dura Segura!</strong> Sabes a diferença milimétrica biológica anatômica letal fisiológica química termodinâmica entre engolir um bife de vaca de carne osso músculo gordo sujo na garganta lúgubre rústica nula murcha e inspirar gás gás oxigênio livre ar limpo solto puro na e laringe faringe do tubo do esófago. A tua análise pneumológica clínica médica de urgência está blindada perfeita exata sem falhas. O ar e a física de Boyle pressões pressões não têm e não de de nenhum de mudo cego de nenhum não de de segredo ralo ou de para o teu de de cérebro de lúgubre oco e para o cérebro de de teu a de cérebro cérebro lobo de ar e de cérebro lobo bulbo bulbo o teu a e de do cérebro de do cérebro do do de cérebro do cérebro bulbo bulbo do cérebro de bulbo lúgubre raquidiano! Estás pronto para vencer!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Inspecionar a Grelha Costal de Gasometria Alveolar Novamente</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Forense das Anomalias Ventilatórias Cegas Lentas Frias Ocas Nulas Mortas Lentas Murchas Cegas Rasa Murchas Lentas Falsas (Falhas do Fole e da Lei Biológica de Gases Difusos):</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">O teu Mito Sufocante Oco Lógico Perigoso Lógico e Morto Inerte Nulo Cego e Raso Frouxo: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">A Verdade Pulmonar Anatômica Mecânica Termodinâmica Fisiológica Fina Molecular Bruta Limpa Direta e Pura Absoluta Viva Quente Biológica Real Clara: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verminoses - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-HELMINTO (Carne/Bordeaux & Castanho Solo) */
+            --bg-color: #FFF1F2; /* Rosa muito claro (Carne) */
+            --text-color: #4C0519; /* Bordeaux muito escuro */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #FECDD3; /* Rosa Pastel */
+            --theme-medium: #F43F5E; /* Vermelho/Rosa Forte */
+            --theme-dark: #9F1239; /* Bordeaux Escuro */
+            --theme-contrast: #92400E; /* Castanho Ocre (Solo/Fecal-Oral) */
+            --theme-accent: #0D9488; /* Ciano Escuro (Saneamento/Saúde) */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#fecdd3 1px, transparent 1px), linear-gradient(90deg, #fecdd3 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #9F1239;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #92400E;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #FFFBEB; /* Âmbar suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #78350F;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #9F1239; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #FCA5A5; line-height: 1.5; color: #4C0519; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🪱</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Verminoses: Os Parasitas Multicelulares</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Ténia)">
+            </div>
+            <div id="no-results"><p>😕 Nenhum parasita encontrado com essa palavra.</p></div>
+
+            <!-- TÓPICO 1: O QUE SÃO HELMINTOS? -->
+            <div class="content-group">
+                <div class="section-badge">🧬 1. Animais Invertebrados</div>
+                <div class="theory-box search-target">
+                    <h3>Platelmintos vs Nematelmintos</h3>
+                    <p>Ao contrário dos vírus, bactérias e protozoários, os "vermes" são <strong>ANIMAIS</strong> (Reino Animalia). São pluricelulares e visíveis a olho nu. Na medicina e ecologia, chamamos a estes vermes parasitas de <strong>Helmintos</strong>.</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding:0; background:transparent; border:none;">
+                        
+                        <div style="background:white; border:2px solid var(--theme-dark); padding:10px; border-radius:8px; text-align:center;">
+                            <h4 style="color:#9F1239; font-size:1rem; margin-bottom:5px;">Platelmintos</h4>
+                            <svg width="100" height="60" viewBox="0 0 100 60">
+                                <!-- Verme achatado (Ténia) -->
+                                <path d="M 10 30 Q 30 10 50 30 T 90 30" fill="none" stroke="#F43F5E" stroke-width="8" stroke-linecap="round"/>
+                                <circle cx="10" cy="30" r="6" fill="#9F1239"/> <!-- Escólex -->
+                                <!-- Linhas de segmentação (proglótides) -->
+                                <line x1="25" y1="23" x2="25" y2="37" stroke="#000"/><line x1="40" y1="18" x2="40" y2="33" stroke="#000"/>
+                                <line x1="60" y1="28" x2="60" y2="42" stroke="#000"/><line x1="75" y1="25" x2="75" y2="38" stroke="#000"/>
+                            </svg>
+                            <p style="font-size:0.75rem; margin:0;">Vermes de corpo <strong>achatado</strong> (como uma fita). <br>Ex: Ténia, Esquistossoma.</p>
+                        </div>
+                        
+                        <div style="background:white; border:2px solid var(--theme-contrast); padding:10px; border-radius:8px; text-align:center;">
+                            <h4 style="color:#92400E; font-size:1rem; margin-bottom:5px;">Nematelmintos</h4>
+                            <svg width="100" height="60" viewBox="0 0 100 60">
+                                <!-- Verme cilíndrico (Lombriga) -->
+                                <path d="M 10 40 Q 40 5 70 40 T 95 30" fill="none" stroke="#D97706" stroke-width="6" stroke-linecap="round"/>
+                            </svg>
+                            <p style="font-size:0.75rem; margin:0;">Vermes de corpo <strong>cilíndrico</strong> (como um fio ou macarrão). <br>Ex: Lombriga, Oxiúros.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: HOSPEDEIROS -->
+            <div class="content-group">
+                <div class="section-badge">🏠 2. A Morada do Parasita</div>
+                <div class="theory-box search-target">
+                    <h3>Hospedeiro Intermediário vs Definitivo</h3>
+                    <p>Muitos helmintos têm ciclos de vida complexos que exigem dois animais diferentes para se desenvolverem. Não confundas os conceitos:</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Hospedeiro Intermediário:</strong> É onde o verme se desenvolve na sua fase de <strong>larva</strong> ou faz reprodução assexuada.</li>
+                        <li><strong>Hospedeiro Definitivo:</strong> É o "objetivo final". É onde o parasita atinge a fase <strong>adulta</strong> e faz a reprodução sexuada (produzindo ovos).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: PLATELMINTOS FAMOSOS -->
+            <div class="content-group">
+                <div class="section-badge">🥩 3. O Perigo da Carne Ténia</div>
+                <div class="theory-box search-target">
+                    <h3>Teníase vs Cisticercose (A Rasteira Clássica)</h3>
+                    <p>A Ténia (Bicha-solitária) é um platelminto gigante (até 8 metros) que vive no intestino humano. O ser humano é o <strong>Hospedeiro Definitivo</strong>. Mas há duas doenças diferentes causadas pelo mesmo bicho!</p>
+                    
+                    <div class="visual-area" style="flex-direction:row; gap: 15px;">
+                        <!-- TENÍASE -->
+                        <div style="background:white; border:2px solid #9F1239; padding:15px; border-radius:8px; width:45%;">
+                            <h4 style="color:#9F1239; text-align:center;">TENÍASE</h4>
+                            <ul style="font-size:0.8rem; padding-left:15px; margin-top:10px;">
+                                <li><strong>Como apanhas?</strong> Comendo <strong>CARNE mal passada</strong> de porco (T. solium) ou vaca (T. saginata) que tenha a larva (Cisticerco) no músculo.</li>
+                                <li><strong>O que acontece?</strong> A larva cresce no teu intestino, vira uma fita gigante e rouba a tua comida. Tu ficas doente e deitas ovos nas fezes.</li>
+                            </ul>
+                        </div>
+
+                        <!-- CISTICERCOSE -->
+                        <div style="background:white; border:2px solid #9F1239; padding:15px; border-radius:8px; width:45%;">
+                            <h4 style="color:#9F1239; text-align:center;">CISTICERCOSE</h4>
+                            <ul style="font-size:0.8rem; padding-left:15px; margin-top:10px;">
+                                <li><strong>Como apanhas?</strong> Bebendo água ou comendo saladas contaminadas com <strong>OVOS</strong> de Ténia de fezes humanas. (Tu assumes o papel do porco!).</li>
+                                <li><strong>O que acontece?</strong> O ovo choca no teu estômago, a larva perfura o sangue e aloja-se no teu cérebro (Neurocisticercose) ou olhos, causando convulsões graves.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: ESQUISTOSSOMOSE -->
+            <div class="content-group">
+                <div class="section-badge">🐌 4. A Doença do Caramujo</div>
+                <div class="theory-box search-target">
+                    <h3>Esquistossomose (Bilharsiose)</h3>
+                    <p>Outro platelminto, o <em>Schistosoma mansoni</em>, causa a doença conhecida como "Barriga-d'água" (porque destrói o fígado e incha o abdómen).</p>
+                    
+                    <div class="highlight-box">
+                        <strong>O Ciclo Aquático:</strong> A pessoa doente defeca perto do lago. Os ovos eclodem na água (larva miracídio) e entram num <strong>caramujo (hospedeiro intermediário)</strong>. Semifinalmente, saem do caramujo (larva cercária) e <strong>penetram diretamente na PELE do humano saudável</strong> que esteja a nadar na água doce contaminada (Lagoas de coceira). O humano é o hospedeiro definitivo.
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 5: NEMATELMINTOS -->
+            <div class="content-group">
+                <div class="section-badge">🚽 5. Os Cilíndricos da Sujidade</div>
+                <div class="theory-box search-target">
+                    <h3>Ascaridíase e Ancilostomíase</h3>
+                    <p>Os nematelmintos são cilíndricos. Não precisam de animais intermediários (têm ciclo direto).</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:10px;">
+                        <li><strong>Ascaridíase (A Lombriga):</strong> <em>Ascaris lumbricoides</em>. Apanha-se ingerindo <strong>ovos</strong> na água/comida suja (transmissão fecal-oral). O bizarro: a larva nasce no intestino, perfura o pulmão para respirar, sobe à garganta, tu engoles de volta, e só depois vira adulta no intestino!</li>
+                        <li><strong>Ancilostomíase (Amarelão):</strong> <em>Ancylostoma duodenale</em>. Ao contrário da lombriga, a larva do Amarelão <strong>penetra ativamente pela PELE dos pés descalços</strong> na terra. Vai para o intestino e suga o sangue com "dentes", causando anemia profunda na vítima (a pessoa fica fraca e amarela).</li>
+                        <li><strong>Oxiurose:</strong> Vermes pequeninos que causam intensa comichão anal noturna (quando as fêmeas vão pôr os ovos). As crianças coçam-se e metem as mãos na boca, reinfetando-se (autoinfeção).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar Diagnóstico Parasitológico (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">Microbiologia Aplicada</h2>
+                <p style="color: #92400E; font-size: 0.95rem; font-weight:600;">
+                    30 questões imperdoáveis sobre parasitas animais. Acerta <strong>80% (24/30)</strong> ou arriscas-te a ser devorado pelo desconhecimento! Lê a correção rigorosa de cada erro.
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Relatório Laboratorial</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS RIGOROSOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Conceitos Básicos e Taxonomia (1-5)
+            {
+                id: 1, level: "Fácil",
+                text: "Na classificação biológica, o que distingue fundamentalmente os 'helmintos' (vermes parasitas) das bactérias e protozoários que estudaste anteriormente?",
+                options: ["São microrganismos unicelulares.", "Fazem todos fotossíntese.", "São Animais (Reino Animalia), logo são seres pluricelulares e com tecidos complexos.", "Não possuem núcleo nas suas células (são procariontes)."],
+                correct: 2,
+                explanation: {
+                    correct: "Exatamente! O salto biológico: os vermes não são micróbios. São animais, com milhares ou milhões de células, músculos e sistema reprodutor complexo.",
+                    options: [
+                        "Animais são obrigatoriamente pluricelulares.",
+                        "Animais são heterotróficos.",
+                        "Esta é a alternativa correta.",
+                        "Sendo animais, são eucariontes."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Fácil",
+                text: "A biologia divide os grandes grupos de vermes parasitas humanos em dois filos principais, baseando-se na sua anatomia. Quais são?",
+                options: ["Anelídeos e Insetos.", "Platelmintos (corpo achatado) e Nematelmintos (corpo cilíndrico).", "Artrópodes e Moluscos.", "Vírus e Fungi."],
+                correct: 1,
+                explanation: {
+                    correct: "Correto! 'Platy' = chato; 'Nema' = fio/cilindro. É a diferença visual óbvia entre uma Ténia (fita plana) e uma Lombriga (esparguete redondo).",
+                    options: [
+                        "Anelídeos (minhocas/sanguessugas) têm corpo segmentado e raramente são endoparasitas humanos.",
+                        "Esta é a alternativa correta.",
+                        "Reinos/Filos completamente distintos anatómica e evolutivamente.",
+                        "Não são animais."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Médio",
+                text: "No estudo dos ciclos de vida dos parasitas, qual é a definição científica e rigorosa de 'Hospedeiro Definitivo'?",
+                options: ["O animal onde o parasita morre.", "O animal que é o maior de tamanho no ciclo.", "O organismo no qual o parasita atinge a maturidade sexual e realiza a reprodução sexuada.", "O organismo onde o parasita vive temporariamente apenas como larva."],
+                correct: 2,
+                explanation: {
+                    correct: "A reprodução dita a regra! Se o verme põe ovos (reprodução sexuada adulta) dentro de ti, tu és o Hospedeiro Definitivo. Se ele só usar o teu corpo para crescer (larva), és o Intermediário.",
+                    options: [
+                        "A morte do parasita não define o papel ecológico.",
+                        "O tamanho físico do hospedeiro não importa.",
+                        "Esta é a alternativa correta.",
+                        "Essa é a definição de Hospedeiro Intermediário."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Médio",
+                text: "A maioria das verminoses intestinais mais comuns no mundo prolifera devido à transmissão de tipo 'Fecal-Oral'. O que significa esta expressão, desprovida de eufemismos?",
+                options: ["Significa que o parasita se espalha pelo beijo na boca.", "Significa que ovos ou cistos do parasita, expelidos nas fezes de uma pessoa doente, acabam por contaminar a água ou a terra, sendo posteriormente ingeridos (pela boca) por uma pessoa saudável.", "Significa que a doença ataca o estômago e os pulmões.", "Significa que a transmissão ocorre apenas pela picada de mosquitos."],
+                correct: 1,
+                explanation: {
+                    correct: "É a realidade dura da falta de saneamento básico. Se os esgotos não são tratados, a água da chuva leva as fezes humanas para o rio, onde o agricultor rega a alface que tu comes crua.",
+                    options: [
+                        "Isso seria transmissão salivar.",
+                        "Esta é a alternativa correta.",
+                        "Refere-se ao percurso de entrada, não aos órgãos-alvo finais.",
+                        "Isso é transmissão por vetor (como a Malária)."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Fácil",
+                text: "Qual é a diferença visual e anatómica fundamental entre um Platelminto (ex: Ténia) e um Nematelminto (ex: Lombriga)?",
+                options: ["O platelminto tem patas, o nematelminto não.", "O platelminto tem o corpo achatado (forma de fita), enquanto o nematelminto tem o corpo cilíndrico e tubular.", "O platelminto voa, o nematelminto rasteja.", "Não há diferença, são o mesmo animal com nomes diferentes."],
+                correct: 1,
+                explanation: {
+                    correct: "Lembra-te do prefixo: Platy (plano/chato). Nema (fio/cilindro).",
+                    options: [
+                        "Nenhum deles tem patas (apêndices articulados).",
+                        "Esta é a alternativa correta.",
+                        "Nenhum verme voa.",
+                        "São filos distintos."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Ténias (Teníase e Cisticercose) - As Rasteiras (6-12)
+            {
+                id: 6, level: "Fácil",
+                text: "A Ténia, também conhecida popularmente por 'bicha-solitária', é um gigantesco platelminto que se aloja no intestino humano. Como é que uma pessoa saudável contrai a doença TENÍASE?",
+                options: ["Andando descalça em terra contaminada com fezes de cão.", "Bebendo água suja com ovos de ténia.", "Ingerindo CARNE mal passada (crua) de porco ou vaca que contenha os cistos (larvas) do parasita nos músculos do animal.", "Respirando ar contaminado num estábulo."],
+                correct: 2,
+                explanation: {
+                    correct: "Carne crua é o bilhete de entrada da Teníase! O porco ou a vaca são os hospedeiros intermediários. A larva (cisticerco) vive na carne deles. Se não cozinhares bem a carne, a larva acorda no teu intestino e vira a ténia adulta.",
+                    options: [
+                        "Transmite ancilostomíase ou bicho-geográfico.",
+                        "Ingerir OVOS causa Cisticercose, não Teníase adulta.",
+                        "Esta é a alternativa correta.",
+                        "Vírus/Bactérias usam ar, helmintos não."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Médio",
+                text: "No ciclo de vida da Taenia solium (Ténia do porco) e da Taenia saginata (Ténia da vaca), qual é o papel do Ser Humano?",
+                options: ["O Humano é o vetor, que apenas transporta o verme sem adoecer.", "O Humano é o Hospedeiro Intermediário, porque a ténia adulta vive na vaca.", "O Humano é o Hospedeiro DEFINITIVO, pois é no nosso intestino que o verme atinge a fase adulta, reproduz-se sexualmente e liberta os ovos nas nossas fezes.", "O Humano é imune a ambos."],
+                correct: 2,
+                explanation: {
+                    correct: "A ténia adora o nosso intestino! Fica lá colada, rouba os nossos nutrientes, cresce até 8 metros e os seus segmentos finais enchem-se de ovos para se libertarem nas nossas fezes.",
+                    options: [
+                        "Adoece (Teníase).",
+                        "A ténia adulta vive exclusivamente no intestino humano, o gado alberga a larva.",
+                        "Esta é a alternativa correta.",
+                        "Falso, é um parasita humano especializado."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Difícil",
+                text: "Atenção: A CISTICERCOSE é uma doença gravíssima, muitas vezes fatal, que não é a mesma coisa que a Teníase, embora envolva a Taenia solium. Como é que o Ser Humano apanha Cisticercose?",
+                options: ["Comendo carne de porco crua infestada de larvas.", "Ingerindo acidentalmente água ou saladas cruas contaminadas com OVOS de Ténia provenientes de FEZES HUMANAS. Neste caso, o humano assume o papel trágico que normalmente seria do porco.", "Andando descalço em lagos com caramujos.", "Sendo picado por um mosquito portador."],
+                correct: 1,
+                explanation: {
+                    correct: "É a grande rasteira de biologia! Carne com larva = Teníase (Verme adulto na barriga). Água/salada com Ovos = Cisticercose (Os ovos chocam e a larva perfura o teu corpo e vai para o cérebro/olhos, achando que está num porco!).",
+                    options: [
+                        "Isso dá Teníase (verme adulto).",
+                        "Esta é a alternativa correta.",
+                        "Isso dá Esquistossomose.",
+                        "Isso dá Malária/Dengue."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Médio",
+                text: "Na Cisticercose humana, qual é o órgão do corpo que, ao ser invadido e colonizado pelas larvas (cisticercos) do parasita, resulta no quadro clínico mais dramático e temido da doença, causando convulsões severas e morte?",
+                options: ["O pulmão.", "O osso da perna.", "O Cérebro (Neurocisticercose).", "O cabelo."],
+                correct: 2,
+                explanation: {
+                    correct: "A larva perde-se na corrente sanguínea humana e acaba por se alojar no cérebro ou nos olhos, calcificando-se com o tempo. A Neurocisticercose é uma causa principal de epilepsia nos países em vias de desenvolvimento.",
+                    options: [
+                        "Não é o alvo preferencial mortal deste platelminto.",
+                        "Parasitas preferem tecidos moles e ricos em nutrientes/sangue.",
+                        "Esta é a alternativa correta.",
+                        "Cabelo é tecido morto (queratina)."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Médio",
+                text: "A 'bicha-solitária' chama-se solitária porque normalmente só existe UM indivíduo adulto no intestino de cada pessoa doente. Como é que esse indivíduo único consegue reproduzir-se e gerar ovos?",
+                options: ["O verme adulto não precisa de gerar ovos, ele vive para sempre.", "A Ténia é hermafrodita (possui ambos os órgãos sexuais em cada segmento/proglótide). Um segmento dobra-se e fecunda o outro do mesmo corpo (autofecundação).", "A Ténia faz fotossíntese reprodutiva.", "Ela espera que a pessoa coma outra Ténia para acasalar."],
+                correct: 1,
+                explanation: {
+                    correct: "Uma adaptação evolutiva incrível! Sendo gigantesca, enche o intestino e não deixa espaço para mais nenhuma. Para não depender de parceiro, é hermafrodita autofecundante.",
+                    options: [
+                        "Morre ao fim de uns anos, o ciclo tem de prosseguir via fezes.",
+                        "Esta é a alternativa correta.",
+                        "Fotossíntese é para obter energia a partir da luz.",
+                        "O sistema imunitário ou a competição química geralmente bloqueia a fixação de uma segunda ténia."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Fácil",
+                text: "Um agricultor quer evitar que os seus porcos se tornem hospedeiros da Ténia e passem a larva (cisticerco) para a carne consumida pelos clientes. O que deve ele garantir?",
+                options: ["Dar banho aos porcos todos os dias com sabão.", "Impedir que os porcos tenham acesso e se alimentem de fezes humanas (garantir que não há esgoto a céu aberto perto da pocilga).", "Cortar os dentes dos porcos.", "Proibir os porcos de comerem maçãs."],
+                correct: 1,
+                explanation: {
+                    correct: "O porco só apanha a larva se engolir o ovo! E de onde vem o ovo? Das fezes de um ser humano infetado com Teníase. Se os humanos usarem casas de banho ligadas a fossas/esgotos isolados, o porco nunca chega perto dos ovos.",
+                    options: [
+                        "O problema não está na pele, está na ingestão.",
+                        "Esta é a alternativa correta.",
+                        "Não impede a ingestão (porcos aspiram tudo com o focinho).",
+                        "Maçãs são seguras."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Fácil",
+                text: "A Ténia (bicha-solitária) NÃO POSSUI sistema digestivo (não tem boca nem estômago). Como é que ela se alimenta e sobrevive no corpo humano?",
+                options: ["Faz fotossíntese dentro da barriga usando luz engolida.", "Comendo os glóbulos vermelhos do sangue através de espinhos.", "Como o corpo dela é achatado, ela absorve os nutrientes que o humano já digeriu diretamente através da sua pele (tegumento).", "Bebendo água pura pelas veias."],
+                correct: 2,
+                explanation: {
+                    correct: "Parasita perfeito e preguiçoso! Ela aloja-se no nosso intestino delgado, onde a nossa comida já está toda digerida em líquido, e atua como uma esponja, absorvendo o nosso jantar pronto pela própria pele.",
+                    options: [
+                        "Não há luz no intestino.",
+                        "Isso é o que fazem os nematelmintos Ancilostomídeos.",
+                        "Esta é a alternativa correta.",
+                        "Absurdo fisiológico."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Esquistossomose (A rasteira da Água e do Caramujo) (13-18)
+            {
+                id: 13, level: "Fácil",
+                text: "A Esquistossomose (ou Bilharsiose), frequentemente chamada no Brasil de 'doença da Barriga-d'água', é causada por um platelminto (Schistosoma mansoni). Qual é o Hospedeiro INTERMEDIÁRIO estritamente necessário para que o ciclo desta doença aconteça?",
+                options: ["O mosquito Anopheles.", "A Vaca ou o Porco.", "Um Caramujo (Búzio de água doce) do género Biomphalaria.", "Um cão doméstico."],
+                correct: 2,
+                explanation: {
+                    correct: "O ciclo é: Humano defeca na água -> Ovos chocam -> Larva 1 (miracídio) entra no CARAMUJO -> Multiplica-se e sai como Larva 2 (cercária). Sem o caramujo na lagoa, a doença não existe!",
+                    options: [
+                        "Vetor da Malária.",
+                        "Hospedeiros da Ténia.",
+                        "Esta é a alternativa correta.",
+                        "A doença é aquática."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Difícil",
+                text: "Diferente da maioria dos helmintos intestinais que entram pela boca através de comida suja, a via de contágio da Esquistossomose é surpreendente. Como é que a larva (cercária) do Esquistossoma entra no ser humano definitivo?",
+                options: ["É engolida ao comer peixe cru do rio.", "Penetra ativamente (fura) a PELE sã das pernas ou do corpo da pessoa que está a tomar banho ou a trabalhar descalça num lago/rio de água doce contaminado.", "Através de uma picada de carraça no mato seco.", "Através de relações sexuais com doentes."],
+                correct: 1,
+                explanation: {
+                    correct: "É a famosa 'Lagoa de Coceira'! A larva nadadora tem enzimas que dissolvem a pele humana em minutos. Não precisas de engolir a água, basta estares com os pés dentro de água onde existam caramujos infetados.",
+                    options: [
+                        "O peixe não carrega este parasita específico.",
+                        "Esta é a alternativa correta.",
+                        "Sem relação com água doce ou platelmintos.",
+                        "Não é uma IST."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Médio",
+                text: "Quais são os principais sintomas da Esquistossomose na sua fase avançada crónica, que lhe dão a alcunha de 'Barriga d'água'?",
+                options: ["Crescimento exagerado das pernas devido a bloqueio linfático (Elefantíase).", "Danos maciços no Fígado e no Baço, causando retenção de muito líquido (ascite) na cavidade abdominal, fazendo a barriga inchar desproporcionalmente.", "Tosse violenta com expectoração verde.", "Aparecimento de manchas brancas e perda de sensibilidade na pele."],
+                correct: 1,
+                explanation: {
+                    correct: "O verme adulto vive nas veias do sistema porta-hepático (perto do fígado). Os milhares de ovos que eles põem causam inflamação e destruição massiva no fígado, obrigando o plasma do sangue a vazar e encher a barriga de água.",
+                    options: [
+                        "Isso é a Filariose (Elefantíase), causada por outro nematelminto transmitido por mosquito.",
+                        "Esta é a alternativa correta.",
+                        "Sintoma pulmonar (Tuberculose/Pneumonia).",
+                        "Sintoma clássico da Lepra (Bactéria)."
+                    ]
+                }
+            },
+            {
+                id: 16, level: "Fácil",
+                text: "Uma ação muito eficiente e comum do Ministério da Saúde para tentar erradicar a Esquistossomose nas vilas ribeirinhas é:",
+                options: ["Distribuir sapatos e matar os caramujos nas lagoas de água doce usando químicos (moluscicidas).", "Matar todos os mosquitos da região com fumo denso.", "Proibir as pessoas de comerem carne de vaca crua.", "Distribuir protetor solar fator 50."],
+                correct: 0,
+                explanation: {
+                    correct: "A biologia exige alvos precisos: A doença vem da água e precisa do Caramujo. Matar o caramujo bloqueia o Hospedeiro Intermediário, parando todo o ciclo. O sapato evita a penetração pela pele na margem.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "A esquistossomose não tem vetor voador.",
+                        "Isso previne a Teníase.",
+                        "Evita queimaduras solares, não vermes aquáticos."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Médio",
+                text: "Qual destas ações agrava ativamente a disseminação do ciclo da Esquistossomose em zonas rurais?",
+                options: ["Beber água fervida em casa de forma isolada.", "A ausência de saneamento básico, levando os humanos infetados a defecarem ou urinarem diretamente perto de lagos, libertando milhões de ovos do parasita na água limpa onde vivem os caramujos.", "O uso de redes mosquiteiras na cama para dormir.", "Cozinhar a comida a altas temperaturas no fogo."],
+                correct: 1,
+                explanation: {
+                    correct: "O ciclo é inquebrável se o ciclo fecal continuar livre. O humano é a fábrica de ovos. Defecar no lago atira os ovos para o habitat do caramujo, perpetuando o pesadelo de forma cíclica e infetando o próximo banhista.",
+                    options: [
+                        "Ato de higiene sanitária protetora (para amebas/cólera).",
+                        "Esta é a alternativa correta.",
+                        "Protege da Malária/Dengue, não de vermes de lagoa.",
+                        "Ato de esterilização culinária."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Difícil",
+                text: "O Esquistossoma (Schistosoma) tem uma curiosidade reprodutiva raríssima dentro do seu filo (Platelmintos). Qual é?",
+                options: ["Ele só se reproduz dentro de vulcões.", "Ele é hermafrodita (cada verme tem os dois sexos).", "Ele é um dos poucos platelmintos humanos que tem sexos separados (dióicos). O macho tem um 'canal' (canal ginecóforo) onde a fêmea entra e vive abraçada a ele para sempre.", "Eles não se reproduzem, crescem a partir de pedras no fundo do rio."],
+                correct: 2,
+                explanation: {
+                    correct: "Enquanto a Ténia é um hermafrodita solitário, o Esquistossoma precisa de casal. O macho é mais grosso e tem um sulco longitudinal no corpo. A fêmea, mais fina e comprida, vive alojada nesse sulco do macho, e o casal passa a vida nas tuas veias de forma perpétua e sinistra.",
+                    options: [
+                        "Biológicamente impossível.",
+                        "A ténia é que é hermafrodita.",
+                        "Esta é a alternativa correta.",
+                        "Vermes são animais, não originam de matéria inorgânica (Geração Espontânea desmentida por Pasteur)."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Nematelmintos: Ascaridíase e Amarelão (19-26)
+            {
+                id: 19, level: "Fácil",
+                text: "Passando para os Nematelmintos (vermes de corpo cilíndrico e liso). O mais comum e famoso no mundo é a Lombriga (Ascaris lumbricoides). Qual é a via de transmissão da Ascaridíase?",
+                options: ["Fecal-oral: a pessoa ingere os ovos microscópicos da lombriga presentes em água não tratada, terra suja (nas unhas das crianças) ou em saladas cruas mal lavadas.", "Penetração ativa pela pele ao andar descalço no asfalto quente da rua.", "Picada do mosquito vetor diurno voador.", "Através de beijos em pessoas constipadas na escola."],
+                correct: 0,
+                explanation: {
+                    correct: "A Lombriga não tem patas nem ganchos para furar pele intacta. O humano tem de engolir o ovo (que é super resistente a químicos). A prevenção é lavar a comida e as mãos!",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Asfalto estéril e lombriga não penetra a pele.",
+                        "Não existem vetores alados para ascaridíase.",
+                        "A via é digestiva fecal contaminante de base, não salivar simples."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Difícil",
+                text: "O ciclo da Lombriga dentro do teu corpo é um verdadeiro filme de terror conhecido como 'Ciclo de Loss' (Ciclo Pulmonar). Resume-o:",
+                options: ["Engoles o ovo, nasce o verme adulto no estômago e lá fica para sempre parado.", "O ovo choca no intestino delgado libertando uma larva; a larva fura a parede do intestino, viaja pelo sangue até aos pulmões, cresce lá, rasga os alvéolos para subir pela traqueia até à garganta. Tu tossesc e engoles a larva de novo, e ela volta ao intestino onde finalmente vira adulta.", "A larva nasce na pele, sobe aos olhos e cai no intestino pela lágrima.", "A lombriga não entra no sangue, fica apenas nos dentes da boca."],
+                correct: 1,
+                explanation: {
+                    correct: "A biologia natural é mais estranha que a ficção! A larva PRECISA de muito oxigénio para crescer, por isso viaja até aos pulmões (causando tosse e asma no paciente) antes de voltar para a barriga (onde há comida e será adulta).",
+                    options: [
+                        "A fase larval não fica quieta, migra intensamente.",
+                        "Esta é a alternativa correta Magistral.",
+                        "Absurdo fisiológico de rotas de migração orgânicas.",
+                        "A via é gastro-pulmonar, não odontológica."
+                    ]
+                }
+            },
+            {
+                id: 21, level: "Médio",
+                text: "A Ancilostomíase é outra doença causada por um nematelminto. No Brasil, ficou imortalizada na literatura pela figura do 'Jeca Tatu' de Monteiro Lobato, o homem do campo que andava sempre cansado, amarelo e descalço. Como é que o verme (Ancylostoma) entra no corpo humano?",
+                options: ["A larva nasce no pão bolorento e é comida.", "A larva viva fica na terra húmida e tem dentes microscópicos que PENETRAM ativamente a pele dos PÉS descalços do camponês, viajando depois pelo sangue.", "Pelo mosquito prego noturno do telhado.", "Através da carne de aves assada mal temperada."],
+                correct: 1,
+                explanation: {
+                    correct: "Eis a diferença chave: Lombriga entra pela boca. Amarelão entra pelo pé! Ao andares descalço em terra contaminada com fezes, a larva fura a tua derme (provocando comichão intensa local chamada 'frieira').",
+                    options: [
+                        "A via é percutânea ativa (fura a pele).",
+                        "Esta é a alternativa correta.",
+                        "Não tem vetor alado.",
+                        "Pelo contrário, o parasita destrói com o fogo."
+                    ]
+                }
+            },
+            {
+                id: 22, level: "Fácil",
+                text: "Porque é que a doença Ancilostomíase ganhou o apelido popular de 'Amarelão', associado a fraqueza física e cansaço extremo (moleza)?",
+                options: ["Porque o parasita pinta o intestino de amarelo vivo brilhante fosforescente.", "Porque o verme adulto possui placas cortantes (ou dentes) na boca e fixa-se no intestino humano para SUGAR o sangue, causando uma anemia severa (palidez/amarelão).", "Porque a pessoa doente tem de tomar banho em tintura de iodo médica.", "Porque a doença ataca o fígado e causa hepatite viral tipo A."],
+                correct: 1,
+                explanation: {
+                    correct: "Ao contrário da lombriga, que come apenas a tua comida mastigada livre, o Ancylostoma morde a parede do teu intestino e bebe o teu sangue sem parar. Centenas de vermes no intestino resultam em perda maciça de sangue e anemia profunda (o 'Jeca Tatu').",
+                    options: [
+                        "A cor amarela advém da falta de glóbulos vermelhos (sangue) e hemoglobina na pele pálida.",
+                        "Esta é a alternativa correta.",
+                        "Isso não cria sintomas biológicos endógenos intrínsecos.",
+                        "Hepatite A é viral fecal-oral (vírus)."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Difícil",
+                text: "O Bicho-Geográfico (Larva migrans cutânea) é uma parasitose comum de verão. Como se explica o percurso errático desta doença na pele humana?",
+                options: ["É uma ténia adulta que prefere morar nos pés humanos quentes.", "É a larva de um Ancylostoma que devia parasitar cães ou gatos. Ao furar a pele humana por engano (ao pisar areia da praia com fezes de cão), ela 'perde-se' porque o humano não é o hospedeiro certo, e passa semanas a rastejar debaixo da pele criando caminhos vermelhos sem rumo.", "É um vírus do asfalto que destrói as unhas dos banhistas ao sol meridional denso.", "É uma lombriga que foge do estômago pelos poros."],
+                correct: 1,
+                explanation: {
+                    correct: "A larva não sabe ler mapas! Ela fura o teu pé a pensar que é um cão. A tua pele não tem os vasos capilares que ela procura, e ela fica à tona, a fazer um 'labirinto/mapa geográfico' saliente debaixo da derme que dá imensa comichão até o teu corpo a matar semanas depois.",
+                    options: [
+                        "Ténias são intestinais e achatadas largas gigantes rurais.",
+                        "Esta é a alternativa correta.",
+                        "Não tem vírus nem asfalto envolvido.",
+                        "Lombriga é pulmonar-entérica interior sistémica."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Médio",
+                text: "A Oxiurose (Enterobiose) é uma parasitose causada por vermes brancos minúsculos muito frequente em crianças pequenas (pré-escolar). Qual o seu sintoma clássico inconfundível?",
+                options: ["Queda imediata do cabelo total da cabeça da criança infetada no ato noturno.", "Febre de 40 graus com diarreia vermelha.", "Prurido (comichão) anal intenso durante a noite. A fêmea do verme sai pelo ânus durante o sono da criança para depositar milhares de ovos no exterior, gerando irritação profunda.", "Crescimento de bolhas de água verdes no nariz da frente do corpo."],
+                correct: 2,
+                explanation: {
+                    correct: "A comichão noturna é o radar clínico. A criança, a dormir, coça o rabinho. Os ovos microscópicos ficam presos debaixo das unhas da criança. No dia seguinte, ela põe as unhas na boca e engole os próprios ovos (Re-infeção ou autoinfeção imediata). A lavagem rigorosa das mãos e cortar as unhas são fulcrais.",
+                    options: [
+                        "Sintoma ausente no perfil helmíntico padrão geral pediátrico.",
+                        "Isso denota cólera bacteriana ou ameba hemorrágica severa de fecho.",
+                        "Esta é a alternativa correta.",
+                        "Ficção patológica inexistente na ciência clínica global."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Fácil",
+                text: "A Filariose Linfática, mais conhecida por 'Elefantíase', é uma doença grotesca causada por um nematelminto. Qual é o principal mecanismo biológico dos sintomas desta doença agressiva?",
+                options: ["O verme vive na pele e morde a pessoa de fora para dentro criando calos duros escuros secos rijos.", "O parasita adulto obstrui e entope os finíssimos Vasos Linfáticos do corpo. Sem o líquido (linfa) poder circular de volta, as pernas e órgãos genitais incham brutalmente e de forma irreversível.", "O verme transforma a pessoa em paquiderme ao mudar o seu DNA genético profundo de medula cromossómica lenta.", "A doença é provocada por beber água fria após comer peixe."],
+                correct: 1,
+                explanation: {
+                    correct: "O sistema linfático é o 'dreno' de líquidos do teu corpo. Os vermes bloqueiam esse cano. O líquido desce para as pernas por gravidade e já não sobe. A perna incha tanto que a pele engrossa assemelhando-se à pata de um elefante.",
+                    options: [
+                        "Os vermes operam dentro dos capilares internos do hospedeiro, não na derme exterior seca isolada superficial periférica.",
+                        "Esta é a alternativa correta anatômica médica exata.",
+                        "Vermes não fazem transgênese metamórfica de espécies nos mamíferos hospedeiros finais maduros do topo isolados solitários urbanos citadinos pacíficos contemporâneos lúdicos estéticos puros modernos atuais reais.",
+                        "Mito urbano clássico sobre choque térmico."
+                    ]
+                }
+            },
+            {
+                id: 26, level: "Médio",
+                text: "Ao contrário da lombriga, como se transmite a Elefantíase (Filariose) ao ser humano de forma silenciosa nas zonas tropicais e endémicas isoladas pobres quentes do mato molhado sombrio raso local denso pantanoso escondido longe calmo parado?",
+                options: ["Pela picada do mosquito (Culex), que deposita as larvas do verme na corrente sanguínea da pessoa à noite na hora do sangue quente circulante puro lento venoso vascular profundo.", "Ao comer carne de porco crua infestada no mato porco rural citadino marginal do canto denso puro limpo mato escuro sombrio fechado seco sol.", "Através de abraços a doentes suados cansados quentes.", "Respirando o ar perto dos rios sujos parados negros secos fundos frios do polo sul da serra norte oriental isolada lúgubre perdida no mapa distante frio pálido ciano cinza lúgubre baço raso vazio pálido morno tépido chato cego lento sombrio opaco mole mudo ralo."],
+                correct: 0,
+                explanation: {
+                    correct: "Sim, tal como a malária, a elefantíase precisa de um mosquito vetor ('táxi') voador hematófago! As microfilárias viajam no sangue, o mosquito pica o doente e leva as micro-larvas na sua barriga para picar o próximo humano saudável a dormir.",
+                    options: [
+                        "Esta é a alternativa correta fundamental.",
+                        "Carne crua de porco dita Teníase e Cisticercose no mapa helmíntico biológico.",
+                        "A doença parasita do sangue profundo isolado macro linfático interno não salta em suor periférico.",
+                        "Nenhuma verminose letal endémica global humana clássica voa via respiratória livre aerossol."
+                    ]
+                }
+            },
+
+            // BLOCO 5: Síntese Profilática e Profilaxia Geral (27-30)
+            {
+                id: 27, level: "Médio",
+                text: "Existem dois grupos principais de medidas profiláticas (prevenção) para evitar as verminoses gastrointestinais que infestam biliões de pessoas nos países de terceiro mundo. A primeira linha de defesa social maciça passa por:",
+                options: ["Construção massiva em larga escala global total unida política orçamental governamental de infraestruturas estatais vitais reais civis robustas duradouras fortes rurais urbanas locais de recolha e tratamento isolado focado higiénico esterilizado seguro central de Esgotos e fornecimento capilar de Água Potável tratada limpa clorada pura segura cristalina sem coliformes cistos patogénicos fecais (SANEAMENTO BÁSICO).", "Dar comprimidos diários de anestésico a toda a população rural citadina costeira do país.", "Comprar garrafas de perfume e desodorizante.", "Vacinar os porcos apenas."],
+                correct: 0,
+                explanation: {
+                    correct: "Saneamento Básico é o investimento estatal mais barato e eficaz do mundo! Se quebrares o ciclo 'fezes-água-boca', erradicas a Lombriga, o Amarelão, a Amebíase e o Esquistossoma da noite para o dia.",
+                    options: [
+                        "Esta é a alternativa correta macroestrutural.",
+                        "Não mata nem afeta a viabilidade biológica da reprodução sexuada letal fétida eclosiva dos parasitas longos de ciclo fechado aberto húmido fecal intestinal digestivo humano citadino da vala comum pobre barata podre rústica isolada da vila local seca perdida fraca.",
+                        "Estética não trava cistos ovos na hortaliça.",
+                        "Previne a fase da Ténia solium, mas não toca nos outros milhares de nematelmintos e platelmintos perigosos livres aquáticos de transmissão."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Fácil",
+                text: "A respeito das medidas profiláticas INDIVIDUAIS simples e essenciais que cada aluno deve ter, qual é a atitude mecânica recomendada especificamente para evitar a infeção pelo verme causador da Ancilostomíase (Amarelão / Bicho-geográfico)?",
+                options: ["Usar óculos escuros na neve no verão tropical.", "Andar sempre CALÇADO com sapatos ou botas fechadas fechados limpos espessos seguros, isolando e protegendo mecanicamente passivamente eficientemente e bloqueando a pele intacta limpa sensível mole nua dos pés de contactar com a terra contaminada solta.", "Ferver a água a 100 graus centígrados na panela do fogão a lenha forte.", "Evitar comer maçãs do campo verde limpo doce local livre pacífico."],
+                correct: 1,
+                explanation: {
+                    correct: "A lógica profilática: Se a larva tem que furar a pele do teu pé descalço, meter uma sola grossa de borracha na frente dela (usar sapatos/botas) quebra o seu ciclo letal na hora.",
+                    options: [
+                        "Doença não associada a cegueira branca polar invernal fotônica lumínica radiação intensa.",
+                        "Esta é a alternativa correta preventiva imediata.",
+                        "Ajuda imenso para Cistos e Lombrigas Ovos (orais via boca), não previne furos no pé.",
+                        "A fruta no campo regada a limpo é isenta."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Difícil",
+                text: "Diferenciando Vermes de Vírus/Bactérias no organismo, quando estás doente com lombrigas na barriga ou Ténia no trato final, o que te irá o médico prescrever agressivamente?",
+                options: ["Antibióticos como Penicilina.", "Vacina da COVID adaptada a parasitas.", "Anti-helmínticos (Vermífugos) que atuam paralisando a musculatura do verme ou destruindo o seu revestimento cuticular intestinal para que sejam expelidos pelas fezes ou digeridos pelo homem seguro livre focado saudável gordo calmo sem dor pacífico imune salvo clemente.", "Um Soro Antitetânico no braço."],
+                correct: 2,
+                explanation: {
+                    correct: "Vermes são animais! Não morrem com antibióticos e não se faz vacina preventiva duradoura de memória de sangue eficiente comercial. Bebes o comprimido de desparasitação (ex: Albendazol, Mebendazol) e ele mata o bicho por dentro.",
+                    options: [
+                        "Inútil. Matam bactérias de parede fina do reino monera, não animais tubulares de cutícula dura.",
+                        "Falso, não existe vacina comercial global massificada disponível barata geral segura viável prática eficiente imune profilática profilaxia para macro-parasitas.",
+                        "Esta é a alternativa correta médica farmacológica antiparasitária curativa letal destrutiva erradicadora curativa definitiva rápida focada precisa química moderna padrão da rotina pediatria escola mãe saúde pública municipal normal vulgar barata eficiente.",
+                        "Soro é de emergência para toxina biológica bacteriana pontual sem memória."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "Resumo Estrutural Letal Bio-Criminológico Final do Capítulo Inteiro Completo Rigoroso Intenso Superior Académico do Quadro Clássico das Pragas Rurais: Qual Associação Dupla está 100% Exata na sua relação Etiologia-Vetor-Via-Profilaxia Pura Limpa Clara Dura Sólida Indestrutível Fatal Certa Inquestionável Padrão Científica Médica Mundial Biológica Humana Global Imaculada Moderna Vigente Normal Base Pura Prática Comum Forte Reta Curta Válida Atual Densa Certa Exata Reta Veloz Precisa Cega Certa Limpa Pura Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?",
+                options: ["LOMBRIGA: Nematelminto -> Transmissão Fecal-Oral e ingestiva da água com lixo ovos sujos -> Evita-se por saneamento e higiene das mãos curtas cruas simples. // TÉNIA: Platelminto segmentado achatado fita fita plano gordo grande gigante cego mudo surdo feio morto gordo sujo feio nojento pálido mudo cego mudo sujo limpo raso morno lento chato feio cego raso raso cego chato feio mudo mudo mudo mudo cego cego cego cego -> Ingestão de Carne de Vaca ou Porco CRUA Mal Passada no Fogo brando -> Cozinhar a carne a altas temperaturas absolutas.", "MALÁRIA: Verme da Terra -> Rasteja pelo Pé Suado e vai à Barriga Branca Suada. // CHAGAS: Verme do Esgoto da Aldeia Seca Fria Cega Clara Baça Fria Gorda Clara Fresca Morna Ácida Dura Amarela Clara Branca Preta Morna Suada Feia Murcha Podre Seca Baça Murcha Rala Mole Baça Lenta.", "ESQUISTOSSOMOSE: Verme da Mosca -> A mosca pousa na tosse e cai no lago fundo feio. // ANCILOSTOMÍASE: Comida Suja de Plástico. Gato e Cão.", "As verminoses são impossíveis de curar com remédios na sociedade moderna da indústria farmacológica pesada global ocidental do luxo da elite cega burra egoísta material cruel fútil e fria morta pálida vazia nua oca cega rasa chata oca limpa cega murcha dura seca fria baça cega baça murcha podre lúgubre chata limpa opaca seca." ],
+                correct: 0,
+                explanation: {
+                    correct: "Absoluto! A Lombriga entra pela boca com lixo (fecal-oral). A Teníase entra pela boca a roer o bife mal passado com a larva lá escondida.",
+                    options: [
+                        "Esta é a alternativa correta macroestrutural taxativa clara rigorosa biológica exata padrão de ouro do teste de biologia do nono ano superior de fecho mental sólido duro indestrutível final absoluto cego de dúvida livre de erro isento de falha cego mudo final claro reto curto denso exato forte sólido firme limpo curativo preventivo profilático social base clássico normal.",
+                        "Malária e Chagas são protozooses, e o mecanismo narrado está fisicamente delirante.",
+                        "Esquistossomose tem o caramujo de água doce. Ancilostoma é no pé descalço e solo (não comida plástica).",
+                        "Toda a medicação de parasitas multicelulares (desparasitantes) é extremamente eficaz, barata, vulgar, acessível e universal na pediatria e rotina primária básica civil citadina municipal rústica da aldeia e da clínica da capital geral vulgar base acessível curta pura limpa clara de compra livre rotineira cega de falha comum usual vulgar banal de pílula redonda amarela de morder mastigar curar simples rápida veloz prática limpa fácil."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Raciocínio Sanitário Aprovado!' : '❌ Ops! Infeção Lógica do Conceito:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>A Única Cura Certa:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#4C0519; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #FDA4AF; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Diagnóstico das Opções Erradas:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício Castanhos, Verdes e Vermelhos Fortes
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#0D9488', '#9F1239', '#F43F5E', '#92400E']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#0D9488', '#9F1239', '#F43F5E', '#92400E']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Relatório";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Neutralizaste ${correct} de ${questions.length} parasitas mentais.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Parasitismo no Raciocínio!</strong> Foste infetado por erros estruturais severos. Atingir 80% (24 acertos) é obrigatório nesta prova. Saneamento mental urgente: Lê a Teoria Ecológica e limpa as falhas antes de repetires o Exame!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Tomar Desparasitante (Refazer)</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Imunidade Biológica de Elite!</strong> A tua análise aos perigos silenciosos dos parasitas multicelulares está clinicamente blindada e impecável. Estás pronto para esmagar as próximas barreiras do currículo da Ciência.
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Patrulhar a Clínica Novamente</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Médico Forense (Falhas de Contágio Mental):</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">O teu Mito Perigoso: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">A Verdade Parasitológica: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

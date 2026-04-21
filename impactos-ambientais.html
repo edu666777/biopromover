@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impactos Ambientais - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-ALERTA (Cinza Asfalto & Laranja Tóxico/Alerta) */
+            --bg-color: #F1F5F9; /* Cinza muito claro */
+            --text-color: #0F172A; /* Cinza Quase Preto */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #FED7AA; /* Laranja Claro */
+            --theme-medium: #F97316; /* Laranja Vibrante */
+            --theme-dark: #334155; /* Cinza Chumbo Escuro */
+            --theme-contrast: #EA580C; /* Laranja Alerta (Destaque) */
+            --theme-accent: #10B981; /* Verde Esperança (Secundário) */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#cbd5e1 1px, transparent 1px), linear-gradient(90deg, #cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #475569;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #64748B;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-contrast); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #F8FAFC;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #FFF7ED; /* Laranja muito suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #431407;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #475569; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E1; line-height: 1.5; color: #334155; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">⚠️</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Impactos Ambientais: A Pegada Humana</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Ozono)">
+            </div>
+            <div id="no-results"><p>😕 Nenhum conceito encontrado. Tenta outra palavra.</p></div>
+
+            <!-- TÓPICO 1: AQUECIMENTO GLOBAL -->
+            <div class="content-group">
+                <div class="section-badge">🌡️ 1. O Grande Aquecimento</div>
+                <div class="theory-box search-target">
+                    <h3>Efeito de Estufa vs Aquecimento Global</h3>
+                    <p>O Efeito de Estufa <strong>NÃO É</strong> um vilão. É um fenómeno natural que mantém a Terra quente. Sem ele, o planeta seria um cubo de gelo a -18°C. O problema é o excesso!</p>
+                    
+                    <div class="visual-area">
+                        <svg width="250" height="150" viewBox="0 0 250 150">
+                            <!-- Terra -->
+                            <path d="M 20 150 Q 125 70 230 150 Z" fill="#10B981" stroke="#000" stroke-width="2"/>
+                            <!-- Camada de Gases (CO2) -->
+                            <path d="M 10 90 Q 125 10 240 90" fill="none" stroke="#64748B" stroke-width="8" stroke-dasharray="10,5" opacity="0.8"/>
+                            <text x="125" y="45" text-anchor="middle" font-size="10" font-weight="bold" fill="#334155">Cúpula de CO2 e Metano</text>
+                            
+                            <!-- Raios Solares Entrando -->
+                            <path d="M 40 10 L 80 110" stroke="#F59E0B" stroke-width="3" marker-end="url(#arrow)"/>
+                            <!-- Calor preso -->
+                            <path d="M 170 110 L 190 70 L 160 90" stroke="#EA580C" stroke-width="3" fill="none"/>
+                            <path d="M 130 130 L 140 80 L 110 110" stroke="#EA580C" stroke-width="3" fill="none"/>
+                            <text x="175" y="60" text-anchor="middle" font-size="9" font-weight="bold" fill="#EA580C">Calor retido</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>A Causa:</strong> A queima de combustíveis fósseis (petróleo, carvão) e a desflorestação libertam toneladas de Dióxido de Carbono (CO2) e Metano (CH4).</li>
+                        <li><strong>O Aquecimento Global:</strong> É a intensificação <em>artificial</em> do efeito de estufa. O calor entra e não consegue sair, aumentando a temperatura média global.</li>
+                        <li><strong>Consequências:</strong> Derretimento dos glaciares, subida do nível do mar, secas extremas e eventos climáticos violentos.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: CAMADA DE OZONO -->
+            <div class="content-group">
+                <div class="section-badge">🛡️ 2. O Escudo do Planeta</div>
+                <div class="theory-box search-target">
+                    <h3>A Destruição da Camada de Ozono</h3>
+                    <p>A Camada de Ozono (O3) fica na estratosfera e atua como os nossos "óculos de sol", filtrando os perigosos raios Ultravioleta (UV) do Sol.</p>
+                    
+                    <div class="visual-area" style="flex-direction:row; gap: 30px;">
+                        <svg width="220" height="120" viewBox="0 0 220 120">
+                            <!-- Terra -->
+                            <circle cx="110" cy="150" r="80" fill="#3B82F6" stroke="#000" stroke-width="2"/>
+                            <!-- Camada de Ozono -->
+                            <path d="M 20 100 A 100 100 0 0 1 90 55" fill="none" stroke="#0EA5E9" stroke-width="6"/>
+                            <path d="M 130 55 A 100 100 0 0 1 200 100" fill="none" stroke="#0EA5E9" stroke-width="6"/>
+                            <!-- Buraco -->
+                            <text x="110" y="55" text-anchor="middle" font-size="10" font-weight="bold" fill="#EF4444">Buraco</text>
+                            <!-- Raio UV -->
+                            <path d="M 110 10 L 110 80" stroke="#8B5CF6" stroke-width="3" stroke-dasharray="5,5" marker-end="url(#arrow)"/>
+                            <text x="130" y="30" font-size="10" font-weight="bold" fill="#8B5CF6">Raios UV</text>
+                        </svg>
+                    </div>
+                    
+                    <div class="highlight-box">
+                        <strong>ALERTA DE PROVA! O buraco no Ozono NÃO causa Aquecimento Global!</strong> <br>São problemas diferentes. O buraco no ozono é causado por gases chamados <strong>CFCs</strong> (presentes em frigoríficos e sprays antigos). O buraco permite a entrada de raios UV, causando cancro de pele e destruição de colheitas, mas não 'aquece' a Terra de forma significativa.
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: ÁGUA E EUTROFIZAÇÃO -->
+            <div class="content-group">
+                <div class="section-badge">☠️ 3. Morte na Água</div>
+                <div class="theory-box search-target">
+                    <h3>Poluição da Água e Eutrofização</h3>
+                    <p>Quando atiramos lixo e esgotos para os rios, destruímos ecossistemas inteiros. O processo mais devastador chama-se <strong>Eutrofização</strong>.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="260" height="120" viewBox="0 0 260 120">
+                            <!-- Esgoto -->
+                            <rect x="10" y="30" width="30" height="20" fill="#64748B"/>
+                            <path d="M 40 40 Q 60 40 70 60" fill="none" stroke="#84CC16" stroke-width="6"/>
+                            <!-- Lagoa -->
+                            <rect x="70" y="60" width="180" height="50" fill="#0284C7"/>
+                            <!-- Camada de Algas Verde -->
+                            <rect x="70" y="60" width="180" height="10" fill="#10B981"/>
+                            <text x="160" y="55" text-anchor="middle" font-size="9" font-weight="bold" fill="#047857">Tapete de Algas (Asfixia a luz)</text>
+                            <!-- Peixe morto -->
+                            <path d="M 140 90 Q 150 80 160 90 Q 150 100 140 90 Z" fill="#CBD5E1"/>
+                            <text x="150" y="88" font-size="8">X</text>
+                            <text x="160" y="105" font-size="8" fill="#FFF">Sem Oxigénio</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px;">
+                        <li>Esgotos ou fertilizantes agrícolas (nitratos/fosfatos) caem na água.</li>
+                        <li>Isso serve de adubo para as algas microscópicas, que se multiplicam loucamente, formando um <strong>tapete verde</strong> à superfície.</li>
+                        <li>A luz do sol é bloqueada. As plantas do fundo morrem. Bactérias multiplicam-se para devorar os restos mortos e <strong>gastam todo o oxigénio da água</strong>, asfixiando os peixes.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: LIXO E SOLUÇÕES -->
+            <div class="content-group">
+                <div class="section-badge">♻️ 4. O Nosso Lixo e os 3 R's</div>
+                <div class="theory-box search-target">
+                    <h3>Resíduos Sólidos e a Política dos 3 R's</h3>
+                    <p>O plástico não desaparece; parte-se em <strong>microplásticos</strong> que entram na cadeia alimentar (Magnificação Trófica) e vão parar ao nosso sangue. A solução mais básica baseia-se em três ações por ordem de importância:</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr; gap: 10px; padding:0; background:transparent; border:none;">
+                        <div style="background:white; border:2px solid var(--theme-dark); padding:10px; border-radius:8px;">
+                            <strong style="color:var(--theme-contrast);">1. REDUZIR:</strong> A mais importante! Não comprar o que não é preciso. Menos embalagens, menos lixo criado.
+                        </div>
+                        <div style="background:white; border:2px solid var(--theme-dark); padding:10px; border-radius:8px;">
+                            <strong style="color:var(--theme-contrast);">2. REUTILIZAR:</strong> Dar nova vida ao objeto antes de o deitar fora. (Ex: usar frascos de vidro para guardar condimentos).
+                        </div>
+                        <div style="background:white; border:2px solid var(--theme-dark); padding:10px; border-radius:8px;">
+                            <strong style="color:var(--theme-contrast);">3. RECICLAR:</strong> A última opção. Transformar o lixo (plástico, papel, vidro) em matéria-prima para a indústria fazer coisas novas. Gasta energia, mas poupa recursos naturais.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar Auditoria Ambiental (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">A Prova de Fogo Tóxico</h2>
+                <p style="color: #334155; font-size: 0.95rem; font-weight:600;">
+                    30 questões sobre a crise ambiental. Acerta <strong>80% (24/30)</strong> para provares que sabes proteger a biosfera. Lê o diagnóstico a cada resposta!
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Auditoria Concluída</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS DETALHADOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Conceitos Básicos e Poluição (1-5)
+            {
+                id: 1, level: "Fácil",
+                text: "O que define corretamente um 'Impacto Ambiental'?",
+                options: ["Qualquer evento que faça os animais mudarem de habitat naturalmente.", "Qualquer alteração, positiva ou negativa, das propriedades do meio ambiente, causada por atividades humanas.", "Apenas a destruição total de florestas.", "A limpeza de praias feita por voluntários."],
+                correct: 1,
+                explanation: {
+                    correct: "Exato! Um impacto ambiental é qualquer mudança no ambiente provocada pela ação do Homem (ação antrópica). Construir uma barragem (negativo) ou replantar uma floresta (positivo) são impactos ambientais.",
+                    options: [
+                        "Isto é uma dinâmica natural, não um impacto ambiental humano.",
+                        "Esta é a alternativa correta.",
+                        "É um exemplo, mas a definição abrange muito mais (água, ar, solo).",
+                        "É uma mitigação, mas a definição técnica engloba a alteração química/física do meio."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Fácil",
+                text: "O termo 'Ação Antrópica' é muito usado em notícias sobre o clima. O que significa?",
+                options: ["Uma ação provocada por animais de grande porte.", "Uma ação resultante das forças naturais da Terra (como sismos).", "Uma ação realizada exclusivamente pelo Ser Humano.", "Um processo de erosão nas rochas."],
+                correct: 2,
+                explanation: {
+                    correct: "Antropos = Homem. Ação antrópica é qualquer atividade humana que modifica o planeta, como agricultura, indústrias e urbanização.",
+                    options: [
+                        "Incorreto. Foca-se no ser humano.",
+                        "Isso são fenómenos naturais/geológicos.",
+                        "Esta é a alternativa correta.",
+                        "Isso é geologia/meteorologia."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Médio",
+                text: "Qual das seguintes atividades humanas NÃO é a causa direta de introdução de metais pesados (como o mercúrio) nos rios e ecossistemas?",
+                options: ["Atividade mineira (Garimpo de ouro).", "Despejos de resíduos industriais sem tratamento.", "Agricultura biológica tradicional.", "Uso e descarte incorreto de pilhas e lixo eletrónico."],
+                correct: 2,
+                explanation: {
+                    correct: "A agricultura biológica evita até pesticidas químicos, quanto mais metais pesados. O garimpo, por outro lado, usa mercúrio puro para separar o ouro da lama, envenenando as águas.",
+                    options: [
+                        "O garimpo é a principal causa na Amazónia.",
+                        "É uma fonte maciça de chumbo e crómio.",
+                        "Esta é a alternativa correta.",
+                        "Pilhas contêm chumbo, lítio, cádmio e mercúrio."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Fácil",
+                text: "Quando dizemos que um plástico demora 400 anos a desaparecer na natureza, referimo-nos ao facto de ele ser:",
+                options: ["Facilmente reciclável.", "Biodegradável.", "Não-biodegradável.", "Orgânico."],
+                correct: 2,
+                explanation: {
+                    correct: "Não-biodegradável significa que os fungos e as bactérias da natureza não possuem enzimas capazes de 'comer' e destruir as moléculas artificiais do plástico.",
+                    options: [
+                        "Pode ser reciclado por máquinas, mas a natureza não o faz.",
+                        "Oposto da realidade.",
+                        "Esta é a alternativa correta.",
+                        "O plástico é sintético derivado do petróleo."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Médio",
+                text: "A queima de combustíveis fósseis em motores de carros não produz apenas CO2. Produz também dióxido de enxofre (SO2) e óxidos de azoto (NOx). Quando estes gases se misturam com a humidade das nuvens, causam:",
+                options: ["A destruição imediata da camada de ozono.", "Chuvas ácidas.", "O arrefecimento global.", "A Eutrofização dos ares."],
+                correct: 1,
+                explanation: {
+                    correct: "Estes gases reagem com o vapor de água formando ácidos (sulfúrico e nítrico). A chuva cai com um pH muito baixo, 'queimando' folhas e matando rios.",
+                    options: [
+                        "A camada de ozono é destruída por CFCs.",
+                        "Esta é a alternativa correta.",
+                        "Os gases de escape causam aquecimento, não arrefecimento.",
+                        "Eutrofização acontece na água com fertilizantes."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Efeito de Estufa e Aquecimento Global (6-12)
+            {
+                id: 6, level: "Fácil",
+                text: "O 'Efeito de Estufa' é um fenómeno inventado pela poluição humana e que deve ser totalmente eliminado para salvar a Terra. Esta afirmação é:",
+                options: ["Verdadeira. O planeta ficaria perfeito se não houvesse efeito de estufa.", "Falsa. O efeito de estufa é um fenómeno natural essencial para manter o planeta quente; o problema é a sua intensificação humana.", "Verdadeira. As fábricas criaram o efeito de estufa no século XIX.", "Falsa. O efeito de estufa não tem relação com a temperatura do planeta."],
+                correct: 1,
+                explanation: {
+                    correct: "Cuidado com a rasteira! O Efeito de Estufa natural é o nosso cobertor; sem ele a Terra teria uma média de -18ºC. Nós estamos é a usar um 'cobertor demasiado grosso' com os nossos gases.",
+                    options: [
+                        "Morreríamos todos congelados.",
+                        "Esta é a alternativa correta.",
+                        "Ele existe desde que a Terra tem atmosfera.",
+                        "Tem uma relação direta com a retenção térmica."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Fácil",
+                text: "Quais são os dois principais 'Gases com Efeito de Estufa' (GEE) que o Homem está a libertar descontroladamente para a atmosfera?",
+                options: ["Oxigénio (O2) e Azoto (N2)", "Dióxido de Carbono (CO2) e Metano (CH4)", "Hélio (He) e Hidrogénio (H2)", "Ozono (O3) e Clorofluorcarbonetos (CFC)"],
+                correct: 1,
+                explanation: {
+                    correct: "O CO2 vem principalmente da queima de combustíveis, e o Metano vem muito da pecuária (digestão das vacas) e decomposição do lixo. Ambos retêm violentamente o calor.",
+                    options: [
+                        "Estes compõem 99% da atmosfera, mas não retêm calor.",
+                        "Esta é a alternativa correta.",
+                        "São gases extremamente leves que fogem para o espaço.",
+                        "Os CFCs destroem o ozono, o foco principal do aquecimento é CO2 e CH4."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Médio",
+                text: "Como é que o 'Aquecimento Global' funciona fisicamente na atmosfera?",
+                options: ["Os gases impedem a luz solar de entrar na Terra, causando abafamento.", "A luz do sol entra, aquece o chão, e quando esse calor (radiação infravermelha) tenta voltar para o espaço, os gases impedem a sua saída, retendo-o como uma cúpula.", "As fábricas emitem ar quente puro que sobe e aquece o céu.", "A Terra aproxima-se do sol devido à poluição magnética."],
+                correct: 1,
+                explanation: {
+                    correct: "É exatamente como um carro fechado ao sol! A luz (onda curta) atravessa os vidros/gases e entra. Mas o calor gerado (onda longa) não consegue atravessar o CO2 de volta para fora.",
+                    options: [
+                        "Se impedissem a luz de entrar, a Terra arrefeceria.",
+                        "Esta é a alternativa correta.",
+                        "O calor das chaminés é irrisório comparado com a energia solar retida.",
+                        "A órbita não muda por causa do fumo."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Fácil",
+                text: "Qual das seguintes NÃO é uma consequência provável do Aquecimento Global?",
+                options: ["Derretimento de glaciares e subida do nível do mar.", "Eventos climáticos extremos (secas e furacões).", "Aumento global das populações de ursos polares.", "Destruição de recifes de coral pelo aquecimento das águas."],
+                correct: 2,
+                explanation: {
+                    correct: "O aquecimento global está a derreter o gelo marinho onde os ursos polares caçam, empurrando-os para a inanição e perigo de extinção. A sua população está a diminuir, não a aumentar.",
+                    options: [
+                        "Esta é uma consequência certa.",
+                        "O clima fica instável (mudanças climáticas).",
+                        "Esta é a alternativa correta.",
+                        "O aquecimento branqueia e mata os corais."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Médio",
+                text: "A pecuária extensiva (criação de milhões de bois e vacas) é fortemente criticada pelos ambientalistas por contribuir muito para o aquecimento global. Porquê?",
+                options: ["Porque os animais pisam muito a terra e geram atrito quente.", "Porque a digestão destes animais ruminantes liberta enormes quantidades de Gás Metano (CH4), que é um gás de estufa muito potente.", "Porque os animais bebem a água toda dos rios.", "Porque comem a relva e deixam a terra preta, que atrai o sol."],
+                correct: 1,
+                explanation: {
+                    correct: "Um arroto de vaca contém Metano. O metano tem um potencial de reter calor dezenas de vezes superior ao CO2. Milhões de vacas = impacto atmosférico colossal.",
+                    options: [
+                        "Falso e absurdo em escala térmica.",
+                        "Esta é a alternativa correta.",
+                        "Afeta a hidrografia, mas não a estufa atmosférica.",
+                        "O Albedo (reflexão) muda, mas o metano é o fator drástico."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Difícil",
+                text: "O desmatamento da floresta (como a Amazónia ou a Amazónia africana) funciona como um 'golpe duplo' no aquecimento global. Quais são os dois fatores dessa ação?",
+                options: ["1: Retira as árvores que fariam sombra no solo. 2: O chão pega fogo naturalmente.", "1: Ao cortar as árvores, perdemos quem retira o CO2 do ar (fotossíntese). 2: Quando as árvores apodrecem ou são queimadas, todo o Carbono que lá estava volta à atmosfera.", "1: Impede os animais de respirarem oxigénio. 2: Produz tempestades de areia.", "1: Acaba com a evaporação da água. 2: Liberta chumbo no solo."],
+                correct: 1,
+                explanation: {
+                    correct: "Lógica perfeita! Ao cortarmos a floresta, perdemos as 'máquinas' que limpavam o ar, e como quase sempre queimamos os restos da madeira, atiramos ainda mais fumo (CO2) para cima.",
+                    options: [
+                        "O solo exposto seca, mas não pega fogo sem ação ignescente.",
+                        "Esta é a alternativa correta.",
+                        "Animais fogem, não afeta o oxigénio a esse nível imediato drástico.",
+                        "Afeta o ciclo da água, mas não explica o 'golpe duplo' no aquecimento por CO2."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Camada de Ozono (12-16)
+            {
+                id: 12, level: "Fácil",
+                text: "Muitos alunos confundem os problemas! Qual é a FUNÇÃO da Camada de Ozono (O3) para o nosso planeta?",
+                options: ["Reter o calor e manter o planeta aquecido à noite.", "Filtrar e bloquear a maior parte da perigosa Radiação Ultravioleta (UV) emitida pelo Sol.", "Produzir oxigénio para os animais respirarem na montanha.", "Impedir que os foguetões espaciais caiam na Terra."],
+                correct: 1,
+                explanation: {
+                    correct: "O Ozono atua como os óculos escuros e o protetor solar do planeta. Sem ele, a radiação UV queimaria a pele e o DNA de quase tudo o que é vivo na superfície.",
+                    options: [
+                        "Essa é a função dos Gases de Estufa (CO2).",
+                        "Esta é a alternativa correta.",
+                        "Nós respiramos O2, não Ozono (O3), que até é tóxico para os pulmões.",
+                        "Não tem barreira mecânica/física."
+                    ]
+                }
+            },
+            {
+                id: 13, level: "Médio",
+                text: "O 'Buraco' na Camada de Ozono, que surgiu sobre a Antártida, foi causado pela libertação de um grupo de gases artificiais conhecidos pela sigla:",
+                options: ["CO2 (Dióxido de Carbono)", "CFCs (Clorofluorcarbonetos)", "H2O (Vapor de Água)", "CH4 (Metano)"],
+                correct: 1,
+                explanation: {
+                    correct: "Os CFCs eram usados em frascos de laca, aerossóis e sistemas de ar condicionado. O Cloro destes gases sobe e devora incansavelmente as moléculas de Ozono (O3).",
+                    options: [
+                        "Causa o aquecimento global, não rasga o Ozono.",
+                        "Esta é a alternativa correta.",
+                        "Gás inócuo (vapor).",
+                        "Gás de estufa potente."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Fácil",
+                text: "A principal consequência para a saúde humana devido à destruição da Camada de Ozono é:",
+                options: ["O aumento brutal do cancro de pele e cataratas (cegueira) devido à excessiva radiação UV.", "Dificuldade em respirar oxigénio puro nas cidades.", "Intoxicação alimentar pelos vegetais expostos ao sol.", "O aumento das doenças cardíacas por calor extremo."],
+                correct: 0,
+                explanation: {
+                    correct: "A radiação Ultravioleta (UV) age como 'balas' microscópicas que danificam o código genético das células da pele, provocando mutações e melanomas (cancro).",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "A qualidade do ar urbano prende-se com gases de escape e poluição de partículas.",
+                        "As colheitas morrem, não ganham toxicidade inerente.",
+                        "Isso é culpa das ondas de calor (Aquecimento global)."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Difícil",
+                text: "O Protocolo de Montreal (1987) foi um tratado internacional focado em:",
+                options: ["Proibir a caça à baleia.", "Banir a produção de gases CFCs para permitir a recuperação da Camada de Ozono.", "Obrigar os carros a serem elétricos.", "Proibir os plásticos nos oceanos."],
+                correct: 1,
+                explanation: {
+                    correct: "É considerado o acordo ambiental de maior sucesso da história. Como o mundo uniu-se e baniu os CFCs, o buraco do ozono parou de crescer e tem estado lentamente a cicatrizar.",
+                    options: [
+                        "Isso é da comissão baleeira.",
+                        "Esta é a alternativa correta.",
+                        "Tema climático atual (Protocolo de Quioto / Acordo de Paris).",
+                        "Não existia essa preocupação política neste formato na época."
+                    ]
+                }
+            },
+            {
+                id: 16, level: "Difícil",
+                text: "Afirmação: 'O buraco na Camada de Ozono é a causa direta do Aquecimento Global, pois permite que mais calor entre na Terra'. Esta afirmação é:",
+                options: ["Totalmente Verdadeira.", "Totalmente Falsa. A radiação UV que entra pelo buraco queima a pele, mas a sua contribuição para o calor do planeta é quase nula. O calor vem do Efeito de Estufa.", "Parcialmente verdadeira, pois o Ozono aquece a Terra e foge pelo buraco.", "Verdadeira apenas no hemisfério sul."],
+                correct: 1,
+                explanation: {
+                    correct: "Cai sempre no exame! Repete comigo: Ozono lida com Luz (UV e queimaduras solares). Efeito Estufa lida com Calor (Aquecimento global e derretimento). São problemas distintos!",
+                    options: [
+                        "Falso.",
+                        "Esta é a alternativa correta.",
+                        "Conceitos trocados fisicamente.",
+                        "Falso globalmente."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Água e Eutrofização (17-23)
+            {
+                id: 17, level: "Fácil",
+                text: "A palavra 'Eutrofização' assusta pelo nome, mas refere-se a um desastre ecológico na água. Qual é o pontapé de saída para este problema?",
+                options: ["Atirar lixo plástico para o mar.", "Despejo excessivo de nutrientes (esgotos caseiros ricos em matéria orgânica ou fertilizantes agrícolas ricos em fósforo/nitrato) num lago ou rio lêntico.", "Um derrame de petróleo que cobre a superfície da água.", "A pesca intensiva de todos os predadores num lago."],
+                correct: 1,
+                explanation: {
+                    correct: "Eutrófico = Muito nutrido. Damos 'comida a mais' à água. As microalgas banqueteiam-se e multiplicam-se até taparem toda a superfície do rio com um tapete verde asqueroso.",
+                    options: [
+                        "Mata os animais, mas não ativa algas.",
+                        "Esta é a alternativa correta.",
+                        "Causa asfixia direta e morte tóxica de aves marinhas (Maré negra).",
+                        "Desequilibra a cadeia, mas não é eutrofização."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Médio",
+                text: "No processo avançado de Eutrofização, por que razão os peixes do fundo do lago acabam por morrer asfixiados?",
+                options: ["Porque as algas do tapete verde sugam toda a água do rio.", "Porque a luz do sol não passa pelo tapete de algas superficiais, matando as plantas do fundo. Bactérias multiplicam-se para decompor todo esse lixo verde morto e esgotam o oxigénio da água no processo.", "Porque o adubo colocado na água é venenoso e queima as guelras dos peixes.", "Porque os peixes comem algas a mais e explodem."],
+                correct: 1,
+                explanation: {
+                    correct: "A morte não é por veneno, é por ASFIXIA. As bactérias aeróbias fazem uma festa a comer as plantas mortas do fundo e, ao respirarem como loucas, sugam o O2 da água toda.",
+                    options: [
+                        "As algas não conseguem beber um rio.",
+                        "Esta é a alternativa correta.",
+                        "O adubo (nitrato) não é venenoso, o problema é a proliferação orgânica.",
+                        "Biologicamente absurdo."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Médio",
+                text: "Quando ouvimos nas notícias sobre a 'Maré Negra', a que tipo de impacto ambiental desastroso nos referimos?",
+                options: ["Ao despejo noturno de esgotos nas praias do Algarve.", "Ao derrame de toneladas de crude (petróleo) nos oceanos, por acidentes em navios ou plataformas.", "À coloração escura que o céu ganha antes de uma trovoada ácida.", "À migração excessiva de tubarões na costa."],
+                correct: 1,
+                explanation: {
+                    correct: "O petróleo, sendo mais leve que a água, forma uma mancha negra impermeável na superfície. Asfixia os corais, cola as asas das aves marinhas (afogando-as) e bloqueia a fotossíntese marinha.",
+                    options: [
+                        "Isso é poluição por efluentes urbanos.",
+                        "Esta é a alternativa correta.",
+                        "Mito.",
+                        "Não tem relação."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Fácil",
+                text: "Um dos problemas mais graves nos oceanos de hoje são os microplásticos. O que são?",
+                options: ["Sacos de compras roubados pelos peixes.", "Bactérias que comem plástico.", "Pedaços minúsculos de plástico (menores de 5mm), provenientes da quebra mecânica de lixo maior ou esfoliantes cósmeticos, que são facilmente engolidos pelos peixes.", "Plásticos criados em laboratório para limpar os oceanos."],
+                correct: 2,
+                explanation: {
+                    correct: "O plástico no mar não se dissolve; ele parte-se aos bocadinhos pelo bater das ondas e sol. Estes pedacinhos invisíveis são engolidos pelos peixes, passando as toxinas para a cadeia alimentar (e para os teus sushis).",
+                    options: [
+                        "Têm origem em lixo, mas são fragmentos submilimétricos.",
+                        "Ainda se procura uma bactéria devoradora eficiente, mas não é a definição.",
+                        "Esta é a alternativa correta.",
+                        "Não limpam."
+                    ]
+                }
+            },
+            {
+                id: 21, level: "Difícil",
+                text: "A Inversão Térmica é um fenómeno que ocorre nas grandes cidades poluídas no inverno. O que acontece nela?",
+                options: ["O ar frio sobe para a estratosfera levando a poluição.", "Uma camada de ar quente fica 'presa' por cima de uma camada de ar frio (junto ao solo), agindo como uma tampa invisível que impede que os gases poluentes e o fumo dos carros se dispersem.", "A cidade congela rapidamente devido à poluição.", "A temperatura da terra fica mais quente que a do sol."],
+                correct: 1,
+                explanation: {
+                    correct: "Normalmente o ar quente (mais leve) está no chão e sobe, limpando o ar da cidade (como um aspirador natural). Na inversão, o ar perto do chão é o frio e denso, e não consegue subir. A cidade fica presa a respirar os seus próprios gases de escape durante dias.",
+                    options: [
+                        "Se subisse, o ar limpava-se.",
+                        "Esta é a alternativa correta.",
+                        "Falso.",
+                        "Impossível no universo."
+                    ]
+                }
+            },
+
+            // BLOCO 5: Soluções e os 3 R's (22-30)
+            {
+                id: 22, level: "Fácil",
+                text: "Quando falamos da Política dos 3 R's para gerir o lixo caseiro, referimo-nos a quais palavras?",
+                options: ["Reinventar, Remodelar e Reter.", "Rir, Respirar e Recriar.", "Reduzir, Reutilizar e Reciclar.", "Rasgar, Rejeitar e Recolher."],
+                correct: 2,
+                explanation: {
+                    correct: "Os clássicos 3 R's! A ordem é importante: primeiro tenta não usar, depois tenta usar de novo e, em último caso, deita no ecoponto amarelo/azul/verde.",
+                    options: [
+                        "Palavras bonitas mas erradas.",
+                        "Conselhos de vida zen, não ecologia de lixo.",
+                        "Esta é a alternativa correta.",
+                        "Atitudes violentas e antiecológicas."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Médio",
+                text: "Desses 3 R's, qual deles é o mais EFICIENTE do ponto de vista ecológico para salvar o planeta (aquele que deve ser tentado primeiro)?",
+                options: ["Reciclar, pois gera empregos na fábrica.", "Reutilizar, pois é giro fazer artesanato.", "Reduzir, pois a melhor forma de não poluir é simplesmente não comprar/produzir o objeto em primeiro lugar (não gastar os recursos naturais na fábrica).", "A eficácia é igual, a ordem é indiferente."],
+                correct: 2,
+                explanation: {
+                    correct: "O lixo que não é criado é 100% ecológico! Reciclar uma garrafa gasta caminhões, água de lavagem e fornalhas para a derreter. Levar uma garrafa tua de casa (Reduzir o lixo) não gasta energia nenhuma do planeta.",
+                    options: [
+                        "A reciclagem consome imensa água e energia industrial.",
+                        "Reutilizar é ótimo e o 2º passo, mas reduzir a fonte é a chave estrutural.",
+                        "Esta é a alternativa correta.",
+                        "A ordem é estritamente hierárquica na pegada carbónica."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Fácil",
+                text: "Separar o lixo em casa para a recolha municipal: A garrafa de iogurte líquida vai para o ecoponto ________, enquanto o caderno antigo vai para o ecoponto ________.",
+                options: ["Verde / Azul", "Amarelo / Azul", "Azul / Amarelo", "Preto / Verde"],
+                correct: 1,
+                explanation: {
+                    correct: "Ecoponto Amarelo = Embalagens de Plástico e Metal. Ecoponto Azul = Papel e Cartão. Ecoponto Verde = Vidro.",
+                    options: [
+                        "Verde é para Vidro.",
+                        "Esta é a alternativa correta.",
+                        "Trocaste as posições.",
+                        "Preto é Lixo Indiferenciado (Aterro)."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Médio",
+                text: "O que é o 'Desenvolvimento Sustentável'?",
+                options: ["Abolir qualquer tipo de avanço tecnológico e voltar a viver no mato.", "Usar absolutamente todos os recursos do planeta agora e deixar o problema para os nossos filhos.", "Explorar os recursos da Terra para satisfazer as nossas necessidades atuais, mas com moderação, de modo a não comprometer a capacidade das gerações futuras de satisfazerem as delas.", "Construir casas debaixo de terra."],
+                correct: 2,
+                explanation: {
+                    correct: "Sustentabilidade é gerir a 'conta bancária' da natureza. Podes gastar dinheiro, mas não ao ponto de levar o planeta à falência antes que os teus netos nasçam. Consumo consciente é a chave.",
+                    options: [
+                        "Os ambientalistas defendem tecnologias ecológicas modernas.",
+                        "Isso é capitalismo selvagem inconsciente.",
+                        "Esta é a alternativa correta.",
+                        "Isso não assegura sustentabilidade alimentar."
+                    ]
+                }
+            },
+            {
+                id: 26, level: "Difícil",
+                text: "A 'Pegada Ecológica' é um conceito usado para medir:",
+                options: ["A quantidade de metros quadrados que tu calças no chão.", "A área de floresta necessária para plantar os teus legumes apenas.", "A quantidade de hectares de terra produtiva e oceanos necessária para sustentar o teu estilo de vida (gerar a tua comida, roupas) e absorver o lixo e carbono que geras.", "O rasto deixado por animais na areia no mato."],
+                correct: 2,
+                explanation: {
+                    correct: "Se toda a gente comesse bife todos os dias, comprasse roupa todas as semanas e andasse de jipe na rua sozinho, precisávamos de 4 planetas Terra para produzir tantos recursos e absorver tanto CO2. Essa é a Pegada gigante de algumas nações ricas.",
+                    options: [
+                        "O tamanho físico não é a questão.",
+                        "Ignora consumo de bens, transporte e descarte.",
+                        "Esta é a alternativa correta.",
+                        "Isso é pegada física em zoologia de campo."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Fácil",
+                text: "Substituir as centrais elétricas a carvão por painéis solares e torres eólicas ajuda PRINCIPALMENTE a combater que problema ambiental?",
+                options: ["Eutrofização dos rios.", "Desflorestação extrema.", "O Efeito de Estufa agravado, pois a energia solar/eólica não emite gases CO2 para o ar.", "O aumento dos insetos nas cidades."],
+                correct: 2,
+                explanation: {
+                    correct: "A transição energética para as fontes Renováveis é a arma número 1 para travar o Aquecimento Global. Energia limpa não queima lixo fóssil.",
+                    options: [
+                        "A eutrofização vem de fertilizantes rurais e esgotos urbanos.",
+                        "Os painéis precisam de algum espaço, não sendo a solução direta contra a máfia madeireira.",
+                        "Esta é a alternativa correta.",
+                        "Não há relação."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Médio",
+                text: "O uso de 'Agrotóxicos' (pesticidas e herbicidas químicos pesados) nas grandes plantações de soja acarreta um enorme impacto invisível na natureza: a morte de muitos insetos polinizadores vitais para o mundo, como:",
+                options: ["As Formigas", "As Abelhas", "As Moscas-domésticas", "Os Escaravelhos"],
+                correct: 1,
+                explanation: {
+                    correct: "Secreta e tragicamente, os pesticidas estão a desorientar e matar as Abelhas a uma escala global. Sem elas a polinizar as flores, um terço dos alimentos mundiais (frutas e legumes) deixaria de existir.",
+                    options: [
+                        "São detritívoros / predadores vitais, mas não o ícone polinizador massivo.",
+                        "Esta é a alternativa correta.",
+                        "São pestes sanitárias comuns sem grande valência polinizadora botânica base.",
+                        "Cuidam do estrume, mas a flor precisa da abelha."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Difícil",
+                text: "O Brasil tem o Código Florestal. O que são as Áreas de Preservação Permanente (APP)?",
+                options: ["Áreas dentro da cidade onde podes estacionar o carro para sempre.", "Áreas nas quintas privadas (como encostas de montanhas íngremes e margens dos rios) que a lei PROÍBE o agricultor de cortar as árvores, para evitar deslizamentos de terra e proteger a água de secar.", "Fazendas públicas onde o governo caça ursos.", "Locais de praia fechados a estrangeiros."],
+                correct: 1,
+                explanation: {
+                    correct: "A floresta funciona como 'cola' no barranco da montanha e como 'pala do sol' e 'filtro' nas margens do rio. Se desmatares as margens (Mata Ciliar), o rio morre de assoreamento. O proprietário da terra é dono do lote, mas o estado impede a agressão cega da APP.",
+                    options: [
+                        "Estacionamento eterno não é medida ecológica orgânica.",
+                        "Esta é a alternativa correta.",
+                        "Não caçamos ursos nem é o foco.",
+                        "APP lida com biologia hidrológica geomorfológica, não patriotismo balnear."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "Resumo Estrutural Final: Relaciona a Catástrofe com a Causa! Qual das associações abaixo é 100% CIENTIFICAMENTE VERDADEIRA?",
+                options: ["CFCs ➔ Causam Chuva Ácida. // Óxidos Enxofre ➔ Buraco Ozono.", "CO2 em excesso ➔ Buraco do Ozono. // Fertilizantes ➔ Aquecimento Global.", "DDT e Mercúrio ➔ Eutrofização de Águas. // Metano de Vacas ➔ Magnificação Trófica Tóxica.", "Excesso de Nitratos e Esgotos ➔ Eutrofização dos Rios // Gases CFCs ➔ Destruição do Ozono na Estratosfera // Gás Metano/CO2 ➔ Aumento brutal do Efeito Estufa e Aquecimento."],
+                correct: 3,
+                explanation: {
+                    correct: "Excelente! Esta é a Bíblia da poluição, não confundas os crimes! Esgoto asfixia rio (eutrofização). CFC fura o escudo solar (ozono). CO2 e Metano trancam o calor na bola de terra (aquecimento).",
+                    options: [
+                        "Inversão química absoluta (Enxofre faz chuva ácida, CFC rompe ozono).",
+                        "Inversão teórica absurda e falaciosa global.",
+                        "DDT e Hg são os mestres da Bioacumulação. Esgoto e Adubo são de Eutrofização.",
+                        "Esta é a alternativa correta estruturante magistral."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Defesa Ambiental Ativada!' : '❌ Alerta Tóxico no Raciocínio:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>Solução:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#0F172A; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #CBD5E1; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Relatório de Erros:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício verdes e alaranjados
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#10B981', '#EA580C', '#334155', '#F97316']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#10B981', '#EA580C', '#334155', '#F97316']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Auditoria";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar na Missão";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `A tua política ambiental salvou ${correct} de ${questions.length} desafios.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Planeta em Perigo!</strong> As tuas políticas são demasiado poluentes. Atingir 80% (24 acertos) é obrigatório para não destruíres a biosfera do conhecimento. Reavalia a Teoria Ecológica!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Limpar Danos e Repetir</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Guardião da Biosfera!</strong> A tua análise pericial aos impactos ambientais e causas humanas salvou a cotação da tua prova. Dominaste o tema por completo!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Patrulhar Novamente</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo de Poluição Mental (Rever Erros):</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">A tua Escolha: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">Verdade Científica: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

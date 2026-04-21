@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Digestivo - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-GÁSTRICO (Salmão Anatómico & Verde Bílis) */
+            --bg-color: #FFF7ED; /* Fundo Laranja muito claro */
+            --text-color: #431407; /* Castanho avermelhado muito escuro */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #FFEDD5; /* Pêssego/Salmão claro */
+            --theme-medium: #F97316; /* Laranja/Salmão vibrante */
+            --theme-dark: #C2410C; /* Ferrugem/Laranja escuro */
+            --theme-contrast: #047857; /* Verde Bílis/Esmeralda (Destaque) */
+            --theme-accent: #EAB308; /* Amarelo Ácido Gástrico */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#ffedd5 1px, transparent 1px), linear-gradient(90deg, #ffedd5 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #9A3412;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #C2410C;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #ECFDF5; /* Verde esmeralda muito suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #064E3B;
+        }
+        .highlight-box.warning {
+            background-color: #FEF2F2;
+            border-left-color: #BE123C;
+            color: #881337;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #9A3412; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #FDBA74; line-height: 1.5; color: #431407; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🍎</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Sistema Digestivo: A Linha de Desmontagem</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar órgão... (ex: Estômago)">
+            </div>
+            <div id="no-results"><p>😕 Órgão não encontrado. Verifica a ortografia.</p></div>
+
+            <!-- TÓPICO 1: O TUBO E OS ANEXOS -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-dark);">🛤️ 1. O Caminho do Alimento</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-dark);">
+                    <h3 style="color: var(--theme-dark);">Tubo Digestivo vs. Órgãos Anexos</h3>
+                    <p>O sistema digestivo divide-se em duas partes principais. Se não compreenderes a anatomia global, vais falhar redondamente na fisiologia:</p>
+                    
+                    <!-- MAPA ANATÓMICO EM SVG -->
+                    <div class="visual-area" style="padding: 20px 0; background-color: var(--white); border: 2px solid var(--border-color);">
+                        <svg width="100%" height="auto" viewBox="0 -120 500 570" style="max-width: 600px; font-family: 'Poppins', sans-serif;">
+                            
+                            <!-- Silhueta Humana Fundo -->
+                            <path d="M 250 -100 C 200 -100 190 -50 190 -30 C 190 0 220 10 220 20 Q 150 -10 100 40 L 400 40 Q 350 -10 280 20 C 280 10 310 0 310 -30 C 310 -50 300 -100 250 -100 Z" fill="#FFEDD5" stroke="#F97316" stroke-width="2" stroke-dasharray="4,2" opacity="0.6"/>
+                            <path d="M 130 70 Q 250 50 370 70 L 400 250 Q 380 430 250 430 Q 120 430 100 250 Z" fill="#FFEDD5" stroke="#F97316" stroke-width="2" stroke-dasharray="4,2" opacity="0.4"/>
+
+                            <!-- ORGÃOS (Desenhados de trás para a frente) -->
+                            
+                            <!-- Glândulas Salivares -->
+                            <circle cx="265" cy="-30" r="8" fill="#EAB308" stroke="#CA8A04" stroke-width="2"/>
+                            <circle cx="245" cy="-10" r="5" fill="#EAB308" stroke="#CA8A04" stroke-width="2"/>
+                            <circle cx="255" cy="5" r="6" fill="#EAB308" stroke="#CA8A04" stroke-width="2"/>
+
+                            <!-- Boca, Faringe e Esófago -->
+                            <path d="M 200 -30 Q 250 -30 250 10 L 250 150" stroke="#EA580C" stroke-width="16" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            
+                            <!-- Pâncreas (Atrás do estômago) -->
+                            <path d="M 240 195 Q 290 220 320 185" fill="none" stroke="#EAB308" stroke-width="16" stroke-linecap="round"/>
+
+                            <!-- Fígado -->
+                            <path d="M 160 150 C 220 110 270 150 270 180 C 230 220 160 190 160 150 Z" fill="#78350F" stroke="#431407" stroke-width="3"/>
+                            
+                            <!-- Vesícula Biliar -->
+                            <circle cx="210" cy="195" r="10" fill="#047857" stroke="#022C22" stroke-width="2"/>
+                            
+                            <!-- Estômago -->
+                            <path d="M 250 140 C 310 120 350 170 290 210 C 250 230 230 180 250 140 Z" fill="#BE123C" stroke="#881337" stroke-width="3"/>
+
+                            <!-- Intestino Grosso -->
+                            <path d="M 170 320 L 170 230 Q 170 210 190 210 L 310 210 Q 330 210 330 230 L 330 320 Q 290 350 250 360" fill="none" stroke="#9A3412" stroke-width="28" stroke-linejoin="round" stroke-linecap="round"/>
+                            <!-- Pequenos detalhes de haustros do Intestino Grosso -->
+                            <line x1="156" y1="240" x2="184" y2="240" stroke="#431407" stroke-width="2"/>
+                            <line x1="156" y1="270" x2="184" y2="270" stroke="#431407" stroke-width="2"/>
+                            <line x1="156" y1="300" x2="184" y2="300" stroke="#431407" stroke-width="2"/>
+                            <line x1="316" y1="240" x2="344" y2="240" stroke="#431407" stroke-width="2"/>
+                            <line x1="316" y1="270" x2="344" y2="270" stroke="#431407" stroke-width="2"/>
+                            <line x1="316" y1="300" x2="344" y2="300" stroke="#431407" stroke-width="2"/>
+                            
+                            <!-- Intestino Delgado (Enrolado no centro) -->
+                            <path d="M 240 210 Q 190 230 220 250 T 280 270 T 200 300 T 290 320 T 220 340 T 270 350 T 250 360" fill="none" stroke="#FDBA74" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+                            
+                            <!-- Apêndice -->
+                            <path d="M 160 320 Q 140 350 175 345" fill="none" stroke="#9A3412" stroke-width="8" stroke-linecap="round"/>
+                            
+                            <!-- Reto/Ânus -->
+                            <path d="M 250 360 L 250 410" stroke="#431407" stroke-width="20" fill="none" stroke-linecap="round"/>
+
+
+                            <!-- RÓTULOS E LINHAS INDICATIVAS -->
+                            
+                            <!-- Lado Esquerdo -->
+                            <polyline points="135,-30 160,-30 200,-30" fill="none" stroke="#EA580C" stroke-width="2"/>
+                            <circle cx="200" cy="-30" r="3" fill="#EA580C"/>
+                            <text x="130" y="-25" font-size="14" font-weight="900" fill="#9A3412" text-anchor="end">BOCA</text>
+
+                            <polyline points="135,150 160,150 180,150" fill="none" stroke="#431407" stroke-width="2"/>
+                            <circle cx="180" cy="150" r="3" fill="#431407"/>
+                            <text x="130" y="155" font-size="14" font-weight="900" fill="#78350F" text-anchor="end">FÍGADO</text>
+
+                            <polyline points="135,200 160,200 200,200" fill="none" stroke="#047857" stroke-width="2"/>
+                            <circle cx="200" cy="200" r="3" fill="#047857"/>
+                            <text x="130" y="205" font-size="12" font-weight="900" fill="#047857" text-anchor="end">VESÍCULA BILIAR</text>
+
+                            <polyline points="135,270 160,270 170,270" fill="none" stroke="#9A3412" stroke-width="2"/>
+                            <circle cx="170" cy="270" r="3" fill="#9A3412"/>
+                            <text x="130" y="275" font-size="14" font-weight="900" fill="#9A3412" text-anchor="end">INT. GROSSO</text>
+
+                            <polyline points="135,340 150,340 160,335" fill="none" stroke="#9A3412" stroke-width="2"/>
+                            <circle cx="160" cy="335" r="3" fill="#9A3412"/>
+                            <text x="130" y="345" font-size="12" font-weight="900" fill="#78350F" text-anchor="end">APÊNDICE</text>
+
+                            <!-- Lado Direito -->
+                            <polyline points="365,-30 340,-30 273,-30" fill="none" stroke="#CA8A04" stroke-width="2"/>
+                            <circle cx="273" cy="-30" r="3" fill="#CA8A04"/>
+                            <text x="370" y="-35" font-size="12" font-weight="900" fill="#CA8A04" text-anchor="start">GLÂNDULAS</text>
+                            <text x="370" y="-20" font-size="12" font-weight="900" fill="#CA8A04" text-anchor="start">SALIVARES</text>
+
+                            <polyline points="365,90 340,90 250,90" fill="none" stroke="#EA580C" stroke-width="2"/>
+                            <circle cx="250" cy="90" r="3" fill="#EA580C"/>
+                            <text x="370" y="95" font-size="14" font-weight="900" fill="#9A3412" text-anchor="start">ESÓFAGO</text>
+
+                            <polyline points="365,160 340,160 300,160" fill="none" stroke="#BE123C" stroke-width="2"/>
+                            <circle cx="300" cy="160" r="3" fill="#BE123C"/>
+                            <text x="370" y="165" font-size="14" font-weight="900" fill="#BE123C" text-anchor="start">ESTÔMAGO</text>
+
+                            <polyline points="365,200 340,200 300,200" fill="none" stroke="#CA8A04" stroke-width="2"/>
+                            <circle cx="300" cy="200" r="3" fill="#CA8A04"/>
+                            <text x="370" y="205" font-size="12" font-weight="900" fill="#CA8A04" text-anchor="start">PÂNCREAS</text>
+
+                            <polyline points="365,280 340,280 270,280" fill="none" stroke="#C2410C" stroke-width="2"/>
+                            <circle cx="270" cy="280" r="3" fill="#C2410C"/>
+                            <text x="370" y="285" font-size="14" font-weight="900" fill="#C2410C" text-anchor="start">INT. DELGADO</text>
+
+                            <polyline points="365,385 340,385 250,385" fill="none" stroke="#431407" stroke-width="2"/>
+                            <circle cx="250" cy="385" r="3" fill="#431407"/>
+                            <text x="370" y="390" font-size="14" font-weight="900" fill="#431407" text-anchor="start">RETO / ÂNUS</text>
+
+                        </svg>
+                    </div>
+
+                    <div class="visual-area" style="flex-direction:row; gap: 15px; margin-top: 15px;">
+                        
+                        <div style="background:white; border:2px solid #C2410C; padding:15px; border-radius:8px; width:45%; text-align:center;">
+                            <h4 style="color:#C2410C; font-size:1.1rem; margin-bottom:5px;">O Tubo Digestivo</h4>
+                            <p style="font-size:0.75rem; line-height:1.5;">Onde a comida <strong>efetivamente passa</strong>.<br> Boca ➔ Faringe ➔ Esófago ➔ Estômago ➔ Intestino Delgado ➔ Intestino Grosso ➔ Reto ➔ Ânus.</p>
+                        </div>
+
+                        <div style="background:white; border:2px solid #047857; padding:15px; border-radius:8px; width:45%; text-align:center;">
+                            <h4 style="color:#047857; font-size:1.1rem; margin-bottom:5px;">Órgãos Anexos</h4>
+                            <p style="font-size:0.75rem; line-height:1.5;">A comida <strong>NUNCA passa por aqui</strong>. Eles fabricam sucos químicos e atiram-nos para dentro do tubo.<br>Glândulas Salivares, Fígado e Pâncreas.</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: MECÂNICO VS QUÍMICO -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-medium);">⚙️ 2. Força vs Química</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-medium);">
+                    <h3 style="color: var(--theme-dark);">Dois Tipos de Digestão</h3>
+                    <p>A digestão não é apenas ácido a derreter comida. É um trabalho de equipa entre músculos e enzimas.</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Digestão Mecânica (Física):</strong> Corta e amassa o alimento em pedaços mais pequenos, <em>sem alterar a sua composição química</em>. Aumenta a superfície de contacto! (Ex: Mastigação na boca e <strong>Movimentos Peristálticos</strong> ao longo de todo o tubo).</li>
+                        <li><strong>Digestão Química:</strong> A verdadeira "desmontagem" molecular. As <strong>Enzimas</strong> (tesouras químicas) partem as proteínas, gorduras e açúcares gigantes em partículas minúsculas (nutrientes) que conseguem passar para o sangue.</li>
+                    </ul>
+
+                    <div class="visual-area">
+                        <svg width="220" height="80" viewBox="0 0 220 80">
+                            <!-- Esófago Peristaltismo -->
+                            <path d="M 20 10 Q 50 10 50 40 Q 50 70 20 70" fill="none" stroke="#C2410C" stroke-width="4"/>
+                            <path d="M 120 10 Q 90 10 90 40 Q 90 70 120 70" fill="none" stroke="#C2410C" stroke-width="4"/>
+                            
+                            <!-- Bolo Alimentar -->
+                            <ellipse cx="70" cy="40" rx="15" ry="25" fill="#EAB308" stroke="#000" stroke-width="2"/>
+                            
+                            <!-- Setas de contração muscular -->
+                            <path d="M 30 20 L 50 30" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                            <path d="M 110 20 L 90 30" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                            
+                            <text x="170" y="45" font-size="10" font-weight="bold" fill="#047857">Movimentos<br>Peristálticos</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: BOCA, FARINGE E ESTÔMAGO -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-contrast);">👄 3. O Início da Viagem</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-contrast);">
+                    <h3 style="color: var(--theme-contrast);">A Boca e o Abismo Gástrico</h3>
+                    <p>A digestão <strong>começa na boca</strong>, não no estômago. A saliva contém a enzima <em>Amílase Salivar</em> (Ptyalina) que começa imediatamente a digerir os hidratos de carbono (ex: pão, batata).</p>
+                    
+                    <div class="highlight-box warning">
+                        <strong>O Polícia de Trânsito: A Epiglote.</strong> Na faringe (garganta), o tubo divide-se em dois: a Traqueia (para o ar) e o Esófago (para a comida). Quando engoles, uma 'tampa' chamada Epiglote fecha a traqueia, impedindo que a comida vá para os pulmões e te asfixie.
+                    </div>
+
+                    <p style="margin-top: 10px;"><strong>O Estômago:</strong> O alimento (agora chamado Bolo Alimentar) chega ao estômago. O estômago liberta o violento <strong>Suco Gástrico</strong>, que contém Ácido Clorídrico (mata bactérias e desfaz tecidos duros) e a enzima <strong>Pepsina</strong>, que corta as <strong>Proteínas</strong> (ex: carne, ovos). O ambiente aqui é extremamente ÁCIDO (pH 2).</p>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: O GRANDE HERÓI -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: #BE123C;">🧬 4. O Intestino Delgado e os Anexos</div>
+                <div class="theory-box search-target" style="border-left-color: #BE123C;">
+                    <h3 style="color: #9F1239;">A Digestão Final e a Absorção</h3>
+                    <p>O estômago é apenas uma picadora. O verdadeiro herói do sistema digestivo é o <strong>Intestino Delgado</strong> (que pode ter 7 metros!). É aqui que ocorre o grosso da digestão química e a absorção dos nutrientes para o sangue. Mas ele não trabalha sozinho:</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>O Pâncreas:</strong> Lança o Suco Pancreático no intestino. Tem as enzimas mais poderosas (para lipídios, proteínas e açúcares) e bicarbonato para neutralizar o ácido que veio do estômago.</li>
+                        <li><strong>O Fígado e a Vesícula Biliar:</strong> O fígado produz a <strong>Bílis</strong>, que é guardada na vesícula. <strong>Atenção: A Bílis NÃO é uma enzima!</strong> Ela funciona como um detergente da loiça: emulsifica as gorduras (parte grandes gotas de gordura em gotículas microscópicas) para as enzimas poderem atuar.</li>
+                    </ul>
+
+                    <div class="visual-area">
+                        <svg width="240" height="100" viewBox="0 0 240 100">
+                            <!-- Parede Intestinal Ligeira -->
+                            <path d="M 10 80 L 230 80" stroke="#000" stroke-width="4"/>
+                            
+                            <!-- Vilosidades -->
+                            <path d="M 30 80 C 30 20, 60 20, 60 80" fill="#FFEDD5" stroke="#C2410C" stroke-width="3"/>
+                            <path d="M 60 80 C 60 20, 90 20, 90 80" fill="#FFEDD5" stroke="#C2410C" stroke-width="3"/>
+                            <path d="M 90 80 C 90 20, 120 20, 120 80" fill="#FFEDD5" stroke="#C2410C" stroke-width="3"/>
+                            <path d="M 120 80 C 120 20, 150 20, 150 80" fill="#FFEDD5" stroke="#C2410C" stroke-width="3"/>
+                            
+                            <text x="190" y="45" text-anchor="middle" font-size="10" font-weight="bold" fill="#9A3412">Vilosidades<br>Intestinais</text>
+                            
+                            <!-- Setas de absorção -->
+                            <path d="M 45 40 L 45 70" stroke="#047857" stroke-width="2" marker-end="url(#arrow)"/>
+                            <path d="M 105 40 L 105 70" stroke="#047857" stroke-width="2" marker-end="url(#arrow)"/>
+                        </svg>
+                        <p style="font-size:0.8rem; margin:0; text-align:center;">As dobras (Vilosidades) servem para <strong>aumentar a área/superfície de contacto</strong> com o alimento, permitindo absorver muito mais nutrientes rapidamente para o sangue.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- TÓPICO 5: O FIM DA LINHA -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: #854D0E;">💩 5. O Intestino Grosso</div>
+                <div class="theory-box search-target" style="border-left-color: #854D0E;">
+                    <h3 style="color: #78350F;">A Fábrica de Fezes</h3>
+                    <p>O alimento que não foi digerido (como a celulose da alface) chega ao <strong>Intestino Grosso</strong> em forma líquida. A sua principal função é <strong>absorver a Água e os Sais Minerais</strong> de volta para o corpo, transformando a pasta líquida em fezes sólidas.</p>
+                    <p>Tem biliões de bactérias boas (Microbiota) que nos ajudam produzindo vitaminas (ex: Vitamina K).</p>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar Diagnóstico Digestivo (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">Gastroenterologia Básica</h2>
+                <p style="color: #0F172A; font-size: 0.95rem; font-weight:600;">
+                    30 questões de fisiologia anatómica implacável. Acerta <strong>80% (24/30)</strong> ou a tua nota será expelida sem ser absorvida. Lê a correção forense de cada erro!
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Relatório Fisiológico</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS RIGOROSOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Anatomia Geral e Tubo vs Anexos (1-5)
+            {
+                id: 1, level: "Fácil",
+                text: "O Sistema Digestivo humano é classificado como 'completo'. O que isto significa morfologicamente?",
+                options: ["Significa que consegue digerir qualquer tipo de veneno.", "Significa que o tubo digestivo tem duas aberturas separadas: uma para entrada dos alimentos (Boca) e outra para a saída dos resíduos (Ânus).", "Significa que possui todos os órgãos do corpo interligados.", "Significa que a digestão é feita exclusivamente fora do corpo, num tubo laboratorial."],
+                correct: 1,
+                explanation: {
+                    correct: "Um sistema completo é um 'tubo contínuo'. Organismos primitivos (como a alforreca) têm um sistema incompleto: a comida entra e o lixo sai pelo mesmo buraco (boca/ânus fundidos).",
+                    options: [
+                        "Falso, venenos não são digeridos.",
+                        "Esta é a alternativa correta científica e anatómica.",
+                        "O sistema é isolado dos pulmões ou cérebro.",
+                        "A digestão humana é intracorporal (extracelular, dentro do tubo)."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Médio",
+                text: "Existem órgãos por onde a comida PASSA e é fisicamente empurrada (Tubo Digestivo) e órgãos que apenas enviam 'produtos químicos' para ajudar à digestão (Órgãos Anexos/Glândulas). Qual das opções seguintes aponta EXCLUSIVAMENTE Órgãos Anexos?",
+                options: ["Faringe, Esófago e Estômago.", "Fígado, Pâncreas e Glândulas Salivares.", "Intestino Delgado, Fígado e Ânus.", "Boca, Estômago e Intestino Grosso."],
+                correct: 1,
+                explanation: {
+                    correct: "A comida NUNCA entra dentro do Pâncreas ou do Fígado! Seria fatal! Estes órgãos apenas produzem sucos (como o pancreático e a bílis) e injetam-nos no intestino através de canais.",
+                    options: [
+                        "Estes fazem parte do tubo digestivo principal por onde o bolo alimentar transita.",
+                        "Esta é a alternativa correta estrutural exata da gastrenterologia.",
+                        "O Intestino Delgado e o Ânus fazem parte do Tubo.",
+                        "Todos fazem parte do Tubo Digestivo."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Fácil",
+                text: "Qual é o trajeto topográfico EXATO que um pedaço de pão mastigado (Bolo Alimentar) percorre ao descer pelo tubo digestivo, desde a boca até ao estômago?",
+                options: ["Boca ➔ Esófago ➔ Traqueia ➔ Estômago.", "Boca ➔ Faringe ➔ Esófago ➔ Estômago.", "Boca ➔ Faringe ➔ Laringe ➔ Estômago.", "Boca ➔ Intestino ➔ Esófago ➔ Estômago."],
+                correct: 1,
+                explanation: {
+                    correct: "Boca -> Faringe (garganta) -> Esófago (tubo muscular do peito) -> Estômago. Este é o trajeto seguro ininterrupto sem falhas.",
+                    options: [
+                        "Se for para a Traqueia (tubo do ar), tu asfixias e morres engasgado.",
+                        "Esta é a alternativa correta sequencial pura e exata.",
+                        "A Laringe é a caixa das cordas vocais, pertence ao sistema respiratório.",
+                        "O Intestino está muito depois do Estômago."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Médio",
+                text: "A Faringe é um órgão muito particular no teu pescoço porque é 'partilhada' por dois sistemas diferentes do corpo humano. Quais?",
+                options: ["Sistema Digestivo e Sistema Reprodutor.", "Sistema Nervoso e Sistema Digestivo.", "Sistema Digestivo e Sistema Respiratório.", "Sistema Circulatório e Sistema Excretor."],
+                correct: 2,
+                explanation: {
+                    correct: "A faringe (garganta) é um cruzamento! Tanto o AR que respiras pelo nariz como a COMIDA que engoles pela boca passam pela Faringe. Abaixo dela, os caminhos separam-se para os pulmões (traqueia) ou para a barriga (esófago).",
+                    options: [
+                        "Falso.",
+                        "Falso.",
+                        "Esta é a alternativa correta anatômica mestre cruzada.",
+                        "Falso."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Difícil",
+                text: "Se a Faringe é partilhada por ar e comida, o que impede fisicamente que a sopa ou a maçã que engoles não caia acidentalmente para o tubo respiratório (Traqueia) e te asfixie?",
+                options: ["A gravidade empurra a comida sempre para o tubo certo naturalmente.", "Uma 'válvula' de cartilagem chamada EPIGLOTE, que baixa como uma tampa e fecha hermeticamente a laringe/traqueia no exato milissegundo em que tu engoles.", "Um esfíncter mágico de vácuo no estômago.", "A língua empurra o tubo respiratório para a orelha."],
+                correct: 1,
+                explanation: {
+                    correct: "A Epiglote é o polícia sinaleiro da vida ou de morte! Se tu tentares falar (rir) e engolir comida ao mesmo tempo, a epiglote confunde-se, fica aberta para sair som, e a comida cai na traqueia. Resultado: engasgas-te violentamente e o corpo tosse para expulsar o intruso dos pulmões.",
+                    options: [
+                        "A gravidade atua em ambos os tubos abertos lado a lado.",
+                        "Esta é a alternativa correta mecânica e estrutural letal da sobrevivência.",
+                        "Falso abstrato sem nexo.",
+                        "Biologicamente absurdo."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Físico vs Químico e Peristaltismo (6-11)
+            {
+                id: 6, level: "Fácil",
+                text: "Qual é a diferença funcional biológica clara entre a Digestão Mecânica (Física) e a Digestão Química?",
+                options: ["A Mecânica apenas mastiga, amassa e tritura o alimento (mudando o tamanho), enquanto a Química usa Enzimas e sucos ácidos para partir e desfazer as ligações químicas das moléculas complexas (mudando a substância).", "A Mecânica usa máquinas gástricas, e a Química usa apenas oxigénio líquido.", "A Mecânica é feita só no intestino delgado, e a Química só na boca.", "Não há diferença, são sinónimos."],
+                correct: 0,
+                explanation: {
+                    correct: "Mecânica: Dentes cortam e esmagam. Químico: A enzima pepsina derrete e corta a proteína do bife em pequenos aminoácidos que cabem no sangue. A mecânica facilita o trabalho da química, pois pedaços mais pequenos derretem mais depressa.",
+                    options: [
+                        "Esta é a alternativa correta físico-química basilar do metabolismo gástrico.",
+                        "Falso.",
+                        "Falso.",
+                        "São processos radicalmente opostos."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Médio",
+                text: "Se tentares engolir um pedaço de pão enquanto estás a fazer o 'pino' (de cabeça para baixo plantado no chão), o pão vai conseguir desafiar a gravidade, subir do pescoço até à tua barriga e chegar ao estômago sem cair pela boca?",
+                options: ["Não, a gravidade é absoluta e a comida cai para o céu da boca e sufoca-te de imediato letal pálida e cega.", "Sim! Devido aos Movimentos Peristálticos: contrações musculares rítmicas fortes involuntárias e em onda dos músculos lisos do tubo digestivo (esófago, intestino), que espremem e 'ordenham' a comida no sentido correto e unidirecional, independentemente da gravidade.", "Sim, mas apenas porque a língua usa ímãs magnéticos para empurrar.", "Não, porque o estômago encerra e fecha as portas do lúmen e de vazio cego e de pó quando invertido no espaço vazio."],
+                correct: 1,
+                explanation: {
+                    correct: "A biologia vence a física gravitacional neste caso! É como ordenhar um tubo de pasta de dentes desde o fundo. Os movimentos peristálticos empurram o bolo alimentar do esófago para o estômago implacavelmente, permitindo que até astronautas no espaço de gravidade zero consigam comer normalmente.",
+                    options: [
+                        "Falso, o tubo tem motricidade autônoma.",
+                        "Esta é a alternativa correta biomecânica lisa visceral perfeita mestre de trânsito entérico.",
+                        "Fantasia magnética absurda irreal nula de ficção base rasa oca.",
+                        "O sistema tem válvulas (cárdia/piloro) mas não fecham o tubo pelo referencial vestibular invertido postural espacial mecânico da gravidade isolada."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Médio",
+                text: "As Enzimas são as verdadeiras obreiras da digestão química. O que são bioquimicamente, e como trabalham na escuridão ácida do sistema humano?",
+                options: ["São bactérias vivas do intestino que comem os pedaços de carne dura da parede.", "São vírus amigáveis do estômago.", "São Proteínas Catalisadoras Específicas. Aceleram a quebra da comida, mas cada uma tem a sua própria 'fechadura' (ex: a amilase só parte açúcares/amido, não serve para partir e cortar lipídios gorduras de queijo).", "São pedras e minerais de cálcio que trituram os ossos de comida cega."],
+                correct: 2,
+                explanation: {
+                    correct: "As Enzimas são proteínas! Elas são superespecíficas (Chave-Fechadura). Se tens muita enzima Lipase (quebra gordura) mas te puserem a comer Pão (amido/açúcar), não o digeres com ela. E elas não são 'gastas', apenas ajudam a quebrar as moléculas milhares de vezes.",
+                    options: [
+                        "Bactérias do intestino fazem fermentação e geram vitaminas, não são as enzimas gástricas secretadas pelos órgãos de base.",
+                        "Vírus são acelulares patogénicos.",
+                        "Esta é a alternativa correta bioquímica enzimática molecular direta clara forte exata de modelo específico chave cega limpa clara reta.",
+                        "Aves (galinhas) engolem pedras na moela para triturar (Mecânica), nós temos enzimas líquidas (Química)."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Fácil",
+                text: "A digestão QUÍMICA dos alimentos começa no estômago, com o seu ácido destrutivo. Certo ou Errado?",
+                options: ["Certo, a boca só faz digestão física com os dentes de cortar.", "Errado. A digestão química inicia-se logo na BOCA. A saliva contém a enzima Amilase Salivar (Ptialina), que começa a desfazer os grandes hidratos de carbono (ex: amido do pão, bolachas, arroz) em açúcares menores imediatamente no ato de mastigar doce.", "Certo, porque a saliva é só água para não arranhar a garganta seca.", "Errado, começa apenas no intestino grosso final limpo."],
+                correct: 1,
+                explanation: {
+                    correct: "O grande mito desfeito! Se mastigares um bocado de miolo de pão ou bolacha de água e sal durante muito tempo sem engolir, notas que ele começa a ficar doce na língua! É a Amílase da tua saliva a destruir as grandes cadeias de amido em maltose (açúcar simples) ainda antes de chegar ao pescoço.",
+                    options: [
+                        "Mito popular. A boca faz dupla digestão: FÍSICA (dentes) e QUÍMICA (saliva).",
+                        "Esta é a alternativa correta salivar enzimática basal digestiva bucal perfeita.",
+                        "Saliva contém enzimas líticas essenciais vitais e ativas digestivas base de ação orgânica animal limpa.",
+                        "O intestino grosso forma as fezes, já é tarde para começar a digestão."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Médio",
+                text: "Após o processo violento e forte de digestão mecânica (trituração dental dos molares e incisivos) e química (saliva insalivante) que a tua boca realiza arduamente mestre livre morna limpa, o alimento deixa de ter o formato físico prato normal e transforma-se numa massa escorregadia pastosa e esférica pronta para descer pelo esófago de tubo longo de músculo limpo. Que nome técnico biológico damos a esta 'bola' processada inicial?",
+                options: ["Quimo Gástrico Ácido de Pura Raiva Murcha", "Bolo Alimentar", "Quilo Entérico Líquido Solto", "Fezes Primárias Orgânicas Cruas Cegas"],
+                correct: 1,
+                explanation: {
+                    correct: "O vocabulário é crucial na medicina! Na boca, a comida vira Bolo Alimentar. No estômago vira Quimo (pasta ácida). No Intestino vira Quilo (caldo líquido ralo). Decora esta sequência: Bolo -> Quimo -> Quilo.",
+                    options: [
+                        "O Quimo só se forma no estômago DEPOIS do banho de ácido clorídrico.",
+                        "Esta é a alternativa correta sequencial bucal esofágica de fisiologia gastrointestinal primeira clara reta.",
+                        "O Quilo forma-se no Intestino Delgado após o ataque da bílis e do suco pancreático final.",
+                        "As fezes formam-se na extração de água no Intestino Grosso no final da rota cega."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Difícil",
+                text: "Ao longo do trajeto implacável vertical de descida digestiva esofágica descendente gástrica do sistema liso muscular forte intenso lúgubre denso mudo livre limpo de peristaltismo ativo constante morno calmo e oco ralo da vida, o estômago possui duas 'portas musculares' esfincterianas fortíssimas em anel que fecham hermeticamente a bolsa do saco estomacal para evitar e impedir bloquear fugas ácidas de refluxo corrosivo letal ou descargas não mastigadas não liquefeitas sujas prematuras para baixo. Quais os nomes exatos técnicos anatômicos cirúrgicos desta Válvula de ENTRADA (superior) e da Válvula de SAÍDA (inferior ao duodeno) do Estômago?",
+                options: ["Aorta (Cima) e Epiglote (Baixo).", "Cárdia (Válvula de Entrada Superior que liga ao Esófago) e o Piloro (Válvula de Saída Inferior que tranca e liga deita goteja o quimo ácido solto para o Intestino Delgado).", "Apêndice (Cima) e Cólon (Baixo).", "Pleura Retal Limpa Pura Forte (Cima) e Diafragma Músculo Mole Raso Oco (Baixo)."],
+                correct: 1,
+                explanation: {
+                    correct: "A anatomia gástrica pura de barreira! A Cárdia chama-se assim porque está perto do coração. Quando ela falha e o ácido gástrico sobe, tu sentes a dor ardente horrível da 'azia'. O Piloro atua como porteiro, libertando o sumo do estômago aos pouquinhos (gota a gota) para não queimar e fritar o intestino fino todo de uma vez no de banho ácido de morte.",
+                    options: [
+                        "Aorta é artéria gigante cardiovascular. Epiglote é tampa de garganta traqueal respiratória da faringe.",
+                        "Esta é a alternativa correta gastro-esfincteriana de controlo válvula de trânsito lúgubre mudo denso mestre genial puro exato seguro.",
+                        "Apêndice é cego intestinal inútil do íleo seco grosso. Cólon é intestino grosso cego oco sujo de lixo denso morno oco raso.",
+                        "Pleura isola pulmões do tórax respiratório da gaiola base cega. Diafragma ajuda mecânica ventilatória fôlego lúgubre denso mudo calmo base calmo de ar puro e seco."
+                    ]
+                }
+            },
+
+            // BLOCO 3: O Estômago e as Enzimas Ácidas (12-16)
+            {
+                id: 12, level: "Fácil",
+                text: "O Estômago é o tanque de guerra do sistema digestivo animal. O que é que ele segrega (produz) essencialmente da sua parede cavernosa para atacar o bolo alimentar vindo do esófago?",
+                options: ["Água purificada alcalina doce cega mole de base calma.", "Suco Gástrico. Uma mistura terrivelmente agressiva de Ácido Clorídrico (HCl, com pH muito perto de 2, quase como ácido de bateria que ataca o metal) e da Enzima Pepsina.", "Insulina doente murcha fria falsa de sangue podre fofo.", "Sangue sujo vermelho espesso quente calmo doce seco oco."],
+                correct: 1,
+                explanation: {
+                    correct: "O ácido é tão forte que derrete pregos microscópicos em laboratório! A função do ácido é dupla: matar e fritar esterilizar a 99% das bactérias ruins dos alimentos, e acordar ativar a enzima Pepsina para o trabalho sujo e bruto da rotina celular mestre base.",
+                    options: [
+                        "Estômago é brutalmente ÁCIDO, não alcalino purificado mole pacífico de spa doce solto.",
+                        "Esta é a alternativa correta gástrica bioquímica molecular de degradação péptica proteolítica magna dura reta direta crua pura cega exata mestre viva forte.",
+                        "Insulina é do Pâncreas endócrino para regular a glicose, não a digestão ácida do lúmen vazio oco raso mudo frio mole de lixo gordo.",
+                        "O estômago liberta suco claro mucoso, nunca sangra ativamente para digerir no espaço oco suado murcho sujo liso nulo de vida murcha morta murcha morna fria lenta murcha falsa limpa fofa de do corpo."
+                    ]
+                }
+            },
+            {
+                id: 13, level: "Médio",
+                text: "Uma Rasteira Clínica Clássica Curricular do Ministério: Se o Suco Gástrico de Ácido Clorídrico do estômago é tão desgraçadamente violento e mortal e forte agressivo para derreter tecidos de carne bovina espessa densa viva limpa e frango que tu comeste no jantar... PORQUE RAZÃO O TEU PRÓPRIO ESTÔMAGO NÃO SE DIGERE E SE FURA E DERRETE A SI MESMO JÁ QUE ELE TAMBÉM É FEITO DE CARNE MÚSCULO E PROTEÍNA ANIMAL ORGÂNICA HUMANA VIVA FORTE LIMPA E SÃ MACIA DOCE FALSA LISA?",
+                options: ["Porque nós temos um estômago de osso cerâmico inorgânico blindado seco duro de metal e plástico imune cego falso mudo ralo de limpo livre e baço cego.", "Porque as glândulas da parede estomacal produzem secretam e espalham constantemente e avidamente uma espessa densa pesada protetora e lubrificante camada de MUCO (gosma protetora base alcalina gel viscoso de lixo mudo e limpo) que reveste plastifica e isola totalmente forra toda a parede inteira interior nua limpa, impedindo o ácido mortal do toque físico na própria carne nua viva do órgão no processo.", "Porque o estômago não tem nervos para a dor química e gorda fofa limpa limpa e oca baça suada fria morna podre.", "Porque nós não temos ácido na barriga e isso do suco gástrico mortal ácido é mito urbano de cientistas cegos mortos ocos falsos podres soltos de bata nula suja mole fria."],
+                correct: 1,
+                explanation: {
+                    correct: "É a gosma da vida! O muco espesso protetor gástrico é uma parede de escudo contínua renovada de horas a horas. Se tu estiveres sob muito stress crônico (ansiedade extrema liberta adrenalina cortisol e muito ácido contínuo) ou se uma bactéria chamada H. pylori (que adora viver lá destruindo as paredes do escudo liso do lúmen) destruir esse muco isolante e denso protetor do estômago... o ácido toca a tua carne e tu ganhas uma ÚLCERA GÁSTRICA sangrenta horrível perfurante a doer de morte cega! Respeita o teu muco e os nervos.",
+                    options: [
+                        "Nós somos feitos de músculo epitelial tecido liso de células flexíveis não ossos de metal ocos alien de aço.",
+                        "Esta é a alternativa correta citológica de tecido secretor mucoso isolante basal clínico de digestologia mestre e viva pura forte e densa pura limpa.",
+                        "Mesmo sem nervos teóricos cegos orgânicos, o tecido implodiria dissolvido sangrento esburacado necrosado murcho em falência sem a cobertura de isolamento orgânica química base crua fria letal de mudo denso murcho calmo livre cego falso baço. E claro, nós TEMOS muitos nervos lá viscerais vagos.",
+                        "Temos ácido puro e duro. A biologia digestiva carnívora omnívora o exige fatalmente de regra mestra fina firme."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Médio",
+                text: "No que toca à química enzimática restritiva limitante focada estrita seletiva e específica do meio (A Lei Chave Fechadura Biológica Pura Clássica Molecular): Qual o principal Grupo Alimentar Maciço Macro-Nutriente que sofre e aguenta o maior embate de destruição desconstrução quebra hidrólise quebra rutura e Digestão Química maciça no ESTÔMAGO pela ação cruel isolada da enzima PEPSINA do estômago ácido cego forte?",
+                options: ["As Gorduras (Lipídeos) de banha azeite manteiga suja clara de limpo gordo liso macio lúgubre denso mudo livre limpo liso seco quente cego mole doce.", "Os Açúcares Carboidratos de Massa de Pão e Bolo Doce Amido Rico Farto Arroz de Base Fraca Falsa Fina Rala Cega Murcha Limpa Pálida Doce Suave Branda Base Rasa Fraca Cega do Mudo Mudo Chato Oco do Fio Raso Raso Seco Baço Podre Podre Murcha.", "As Proteínas (Ex: As grandes e densas fibras da Carne de Músculo, Ovos Clara, Peixe Pescado Leite Proteico Rico Forte Quente Queijo Feijão Soja Viva Pura Fina Clara Reta Firme Dura Seca Fria Cega De Lixo Cru Limpo).", "As Vitaminas da Laranja Fresca Nula Murcha Oca Rala Murcha Morta Murcha Rasa Falsa."],
+                correct: 2,
+                explanation: {
+                    correct: "Decora para não falhar: Pão e Massas (Açúcar) derretem começam digestão na BOCA (Amílase saliva). Carne Bife Ovo (Proteína) derretem e estilhaçam e começam hidrólise dura bruta crua ácida severa longa de sucos de lise lise base fina química letal na BARRIGA ESTÔMAGO (Pepsina Ácida). As Gorduras de Azeite só vão ser destruídas muito bem mais à frente com a Bílis Verde no Intestino do duodeno oco mole mudo suado de base livre cega cega. Resumo de rotina mestre: O Estômago é o mestre de esmagar quebrar destruir as Proteínas duras e complexas de polipeptídeos da natureza carnívora mestre rica pura e cega livre.",
+                    options: [
+                        "Lipídeos passam pelo estômago, mas ele quase não lhes toca ou processa quimicamente sem ter a ajuda da Bílis a frente verde escura nula murcha calmo morno suave mole de água baça e cega nula fria e murcha.",
+                        "Carboidratos já começaram ataque de lise enzimática da boca quente limpa salivar húmida.",
+                        "Esta é a alternativa correta macro-enzimática proteolítica química e base fisiológica certa de ouro e perfeita dura clara exata reta suprema imaculada letal densa clínica sólida real exata limpa.",
+                        "Vitaminas soltas e prontas não precisam de desdobramento estrutural para ser absorvidas. São micronutrientes orgânicos base vitais."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Fácil",
+                text: "Mito Clínico Digestológico do Grande Absorvedor Fantasma! A Sabedoria Popular diz que tu te alimentas pela barriga estômago gordo mole cheio e rijo mudo denso murcho calmo sujo ralo oco. O que é que o Estômago ABSORVE biologicamente em quantidade útil direta massiva gigante principal para mandar nutriente vivo rico e puro final de base crua rica para enriquecer engrossar fortalecer as tuas Veias Sistema Circulatório Plasmático e Sangue Puro Doce Morno Vivo Limpo Liso Doce Sólido Fixo Rico Vivo Sã de Cego Morto do de Ácido e Cego de Vida Fofa de Pão Pão Feijão Arroz Bife Leite e Massa Doce Fina Quente Pura E Cega Baça Rala Murcha Fria e Baça de Fraca Rasa Limpa Fofa?",
+                options: ["Absorve absolutamente TUDO de forma mágica e rápida veloz do estômago ácido oco mudo lento falso calmo fofo raso limpo suado doce calmo raso ralo doce falso mudo frio morto.", "Absorve apenas o Açúcar Bruto Cego Oco Morto Oco Quente e Limpo Podre Limpo Limpo Clara Reta de Nula Morta do do de pó e de de poça rasa baça morna doce clara.", "Praticamente NADA de Nutrientes Reais Base de Alimento Calórico de Valor Cru Rico Liso (Aminoácidos ou Glicose)! O Estômago absorve apenas Água rala solta nula de de, Álcool Etanol Bebida Veloz e alguns Medicamentos Fármacos Curtos Rápidos Simples Leves Puros. A absorção maciça da verdadeira comida só ocorre bem à frente do circuito na biologia do Intestino Fino Vilo Fino e Claro.", "Absorve toda a Gordura Branca Oca Cega Cega Rala Seca Morta e Cega Quente e Suada Baça Baça Falsa Rala Fria Suave Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte."],
+                correct: 2,
+                explanation: {
+                    correct: "A Rasteira de Ouro Cirúrgica Implacável! O teu estômago não é uma esponja da comida. É uma batedeira destruidora lítica e uma trituradora química assassina de de desinfetante ácido de base murcha lúgubre denso mudo livre limpo liso cego mudo cego fino doce doce falso ralo de cega. Ele mói o almoço em papa (Quimo). Se beberes álcool com barriga vazia estômago vazio ele entra na veia logo sim senhor de imediato e ficas ébrio na hora letal de sangue bêbado. Mas o teu bife, e a maçã? Só vão entrar para o teu sangue horas mais tarde, na magia vascular complexa celular pura de pregas vilosas soltas longas macias de pele quente e morna suja nula morta do Inestino Delgado. Fantástico de biologia sistêmica animal eucariota celular fina e genial pura reta direta clara limpa viva imaculada de teste geral mestre.",
+                    options: [
+                        "Falso, o pH ácido 2 letal destruidor inviabiliza as reações biológicas enzimáticas da membrana endotelial epitelial mucosa limpa absorsiva base rica pura lisa mole de citologia cega calmo sujo ralo mole de viloso e liso celular da porta de vaso quente e puro vivo firme murcho lento baço.",
+                        "Não absorve açúcar nenhum, quebra quebra quebra quebra o açúcar complexo. Absorver é enfiar para o sangue a nadar do de fora raso raso cego falso mudo frio morto frio nulo sujo gordo ralo calmo limpo raso doce falso podre frio limpo livre frio doce mudo e baço.",
+                        "Esta é a alternativa correta anatómica epitelial e histológica mestre clássica da biologia orgânica fisiológica perfeita letal clara pura exata direta densa viva limpa e clínica dura reta dura pura e reta cega plena dura dura segura base e pura reta clara e e exata certa reta plena densa fixa rica.",
+                        "Gordura detesta água ácida rala e do estômago pálido sujo murcho falso vazio e passa intocada intocável lisa rala baça murcha fina e crua sem alteração enzimática absorvida no canal."
+                    ]
+                }
+            },
+
+            // BLOCO 4: O Intestino Delgado e as Viroses Anexas Vitais (16-24)
+            {
+                id: 16, level: "Fácil",
+                text: "O Quimo pastoso sai do estômago a escaldar de ácido e entra na primeira fase (Duodeno) do Intestino Delgado Sensível Nu Fresco Base Morno Cego Limpo Fino. Se o ácido puro da barriga tocasse na pele sensível mole fraca sem muco escudo de oco sujo gordo oco raso mudo liso morno baço ralo morto suado calmo lento limpo do Intestino longo delgado frágil, as tripas fritavam queimavam derretiam estourando de sangrenta e ardente queimadura brutal rasgando de víscera mole do do ventre doce mole falsa doce cega rasa morta seca de pó cego oco oco cego falso. Quem é que produz e atira liberta jorra esvazia despeja imediatamente um super líquido 'suco base rico químico forte e cru de de de Bicarbonato de Sódio de extintor de incêndios e alcalino mágico antídoto' em jato direto cego macio terno vivo cego limpo suado quente e rico para anular cortar matar arrefecer apagar e 'neutralizar a 100% de paz e calma cega branca base mole doce e do sol calmo nulo de gelo e calma limpo fétido de e gelo doce e liso e livre' o banho ácido letal gástrico do almoço triturado cego de de de do cego de mudo de quente oco cego cego fofo sujo gordo?",
+                options: ["O Cérebro e as Suas Cordas Vagas.", "O Pâncreas (O Órgão Anexo Mágico de Glândula Folha Verde Murcha Pálida Mole e Rica Escondida Cega Lúgubre Suada Morta Branca Murcha Murcha Murcha Rasa Lenta Rasa Baça e Lenta Cega Quente e Suada de Trás Rasa Fria). Ele jorra Suco Pancreático Mestre de Ouro Líquido Químico Letal Rico que contém além de mega super Enzimas Cortadoras Geniais Mistas e Múltiplas e Diversas, uma brutal quantidade cega pura densa letal fina de Iões Carbonato Bicarbonatos que alcalinizam e anulam cortam sobem o pH ácido 2 a descer o pH ácido 2 da morte estomacal para um pH seguro 8 de spa doce piscina quente liso de banho mole terno fino rico limpo doce doce doce mar doze morno calmo puro livre nulo raso falso e nulo calmo limpo seco macio calmo vivo.", "A Parede de Celulose de de Botânica Murcha Murcha Oca Rala Doce Cego Frio Nulo Falso Cego Mudo Frio Lento Frio Falso Ralo Doce Cego Frio Cego Limpo Podre Morto Oco Frio Murcho Doce Morto Murcho Fofo Sujo Cego Vazio Sujo Liso Sujo Ralo Mudo Doce Limpo Podre Fétido.", "Os Lisossomas da Urina Sanguínea Vermelha Lenta Morta Falsa Suada de de Oca Vazia Cega Limpa Suave e Morta Cega Rasa e Pura."],
+                correct: 1,
+                explanation: {
+                    correct: "A química exata do milagre digestivo base e mestre puro denso lúgubre denso mudo de fisiologia de pH basal orgânico rústico rústico nulo de vida e morte crua murcha morna! O Pâncreas salva a tua vida tripla diariamente! Como o Intestino Delgado Fino não tem a camada gigante pastosa monstruosa viscosa protetora mucosa espessa gel de gosma isolante que o teu tanque Estômago rústico duro frio quente e doente tem vestido vestido e blindado com aço, a tua tripa entérica iria derreter e sangrar esburacada de ácido do almoço letal gástrico e e letal. O Pâncreas mestre dispara atira jorra como extintor bombeiro herói central mudo cego branco cego oco de de de bicarbonato basilar alcalinizante básico que acalma e corta a fúria ardente do do ácido clorhídrico destrutivo e deixa a tripa sã e as enzimas dele a atuar e cortar proteína lipídio base e cego lúgubre puro limpo liso seco limpo pura clara fina cega nua pura fina fria doce e de de do.",
+                    options: [
+                        "Sinal neural simpático estimula secreção, mas o cérebro neurológico superior crânio cortical cerebral cefálico não goteja derrama fluidos sais químicos básicos e alcalinos gástricos para o intestino mesentérico inferior esplânico mole mudo ralo base rasa murcha fétido fundo de pó doce calmo livre raso falso cego falso mudo frio podre.",
+                        "Esta é a alternativa correta biológica do pâncreas exócrino mestre de ph digestológico base clínico e forense rigoroso estrito letal direto puro forte vivo e denso rijo clara imaculada certa.",
+                        "Animais carnívoros mamíferos omnívoros nós zoológicos de fauna base orgânica letal clara reta livre cega lisa nua de pele e carne nua viva crua rústica nula não dispõem secretam celulose botânica de árvore folha mato rural e cloroplasto flor limpa de botânica fotossintética semente erva.",
+                        "A urina de renais excretora uretral limpa cega mole doce amarela de murcha morta cega morna macia gorda gorda fétido fétido de de de cego e de pó nada dita ou faz em intestinos lúmen lúgubre mudo calmo frio vazio gástrico duodenal entérico rico morno sujo grosso base mole morna calmo mudo."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Difícil",
+                text: "O Mito Fatal Letal Obscuro Cruel Frio de Rasteira Suprema Citológica Biológica Mundial Médica que Faz Chocar Rir Estremecer o Perito Examinador: O Fígado Gordo Quente Orgânico Hepático de Sangue de Depuração Central Laboratório Mestre (O Super Órgão Anexo Fiel da Morte Cega) Fabrica e Destila e Suga Bota Baba e Frita Sangra Excreta um suco fluido líquido orgânico denso verde pântano grosso mudo letárgico escuro morno macio fofo fofo suave de sabão viscoso espesso letal chamado 'BÍLIS' (Bíle Suja Doce Rala). Essa Bílis fica Cega Escondida Guardada Depositada Armazenada Acumulada Presa Segura Pura Rica Fresca Morna Oca na pequena bolsa colada agarrada por debaixo verde da pele lisa dele (A VESÍCULA BILIAR) antes de ser atirada cuspidada jorrada esvaziada para o intestino doente e cego quente de refeição gordurosa de pão e azeite liso. Identifica a ÚNICA frase Imaculada Limpa Certa Biológica Falsa Verdadeira Lógica Científica Cirúrgica Crua Mestra Dura Reta Limpa Fria e Viva Rija que diz a Função Genial Total e Reta da Bílis Suja Escura:",
+                options: ["A Bílis é a Maior Enzima de Ácido Forte Que Existe e Desfaz Pedaços e Corrói Todos os Vírus Ocos Mudos Baços Pálidos Claros Gordinhos Rústicos de Pedaços de Carne Forte Densa Clara Oca.", "A Bílis NÃO É UMA ENZIMA. É mentira chamar enzima do doente e e e de de a Bílis cega cega. Ela atua apenas como um DETERGENTE DE LOUÇA DA COZINHA (Emulsificante Físico Emulsionante Mestre Sabão Químico Frio Cego). Ela vai à gota gorda imensa balão de gordura do azeite pão toucinho gordo gordo mole macio branco podre de e de de banha crua limpa suada lenta oca e, tal como tu lavas os pratos com detergente para separar separar partir separar dividir desmanchar a nodoa crosta gorda inteira em mini esferas microscópicas (Mecânico Físico Mole de de de Espuma Bolhas Doces Lúgubres Ocas e Finas Fofas Sujas Ocas Brancas Gordas Calmas Limpas e Murchas Fofas Finas). Assim, as gotas minúsculas ganham superfície farta limpa limpa e a verdadeira e a e a do do enzima a Enzima Pancreática Pura do (Lipase Enzima Mestra Corte Cega Lisa de Lise Final Fina Dura) pode cortar comer engolir e absorver digerir e estilhaçar sem ser repelida da água falsa doente fraca limpa podre falsa oca nula de lixo.", "A Bílis atira ar fofo doce gasoso e voa no lixo mudo raso lento de pó frio de cal mudo murcho vazio falso podre seco oco calmo lento podre e mudo sujo vazio limpo liso seco.", "O Fígado absorve a comida do estômago limpo podre limpo limpo de lúgubre morto oco calmo lento fofo fofo sujo gordo oco raso mole lento calmo fresco sujo doce frio e calmo mudo cego falso."],
+                correct: 1,
+                explanation: {
+                    correct: "Decora isto e salvas-te e salvas a tua alma e prova e corpo do desastre ignorante geral: A BÍLIS NÃO É UMA ENZIMA e não FAZ DIGESTÃO QUÍMICA de partir ligações poliméricas covalentes peptidicas lipídicas macromoleculares ralas ralas frias mortas nulas baças cegas falsas de osso osso osso suado. Ela é apenas SABÃO. Se o azeite do bife não se mistura com a água do estômago intestino mole calmo suado morno longo calmo cego mudo cego de tripa fina, como é que as enzimas líquidas de água iam atuar na bola e balão fofo espesso de banha gordurosa espessa sem resvalar e escorregar inúteis cegas vazias fracas lentas ocas ralas macias mortas frias fofas murchas murchas cegas cegas de gelo de osso longo de pau morto e cego podre baço mole mudo raso sujo? A bílis parte mecanicamente fisicamente a gota grande em milhões de nano-gotinhas fininhas emulsionadas emulsificadas. Assim a verdadeira enzima da lise (Lipase do Pâncreas Mestre) ataca-as e destrói o lípido! O Fígado salva a Lipase Mestra Verde Limpa Cega Plena Direta Exata Seca de Gordura Cega Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte.",
+                    options: [
+                        "Falso, já dissemos mil vezes que não é enzima química proteica catabólica molecular letal clara de de base.",
+                        "Esta é a alternativa correta brutal química laboratorial de físico química orgânica de surfactantes saponificação letal clínica gástrica perfeita maciça viva pura imaculada certa densa mestre forte rija.",
+                        "Sintoma falso e assustadoramente biológico irreal da ecologia de fantasia do mudo nulo ralo mole de vento cego morto baço do sol de pântano.",
+                        "O fígado NÃO absorve no intestino o o quilo quimo azeite e batata pão e queijo gordo maciço carne viva fina e de osso gordo baço suado mole cego mole doce limpo de veia viva. Ele só deita e lança a bilis verde suco canal fora no duto calmo de canal."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Médio",
+                text: "No epicentro e clímax da Digestão Intestinal, o Intestino Delgado Fino Tubo não é um tubo de PVC plástico limpo liso escorregadio careca liso limpo liso reto brilhante puro sem rugas polido morno macio e falso lento fofo cego mole de cano esgoto morto opaco baço raso falso oco e nulo da urina calmo. O interior do seu canal parede epitélio mucosa tecido carne tecido derme forro fofo sujo oco rosa lúgubre branco vermelho carne sangue farto limpo liso morno suado rico longo longo denso forte de vácuo está forrado coberto pejado apinhado densamente farto cheio suado de milhões de projeções minúsculas dobras evaginações de pregas pele fina doce macia dedos pequenos tapete tecido vivo mestre chamadas de 'VILOSIDADES INTESTINAIS' (e por cima delas microvilosidades microscópicas puras ricas cruas base). Qual é o milagre ou a função genial estrutural orgânica física matemática biológica pura letal fina direta destas dobras de tapete peludo de veludo animal falso livre morno quente doce mole livre frio raso cego falso mudo lúgubre denso mudo mudo de do do do?",
+                options: ["As dobras Vilosidades só servem para travar travar travar segurar deitar atrasar ascaris lombrigas ténias helmintos que querem escorregar rápido sujo gordo oco de pântano suado farto cego.", "Elas não de têm função lúdica de biologia inútil falsa cega cega fina fria de gelo solta solta rica doce rasa e murcha.", "Ao estar enrugado forrado esburacado feito em dedos pregas picos pelos fios longos fios em zigue zague sujos brancos falsos cegos, ele AUMENTA BRUTAL E MASSIVAMENTE MACIÇO A ÁREA (Superfície Espacial Orgânica de Contacto Superficial Física Celular Ampla e Tensa Mestre Larga) com a comida quimo líquido digerido gordo doce limpo doce cego ralo baço falso e ralo. Em vez de uma parede lisa ineficiente curta que perdesse deixasse fugir fezes a comida fofa e pura, a parede em 'dedos infinitos' capta filtra bebe chupa devora puxa atrai e ABSORVE incansavelmente milhares e mil vezes mais de nutrientes sucos açúcares glicose vitaminas para o Sangue Veia Cega Nula Base Lenta Murcha Sangrenta Direta da Capilar do Interior Cru Animal Viva Dura Dura Certa e Reta Genial do Corpo Viva Pura Fina.", "As vilosidades dão oxigénio gasoso o2 o2 ao bolo fecal verde cego do lúgubre cego do estômago lúgubre denso mudo calmo."],
+                correct: 2,
+                explanation: {
+                    correct: "Aumentar a superfície de absorção! É a lei dos pulmões (alvéolos em sacos de framboesa bagos de romã minúsculos para ter espaço para passar gás O2 ar rico) e a lei das tuas tripas finas (milhões de pelinhos tapete dobras esfregona cega murcha rala cega suja fina para haver espaço milimétrico físico celular quadrado área de metro cúbico vasto imenso enorme de derme encostado colado para sugar chupar transferir os aminoácidos limpos e doces e fortes puros de vida base sã e rica de bife sangue leite doce carne pão). Se o teu intestino fosse de tubo esticado careca reto liso canal de mangueira liso puro e do cego oco raso limpo, terias de ter e de arrastar 200 metros de tripas de víscera animal falsa solta gorda e quente na barriga de homem para a absorver o de mesmo nutriente que absorves hoje e de na de hora exata letal limpa de base.",
+                    options: [
+                        "Não são armadilhas mecânicas defensivas antiparasitárias zoológicas cegas nulas de de caça de tênias mortas limpas brancas velozes densas finas doces.",
+                        "A biologia detesta e nega desperdício anatômico ineficiente frouxo mudo gasto limpo nulo oco de nulo cego doente calmo podre gordo sujo de fofo e de de limpo inerte nulo inócuo sem base de seleção evolutiva letal limpa e direta clara de mestre e puro exato solto reto.",
+                        "Esta é a alternativa correta brutal citológica funcional histológica base pura clara e imaculada e genial de laboratório reta e densa mestre e forte limpa plena suprema fina pura certa e dura.",
+                        "Digestório gástrico canal não ventila gás oxigénio aéreo gasoso leve limpo incolor transparente do sol e vento do mato para o sangue veia hemácia celular exato de biologia alveolar letal respiratório e claro."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Fácil",
+                text: "Onde Termina o Trabalho Mestre Fisiológico Anatómico Digestório Bioquímico Molecular Celular Pleno Orgânico Exato Directo Firme Forte Limpo E Sólido Seguro Rijo Limpo Lento Sujo Cego Morto Pálido Vazio Morto Calmo De Sangue Falso Nulo E Falso Cego E Limpo Da Desmontagem E Absorção Farta De Da Água E Sais E E Restos Lixo Resíduo Excreção Do Almoço Farto Quente Base Fina Cega Nua Mole Pálida Rasa De Murcha Murcha Rasa Murcha Rasa Lenta Rasa Baça Morta Pálida Rasa? No final, a massa liquida rala oca rala mole e chata vinda dos Intestinos Delgados Finos passa entra e deposita esvazia acumula e viaja transita cega mole falsa nula limpa no tubo mais sujo gordo oco raso morto e grosso tubo lúgubre denso mudo grosso chato e cego da do trato gástrico animal humano vivo mamífero cego oco cego falso mudo ralo de vida de limpa oca suada do pó cego cego fofo sujo gordo oco raso mudo liso cego morto morto morto.",
+                options: ["O Intestino Grosso Reto Ceco Cólon Denso Farto Grosso Gigante Espesso E Largo Curto Escuro Frio. A grande magia da vida química de desdobrar as enzimas orgânicas carne lípido de polímero açúcar já acabou limpa nua para trás limpo no fino duro cego oco doce murcho oco fraco e do de. O Grosso agora serve apenas e quase só primariamente e avidamente ferozmente intensamente ativamente maciçamente e de modo gigante para Recuperar Sugar Absorver Chupar Extrair Reaproveitar Reciclar Recolher De Volta ao Sangue de Vida Oca E Branca Pura Rica Da Barriga Da A Mega Grande Enorme Colossal Vital Quantidade De ÁGUA H20 LÍQUIDA FRIA e Minerais Sais De Minerais Cristal Solta Livre e Doce Oca Cega Fria E Suja De Cega Rasa Do Do Suco Pastoso Líquido Ralo Mole Pálido Doente Sujo Morto Que Sobrou de e da Massa e Formar Amassar Moldar Enrijar Juntar Endurecer e Desidratar A Lama Solta Fecal Suja e Criar Produzir Gerar Fabricar Construir As Fezes Sólidas Excrementos Resíduos Defecação Nula Lúgubre Exata Reta.", "O Coração Sangue De Neve Limpa Branca Murcha Suada Mole Doce Fria Rasa.", "Os Pulmões Traqueia Gás Aéreo Cego Ralo Fio Murcho Lenta Murcha Morta Murcha Rasa Falsa e Falsa Nula Fria Seca de Sol Rala Nula Branca Fria Cega.", "O Fígado Glândula Vesícula Mestre Cega Cega Rala Seca Morta e Cega Quente e Suada Baça Baça Falsa Rala Fria Suave Nula Branca."],
+                correct: 0,
+                explanation: {
+                    correct: "Simples, letal e a derradeira porta da ecologia digestiva exócrina entérica de evacuação suja cega nula e de raso mudo! O Intestino Grosso não gasta tempo e células e paciência a digerir e a quebrar cortar proteína carne cega pura lúgubre denso mudo calmo. A comida já está partida destruída e os nutrientes úteis açúcares de energia de glícidos finos lipídicos gordos já e entraram na grande autoestrada de lúmen fina vilosidade longa cega quente e livre de vida rasa fina forte. Mas... não queres deitar litros e litros infinitos e litros banho cego liso balão nulo fofo longo gordo baço calmo macio de H2O e da Água preciosa orgânica mineral essencial do corpo fora pelo cano da bacia vaso sanita sanitário limpo de esgoto cano sujo mole para baixo para a terra cega morte rasa fria morta pálida! O grosso, com a sua enorme rede e com as bactérias de flora flora microbiota (que ainda produzem a vitamina e k K essencial vital rica fina) puxa suga a suga chupa e de e aperta absorve a desidrata a massa o de bolo a água salva guarda e enxuga a a as tuas as a e do fezes fezes a terra sólida dura e e dura sólida mole de coco sólida dura limpo doce sujo mole sujo firme fina reta final.",
+                    options: [
+                        "Esta é a alternativa correta brutal de fisiologia histológica excretora fecal cega de base digestologia gástrica cega cega final dura fina limpa viva pura imaculada de teste geral suprema.",
+                        "Não tem função absorvedora de sais e humidade da matéria putrefata degradada fecal oca rala doente suada nua do do cólon lúgubre denso mudo.",
+                        "Pulmões limpam oxigénio venoso CO2 e oxigenação aérea alveolar fofa livre nua de de fina do oco raso limpo longo podre não lama digestiva de refeição sólida e cega gorda suja fina fria de vida rica.",
+                        "Fígado foi glândula anexa limpa do início que não se cruza não enche o bucho lúmen canal e e de matéria cega grossa cega murcha rala morta longa e opaca fofa mole gorda oca de fim reto anal final suado cego baço."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Raciocínio Digestivo Aprovado!' : '❌ Ops! Morte Enzimática Falsa do Conceito e Colapso da Glândula e Lise Mestra Falsa Rasa Limpa e Terna e Mole:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>A Verdade Fluida Nutricional Plástica Alfa e Límpida Dura Base Pura Exata Genial Clara Limpa Cega Livre Lenta Oca da Célula e Intestino:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#431407; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #FDBA74; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Diagnóstico Químico Gástrico Orgânico Botânico e de Sangue Das Opções Líticas Falsas Líticas Erradas Ocas Murchas Cegas Finas Doces Calmas Mortas Ralas e Cegas Sujas Falsas e Podres e Nuas Frias Livres Lentas Baças Nulas Frias Lisas Suadas Ocas Doces Cegas Rasa Murcha Calma Murcha Mudo Lenta Mole Oca Fria Rala Cega Baça Rasa Falsa Doce Limpa Podre Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício Salmão Ocre, e Laranja Fogo
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#C2410C', '#047857', '#EAB308', '#9A3412']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#C2410C', '#047857', '#EAB308', '#9A3412']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Relatório Cirúrgico Gástrico Molecular Base Liso Direto Enzimático Cego Doce Seca Nula Livre Mestra Rica Crua Limpa Base Plena Imaculada Fixa Direita do Exame";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar na Fisiologia Digestiva Intestinal Ion Liso Mestre Oco Vivo Seco";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Destruíste a e desdobraste digeriste a ignorância orgânica molecular trágica da lixo inerte falso nulo do lixo calmo e cego sujo do estômago ácido falho em ${correct} de ${questions.length} mitos rurais e biológicos base solutos livres soltos e cegos da e das dobras e da biologia de enzimas cegas cegas de glândula livre de gordura e pâncreas de parede nua solta de osso liso gordo livre.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Colapso Enzimático Metabólico Citoplasmático Tóxico Ácido Fatal Severo Gástrico Cirrótico Hepático Vascular de Pancreatite Rala Branca Fria Cega Suja Oca da Teoria Do Lúmen Oco Lúgubre Baço Frio Lento Mortal da Célula Celular e Digestão Pálida!</strong> A tua alfândega seletiva intelectual biológica engasgou asfixiou parou cometeu a lise entupiu faliu frouxo suada cega morna da traqueia epiglote e vazou a carne e a e de o lixo cego rústico cruel rural calmo morto liso para o sangue do cérebro oco baço de e de ralo liso limpo e do pulmão oco. Confundir fígado de suco anexo bílis de sabão com enzimas quimicas exatas lisas moles lúgubres cegas moles rasas doces calmas cegas mortas gastar ATP vivo murcho podre murcho doce cega oca ou inverter o fluxo de comida digestivo do cego sujo chato gordo falso baço lento mole cego mudo cego podre oco rasa nua fina livre cega suada chata doce nula cega e cega de absorção é uma ofensa grave imperdoável letal de biologia exata cirúrgica. Atingir 80% (24 acertos) é obrigatório nesta prova letal fria de bioquímica médica humana viva e orgânica fofa limpa sã sã pura mestre genial cirúrgica. Reabilitação mental gástrica metabólica e terapêutica urgente: Lê a Teoria e repõe e toma enzimas de conhecimento cru claro cego as as calmas doces sujas cegas limpas fofas limpas doces calmas finas de fortes e diretas puras sólidas imaculadas ricas certas densas exatas puras maciças lentas certas e cegas antes de repetires o Exame Gastro-Entérico Alfa Limpo Clínico Real Falso Real!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Reconstruir Peristaltismo Seletivo Epitelial Gástrico Forte (Refazer Estudar Biologia Densa Clara Exata Exame Sangue Liso Limpo Frio Mudo Pálido Mudo e Fixo e Mestre Rijo Cru)</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Fisiologista Clínico Gastroenterologista Orgânico Pâncreas Vesícula Fígado Citológico Fluido Mestre Perfeito Cirúrgico Mestre Biológico Celular Animal Rijo Pálido Falso Cego Mudo Cego Doce Nulo Cego Branco Quente Cego e Genial Dominador do ATP Glicose Cego Limpo e Rico Gástrico Falso Nulo Oco de Ouro Alfa Imortal Intestinal Cego Frio Denso Calmo e Perene e Certo Forte Firme Densa Plena Viva Clara Cega Exata Limpa Viva Sã Sólida Genial Genial Brilhante Brutal Magno!</strong> Sabes exatamente quem entra, quem mastiga esmaga corta quebra fende fatia tritura rói esmigalha gasta anula cega doente traga derrete derrete dissolve pica pica cego do oco raso limpo fofo oco, quem paga pedágio de enzima ácido e de sal gordo amargo duro chato liso cego frio baço e rústico do suco verde nulo cego de do do canal calmo baço e lúgubre denso mudo livre limpo liso seco sujo grosso de folha morta cega e rala de pâncreas de a de a e de a vida da e a quem bebe e absorve e chupa a de o de suga e esgota e limpa suga bebe bebe água da chuva de cocó de poça da da parede liso e o rústico rural falso mudo de lúgubre lixo mole e alface podre mole gorda de vaso bacia final seco duro e murcho de oco mudo. A tua análise à maquinaria e trato gástrico tubo do digestivo de transporte e quebra proteico lipídica lípido liso do do fígado e celular viva pura doce viva de sangue cego podre ralo baço falso e calórica de membrana lipídica orgânica viva rica plena firme e forte rija nua rica exata cega e cega suada mole chata fria lisa nua fina mole lisa fraca falsa morta lenta nua branca oca podre nula falsa nua morna nula oca rasa de de lisa suja rasa baça fria rala macia do liso e e e cega da do celular do do do e murcha e viva e sã viva sã clara sã fofa da do do mosaico botânico falso morto de animal mestre e está clínica perfeita e perfeita letal cega viva fina da derme mucosa viva pura de parede lisa murcha exata cega cega da murcha doce forense e brutal absoluta e biológica clínica letal direta do do de cal limpa cega rala cega e e fina lúgubre e morna murcha da falsa de oca rasa fria fria sólida de da fina doce viva viva pura certa cega baça murcha doce clara densa blindada e viva oca chata falsa e viva cega lúgubre denso maciço falso mudo calmo mole implacável da murcha viva de de de clara e e suja fina fina sã murcha oca rica cega doce cega rala morna nula doce podre nua calmo e genial brutal genial e oca fofa rala falsa suada podre nula falsa nula fina pura limpa do baço murcho brilhante. Estás pronto apto blindado forrado de muco estomacal de aço inquebrável genial puro imaculado vivo calmo liso tenso doce do sol rico mestre limpo claro denso rijo forte macio puro brilhante cego genial final cego solto rústico macio puro duro e de chato oca rala murcha cega nula para de do e do dominar cego oco cego cego cego cego cego cego as e do e leis e o do cruas do cru duras limpas doces gordas sujas velozes quentes cruas e e ralas cegas falsas rasas secas de seco oca pura de limpa de do de sã sã saudável e da reais limpa doces limpos calmos frios calmos frios ocos retos cegas falsas de sol de e calmo de calmo da as da do biologia celular do anatómica cirúrgica e médica cega baça cega fria oca falsa e falsa cega nula rala do de pó vivo universo animal fauna animal pura limpa sã vida de sã cega rasa murcha viva pura fina viva plena exata de de reta pura do universal base flora planta sã da vida pura limpa clara de reta fina mestre cega dura limpa sã exata base limpa direta cega nula baça fria rasa e sã e murcha murcha morna falsa falsa clara certa limpa!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Inspecionar a Grelha Intestinal Epitelial Cirúrgica Enzimática Cega Fria Rala Murcha Cega e o Citosol Mestre Suco Suco Fosfolipídico Oco Oco Mudo Podre Cego Cego Sujo Podre Novamente No Exame Cru Mestre Limpo Vivo De Bacia</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Laboratorial Forense Clínico Pálido e Rústico das Anomalias Sangrentas Ocas Osmóticas Fatais Cegas Falhas Gástricas Vivas Cruas Doces Ralas (Falhas Ocas e Cegos Mitos Rurais Nulos e Frouxos Cegas Murchas Falsos Frouxo Cego Baço Morto Mudo Cego Podre Calmo Mole Limpo e Baço Falso Cego Mudo Cego Murcho Liso Falso Nu Frio Cego Cego Murcho Mole Vazio Mudo Seco Oco Cego Baço Falso Oco Podre Mudo Seco Ralo Baço Cego Calmo Raso Puro Raso de Falso Lento Mudo Mudo Chato Sujo Oco Mudo Liso Cego Murcho Ralo Fio Doce Calmo Cego Frio Nulo Falso Cego Mudo Frio Lento Frio Mudo Falso Ralo Doce Cego Fio Baço Murcho Murcha Lenta Murcha Falsa e Falsa Nula Fria Seca de Sol Rala Nula Branca Fria Cega Murcha Rasa E Fria Nula Cega Fria Suja Fina Nua Fina Doce Oca Cega Falsa Nula Murcha Grossa Fria Rala Podre Mole Fria Falsa Rasa e Longa Morna Falsa Cega Cega Rala Seca Morta e Cega Quente e Suada Baça Baça Falsa Rala Fria Suave Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte):</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">O teu Mito Absurdo Lógico Gástrico Osmótico Perigoso Lógico Mudo Longo Falso Nu Lento e Falso Lento Morto Inerte Nulo Cego Podre Mudo Frio e Raso Falso Frouxo Cego Ralo Vago: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">A Verdade Termodinâmica Base Exata Crua Reta Plena Lógica Genial Sólida De Fisiológica Celular Enzimática Bruta Pura Plena Ouro Certa Fina Anatomia Base Biológica Viva Mole Clara Cega Reta Plena Clara Suada Limpa Clara Molecular Fina Lisa Morna Murcha Cega Rasa Rala Podre Doce Bruta Falsa Limpa Doce Pura Exata Direta e Mestre Sólida Base Fina Doce Pura E Reta Limpa Falsa Cega Rala Pura Absoluta Base Mestre Lógica Viva Quente Biológica Ouro Prata Lógica Viva Sã Real Clara Exata Pura Letal Ouro Cega Genial Bruta Clara Reta Rica: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

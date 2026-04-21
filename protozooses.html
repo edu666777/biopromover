@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protozoários e Protozooses - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-PARASITA (Amarelo Febre & Violeta Pântano) */
+            --bg-color: #FEFCE8; /* Amarelo muito claro */
+            --text-color: #312E81; /* Índigo muito escuro */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #FDE68A; /* Amarelo Mostarda Claro */
+            --theme-medium: #F59E0B; /* Laranja/Âmbar */
+            --theme-dark: #B45309; /* Âmbar Escuro */
+            --theme-contrast: #6D28D9; /* Roxo/Violeta (Destaque) */
+            --theme-accent: #BE123C; /* Vermelho Sangue (Vetor/Infeção) */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#fde68a 1px, transparent 1px), linear-gradient(90deg, #fde68a 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #6D28D9;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #B45309;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #F5F3FF; /* Violeta muito suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #312E81;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #4C1D95; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E1; line-height: 1.5; color: #334155; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🦟</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Protozoários e Protozooses</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Malária)">
+            </div>
+            <div id="no-results"><p>😕 Nenhum conceito encontrado. A ciência exige precisão.</p></div>
+
+            <!-- TÓPICO 1: O QUE SÃO PROTOZOÁRIOS? -->
+            <div class="content-group">
+                <div class="section-badge">🔬 1. Eucariontes Unicelulares</div>
+                <div class="theory-box search-target">
+                    <h3>O Salto Evolutivo</h3>
+                    <p>Ao contrário das bactérias, os protozoários deram um salto evolutivo gigantesco: eles são <strong>Eucariontes</strong>. Têm um núcleo verdadeiro que guarda e protege o seu DNA. Pertencem ao <strong>Reino Protista</strong>.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="220" height="150" viewBox="0 0 220 150">
+                            <!-- Ameba -->
+                            <path d="M 60 40 Q 80 10 110 30 Q 150 20 160 50 Q 190 70 170 100 Q 190 140 140 130 Q 100 150 70 120 Q 30 140 40 90 Q 10 60 60 40 Z" fill="#FDE68A" stroke="#B45309" stroke-width="3"/>
+                            
+                            <!-- Núcleo verdadeiro -->
+                            <circle cx="100" cy="80" r="20" fill="#6D28D9" stroke="#000" stroke-width="2"/>
+                            <circle cx="105" cy="75" r="5" fill="#DDD6FE"/>
+                            <text x="100" y="115" text-anchor="middle" font-size="9" font-weight="bold" fill="#312E81">Núcleo Definido</text>
+                            
+                            <!-- Vacúolo / Organelos -->
+                            <circle cx="140" cy="60" r="10" fill="#10B981" stroke="#000" stroke-width="2"/>
+                            <circle cx="60" cy="80" r="8" fill="#BE123C" stroke="#000" stroke-width="2"/>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Unicelulares:</strong> São compostos por apenas uma célula, tal como as bactérias.</li>
+                        <li><strong>Heterotróficos:</strong> Não fazem fotossíntese (ao contrário das algas, que também são Protistas). Eles caçam e comem o seu alimento.</li>
+                        <li><strong>Parede Celular:</strong> NÃO têm parede celular. A sua membrana é flexível, o que lhes permite mudar de forma.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: LOCOMOÇÃO -->
+            <div class="content-group">
+                <div class="section-badge">🏃 2. Como se movem?</div>
+                <div class="theory-box search-target">
+                    <h3>Motores Microscópicos</h3>
+                    <p>Como precisam de caçar, os protozoários desenvolveram estruturas complexas para nadar e rastejar. Classificamo-los pela forma como se movem:</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding:0; background:transparent; border:none;">
+                        
+                        <div style="background:white; border:2px solid var(--theme-dark); padding:10px; border-radius:8px; text-align:center;">
+                            <h4 style="color:#B45309; font-size:0.9rem; margin-bottom:5px;">Sarcodíneos (Amebas)</h4>
+                            <svg width="80" height="60" viewBox="0 0 100 60">
+                                <path d="M 20 30 Q 40 10 60 30 Q 90 20 80 50 Q 50 60 20 30 Z" fill="none" stroke="#6D28D9" stroke-width="3"/>
+                            </svg>
+                            <p style="font-size:0.75rem; margin:0;">Movem-se por <strong>Pseudópodes</strong> (falsos pés). Esticam a célula para "engolir" a comida (Fagocitose).</p>
+                        </div>
+                        
+                        <div style="background:white; border:2px solid var(--theme-dark); padding:10px; border-radius:8px; text-align:center;">
+                            <h4 style="color:#B45309; font-size:0.9rem; margin-bottom:5px;">Flagelados</h4>
+                            <svg width="80" height="60" viewBox="0 0 100 60">
+                                <ellipse cx="30" cy="30" rx="15" ry="10" fill="none" stroke="#6D28D9" stroke-width="3"/>
+                                <path d="M 45 30 Q 70 10 90 40" fill="none" stroke="#BE123C" stroke-width="3"/>
+                            </svg>
+                            <p style="font-size:0.75rem; margin:0;">Possuem um ou mais <strong>Flagelos</strong> (chicotes longos) para nadar rápido.</p>
+                        </div>
+                        
+                        <div style="background:white; border:2px solid var(--theme-dark); padding:10px; border-radius:8px; text-align:center;">
+                            <h4 style="color:#B45309; font-size:0.9rem; margin-bottom:5px;">Ciliados</h4>
+                            <svg width="80" height="60" viewBox="0 0 100 60">
+                                <ellipse cx="50" cy="30" rx="20" ry="15" fill="none" stroke="#6D28D9" stroke-width="3"/>
+                                <!-- Cílios -->
+                                <line x1="30" y1="30" x2="20" y2="30" stroke="#000"/><line x1="70" y1="30" x2="80" y2="30" stroke="#000"/>
+                                <line x1="50" y1="15" x2="50" y2="5" stroke="#000"/><line x1="50" y1="45" x2="50" y2="55" stroke="#000"/>
+                            </svg>
+                            <p style="font-size:0.75rem; margin:0;">Rodeados de <strong>Cílios</strong> (pêlos curtos) que batem em sincronia.</p>
+                        </div>
+
+                        <div style="background:white; border:2px solid var(--theme-dark); padding:10px; border-radius:8px; text-align:center;">
+                            <h4 style="color:#B45309; font-size:0.9rem; margin-bottom:5px;">Esporozoários</h4>
+                            <p style="font-size:0.75rem; margin:0;"><strong>NÃO TÊM</strong> estruturas de locomoção. São todos parasitas obrigatórios (ex: o que causa a Malária).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: DOENÇA DE CHAGAS VS MALÁRIA -->
+            <div class="content-group">
+                <div class="section-badge">🦟 3. O Combate Tropical (Rasteira de Exame)</div>
+                <div class="theory-box search-target">
+                    <h3>Malária vs Doença de Chagas</h3>
+                    <p>Ambas são protozooses devastadoras transmitidas por insetos. Mas o mecanismo de infeção é completamente diferente! Atenção a isto:</p>
+                    
+                    <div class="visual-area" style="flex-direction:row; gap: 15px;">
+                        
+                        <!-- MALÁRIA -->
+                        <div style="background:white; border:2px solid #BE123C; padding:15px; border-radius:8px; width:45%;">
+                            <h4 style="color:#BE123C; text-align:center;">MALÁRIA</h4>
+                            <ul style="font-size:0.8rem; padding-left:15px; margin-top:10px;">
+                                <li><strong>Causador:</strong> <em>Plasmodium</em>.</li>
+                                <li><strong>Vetor:</strong> Mosquito <em>Anopheles</em>.</li>
+                                <li><strong>Transmissão:</strong> Pela <strong>SALIVA</strong>. O mosquito pica e injeta o parasita logo no teu sangue.</li>
+                                <li><strong>Ação:</strong> O parasita destrói os teus glóbulos vermelhos em massa, causando <strong>febres altas intermitentes</strong>.</li>
+                            </ul>
+                        </div>
+
+                        <!-- CHAGAS -->
+                        <div style="background:white; border:2px solid #6D28D9; padding:15px; border-radius:8px; width:45%;">
+                            <h4 style="color:#6D28D9; text-align:center;">DOENÇA DE CHAGAS</h4>
+                            <ul style="font-size:0.8rem; padding-left:15px; margin-top:10px;">
+                                <li><strong>Causador:</strong> <em>Trypanosoma cruzi</em>.</li>
+                                <li><strong>Vetor:</strong> Inseto <em>Barbeiro</em>.</li>
+                                <li><strong>Transmissão:</strong> Pelas <strong>FEZES</strong>. O inseto pica e faz cocó na ferida. Quando tu coças, empurras as fezes (com o parasita) para o teu sangue.</li>
+                                <li><strong>Ação:</strong> O parasita aloja-se nos músculos, destruindo e causando o aumento do <strong>Coração</strong>.</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: ÁGUA, GATOS E CISTOS -->
+            <div class="content-group">
+                <div class="section-badge">💧 4. Outras Formas de Contágio</div>
+                <div class="theory-box search-target">
+                    <h3>Quando a Infeção Não Tem Asas</h3>
+                    <p>Nem todas as protozooses precisam de um mosquito voador.</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:10px;">
+                        <li><strong>Amebíase e Giardíase:</strong> Apanham-se ao beber água não tratada ou comer alimentos lavados com água suja, que contêm os <strong>cistos</strong> (uma carapaça protetora) destes protozoários eliminados nas fezes de outras pessoas. A principal prevenção é o <em>Saneamento Básico</em> e ferver a água.</li>
+                        <li><strong>Toxoplasmose:</strong> Famosa como a "doença do gato". Apanha-se pelo contacto com fezes de gatos infetados ou comendo <strong>carne crua/mal passada</strong> (ex: porco ou carneiro) que contenha os cistos do parasita no músculo. É perigosíssima para mulheres grávidas, pois o parasita destrói o sistema nervoso do feto (cegueira e aborto).</li>
+                        <li><strong>Leishmaniose:</strong> (Voltando aos insetos). Transmitida pela picada do mosquito-palha. Afeta severamente os cães, que atuam como reservatório urbano, mas pode destruir a pele ou órgãos internos (Kala-azar) dos humanos.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar Diagnóstico Parasitário (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">Microbiologia Aplicada</h2>
+                <p style="color: #6D28D9; font-size: 0.95rem; font-weight:600;">
+                    30 questões imperdoáveis sobre parasitas eucariontes. Acerta <strong>80% (24/30)</strong> ou arriscas-te a mostrar que te deixaste picar pela ignorância! Lê a correção de cada erro.
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Relatório Clínico</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS RIGOROSOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Estrutura Celular e Classificação (1-5)
+            {
+                id: 1, level: "Fácil",
+                text: "Ao nível da organização celular, qual é a principal diferença anatómica que separa os protozoários das bactérias?",
+                options: ["As bactérias não têm células, os protozoários sim.", "Os protozoários são Eucariontes (têm um núcleo verdadeiro que protege o DNA), enquanto as bactérias são Procariontes (o DNA está solto).", "Os protozoários fazem todos fotossíntese, as bactérias não.", "Os protozoários são animais pluricelulares."],
+                correct: 1,
+                explanation: {
+                    correct: "Exatamente! O salto evolutivo. Os protozoários pertencem ao grupo dos Eucariontes, tendo já organelos complexos e um núcleo, tal como as células do nosso corpo.",
+                    options: [
+                        "Bactérias TÊM células (são procariontes). Vírus é que são acelulares.",
+                        "Esta é a alternativa correta.",
+                        "Protozoários são heterotróficos (caçam). Algas é que fazem fotossíntese.",
+                        "Protozoários são UNICELULARES (só têm uma célula)."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Fácil",
+                text: "A que reino biológico pertencem os protozoários?",
+                options: ["Reino Animalia", "Reino Monera", "Reino Protista", "Reino Fungi"],
+                correct: 2,
+                explanation: {
+                    correct: "Os protozoários e as algas formam o Reino Protista (ou Protoctista). É o grupo dos eucariontes mais simples e aquáticos.",
+                    options: [
+                        "Embora se comportem como micro-animais, são unicelulares.",
+                        "Monera é o reino das bactérias (procariontes).",
+                        "Esta é a alternativa correta.",
+                        "Fungi é o reino dos cogumelos e bolores."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Médio",
+                text: "Ao contrário das células das plantas e das bactérias, os protozoários NÃO possuem uma determinada estrutura rígida que envolve a célula. Que estrutura é essa, cuja ausência permite que uma Ameba mude constantemente de forma?",
+                options: ["Parede Celular", "Membrana Plasmática", "Núcleo", "Mitocôndria"],
+                correct: 0,
+                explanation: {
+                    correct: "A ausência da parede celular de celulose ou peptidoglicano deixa a membrana plasmática nua e flexível. Sem essa 'armadura', o citoplasma pode fluir e esticar-se em qualquer direção.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Todas as células do mundo têm membrana plasmática (o plástico que segura a água dentro).",
+                        "Eles têm núcleo.",
+                        "Eles têm mitocôndrias para gerar energia."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Médio",
+                text: "Como é que a grande maioria dos protozoários (sendo heterotróficos) obtém os seus nutrientes?",
+                options: ["Realizando fotossíntese quando há sol.", "Absorvendo energia térmica de vulcões.", "Atuando como predadores microscópicos, engolindo bactérias e matéria orgânica inteira, ou atuando como parasitas noutros seres vivos.", "Inalando dióxido de carbono do ar."],
+                correct: 2,
+                explanation: {
+                    correct: "Eles são caçadores ativos. Uma ameba abraça uma bactéria e digere-a viva (fagocitose). Outros, mais cruéis, roubam nutrientes ao sangue humano (parasitas).",
+                    options: [
+                        "Algas fazem isso, protozoários não têm clorofila.",
+                        "Isso é quimiossíntese bacteriana.",
+                        "Esta é a alternativa correta.",
+                        "As plantas fixam CO2."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Difícil",
+                text: "Os protozoários de água doce enfrentam um problema físico constante: como são mais 'salgados' (concentrados) por dentro do que a água do rio à sua volta, a água tenta invadir a célula ininterruptamente por Osmose. Que organelo especial eles desenvolveram para 'bombear' a água em excesso para fora e não rebentarem?",
+                options: ["Lisossoma", "Vacúolo Contrátil (ou Pulsátil)", "Complexo de Golgi", "Cloroplasto"],
+                correct: 1,
+                explanation: {
+                    correct: "Se não fosse o vacúolo contrátil a atuar como uma bomba de esgoto contínua, o protozoário de água doce incharia e explodia em minutos devido à osmose natural.",
+                    options: [
+                        "Lisossoma faz digestão.",
+                        "Esta é a alternativa correta.",
+                        "O Golgi exporta proteínas.",
+                        "Fazem fotossíntese (não existe neles)."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Locomoção e Classificação (6-10)
+            {
+                id: 6, level: "Fácil",
+                text: "A forma como classificamos os diferentes tipos de protozoários baseia-se fundamentalmente em:",
+                options: ["Na sua cor sob o microscópio.", "No tipo de doenças que causam.", "Nas estruturas que utilizam para se mover (locomoção).", "No seu tamanho exato."],
+                correct: 2,
+                explanation: {
+                    correct: "É a regra de ouro: Sarcodíneos (pseudópodes), Ciliados (cílios), Flagelados (flagelos) e Esporozoários (não se movem).",
+                    options: [
+                        "São quase todos transparentes.",
+                        "Existem milhares inofensivos de vida livre.",
+                        "Esta é a alternativa correta.",
+                        "O tamanho varia imenso mesmo dentro da mesma família."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Fácil",
+                text: "As Amebas são os protozoários mais famosos. Elas movem-se esticando o próprio corpo, projetando o citoplasma para a frente. Como se chamam esses prolongamentos?",
+                options: ["Esporos", "Pseudópodes ('falsos pés')", "Flagelos", "Tentáculos"],
+                correct: 1,
+                explanation: {
+                    correct: "O termo Pseudo = falso; Podes = pés. O citoplasma flui criando 'braços' que arrastam a célula e servem também para abraçar a comida.",
+                    options: [
+                        "Estruturas de resistência/reprodução.",
+                        "Esta é a alternativa correta.",
+                        "Caudas longas tipo chicote.",
+                        "As amebas não têm estrutura anatómica rígida."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Médio",
+                text: "O Paramécia (Paramecium) é um protozoário muito comum em águas paradas. Ao microscópio, vemos que ele é rodeado por milhares de pêlos minúsculos que batem como os remos de um barco. Ele é um:",
+                options: ["Ciliado", "Sarcodíneo", "Esporozoário", "Flagelado"],
+                correct: 0,
+                explanation: {
+                    correct: "O batimento sincronizado dos cílios permite-lhe nadar a grande velocidade e empurrar as bactérias para o seu funil oral (boca celular).",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Estes movem-se por pseudópodes.",
+                        "Estes não têm aparelho locomotor.",
+                        "Estes têm 1 ou 2 chicotes longos, não milhares curtos."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Médio",
+                text: "Os Esporozoários (Apicomplexos) são o único grupo de protozoários que não possui flagelos, cílios nem pseudópodes na fase adulta. Porquê?",
+                options: ["Porque vivem em terra seca.", "Porque são plantas.", "Porque são todos parasitas obrigatórios, vivendo imersos nos fluidos (ex: sangue) ou dentro das células dos hospedeiros, sendo carregados de 'boleia'.", "Porque já estão extintos."],
+                correct: 2,
+                explanation: {
+                    correct: "Se já vives confortavelmente a boiar no sangue de um humano ou dentro de um mosquito, não precisas de gastar energia a construir 'pernas' ou 'nadadeiras' evolutivas.",
+                    options: [
+                        "Ocorrem em fluidos.",
+                        "São protistas heterotróficos.",
+                        "Esta é a alternativa correta.",
+                        "Infelizmente, causam a Malária, que é muito atual."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Difícil",
+                text: "A Doença do Sono africana e a Doença de Chagas sul-americana são causadas por protozoários do género Trypanosoma. Estes parasitas têm uma cauda longa em forma de chicote que lhes permite nadar violentamente através da corrente sanguínea. São classificados como:",
+                options: ["Sarcodíneos", "Esporozoários", "Flagelados (ou Mastigóforos)", "Ciliados"],
+                correct: 2,
+                explanation: {
+                    correct: "O flagelo atua como a hélice de um barco a motor. O Trypanosoma cruzi nada ativamente no sangue para atingir o músculo cardíaco.",
+                    options: [
+                        "Estes arrastam-se (amebas).",
+                        "Estes deixam-se levar pela corrente.",
+                        "Esta é a alternativa correta.",
+                        "Teriam milhares de pelos curtos."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Doença de Chagas e Malária (11-18)
+            {
+                id: 11, level: "Médio",
+                text: "A Doença de Chagas é um grave problema endémico na América Latina. O causador da doença é o protozoário 'Trypanosoma cruzi'. Como se chama o INSETO que transmite este parasita aos humanos?",
+                options: ["Mosquito Anopheles", "Mosca Tsé-tsé", "Inseto Barbeiro (Triatomíneo)", "Carraça-estrela"],
+                correct: 2,
+                explanation: {
+                    correct: "O Barbeiro recebe este nome popular porque tem o hábito noturno de picar o rosto das pessoas enquanto elas dormem (zonas expostas).",
+                    options: [
+                        "Transmite a Malária.",
+                        "Transmite a Doença do Sono.",
+                        "Esta é a alternativa correta.",
+                        "Transmite febre maculosa (bactéria)."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Difícil",
+                text: "CUIDADO: É o erro clássico! Como é que o inseto Barbeiro efetivamente te transmite o protozoário da Doença de Chagas?",
+                options: ["O parasita entra através da SALIVA do Barbeiro, injetada diretamente quando ele espeta a tromba no teu rosto.", "O Barbeiro faz FEZES contaminadas na tua pele após sugar o teu sangue. Quando tu te coças, tu próprio empurras as fezes (com o parasita) para dentro da ferida da picada ou para o olho.", "O Barbeiro vomita o sangue doente em cima de ti.", "Apenas por respirares o ar onde o barbeiro voou."],
+                correct: 1,
+                explanation: {
+                    correct: "NUNCA te esqueças: A saliva do barbeiro NÃO tem o parasita. O Trypanosoma vive no intestino do inseto. Ele morde e defeca ao mesmo tempo. É a tua unha a coçar que abre a porta à tragédia.",
+                    options: [
+                        "Isto é a mecânica da Dengue ou da Malária.",
+                        "Esta é a alternativa correta.",
+                        "Comportamento da mosca doméstica noutros contextos, não do vetor de Chagas.",
+                        "Chagas não tem contágio aéreo."
+                    ]
+                }
+            },
+            {
+                id: 13, level: "Fácil",
+                text: "Na fase crónica (muitos anos depois da picada inicial), a Doença de Chagas provoca danos irreparáveis num órgão vital específico do corpo humano, levando à insuficiência e morte. Que órgão é?",
+                options: ["O Pulmão, causando tosse de sangue.", "Os Rins.", "O Coração (Cadiomegalia - coração cresce e enfraquece).", "O Cérebro."],
+                correct: 2,
+                explanation: {
+                    correct: "O parasita abandona o sangue e esconde-se dentro das fibras musculares do coração, onde se reproduz destruindo o tecido. O coração fica enorme, 'flácido' e incapaz de bombear o sangue.",
+                    options: [
+                        "Isso é a Tuberculose.",
+                        "Não é o alvo principal na fase crónica letal.",
+                        "Esta é a alternativa correta.",
+                        "Pode afetar os nervos intestinais (megacólon), mas o colapso cardíaco é a via principal de morte."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Médio",
+                text: "Como se pode prevenir de forma simples a propagação da Doença de Chagas nas zonas rurais endémicas?",
+                options: ["Tomando a vacina da Chagas que é vendida nas farmácias.", "Não comendo carne de vaca.", "Substituindo as casas antigas de 'pau-a-pique' ou de adobe por casas de alvenaria e tapando rachaduras e buracos nas paredes, pois é lá que o inseto Barbeiro se esconde de dia.", "Matando os cães na rua."],
+                correct: 2,
+                explanation: {
+                    correct: "O Barbeiro odeia a luz. Esconde-se nos buracos escuros das paredes de barro e nos telhados de colmo. Ter casas de tijolo e rebocadas expulsa o inseto do ambiente doméstico.",
+                    options: [
+                        "NÃO EXISTE vacina para a Doença de Chagas (os parasitas protozoários são difíceis de vacinar).",
+                        "Chagas não se pega em carne de vaca normal cozinhada.",
+                        "Esta é a alternativa correta.",
+                        "Não previne o ciclo peridomiciliar do inseto nos buracos de taipa."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Fácil",
+                text: "A Malária (ou Paludismo) é uma das doenças que mais mata no mundo (especialmente em África). Qual é o mosquito responsável por carregar o parasita de uma pessoa para a outra?",
+                options: ["O mosquito Aedes aegypti", "A fêmea do mosquito Anopheles (Mosquito-prego)", "O mosquito-palha", "A mosca doméstica"],
+                correct: 1,
+                explanation: {
+                    correct: "Apenas a fêmea do Anopheles chupa sangue (precisa das proteínas do sangue para criar os seus ovos). Quando pica um humano doente, chupa o parasita (Plasmodium) e leva-o para o próximo humano saudável.",
+                    options: [
+                        "Vetor de Vírus (Dengue, Zika).",
+                        "Esta é a alternativa correta.",
+                        "Vetor da Leishmaniose.",
+                        "Pousa no lixo, mas não tem aparelho bucal para injetar protozoários no sangue."
+                    ]
+                }
+            },
+            {
+                id: 16, level: "Médio",
+                text: "A Malária (causada pelo protozoário Plasmodium) é caracterizada por terríveis febres intermitentes (ex: picos de febre alta de 48 em 48 horas). O que causa exatamente esse pico brusco de febre?",
+                options: ["É o momento em que o mosquito te pica novamente à noite.", "É quando o parasita sai da picada e viaja pela pele.", "É o exato momento em que milhões de parasitas rebentam, em simultâneo, os teus Glóbulos Vermelhos no sangue, libertando uma toxina na corrente sanguínea.", "É quando o parasita invade os pulmões."],
+                correct: 2,
+                explanation: {
+                    correct: "Eles multiplicam-se em silêncio dentro da tua hemácia (glóbulo vermelho). Quando a célula não aguenta mais, estoira. A toxina cai no sangue, o cérebro emite o alarme e a febre dispara. Se rebentam aos milhões a cada 48h (Febre Terçã), sentes o pico a cada 48h.",
+                    options: [
+                        "O ataque é interno, não imediato da picada.",
+                        "Ele viaja do fígado para o sangue antes das febres rítmicas começarem.",
+                        "Esta é a alternativa correta.",
+                        "O alvo é o fígado e depois os eritrócitos, não o pulmão."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Difícil",
+                text: "Ao contrário da Doença de Chagas, como é que a Malária te é transmitida no exato momento da picada do inseto vetor?",
+                options: ["Através das fezes do mosquito que caem na ferida.", "Pelo próprio ferrão (tromba) do mosquito, que injeta o parasita ativamente junto com a sua SALIVA anestésica no teu sangue.", "Por respirar o ar onde o mosquito bateu as asas.", "Não entra pelo sangue, entra pelos poros intactos da pele."],
+                correct: 1,
+                explanation: {
+                    correct: "Lembras-te? Chagas é cocó. Malária é baba. O Anopheles 'cospe' a sua saliva com anticoagulante para o teu sangue não entupir a palhinha dele. É nessa baba letal que os parasitas entram em força.",
+                    options: [
+                        "Isso é o método do Barbeiro (Chagas).",
+                        "Esta é a alternativa correta.",
+                        "Sem transmissão aérea.",
+                        "O parasita precisa de que a tromba perfure a derme até ao capilar sanguíneo."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Difícil",
+                text: "Em ecologia parasita, existe o Hospedeiro Intermediário (onde o parasita cresce ou se multiplica assexuadamente) e o Definitivo (onde o parasita faz reprodução sexuada adulta). Na Malária, quem é o Hospedeiro DEFINITIVO?",
+                options: ["O Ser Humano.", "O Mosquito Anopheles.", "A Água.", "Os macacos."],
+                correct: 1,
+                explanation: {
+                    correct: "Rasteira brutal académica! O humano sofre que se farta, mas nós somos apenas o 'hotel de passagem' para eles fazerem cópias (assexuadamente). A verdadeira festa (cruzamento sexuado macho-fêmea do Plasmodium) ocorre no estômago do mosquito. O mosquito é o dono do parasita!",
+                    options: [
+                        "Nós somos o Intermediário.",
+                        "Esta é a alternativa correta.",
+                        "Fator abiótico para larvas, não hospedeiro do parasita adulto.",
+                        "Reservatórios, mas não o palco da reprodução sexuada primária de infeção."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Protozooses Entéricas e Outras (19-25)
+            {
+                id: 19, level: "Fácil",
+                text: "Muitas protozooses não precisam de mosquitos. A Amebíase (causada pela Entamoeba histolytica) é uma doença que causa cólicas fortes e diarreia com sangue. Como nos contagiamos?",
+                options: ["Ao sermos mordidos por um cão vadio.", "Ao beijar alguém na face.", "Pela ingestão de água ou alimentos (ex: saladas cruas mal lavadas) contaminados com FEZES humanas contendo os Cistos da ameba.", "Pela picada de uma abelha africana."],
+                correct: 2,
+                explanation: {
+                    correct: "A velha regra: onde não há saneamento básico nem sanitas, a matéria fecal vai parar ao lençol freático e ao rio. O humano bebe essa água suja (transmissão fecal-oral). O cisto é o 'ovo blindado' do protozoário.",
+                    options: [
+                        "Mordida de cão é Raiva (Vírus).",
+                        "Não há contágio salivar primário.",
+                        "Esta é a alternativa correta.",
+                        "Abelhas dão choque alérgico, não viroses ou protozooses."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Fácil",
+                text: "A Giardíase é muito parecida com a Amebíase na sua forma de contágio e afetação (dor de barriga intensa e diarreia). Como a evitamos no dia a dia?",
+                options: ["Dormindo sempre com rede mosquiteira na cama.", "Lavar muito bem os alimentos (legumes e frutas cruas) com água clorada, ferver a água se for de poço e ter saneamento básico nas vilas.", "Tomar banhos de gelo e sol.", "Passar repelente inseticida no corpo todo."],
+                correct: 1,
+                explanation: {
+                    correct: "As doenças 'fecal-orais' param quando cortamos o ciclo da sujidade. Se lavares bem as mãos e cozinhares/lavares os alimentos, o cisto de Giardia morre e não chega à tua boca.",
+                    options: [
+                        "Isto previne as doenças transmitidas por vetores aéreos noturnos (Malária).",
+                        "Esta é a alternativa correta.",
+                        "Temperaturas normais de banho não destróem cistos internos.",
+                        "Repelente não afeta a água suja ingerida."
+                    ]
+                }
+            },
+            {
+                id: 21, level: "Médio",
+                text: "A Toxoplasmose é uma doença parasitária (Toxoplasma gondii) que geralmente não afeta gravemente adultos saudáveis. No entanto, é EXTREMAMENTE perigosa para qual grupo de pessoas?",
+                options: ["Rapazes a praticar desporto.", "Mulheres Grávidas, pois o parasita destrói o feto em formação, podendo causar cegueira irreversível no bebé, má-formação cerebral ou aborto.", "Idosos com reumatismo.", "Pessoas loiras ou de pele clara."],
+                correct: 1,
+                explanation: {
+                    correct: "É a grande tragédia desta doença. O adulto quase não sente nada (parece uma gripe). Mas se uma mulher grávida apanhar pela primeira vez na gravidez, o parasita fura a placenta e aniquila o desenvolvimento dos tecidos sensíveis do bebé.",
+                    options: [
+                        "Nenhuma correlação etária-desportiva de gravidade aguda.",
+                        "Esta é a alternativa correta.",
+                        "A imunidade senil pode agravar sintomas, mas o foco do alerta clínico é a obstetrícia.",
+                        "A melanina não altera imunologia intracelular."
+                    ]
+                }
+            },
+            {
+                id: 22, level: "Médio",
+                text: "Sabendo o perigo da Toxoplasmose, como se adquire esta protozoose no dia a dia?",
+                options: ["Pelo contacto mal higienizado com fezes de gatos infetados (limpar a caixa de areia) ou ingerindo carne mal passada de porco/vaca que contenha os cistos do parasita.", "Por espirros de pessoas infetadas no autocarro.", "Pela picada do carrapato de estrela.", "Pela luz solar excessiva sem proteção ultravioleta."],
+                correct: 0,
+                explanation: {
+                    correct: "O Gato é o hospedeiro definitivo do Toxoplasma. Mulheres grávidas não devem limpar a caixa de areia do gato (se o gato tiver acesso à rua/ratos). Mas o contágio MAIOR é comer bife de vaca/porco sangrento que traz os parasitas no músculo.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Não há contágio respiratório.",
+                        "Carrapato transmite doenças bacterianas (Lyme, febre maculosa).",
+                        "Raios solares causam problemas de pele/mutações, não parasitas."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Médio",
+                text: "A Leishmaniose é uma doença gravíssima, muito presente em Portugal (nos cães) e no Brasil (humanos e cães). Quem é o VETOR (o 'táxi') que pica os doentes e transporta o parasita Leishmania para o próximo alvo?",
+                options: ["O cão doméstico, mordendo de forma agressiva as crianças nas ruas e atirando o parasita pela baba.", "O pequeno inseto flebótomo, também conhecido popularmente por 'Mosquito-palha' ou 'Birigui'.", "A barata comum da cozinha.", "As pombas de jardim."],
+                correct: 1,
+                explanation: {
+                    correct: "O cão é o grande MÁRTIR desta doença (o reservatório principal na cidade), mas o cão NÃO passa a doença diretamente a ti lambendo-te. É o mosquito-palha que tem de picar o cão doente, e a seguir picar-te a ti.",
+                    options: [
+                        "O cão não é o transmissor direto.",
+                        "Esta é a alternativa correta.",
+                        "As baratas transmitem bactérias nas patas, não parasitas sanguíneos deste género.",
+                        "As pombas transmitem criptococose (fungo) pelo ar das fezes secas."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Difícil",
+                text: "A Leishmaniose divide-se em duas manifestações clínicas principais, ambas letais se não tratadas. Quais são as zonas do corpo destruídas em cada uma das formas?",
+                options: ["Forma Cutânea (destrói as membranas mucosas, narinas e lábios em feridas monstruosas) e a Forma Visceral (destrói fígado, baço e medula óssea por dentro).", "Forma Cerebral (cancro letal do cérebro imediato) e Forma Óssea (destrói o cálcio dos tornozelos dolorosos e joelhos).", "Forma Aérea (impede a respiração total das plantas) e Forma Pulmonar (tossir a alma).", "Nenhuma parte, a doença é assintomática e pacífica em humanos normais imunologicamente saudáveis do norte global."],
+                correct: 0,
+                explanation: {
+                    correct: "A forma Cutânea (Ferida de Bauru) corrói a cartilagem da cara do paciente, deformando-o para a vida. A forma Visceral (Calazar) é um assassino silencioso por dentro que incha a barriga enormemente antes da falência hepática.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Os parasitas da leishmania não têm tropismo ósseo primário.",
+                        "O alvo são os macrófagos, não apenas pneumócitos isolados.",
+                        "Letalidade altíssima e muito dolorosa, nada pacífica."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Médio",
+                text: "Diferencia o vocabulário das campanhas de saúde: Se a tua cidade tem muitos casos de DENGUE, combates o foco de ____. Se a cidade tem muitos casos de CHAGAS, combates as casas com paredes de ____.",
+                options: ["Gatos vadios // Madeira envernizada grossa.", "Água parada e pneus velhos // Taipa ou Barro cheio de rachaduras buracos escuros e abrigos.", "Cães nas ruas sem trela ou caixotes // Prédios de tijolo cru sem pintura.", "Saneamento básico nos rios e riachos da metrópole urbana moderna contemporânea densa // Ervas altas."],
+                correct: 1,
+                explanation: {
+                    correct: "Dengue exige mosquito (Aedes) e ele precisa de água limpa parada para pôr ovos. Chagas exige o inseto Barbeiro que odeia luz e vive enfiado nas rachadelas das velhas casas de lama secas nos sertões.",
+                    options: [
+                        "Gatos = Toxoplasmose.",
+                        "Esta é a alternativa correta.",
+                        "Cães = Leishmaniose ou Raiva.",
+                        "Saneamento = Cólera, Amebíase."
+                    ]
+                }
+            },
+
+            // BLOCO 5: Raciocínio de Síntese Criminológica (26-30)
+            {
+                id: 26, level: "Difícil",
+                text: "Porque é que as Doenças de Chagas, Malária e Leishmaniose são tratadas nos noticiários governamentais como 'Doenças Tropicais Negligenciadas', em vez das viroses ricas do primeiro mundo europeu?",
+                options: ["Porque os medicamentos já curam a 100% na hora com chás caseiros na amazônia profunda mítica escondida localmente.", "Porque afetam quase exclusivamente populações rurais muito pobres, de países do terceiro mundo, onde a indústria farmacêutica vê pouco lucro em investir mil milhões para desenvolver uma vacina inovadora contra algo complexo como um protozoário.", "Porque o clima do polo norte não as permite estudar congeladas para as farmácias testarem nas cobaias brancas puras ricas isoladas da Europa antiga rica monárquica clássica renascentista vitoriana europeia.", "Porque os insetos estão já todos mortos no planeta."],
+                correct: 1,
+                explanation: {
+                    correct: "É o aspeto cruel do mercado e da biologia: criar vacinas para seres complexos (eucariontes gigantes face ao vírus) custa fortunas. Se a doença afeta povos miseráveis sem teto da selva, a urgência corporativa de Wall Street esfria tragicamente a resposta.",
+                    options: [
+                        "Falso, são letais e o tratamento médico disponível de químicos é altamente tóxico ao fígado.",
+                        "Esta é a alternativa correta.",
+                        "A pesquisa científica é perfeitamente viável climaticamente nos mega centros do ocidente global corporativo.",
+                        "Os mosquitos tropicais continuam em explosão letal com aquecimento global."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Difícil",
+                text: "O que têm em comum, cientificamente falando, o protozoário 'Trypanosoma cruzi' (Chagas), o vírus do 'VIH' (SIDA) e a bactéria 'Mycobacterium tuberculosis' (Tuberculose)?",
+                options: ["São as três curáveis com um antibiótico simples vulgar na farmácia da esquina do bairro de todos nós humanos normais urbanos pacíficos.", "Atacam os mesmos órgãos pulmonares exatamente no mesmo segundo clínico biológico do sistema.", "São todos agentes patogénicos causadores de doenças severas humanas, mas pertencem a 3 reinos biológicos COMPLETAMENTE diferentes (Eucarionte parasita celular, Acelular de RNA sem vida independente, e Procarionte Monera infecioso de pulmão).", "Têm todos asas microscópicas no inverno para voar entre os humanos a tossir."],
+                correct: 2,
+                explanation: {
+                    correct: "A síntese da genialidade e pegadinha cruel do Ministério da Saúde: Confundir famílias. O aluno de ouro sabe que Chagas = Célula complexa Protista. Tuberculose = Bactéria de parede antiga. SIDA = Cápsula alienígena morta viral de DNA RNA solto.",
+                    options: [
+                        "SIDA e Chagas riem-se da Penicilina inútil contra eles.",
+                        "Coração (Chagas), Glóbulos Brancos e Linfa (VIH), Pulmão (TB).",
+                        "Esta é a alternativa correta Magistral Absoluta da Biologia Celular Básica Mundial Exata Perfeita Lógica Clássica Atual Moderna Contemporânea Imaculada.",
+                        "Somente a tuberculose viaja nos aerossóis de tosse."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Fácil",
+                text: "Um cientista colocou num prato saladas regadas com água de esgoto. Um porco foi colocado a apanhar sol debaixo de um carrapato no mato. Uma fêmea do mosquito Anopheles bebeu sangue doente da aldeia africana. Qual gerou a transmissão de Malária?",
+                options: ["A salada no esgoto (Amebíase/Cólera).", "O porco debaixo do carrapato (Febre Maculosa do Rocky).", "A fêmea do Anopheles que se infetou e levará os plasmódios pela sua saliva na picada noturna silvestre trágica comum rural equatorial do sertão quente abafado pantanoso.", "Nenhum."],
+                correct: 2,
+                explanation: {
+                    correct: "O triângulo da morte malárico: Homem Doente -> Mosquito Chupa o parasita -> Parasita faz ovos na barriga do mosquito -> Mosquito injeta baba no Homem São.",
+                    options: [
+                        "Foco gastro-fecal oral sujo rasteiro da cólera urbana ou do campo.",
+                        "Doença da bactéria do carrapato do campo.",
+                        "Esta é a alternativa correta evidente clássica literária.",
+                        "Existe aliás a bomba biológica malárica letal explícita na questão teórica base dada na sala de aulas diária comum geral normal da professora chata do liceu."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Médio",
+                text: "A Tricomoníase (Tricomonas vaginalis) é uma IST (infeção sexualmente transmissível) muito incômoda. O parasita Tricomonas é flagelado. O que significa isso anatómica e clinicamente sobre o seu comportamento no corpo da mulher na genitália?",
+                options: ["Significa que ele rola como uma bola de bactérias mortas duras sem pernas.", "Significa que ele usa chicotes microscópicos longos para nadar ativamente e escapar nos fluídos húmidos de forma célere e rápida infeciosa colonizadora.", "Significa que ele é um vírus cristalizado de fezes rurais secas no chão duro de pedras vulcânicas escuras mortas secas calcárias ácidas frias polares árcticas do norte.", "Significa que não se move."],
+                correct: 1,
+                explanation: {
+                    correct: "Lembra-te: Flagelo = Cauda propulsora tipo espermatozóide/chicote motor! É isso que lhe dá a agressividade em meios aquosos no tecido vivo urogenital de forma letal incómoda picante na micção e dor persistente vermelha crônica assintomática inicial silenciosa destrutiva.",
+                    options: [
+                        "Coccos (bactérias esféricas sem caudas motoras longas típicas).",
+                        "Esta é a alternativa correta óbvia morfológica biomecânica vital.",
+                        "Sem comentário absurdo.",
+                        "Sem locomoção é esporozoário!"
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "Síntese Letal Profilática: Assinala a única ação humana capaz de combater SIMULTANEAMENTE a malária, a leishmaniose, e a febre de chagas urbana marginal em países subdesenvolvidos.",
+                options: ["Ferver muito bem a água da torneira todos os dias quentes sem excepção ou falha antes de comer saladas cruas orgânicas vegan da feira limpa bonita rural regional.", "Usar botas de borracha no canavial espesso de capim verde sujo do mato longo denso úmido tropical de manhã para evitar corte nos pés puros da terra solta livre.", "Erradicar vetores biológicos (aplicar telas mosquiteiras, usar inseticidas nas habitações de adobe e acabar com focos reprodutores lixo).", "Tomar pílulas de cloro no inverno frio seco."],
+                correct: 2,
+                explanation: {
+                    correct: "Tens três doenças transmitidas por 'Táxis' Insetos Letais! Anopheles, Flebótomo Mosquito e Barbeiro Inseto! Se tu fechares as janelas com rede, rebocares os buracos da parede e atirares veneno no teto de adobe sujo rural ou nos esgotos parados pantanosos rasos locais regionais marginais da aldeia podre úmida, matas os três transportes!",
+                    options: [
+                        "Ferver água é para disenterias de ameba fecal cistos, Cólera bactéria e Giardia! Não afeta vetores alados insetos hematófagos sangrentos cruéis rápidos voadores picadores furiosos nocturnos vespertinos diurnos silêncios.",
+                        "Botas curam Leptospirose ou Tétano de prego terra lixo ou cobras e carrapatos do mato de chão denso rasteiro. Mosquito voa por cima livre do pé.",
+                        "Esta é a alternativa correta e lógica macro-ambiental do Ministério Mágico do Planeta e Estado da OMS unida Global de Sobrevivência Pública Geral de Prevenção Cautelar Humana Social Sustentável Urbana.",
+                        "Quimicamente letal injerir cloro letal letal fatal na barriga morte instânea hospital urgência lavagem lavagem gástrica no centro cívico hospital de dia centro do parque florestal base rústico de pedra."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Imunidade Aprovada!' : '❌ Ops! Infeção Parasitária do Raciocínio:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>Terapia Exata:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#312E81; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #CBD5E1; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Análise dos Erros Sintomáticos:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício Amarelos e Roxos (Antídotos Bio)
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#F59E0B', '#6D28D9', '#BE123C', '#FDE68A']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#F59E0B', '#6D28D9', '#BE123C', '#FDE68A']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Expedição";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar Terapia";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Destruíste ${correct} de ${questions.length} parasitas mentais!`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Parasitismo Terminal da Ignorância!</strong> As doenças tropicais não perdoam. Atingir 80% (24 acertos) é obrigatório para não seres comido vivo nos exames pela falha do teu vetor de conhecimento letal da selva amazônica pantaneira húmida dos confins das terras virgens dos hospitais distritais das províncias rurais. Lê a Teoria e sobrevive!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Limpar Vetores e Repetir</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Hospedeiro Imune Brilhante!</strong> A tua análise microscópica à microbiologia letal dos parasitas é impecável. És um escudo de carne, sangue e intelecto contra os mosquitos das falsas respostas biológicas da ciência pura!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Patrulhar Novamente Os Pântanos</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Forense das Feridas (Os Teus Erros Puros e Duros):</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">A tua Ilusão Perigosa: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">A Verdade Dura da Natureza Letal: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

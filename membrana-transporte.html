@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membrana e Transporte - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-FRONTEIRA (Ciano Celular & Laranja ATP) */
+            --bg-color: #ECFEFF; /* Ciano muito claro */
+            --text-color: #083344; /* Ciano quase preto */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #CFFAFE; /* Ciano Claro */
+            --theme-medium: #06B6D4; /* Ciano (Água/Fronteira) */
+            --theme-dark: #164E63; /* Ciano Profundo */
+            --theme-contrast: #EA580C; /* Laranja (Energia/ATP/Ativo) */
+            --theme-accent: #8B5CF6; /* Violeta (Proteínas) */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#cffafe 1px, transparent 1px), linear-gradient(90deg, #cffafe 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #0E7490;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #0E7490;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #F8FAFC;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #FFF7ED; /* Laranja suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #7C2D12;
+        }
+        .highlight-box.cyan {
+            background-color: #ECFEFF;
+            border-left-color: var(--theme-medium);
+            color: #164E63;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #0E7490; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E1; line-height: 1.5; color: #0F172A; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🚧</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Membrana Plasmática e Transportes Celulares</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Osmose)">
+            </div>
+            <div id="no-results"><p>😕 Esse soluto não passou pela membrana. Verifica a ortografia.</p></div>
+
+            <!-- TÓPICO 1: O MOSAICO FLUIDO -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-dark);">🧱 1. O Modelo do Mosaico Fluido</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-dark);">
+                    <h3 style="color: var(--theme-dark);">A Alfândega da Célula</h3>
+                    <p>A Membrana Plasmática não é um muro de cimento; é um "óleo" maleável e inteligente. O modelo científico atual chama-se <strong>Mosaico Fluido</strong> (proposto por Singer e Nicolson em 1972).</p>
+                    
+                    <div class="visual-area">
+                        <svg width="250" height="120" viewBox="0 0 250 120">
+                            <!-- Bicamada Fosfolipídica (Camada Superior) -->
+                            <!-- Cabeças Hidrofílicas -->
+                            <circle cx="20" cy="40" r="8" fill="#06B6D4" stroke="#000"/><path d="M 17 48 L 15 65 M 23 48 L 25 65" stroke="#F59E0B" stroke-width="2"/>
+                            <circle cx="40" cy="40" r="8" fill="#06B6D4" stroke="#000"/><path d="M 37 48 L 35 65 M 43 48 L 45 65" stroke="#F59E0B" stroke-width="2"/>
+                            <circle cx="60" cy="40" r="8" fill="#06B6D4" stroke="#000"/><path d="M 57 48 L 55 65 M 63 48 L 65 65" stroke="#F59E0B" stroke-width="2"/>
+                            <circle cx="160" cy="40" r="8" fill="#06B6D4" stroke="#000"/><path d="M 157 48 L 155 65 M 163 48 L 165 65" stroke="#F59E0B" stroke-width="2"/>
+                            <circle cx="180" cy="40" r="8" fill="#06B6D4" stroke="#000"/><path d="M 177 48 L 175 65 M 183 48 L 185 65" stroke="#F59E0B" stroke-width="2"/>
+                            <circle cx="200" cy="40" r="8" fill="#06B6D4" stroke="#000"/><path d="M 197 48 L 195 65 M 203 48 L 205 65" stroke="#F59E0B" stroke-width="2"/>
+
+                            <!-- Camada Inferior -->
+                            <circle cx="20" cy="90" r="8" fill="#06B6D4" stroke="#000"/><path d="M 17 82 L 15 65 M 23 82 L 25 65" stroke="#F59E0B" stroke-width="2"/>
+                            <circle cx="40" cy="90" r="8" fill="#06B6D4" stroke="#000"/><path d="M 37 82 L 35 65 M 43 82 L 45 65" stroke="#F59E0B" stroke-width="2"/>
+                            <circle cx="60" cy="90" r="8" fill="#06B6D4" stroke="#000"/><path d="M 57 82 L 55 65 M 63 82 L 65 65" stroke="#F59E0B" stroke-width="2"/>
+                            <circle cx="160" cy="90" r="8" fill="#06B6D4" stroke="#000"/><path d="M 157 82 L 155 65 M 163 82 L 165 65" stroke="#F59E0B" stroke-width="2"/>
+                            <circle cx="180" cy="90" r="8" fill="#06B6D4" stroke="#000"/><path d="M 177 82 L 175 65 M 183 82 L 185 65" stroke="#F59E0B" stroke-width="2"/>
+                            <circle cx="200" cy="90" r="8" fill="#06B6D4" stroke="#000"/><path d="M 197 82 L 195 65 M 203 82 L 205 65" stroke="#F59E0B" stroke-width="2"/>
+
+                            <!-- Proteína Transmembranar (O Canal) -->
+                            <path d="M 85 25 Q 110 10 135 25 L 135 105 Q 110 120 85 105 Z" fill="#8B5CF6" stroke="#000" stroke-width="2"/>
+                            <line x1="110" y1="20" x2="110" y2="110" stroke="#FFF" stroke-width="8"/> <!-- Túnel -->
+                            <text x="110" y="70" text-anchor="middle" font-size="8" font-weight="bold" fill="#000">Proteína</text>
+                            
+                            <text x="20" y="20" font-size="9" font-weight="bold" fill="#06B6D4">Fosfolípidos</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Bicamada Fosfolipídica:</strong> Duas camadas de gordura. As "cabeças" gostam de água (hidrofílicas) e apontam para fora/dentro da célula. As "caudas" odeiam água (hidrofóbicas) e ficam escondidas no meio.</li>
+                        <li><strong>Proteínas:</strong> Boiam nesta camada de óleo como barcos num lago. Servem de "túneis" e "portões" para deixar passar moléculas que a gordura rejeita (como a glicose ou sais).</li>
+                        <li><strong>Permeabilidade Seletiva:</strong> A membrana "escolhe" o que entra e o que sai. Gases pequenos (O2) entram sem pedir licença; moléculas grandes precisam de autorização (proteínas).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: TRANSPORTE PASSIVO -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-medium);">⬇️ 2. Transporte Passivo</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-medium);">
+                    <h3 style="color: var(--theme-dark);">A favor da maré (Sem ATP)</h3>
+                    <p>No Transporte Passivo, as moléculas movem-se do sítio onde estão muito concentradas (cheias) para onde estão pouco concentradas (vazias). Como é "a descer", a célula <strong>NÃO GASTA ENERGIA (Não usa ATP)</strong>.</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding:0; background:transparent; border:none;">
+                        <!-- Difusão Simples -->
+                        <div style="background:white; border:2px solid #06B6D4; padding:15px; border-radius:8px;">
+                            <h4 style="color:#06B6D4; text-align:center; font-size:1rem; margin-bottom:5px;">Difusão Simples</h4>
+                            <p style="font-size:0.8rem; line-height:1.5; margin:0;">Moléculas muito pequenas (O2, CO2) "furam" a gordura da membrana como fantasmas atravessam paredes. É assim que o oxigénio entra nos teus pulmões.</p>
+                        </div>
+                        <!-- Difusão Facilitada -->
+                        <div style="background:white; border:2px solid #8B5CF6; padding:15px; border-radius:8px;">
+                            <h4 style="color:#8B5CF6; text-align:center; font-size:1rem; margin-bottom:5px;">Difusão Facilitada</h4>
+                            <p style="font-size:0.8rem; line-height:1.5; margin:0;">Moléculas grandes (como a Glicose) não conseguem furar a gordura. Precisam da <strong>"facilidade"</strong> de uma porta aberta: as Proteínas Transportadoras (Canal/Carrier).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: A OSMOSE -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-contrast);">💧 3. Osmose (O caso da Água)</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-contrast);">
+                    <h3 style="color: var(--theme-contrast);">A Água persegue o Sal!</h3>
+                    <p>A Osmose é um transporte passivo exclusivo do <strong>solvente (ÁGUA)</strong>. Presta atenção: o sal (soluto) não se mexe; a <strong>água é que se move para onde há MAIS sal</strong> para tentar diluí-lo!</p>
+                    
+                    <div class="visual-area" style="flex-direction:row; gap: 15px;">
+                        <!-- Célula Murcha -->
+                        <div style="text-align:center; width:30%;">
+                            <svg width="60" height="60" viewBox="0 0 60 60">
+                                <path d="M 15 20 Q 30 10 45 25 Q 55 40 40 50 Q 20 60 10 40 Z" fill="#FEE2E2" stroke="#BE123C" stroke-width="2"/>
+                                <path d="M 30 30 L 10 10" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                            </svg>
+                            <p style="font-size:0.75rem; font-weight:bold; margin-top:5px; color:#BE123C;">Meio Hipertónico</p>
+                            <p style="font-size:0.7rem; line-height:1.2;">Célula perde água (Murcha/Creba).</p>
+                        </div>
+                        
+                        <!-- Célula Normal -->
+                        <div style="text-align:center; width:30%;">
+                            <svg width="60" height="60" viewBox="0 0 60 60">
+                                <circle cx="30" cy="30" r="20" fill="#E0F2FE" stroke="#0284C7" stroke-width="2"/>
+                                <path d="M 10 30 L 25 30 M 50 30 L 35 30" stroke="#000" stroke-width="2" marker-end="url(#arrow)"/>
+                            </svg>
+                            <p style="font-size:0.75rem; font-weight:bold; margin-top:5px; color:#0284C7;">Meio Isotónico</p>
+                            <p style="font-size:0.7rem; line-height:1.2;">Trocas iguais. Célula Normal.</p>
+                        </div>
+
+                        <!-- Célula Inchada -->
+                        <div style="text-align:center; width:30%;">
+                            <svg width="60" height="60" viewBox="0 0 60 60">
+                                <circle cx="30" cy="30" r="28" fill="#D1FAE5" stroke="#059669" stroke-width="2" stroke-dasharray="4,2"/>
+                                <text x="30" y="35" font-size="10" font-weight="bold" fill="#059669" text-anchor="middle">BOOM!</text>
+                            </svg>
+                            <p style="font-size:0.75rem; font-weight:bold; margin-top:5px; color:#059669;">Meio Hipotónico</p>
+                            <p style="font-size:0.7rem; line-height:1.2;">Célula ganha água (Lise/Estoura).</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box green">
+                        <strong>Rasteira Animal vs Vegetal:</strong> Se meteres uma célula animal (glóbulo vermelho) em água pura (meio hipotónico, zero sal exterior), a água invade-a e ela estoira (<strong>Lise celular</strong>). A célula vegetal NÃO ESTOIRA porque tem a <strong>Parede Celular</strong> rija; ela apenas incha muito (fica túrgida).
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: TRANSPORTE ATIVO -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-contrast);">🔥 4. Transporte Ativo</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-contrast);">
+                    <h3 style="color: var(--theme-contrast);">A lutar contra a maré (Gasta ATP)</h3>
+                    <p>Às vezes, a célula precisa de chutar moléculas para onde elas já existem em abundância (CONTRA o gradiente de concentração). Para forçar a entrada/saída, as proteínas atuam como <strong>bombas</strong> que gastam bateria celular (ATP).</p>
+                    
+                    <div class="highlight-box">
+                        <strong>Exemplo Rei: Bomba de Sódio e Potássio (Na+/K+).</strong><br>
+                        Os teus neurónios precisam disto para disparar eletricidade (impulsos nervosos). A bomba gasta ATP para chutar Sódio (Na+) para FORA e puxar Potássio (K+) para DENTRO à força, o tempo todo. 
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 5: TRANSPORTE EM MASSA -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: #4C1D95;">📦 5. O Transporte em Massa</div>
+                <div class="theory-box search-target" style="border-left-color: #4C1D95;">
+                    <h3 style="color: #4C1D95;">Endocitose e Exocitose</h3>
+                    <p>E quando a partícula é tão grande (uma bactéria inteira) que não cabe nas portas de proteína? A membrana engole a molécula deformando a si própria!</p>
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Endocitose (Entrar):</strong> A membrana "abraça" a comida. Se for <em>sólido</em> e grande, a célula emite braços falsos (pseudópodes) e engole-o: <strong>Fagocitose</strong>. Se for <em>líquido/soluções</em>, a membrana apenas se afunda (invagina): <strong>Pinocitose</strong>.</li>
+                        <li><strong>Exocitose (Sair):</strong> A célula "cospe" ou secreta o lixo e hormonas para a rua. Uma vesícula vem do Complexo de Golgi, funde-se com a membrana plasmática e esvazia o conteúdo.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar a Avaliação Laboratorial (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">Microscopia Aplicada: Fronteiras</h2>
+                <p style="color: #0F172A; font-size: 0.95rem; font-weight:600;">
+                    30 questões de alta pressão osmótica. Acerta <strong>80% (24/30)</strong> ou a tua nota sofrerá lise. Analisa o relatório cirúrgico após cada resposta!
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Relatório Citológico</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS RIGOROSOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Estrutura da Membrana Plasmática (1-5)
+            {
+                id: 1, level: "Fácil",
+                text: "O modelo atualmente aceite pela ciência para explicar a estrutura da Membrana Plasmática chama-se:",
+                options: ["Modelo de Sanduíche Fixo.", "Modelo do Mosaico Fluido.", "Modelo da Parede Rígida Celulósica.", "Modelo Nuclear Duplo."],
+                correct: 1,
+                explanation: {
+                    correct: "Exatamente. Chama-se Mosaico porque é feita de várias peças (fosfolípidos, proteínas, colesterol) encaixadas umas nas outras, e Fluido porque essas peças mexem-se e deslizam de lado para lado como barcos num lago de óleo.",
+                    options: [
+                        "O antigo modelo de Davson-Danielli (sanduíche de proteínas) foi refutado.",
+                        "Esta é a alternativa correta.",
+                        "Isso refere-se à parede celular exterior da célula vegetal.",
+                        "Conceito anatómico incorreto."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Fácil",
+                text: "Qual é o principal componente químico que forma a camada dupla (bicamada) da Membrana Plasmática?",
+                options: ["Proteínas puras e rígidas.", "Apenas Água e Sais.", "Fosfolípidos (um tipo de lípido/gordura especializado).", "Açúcar (Glicose) cristalizado."],
+                correct: 2,
+                explanation: {
+                    correct: "A base da membrana é uma bicamada de Fosfolípidos. Como o óleo e a água não se misturam, esta camada de 'gordura' inteligente cria uma barreira estanque que impede o líquido de dentro da célula de vazar para fora.",
+                    options: [
+                        "As proteínas existem, mas estão encravadas na camada de lípidos.",
+                        "Água é o solvente em redor, não a barreira.",
+                        "Esta é a alternativa correta.",
+                        "Açúcares podem existir acoplados fora (glicocálice), mas a parede magna é lipídica."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Médio",
+                text: "A molécula de Fosfolípido tem um comportamento químico esquizofrénico face à água. Quais são as suas duas zonas anatómicas características?",
+                options: ["Uma 'cabeça' hidrofílica (que atrai/gosta de água) e 'caudas' hidrofóbicas (que repelem/têm fobia a água).", "Uma 'cabeça' hidrofóbica e 'caudas' de proteína solúvel.", "Ambas as partes amam a água, dissolvendo a membrana no processo.", "É inteiramente hidrofóbica, rejeitando todo e qualquer líquido biológico."],
+                correct: 0,
+                explanation: {
+                    correct: "É esta dupla natureza (anfipática) que cria a bicamada mágica! As cabeças ficam viradas para fora (viradas para a água do sangue e do citoplasma), e as caudas escondem-se no meio do 'sanduíche', fugindo da água, formando o isolamento blindado.",
+                    options: [
+                        "Esta é a alternativa correta estrutural.",
+                        "Caudas não são de proteína, são cadeias de ácidos gordos.",
+                        "Se toda amasse a água, a célula derretia na primeira chuva plasmática.",
+                        "Se toda odiasse a água, não se estabilizaria no nosso corpo aquoso."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Médio",
+                text: "As proteínas embutidas na bicamada fosfolipídica não estão lá apenas por estética. Qual é a sua função principal na mecânica de vida e fronteira da célula?",
+                options: ["Congelar a membrana celular nos meses de inverno rigoroso europeu do norte.", "Atuarem como 'Canais' (túneis) ou 'Bombas' que transportam seletivamente as moléculas que são demasiado grandes ou com carga química e não conseguem atravessar a barreira de gordura isolada sozinhas.", "Produzir a energia fotossintética do escuro lúgubre denso celular de base.", "Absorverem o oxigénio gasoso de moléculas limpas e lisas."],
+                correct: 1,
+                explanation: {
+                    correct: "A gordura bloqueia a glicose (açúcar) e os sais. Se queres alimentar a célula, precisas das proteínas transmembranares, que se abrem e fecham como portas automáticas de alfândega, decidindo rigorosamente quem tem passe VIP para entrar.",
+                    options: [
+                        "Isso faria a célula morrer de bloqueio mecânico congelado.",
+                        "Esta é a alternativa correta de fisiologia do trânsito plasmático base.",
+                        "Fotossíntese é fotão solar sobre clorofila de cloroplasto, não porta proteica base celular universal.",
+                        "O Oxigénio O2 não precisa das proteínas, ele é pequeno e 'fura' a gordura livremente."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Fácil",
+                text: "A membrana celular tem a incrível capacidade de 'Permeabilidade Seletiva'. Como é que poderias traduzir esta lei da biologia citológica de forma pura?",
+                options: ["A membrana tem buracos cegos que deixam entrar todo o lixo molecular fluído do sangue morto e gordo sem pestanejar ou filtrar ou limpar suor denso.", "A membrana é um escudo intransponível, nada sai e nada entra até à lise celular programada terminal de morte morna seca opaca baça rasa.", "A membrana celular permite e escolhe rigorosamente a passagem de certas substâncias de importância vital para dentro, enquanto bloqueia a entrada de toxinas nocivas grossas, e expulsa o lixo gástrico para fora seletivamente.", "A membrana filtra tudo aleatoriamente pela sorte cega de jogo duro."],
+                correct: 2,
+                explanation: {
+                    correct: "Seletiva = Escolhe. A célula sabe e policia quem entra. Deixa entrar oxigénio e comida, bloqueia venenos espessos e deita fora o dióxido de carbono de forma magistral e silenciosa.",
+                    options: [
+                        "A célula morreria intoxicada na hora se fosse uma valeta cega solta porosa livre de lixo impuro geral.",
+                        "Morreria à fome asfixiada no próprio CO2 venenoso.",
+                        "Esta é a alternativa correta macro-funcional e fisiológica letal clínica clássica escolar de 9º ano de exato.",
+                        "A sorte dita roletas não a homeostase brutalmente regrada imaculada clara viva dura pura."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Transporte Passivo e Difusões (6-11)
+            {
+                id: 6, level: "Fácil",
+                text: "Quando dizemos que um transporte ao longo da membrana ocorreu de forma 'PASSIVA', estamos a garantir cientificamente e perentoriamente de forma fisiológica base que:",
+                options: ["A célula acordou preguiçosa baça murcha do sono longo calmo do lúmen e bebe água grossa nula de base fofa de banha livre fina.", "A célula gastou 100% da sua energia interna de reserva mitocondrial doce pura calma fria rasa do citosol lento e suado limpo branco seco limpo.", "A molécula moveu-se a FAVOR do gradiente de concentração (do lugar onde estava super concentrada para o lugar onde estava mais vazia) de forma natural espalhando-se, e por isso a célula NÃO GASTOU qualquer tipo de energia ativa (ATP) na passagem de trânsito citoplasmática.", "A molécula andou de marcha-atrás na proteína grossa chata suja cega nula falsa murcha."],
+                correct: 2,
+                explanation: {
+                    correct: "Se despejares um frasco de perfume num canto da sala, o cheiro espalha-se naturalmente e sozinho para o resto da sala vazia. Na membrana é igual: ir de 'onde há muito' para 'onde há pouco' não custa trabalho! É de borla! Não gasta ATP baterias.",
+                    options: [
+                        "Narrativa lúdica não citológica e infantil surreal morta e falsa e nula nua de facto biológico químico.",
+                        "Erro fatal: Transporte passivo = ZERO GASTO DE ENERGIA ATP VITAL E METABÓLICA INTERNA CLÁSSICA.",
+                        "Esta é a alternativa correta físico-química da termodinâmica molecular mestre oficial de base limpa letal de biologia exata direta limpa e rija fina e dura e sólida.",
+                        "Nonsense biológico mecânico molecular de fita reta baça murcha cega podre lisa fria cega."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Médio",
+                text: "O gás Oxigénio (O2) e o Dióxido de Carbono (CO2) são moléculas extremamente pequenas, simples e sem carga elétrica. Como é que elas realizam as trocas gasosas respiratórias vitais brutais de rotina nos alvéolos dos teus pulmões humanos para dentro das hemácias do sangue fresco?",
+                options: ["Através de Bombas Iónicas ativas de energia maciça intensa cega nula.", "Através da 'Difusão Simples'. Elas atravessam diretamente e 'furam' a própria dupla camada de fosfolípidos de gordura da membrana celular a favor da concentração e sem precisar de nenhuma porta especial ou de ajuda de proteínas intermédias lentas ou gatas quentes fofas cegas cegas ralas fracas.", "Por Fagocitose Sólida Cega de buraco negro profundo celular fofo gordo raso branco sujo liso.", "Por Transportes de Camiões Mitocondriais Ocos Brancos Frios Mudos Longos Finos Secos Podres e Ocos e Velozes Finos." ],
+                correct: 1,
+                explanation: {
+                    correct: "O2 e CO2 são os fantasmas da célula! Como são minúsculos e apolares (sem carga elétrica de repelência), a parede de lípidos não os consegue detetar nem travar. Eles penetram ativamente o muro lipídico por Difusão Simples, sem portas, sempre sem gastar nada.",
+                    options: [
+                        "Bomba iônica gasta energia e serve para Sódio Potássio e Cálcio inorgânico iônico não gases neutros soltos no vácuo de ar.",
+                        "Esta é a alternativa correta anatômica fisiológica do aparelho respiratório hematológico perfeito clássico genial pleno absoluto cru de raiz livre.",
+                        "A célula não engole bolhas de O2 com abraços ameboides grossos gástricos destrutivos.",
+                        "Surreal biológico sem fundo atômico real nem físico químico de base estruturada teórica sólida e coerente limpa reta."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Médio",
+                text: "A molécula de Glicose (o açúcar essencial do corpo humano motor de energia final rápida pura forte) quer e tem muita urgência letal de entrar na célula para a mitocôndria a queimar no ciclo de energia final. Mas a Glicose é GRANDE DEMAIS para furar a bicamada de gordura por difusão simples. Como é que ela resolve pacificamente este obstáculo vital de entrave da fronteira celular sem rebentar com a célula fina e sensível interior macia?",
+                options: ["Entra por 'Difusão Facilitada'. Uma proteína específica (transportadora / Carrier) localizada na membrana abre-se tipo canal fechadura e 'facilita' a entrada escorregadia do açúcar enorme a favor do gradiente, sem a célula gastar 1% de ATP do esforço próprio biológico da máquina.", "A Glicose parte a membrana e mata as proteínas finas doces lúgubres cegas vazias de suor frio quente podre.", "Ela entra ativamente contra o gradiente gastando metade do ATP cego do lisossoma fofo nulo oco de raio letal suado gordo.", "Fica lá fora a apodrecer morta e baça a chorar chuva cega cega oca nula fraca falsa limpa."],
+                correct: 0,
+                explanation: {
+                    correct: "O nome denuncia a técnica: 'Facilitada'! A molécula viaja do muito para o pouco (passiva, sem gastar bateria ATP), mas precisa de 'facilidade/boleia' de uma porta grande de Proteína Canal que se abra à sua medida porque a gordura trancou-a lá fora e a impediu de passar o pano de óleo limitante seletivo impiedoso e forte cruel.",
+                    options: [
+                        "Esta é a alternativa correta bioquímica citológica magistral da porta de insulina transportadora glute clássica e perfeita.",
+                        "A membrana recompõe-se e não se parte (modelo fluido de mosaico lipídico plástico elástico dinâmico não rígido frágil estático).",
+                        "Ela está a descer o gradiente (do plasma sangue rico para a célula fome), logo nunca será ativa e gastadora da energia cara.",
+                        "Poesia lúdica abstrata falaciosa vazia inútil de pântano sem valor acadêmico de prova escolar oficial nacional de grau final puro exato claro e forte vivo."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Osmose (A rasteira brutal da água e do sal) (9-16)
+            {
+                id: 9, level: "Fácil",
+                text: "O transporte passivo e universal da ÁGUA (apenas do líquido solvente H2O isolado puro e não do açúcar nem do sal de cloreto fino e solto orgânico mineral solto morto) através da membrana plasmática celular numa célula vermelha hemácia ou na cebola fresca de alface morta murcha morna fria viva clássica rotineira tem o nome sagrado mestre de base magna fundamental clínica laboratorial de:",
+                options: ["Endocitose Hídrica Solta Seca Branca Falsa Cega Cega Rasa Cega Lenta Cega.", "Osmose.", "Fagocitose Límpida Suja Cega Murcha Rasa Morta Murcha Lisa Cega Quente e Clara.", "Atividade Mitocondrial Gástrica e Fria."],
+                correct: 1,
+                explanation: {
+                    correct: "Osmose: O nome da difusão exclusiva e simples do Solvente (a água pura cristalina)! O soluto (sal) fica retido preso, a água cruza livremente a membrana tentando equilibrar a matemática química das poções vizinhas contíguas adjacentes.",
+                    options: [
+                        "Endocitose é comer algo enorme num saco de vesícula fofinha murcha invaginada e gasta ATP.",
+                        "Esta é a alternativa correta universal biológica citoplasmática de exato.",
+                        "Fagocitose é de engolir sólidos grandes invasores da imuno (ex: macrófago traga bactéria de salmonela e não sorve sucos de limonada doce rala nua).",
+                        "Mitocôndrias não bebem água em osmose. Fazem respiração energética celular final oxidativa de transporte elétrons."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Difícil",
+                text: "A Regra de Ouro Implacável da Osmose (onde todos os alunos distraídos da escola básica europeia caem cegamente rindo e reprovando de chofre agudo na rasteira letal académica fria bruta da professora de Ciências Exatas): Para onde se move a água ativamente e implacavelmente num experimento ou corpo de hospital com soro e agulha cega limpa suja?",
+                options: ["A água foge desesperada do Sal Grosso. Move-se sempre para onde há MENOS soluto de sal no balão. ", "A água corre de forma mágica para o núcleo quente e grosso mole macio da mitocôndria oca velha.", "A água desloca-se passivamente e inelutavelmente PARA ONDE HÁ MAIS SAL/SOLUTO (do meio Hipotónico de pouco sal, na direção e rumo veloz do meio Hipertónico e Salgado de muito concentrado cheio de soluto denso). A água segue e persegue e tenta diluir afogar matar banhar e afogar e ensopar o sal teimoso!", "A água parada seca murcha evapora em nuvens negras mortas da barriga amarela."],
+                correct: 2,
+                explanation: {
+                    correct: "A água adora o Sal!! Para onde tiver mais pó de sal grosso ou glicose densa pura de concentração, a água vai a correr para lá tentar diluir e estabilizar a porção de xarope químico salino forte da matriz! A água sai do Hipotónico e chora a correr entra desesperada no Hipertónico (MUITO)! Nunca mais te esqueças: o hiperpoderoso chama e chupa e seca a água alheia da fronteira limpa pura clara viva certa e reta exata plena.",
+                    options: [
+                        "Totalmente o oposto! A água viaja atraída e puxada magneticamente pela gradiente hiper-osmótica alta de sucção celular do xarope de sangue suado farto lúgubre denso longo e doce.",
+                        "Erro citológico. Nenhuma atração nuclear hídrica de fluxo gravitacional botânico tem peso magnético de osmose isolado celular base macio liso mole suado lúgubre limpo longo cego raso murcho duro calmo falso mudo raso lento frio cego livre falso oco cego branco e opaco.",
+                        "Esta é a alternativa correta fenomenal de raciocínio de osmose magistral infalível inquebrável mestre alfa cirúrgica perfeita clara letal imaculada pura densa.",
+                        "Evaporação não é osmose de transporte biomembranar de canais aquaporinas fluidas basais renais vitais orgânicas comuns de base da homeostase térmica vital animal."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Médio",
+                text: "Uma enfermeira cometeu um erro médico grotesco criminoso de falha trágica. Ela aplicou na tua veia intravenosa um soro de Soro com ÁGUA DESTILADA 100% Pura sem nada (Meio Hipotónico, zero Sal puro de gelo). O interior do teu sangue e Glóbulos Vermelhos (Célula Animal Nua) tem muito sal interno farto gordo e vivo celular plasmático. O que acontece imediatamente aos teus Glóbulos Vermelhos do Sangue que boiam nesse frasco hídrico assassino oco fraco fino e suado?",
+                options: ["Como a célula vermelha animal animal está hiper-concentrada por dentro e o exterior é só água deslavada nua, a água destilada Puxa e entra furiosamente invadindo o Glóbulo Vermelho animal desprotegido nu flexível. Ele Incha, infla loucamente como um balão no ar, rebenta e fura a membrana rasgando a célula toda (Lise Celular / Hemólise Mortal Fatal).", "Os glóbulos ficam amarelos azuis brilhantes na dor da picada seca morta da agulha de plástico livre. ", "Os glóbulos cospem a própria água e murcham como maracujás secos rasos velhos cegos de gelo falso frio ralo de sol morto oco fraco mudo.", "Os glóbulos criam paredes de madeira e rijas de celulose fortes no plasma de defesa heróica rápida imortal de vida alien longa solta e quente fofa."],
+                correct: 0,
+                explanation: {
+                    correct: "Tragédia hospitalar! O Glóbulo Vermelho não tem Parede de Parede Celular para lhe servir de armadura forte grossa rija exterior. Quando a água pura fura a membrana para equilibrar o sal interior celular hiper denso, a membrana não aguenta o inchaço gordo, cede a tensão física e estilhaça, derramando e espirrando o sangue todo (Hemólise ou plasmoptise lítica animal final). Célula morta.",
+                    options: [
+                        "Esta é a alternativa correta biomecânica clínica de plasma isotônico laboratorial e médica de sangue hospital de base pura reta.",
+                        "Falso, a hematocromia vermelha hemoglobínica de oxigênio de Fe não muta espectro prismático de visual colorido surreal elétrico fluorescente radioativo da veia de sangue nulo fraco doce livre raso.",
+                        "Isto (Murchar / Crenação / Plasmólise fina) aconteceria se a enfermeira te desse um Soro de SAL PURO grosso morto 10% marinho (meio Hipertónico que chupa a tua água celular original de te murchar a veia e chupar a célula cega baça rasa seca murcha).",
+                        "Células humanas não ganham DNA de flor árvore pinheiro maçã macieira e vegetal alface do nada. Falso botânico imenso absurdo de biologia do mudo cego podre nulo ralo oco mudo falso seco fofo mole suado calmo lento murcho vazio sujo oco cego baço."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Médio",
+                text: "Em casa pegaste num pé de alface fresco vivo verde forte botânico rijo do frigorífico liso fresco duro mudo molhado longo cego limpo sujo grosso de folha grande lisa e pálida e colocaste-o numa saladeira com sal grosso puro forte seco denso branco intenso pesado brilhante morno e tempero salino. Meia hora depois, a alface estava toda caída amolecida murcha mole caída flácida rasgada morta murcha morna lenta baça fina oca podre baça falsa fina e baça cega lenta de cega rasa murcha fraca e falsa nua e limpa de murcha fraca rala e nula fria. Porquê que a alface murchou ecologicamente com a química de cozinha na praça limpa nula cega suada crua cega falsa?",
+                options: ["O sal de fora é HIPOTÓNICO, pelo que a alface bebeu do sal amargo duro doce limpo raso fraco fofo lento doce.", "A alface comeu sal puro de clorofila livre rasteiro longo mole falso falso sujo. ", "O molho de sal exterior tornou a saladeira um meio HIPERTÓNICO. A água pura e farta que estava presa debaixo da parede celular no grande Vacúolo interno turgido verde da Alface folha fugiu chorando em osmose celular para fora na direção exterior para o sal de fora, murchando a célula e esvaziando a folha vegetal macia murcha murcha falsa morta flácida fina e rala baça. É a 'Plasmólise' do vegetal limpo quente fresco puro e seco e lento.", "O sal entrou pelo núcleo gordo morno quente duro falso mudo livre de base fraca da alface murcha fria branca e oca solta limpa livre morta." ],
+                correct: 2,
+                explanation: {
+                    correct: "Osmose clássica culinária de cozinha básica rural fina. O sal chupa água! O exterior tinha toneladas de sal concentrado (Meio Hipertónico letal cego de cristal puro e seco). O Vacúolo das células da alface jorrou a sua água para o prato tentando inutilmente diluir e apagar lavar o sal temperado da cebola e vinagre de sal, e sem a sua água turgescente celular hídrica a segurar as células botânicas na pressão limite contra a parede grossa de madeira vegetal fina rija base firme e grossa foliar verde livre clara, a alface desidratou desmaiou secou murchou e morreu plasmolisada (Célula Murcha).",
+                    options: [
+                        "O sal de poço é Hipertônico e denso sugador gordo e rústico concentrado forte bruto solto duro, e não o inverso do líquido da praça e bica de poço de vala morta da rústica pura de sol quente liso cego fino de flor nua pura fina de rega cega falsa lenta morta do prato cego e chato raso.",
+                        "Sal grosso é inorgânico de mineral puro, e alface não faz fagocitose clorofilada carnívora suja cega mole falsa de prato ralo baço vazio e longo gordo e murcho murcho oco sujo lúgubre denso.",
+                        "Esta é a alternativa correta fisiológica botânica osmótica pericial forense laboratorial citológica de hialoplasma e pressão vacuolar da folha e citologia vegetal fina limpa mestre reta clara.",
+                        "O núcleo rege o DNA, não tem papel ativo hídrico de sucção hídrica na parede ou de armazém termodinâmico macro aquoso limpo oco de sol cego murcho morto raso longo gordo de lixo cego e pó longo."
+                    ]
+                }
+            },
+            {
+                id: 13, level: "Difícil",
+                text: "E a segunda grande Rasteira da Biologia Citológica Botânica Clássica Mestre Escolar da Microscopia Geral Rústica Letal Brutal Exata Fina Doce Seca Nula: Pegas na mesma Célula de Planta da Alface Folha Turgida Rija Clara Forte Verde e Vais Colocá-la Diretamente num Recipiente Balão Frasco Fundo Vidro Copo Com Água Totalmente Destilada 100% Pura Limpa Inerte Sem Um Bocado De Sal Zero Sal Nulo Morto Pálido Oco Vazio Cego Mudo Leve Falso Raso (MEIO HIPOTÓNICO). Sabendo que o Glóbulo Vermelho Animal REBENTAVA e explodia (Lise Mortal) nesta mesma água hipotónica assassina... O que vai acontecer de letal diferente desta vez à pobre Célula Vegetal Botânica Flora Verde Forte Pura Folha do campo lúgubre denso maciço longo cego calmo suado podre liso fofo sujo gordo oco ralo da árvore cega rasa fraca verde quente grossa suada lúgubre livre limpa nua e morna leve lenta doce mole murcha fria baça de raiz cega?",
+                options: ["A célula vegetal absorve a água pura e Incha. Mas ao contrário do glóbulo macio terno do animal flexível, a célula vegetal possui uma CAIXA e COLETE de força EXTERIOR RÍGIDO (A PAREDE CELULAR DE CELULOSE lenhina forte firme). A água entra, incha até bater no teto rijo de madeira do limite de suporte botânico limite flexível murcho falso liso puro rijo duro tenso denso fixo cego de parede firme e o inchaço PARAA Túrgido Forte Tenso Pressão Verde! A célula botânica NÃO REBENTA NEM SOFRE LISE porque a armadura a segura de vez inteira inteira inteira livre clara viva fixa de planta sã saudável e reta e sã.", "A célula de alface também explode em lise sangrenta verde de suco forte e mole livre fria de de cloroplasto mole fofo podre opaco ralo frio falso mudo.", "A célula da planta foge por locomoção das cílios e amebas dos canais hídricos moles calmos longos soltos limpos velozes das veias rijas lentas cegas murchas da pia de banho de água rasa mole nua suada pálida pura murcha fraca nula.", "A água entra e destrói o DNA logo seco seco baço de ácido mortífero venenoso livre doce de núcleo lento gordo baço ralo solto quente baço baço frio mole oco oco gordo."],
+                correct: 0,
+                explanation: {
+                    correct: "Fantástico! O triunfo da Botânica da Evolução Parede Celular Vegetal de suporte firme estanque duro espesso denso maciço estruturado verde puro da força limpa orgânica exata reta crua. O vacúolo engole suga absorve bebe traga puxa e enche-se da água hipotónica do copo vazio fraco fofo lento cego e chato. Ela empurra o citoplasma, empurra a fina membrana lipídica orgânica plasmática final maleável livre mole terna fina mole de gordura contra o 'muro' exterior do osso vegetal rústico rijo espesso limpo cru (A Parede de Celulose verde base murcha lenta falsa fria gorda longa). E ali fica a pressão a bater no teto do betão armado florestal da folha rija doce firme sem nunca explodir de hemólise lítica plasmoptise animal fraca suja velha macia e fina tenra cega doce. Estado Túrgido Botânico Normal Pleno Base Limpo.",
+                    options: [
+                        "Esta é a alternativa correta esmagadora suprema mecânica biológica e biofísica de resistência elástica botânica certa final dura real reta pura clara imaculada e mestre letal dura clínica.",
+                        "Vegetais rústicos base botânica de célula não sofrem lise hemólitica doente falsa letal gorda mole macia flexível celular na água fria limpa do frasco comum de torneira fria morna solta livre livre cega rasa falsa de osmose base geral mestre livre lenta fria oca.",
+                        "Plantas euglenas do tecido orgânico florestal superior semente erva folha e raiz estática flor não portam cílios locomotores rústicos nem ameboide de protozoário pântano suado gordo escuro noturno caçador baço oco ralo animal heterótrofo cru carnívoro de rio ou lama da lagoa fofa quente morna suada e macia podre lisa de fenda pura livre nua e vaga. ",
+                        "Não afeta o DNA cofre núcleo base murcha lúgubre denso mudo morto baço gordo falso cru mudo chato e calmo raso ralo fraco puro doce murcho mudo falso cego mudo cego murcho mole vazio puro raso lento cego vazio liso cego mudo de de de falso lento mudo sujo de lixo de mar morto liso limpo sujo grosso de folha."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Transporte Ativo e de Massa (Bomba de ATP e Vesículas) (14-25)
+            {
+                id: 14, level: "Médio",
+                text: "Nem sempre a célula tem a vida fácil de escorregar no tobogã natural e fluir do Transporte Passivo. Por vezes, ela precisa de forçar a entrada de um mineral contra a parede forte gorda rija lenta rala opaca morna e morna da pressão da natureza gorda lisa fétida pura da concentração, remando brutalmente 'contra a maré da concentração alta fina doce murcha baça fria'. Como se chama esse esforço fisiológico, e o que a célula TEM DE GASTAR inevitavelmente na bomba citoplasmática de proteína canal cega e quente rija rala suada?",
+                options: ["Transporte Passivo. Não gasta nada.", "Transporte Vesicular de Ar Fresco Nulo Lento. Gasta Sal Limpo Raso Murcho.", "Transporte ATIVO. A célula tem de investir e GASTAR e usar Bateria de Energia do Corpo Viva Crua Suja Mole Forte Direta Oca Murcha Cega Oca Murcha Pura Reta Exata do ATP Mitocondrial Quente do Açúcar Queimado do Metabolismo Animal Vegetal de Base Forte Genial Limpa Fria Terna e Densa Reta Pura.", "Transporte Neutro Nulo Falso Baço. Gasta água cega suada chata raso limpo longo podre cego."],
+                correct: 2,
+                explanation: {
+                    correct: "Sim, o Transporte Ativo é a musculação celular! A célula vai chutar ou sugar iões Na+ e K+ contra a maré do Gradiente de Concentração de químicos livres puros fofos do solvente extracelular do corpo da linfa ou plasma sangue quente e rico morno farto puro livre do exterior interno da veia nua cega murcha. Como custa empurrar uma porta emperrada contra o vento, ela gasta o dinheiro forte pago caro da Mitocôndria ATP de fosfato rústico puro vital.",
+                    options: [
+                        "Passivo é a descer do monte na bicicleta e a não gastar o pedal do calmo raso do ar da encosta. ",
+                        "Ar e Sal não são as moléculas calóricas de fluxo de base do ATP do ciclo respiratório forte de Krebs exato celular bioquímico animal metabólico botânico exato.",
+                        "Esta é a alternativa correta mecânica energética base mestre final do ciclo de bombas iônicas de canal e gradiente de eletrólitos solutos nulos fracos vazios mudos cegos fortes duros velozes lisos limpos falsos doces fracos suados fofos ralos.",
+                        "Não há neutralidade se gasta ou não gasta fluxo termodinâmico macro molecular do corpo gordo lúgubre nulo raso lento cego falso quente lúgubre baço vazio lúgubre denso mudo falso murcho raso cego morto calmo limpo."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Médio",
+                text: "Exemplo máximo laboratorial fisiológico neurológico prático de exame geral do ensino oficial moderno escolar preparatório liceu letal cruel fatal base reta dura pura seca de Transporte Ativo Eucarionte Universal Citológico do Tecido Humano de Corpo Clínico Real Biológico do Cérebro Coração de Plasma Animal:",
+                options: ["A Bomba de Sódio e Potássio (Na+/K+). A proteína gasta o caro e rico ATP para chutar de forma violenta brutal agressiva os 3 iões de Sódio (Na+) que entraram para FORA e de vez limpos, e empurrar amarrados pesados rústicos secos duros e brutos 2 iões de Potássio (K+) para DENTRO da célula viva nua pura doce livre reta e limpa e densa e intensa da membrana plasmática gorda gorda doente livre morna quente falsa fria rasa de cérebro nervoso doente forte.", "A Difusão Simples do Ácido Gordo Sujo Morto Longo Calmo Vazio.", "A Osmose da Secreção de Baba Verde de Fígado Mole Branco Baço Seco Lúgubre.", "A Célula Fotossintética Ativa de Pele Pura Calma Branca Morna Seca Chata Rala Baça Murcha Rala Rala Podre Mole Suja Murcha Murcha Seca Lenta Morna Limpa Pura Calma."],
+                correct: 0,
+                explanation: {
+                    correct: "A Bomba Na+/K+ consome grande parte de tudo o que tu comes! É ela que mantém a tua célula em alerta de tensão elétrica neuronal muscular forte! O Sódio quer entrar de graça na célula por difusão natural simples, o Potássio quer fugir para fora na maré calma doce livre limpa morta livre mole, e a Bomba agarra-os pelo pescoço, queima bateria ATP, e força o Na+ para rua chata fria e atira e empurra o Potássio para casa de dentro e crua seca rala oca cega baça murcha podre.",
+                    options: [
+                        "Esta é a alternativa correta eletrofisiológica base de potencial de repouso e ação nervoso miocárdico clássica magna de ouro e diamante liso mudo raso lento frio exato denso.",
+                        "A difusão da gordura lípido ou hormônio esteróide de colesterol hormônio base ou gordo é um fluxo livre raso lento do poro gordo celular de lipídio livre cego falso sem bomba ATP ou K na membrana plástica plástica de mosaico fluído.",
+                        "Osmose é passivo de água de H20 limpa livre solta doce clara cega murcha rala falsa nua rala cega cega baça.",
+                        "Falso mudo."
+                    ]
+                }
+            },
+            {
+                id: 16, level: "Fácil",
+                text: "Quando a Célula do teu Corpo Animal do Glóbulo Branco Linfóide Macrófago Base Puro Clínico Forense Rijo Limpo Claro Cego Cru e Lento Animal Eucarionte Precisa de Literalmente 'ENGOLIR e JANTAR e COMER e ENTRAR' uma BACTÉRIA (partícula sólida gigante gorda maciça densa de monera podre chato e escuro morno lúgubre denso rústico de parede suja oca) e destrutiva que não cabe nos túneis pequenos microscópicos das portas da alfândega proteica canais normais das chaves comuns... Que Processo de 'Transporte Em Massa (VESICULAR ENDOCÍTICO)' Espetacular Rústico Flexível e Genial Pleno Cego Livre e Morto Baço Acontece Mudo Mole Oco Doce Limpo e Calmo Quente Limpo Raso e Lento Falso Suado Frio Seco Ralo Baço Baço Oco Raso Murcho?",
+                options: ["Exocitose de Proteína Cega Limpa.", "Turgescência Base Lenta Oca.", "A Fagocitose. A célula deforma a própria membrana de banha exterior, estica e cria braços 'falsos de pé' longos e flexíveis ('Pseudópodes' finos brutos e macios calmos doces rudes doentes brancos ciegos brutos cegos ralos finos moles brancos mortos ocos longos lúgubres densos mudos), envolvendo, abraçando carinhosamente o invasor grande de vez letal bacteriano, e puxa engole tranca de forma definitiva para o estômago citoplasmático hialoplasma digestivo do vacúolo para ser comido rústico doente seco morto fofo sujo gordo oco mudo calmo lento falso falso falso.", "Pinocitose Suada Morna e Seca Rala Fofa Doce."],
+                correct: 2,
+                explanation: {
+                    correct: "Fago = Comer sólido e bruto. Célula deforma a própria membrana plástica mosaico mole viva flexível de óleo e engole a bactéria ou corpo sólido gigante. Os teus glóbulos brancos fazem isto o tempo todo e todo o dia e noite de vigília calma viva crua direta forte densa doente lenta. Custo de bateria: Altíssimo. Endocitose (entra).",
+                    options: [
+                        "Exo é sair, mandar embora secreção hormonal fora fofa nua limpa, não é engolir jantares sólidos cegos gordos vivos do sangue puro.",
+                        "Isso de estar inchada de vacúolo é o osso botânico hídrico inerte calmo mole nulo cego de parede cega suja flora pura rala doce.",
+                        "Esta é a alternativa correta brutal imunológica de ataque celular ameboide fagocítico limpo exato claro cego denso forte real puro fixo direto da academia viva e crua clara imaculada de teste.",
+                        "Pino = Beber líquido. É a célula a engolir sucos góticos solúveis soluções soltas fofas calmas fracas falsas moles limpas mortas ocas vazias pequenas rasas de gota de óleo gordo raso mudo lúgubre oco, e não calhaus de rochas ou de bactérias duras velhas gordinhas chatas espessas de cutícula celular espessa suada e morta de fome."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Médio",
+                text: "E qual o nome oficial técnico base magna celular eucarionte de membrana flexível mestre que a célula humana e animal animal animal viva viva viva quente viva usa e enverga da escola fina cega cega morta livre rala baça murcha fina e fria de pó lento quando precisa e decide engolir e absorver da rua extracelular e chupar do mar líquido plasmático extracelular umas 'gotas líquidas' repletas de sais e proteínas fluídas dissolvidas soltas calmas morna de sopa gástrica cega cega lenta doce e nula oca rasa de lá fora fina pura livre rala baça nua e calma fria de neve pura limpa fria nula falsa mole mole de falso sol suado falso nulo doce mole e sujo sujo grosso do meio do do do plasma de água lenta rala mole do sol morno mudo frio mudo sujo vazio?",
+                options: ["Plasmólise Base Falsa Cega Cega Rala Seca Morta e Cega Quente e Suada.", "Turgência Viva e Clara e Forte e Longa Mole e Grossa e Rasa Rala Fria Suave Nula.", "Fagocitose Calma e Quente e Podre Lenta Oca.", "Pinocitose ('Pino' beber gota líquido de suco fluido calmo suave macio cego de vida). A membrana não faz grandes braços abraços violentos caros de gigante aranha fofa, ela apenas afunda leve e lentamente para si (uma cova macia terna fina de invaginação e oco cova murcha cega cova de lá de lúmen), ajeita e segura as goteiras as gotas no buraco canal mole macio denso cova oca suja doce rasa nua nula quente fina oca fofa oca e tranca e chupa fecha o balão vesícula bolsa fina e rica pura e doce mole lenta fria quente e de de lá e de de e pura chupa do de puxa." ],
+                correct: 3,
+                explanation: {
+                    correct: "Fago = Comer sólido. Pino = Beber caldo do suco de fora. A membrana recua macia, faz uma cova, e chupa as águas turvas fluídas enriquecidas sem fazer um show de braços mecânicos agressivos letais de predador rústico do mar mudo morto cego limpo sujo raso longo fofo sujo gordo oco raso mole lento calmo fresco. Ambos engolem para dentro, ambos Endocitose (Endo = para dentro, Cito = celular de base).",
+                    options: [
+                        "Isso do murcho é botânico desidratado oco longo limpo suado de prato quente cego de ar falso sol cego murcho chato falso vazio.",
+                        "Túrgido inchar água botânica rija oca nula fraca limpa lenta cega.",
+                        "Sólido duro (comer bactéria ou pedregulho gordo grande de parasita) = Fago murcho mole baço.",
+                        "Esta é a alternativa correta fluida da invaginação macropinocítica aquosa hídrica solta livre e limpa de solução exata real."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Médio",
+                text: "No fim de um dia exaustivo de secreção de saliva gástrica muco e hormônios do fígado pâncreas ilhotas de pâncreas base limpo limpo cru do estômago puro suado nulo rico fraco calmo limpo seco cego e morno do do plasma do do soro rico murcho mole mole da da oca baça falsa cega da de sujo do corpo do ser cego raso calmo, o 'Complexo de Golgi' de Correios embala empacota embrulha arruma veda isola esconde arquiva protege junta ata isola a insulina de proteína enzima num balão vesícula membrana de óleo cego falso falso cego limpo sujo raso longo fino fino oco ralo mole morno podre doce lento calmo limpo frio do do sujo saco mole saco morto oco sujo lúgubre fofo gordo da célula interna e envia manda deita e empurra e esvazia lança descarta arremessa atira liberta esse material para O EXTERIOR RUA SANGUE VEIA fora da sua própria membrana parede plástica viva de base macia macia fina dura fina mole livre nua viva clara nula cega e da célula orgânica original nativa fina base crua doce fria clara plena fria murcha morna. Como se designa nomeia este tipo de CUSPE E EXPULSÃO TRANSPORTE CÉLULAR GASTO FORTE e MASSA de pacote bolha vesícula de óleo?",
+                options: ["Exocitose ('Exo' = atirar colocar jogar espirrar cuspir colocar deitar suar empurrar despejar exportar esvaziar libertar expulsar vazar mandar mandar enviar atirar deitar esvaziar espalhar secretar colocar para a RUA Exterior Limpo Livre e Cru Branco Seco Nu Vivo e Denso Frio Vazio Solto e Seco e Fora Livre de Fora e Livre Fora Ar Suave Fora Livre do Sangue e do Citosol Interno de Interior Oco e Cheio Gordo e Morno Quente Falso Morno Livre Cego Raso Falso Suado Grosso e Ralo Livre Nu Sujo Murcho Murcho Lento Morno Mudo Frio Lento Frio Oco Raso Cego Oco Ralo Falso Cego Mudo Frio Murcho Mole Baço Limpo Pálido Doce Suave). O Golgi balão bolsa liga à membrana grande mãe da porta muro portão porta e arrebenta a bolha porta porta e mistura membrana base e as hormonas ou as porcarias e o do lixo suco da célula de suco verde sujo cego murcho morto longo de pó de pó de pó cego oco vão à vida.", "Endocitose Pura Lisa e Suja Morta.", "Fagocitose Falsa Cega Cega Rala Fria Suja Grossa Lenta Murcha Murcha Murcha Murcha Lenta Morna Mudo.", "Osmose Botânica Ativa e Livre Cega do do Oco e Murcho."],
+                correct: 0,
+                explanation: {
+                    correct: "Exo = Fora! O 'Cuspe' da fábrica celular mestre. O lixo da digestão ou o tesouro da saliva e insulina de enzimas ricas que a célula fez lá dentro, é fechado numa saca do lixo de proteína e óleo e lipídio macio mole limpo ralo morno de base. A saca funde-se perfeitamente com a pele exterior grande limite plástica aveludada do mosaico fluido mole denso tenso cego, e puff!, a célula deita cospe empurra abre fresta da boca e descarta o conteúdo para a rua extracelular fluida de vida solta sem rasgar estragar e magoar e partir a pele original plástica original basal e matriz gorda da base do óleo límpido livre cego livre cego morto e calmo lento.",
+                    options: [
+                        "Esta é a alternativa correta brutal exócrina da exportação vesicular secreção celular ativa do Golgi matriz letal cega exata pura do 9 ano.",
+                        "Endo é ENGOLIR CHUPAR METAR ENFIAR TRAZER do exterior de fora de lá de fora de de lá para o colo e para o colo e bucho ventre escuro negro base nua cega da nua e pura e quente cega suada barriga interior, e não Cuspir e e Cuspir e Atirar.",
+                        "Fago é Endocitose (uma subsete, de sólido pedra).",
+                        "Osmose é água da água fria clara solta de poro de poro puro limpo baço mole e livre sujo raso falso cego murcho fofo solto podre lento calmo fresco sujo doce frio nulo morto chato oco fraco e falso longo e gordo de pó cego suado cego de baço mole nulo falso murcho."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Difícil",
+                text: "Resumo Epistemológico Celular Citológico Universal Absoluto Base da Teoria Científica Alfa Supremo Superior Cruel Duro Final Letal Terminal Exato Liso Frio Claro Puro Denso Intenso Pleno Fixa Sólida Pura Clara Limpa Fina de Topo Exato Base da Citologia e Microbiologia Geral da Biologia do Secundário Médio Curto Raso Médio Fixo. Seleciona a opção em que não há falhas nem mentiras em nenhuma das ligações de TRANSPORTE DE MEMBRANA CELULAR do Mosaico Cego de Vida Limpa Suada Cega Pura Cega e Nua Morna Doce Limpa Suada Seca Rala Fria Suave Murcha Murcha Lenta Morna Mole Doce Suave Branda Base Rasa Fraca Cega do Mudo Mudo Chato Oco do Fio Raso Raso Seco Baço Podre Podre Murcha Nula e Morta Oca Nula Murcha Oca do Fim Raso Frio Falso Ralo Baço Baço Vazio Baço Falso Cego Nulo Morto Fio Raso Raso Frio Limpo Puro Limpo Certa Limpa Pura Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?",
+                options: ["TRANSPORTE PASSIVO (Difusão Simples do Gás O2 Livre, Difusão Facilitada com Proteínas Portas Canais de Transportadoras Carrier e de Açúcar do Sangue Livre Cego Doce, e a Osmose do Rio Solvente Limpo Fluido Cristal Água da Água Viva Fria Fresca H20 de Bebida Hídrica Pura e Clara Nua Ligeira Cega Murcha) --> Todos A FAVOR A DESCER a Ladeira de Muito para Pouco Pouco Rico Fraco Raso Vazio --> Não Gasta um Tostão nem Tostão Tostão Bateria ATP da Célula Pobre Suja Nula Calma E Livre E Lenta Solta Viva e Pura Cega Gorda Seca Murcha Lenta Oca Mole Murcha Rasa Lenta Rasa Morta Suada Fria Baça Rasa Suja. // TRANSPORTE ATIVO (A Bomba Lixada Muscular Cardiaca Neural Gorda Mestre Cega Clara Seca Cega Plena Bruta do Atleta Neural Neurónio de Sódio e Potássio Suja) --> CONTRA a Ladeira do Sal Lúgubre Suado Cheio Mudo de Solto Cego Nu Feio Cego Morto Pálido de Muita Enchente -> Força Força Entrada Força e Puxa O Puxa a Puxa Empurra e Manda --> Gasta BATERIA ATP VIVA RICA DE QUEIMA FOGO CARO QUENTE CARO METABÓLICO ENERGÉTICO ALFA DE ROUBO DE MITOCONDRIA DE MITOCONDRIA DE MITOCONDRIA DO MOTOR ELÉTRICO ORGÂNICO FORTE. ", "O Osmose Gasta Açúcar Grosso E Forte Mudo Cego Do Sal Limpo Chato. ", "Difusão Simples usa a Proteína Maior Cara Cega Pura Branca Clara Seca e Suja do Açúcar Açúcar de Açúcar Sol e Ralo Mole e Lento Nu Nu Morno Calmo Morto Seco Feio Baço Gorda Gorda Mole e Oco Oco Fraco Nulo Raso Nu Fio Baço Murcho Murcho Lenta Murcha Morta Murcha Rasa Falsa.", "Endocitose Cuspe a Água Falsa Limpa e Exocitose de Proteína Cega Cega Rala Seca Morta e Cega Cega Rasa Oca Cega Fria Mole Lisa Vazia Murcha Morna Falsa Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte." ],
+                correct: 0,
+                explanation: {
+                    correct: "A tabela periódica da Fisiologia Osmótica de Transporte Plasmático de Alfa Biológico Imaculado! Passivo não gasta dinheiro de bateria da vida ATP, e as moléculas viajam sozinhas ao sabor do gradiente cego simples ou da proteina calmo livre. Ativo rema contra a corrente do mar cego morto rio cego mar calmo nulo cego raso falso rio suado fraco frio baço mole mole murcho murcho, exige o sacrifício e o pagamento tributo orgânico de um elétron trifosfato calórico quente genial basal e duro forte denso clássico celular do laboratório microscópico genial claro reta fina limpo seguro.",
+                    options: [
+                        "Esta é a alternativa correta biológica base exata da fisiologia celular fina limpa clara reta dura viva reta plena imaculada de escola geral médica laboratório forte.",
+                        "Osmose é do bloco passivo VIP de água isenta de conta cara livre gratuita no plano mestre orgânico calmo suave de nua fria nua fina e mole gorda calma falsa.",
+                        "Simples de oxigênio de fita fura os lipídios fofos nulos de gás soltos, sem bater na porta da alfândega proteica forte reta mestre base clara pura exata sólida final rica suada.",
+                        "Endo come de fora a dentada suja nula gorda de boca de dentro engole chupa deita vaza engole. Exo Exocitose liberta vomita despede atira deita vaza limpa para a chuva de suor branco livre fora de ar calmo solto e vago cego limpo suado calmo lento falso."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Médio",
+                text: "A conservação caseira e tradicional biológica rural antiga alimentar culinária gastronômica mundial clássica antiga clássica secular de Bacalhau ou a Carne-de-sol (Charque) recorre apenas a encher deitanto kilos e toneladas massivas cegas gigantes gordinhas rudes quentes brutas de SAL GROSSO de Mineral de Praia Branca Rasa de Mar de Rio de Fóssil Mineral Cego Pálido Duro Limpo Podre Limpo Limpo Clara Reta de Cloreto Seco de Seco Cego Mudo Pálido Mudo Nu Nu Morno Frio Oco Cego Sol de Salgadeira. Porque é que não há Fungos Bolores Podridão e Bactérias Infeciosas Pálidas e Gordinhas Suadas Vivas Quentes a crescer, proliferar multiplicar fazer estragos sujos e nojentos baços podres fétidos lentos e venenos e a estragarem apodrecerem destruírem esse presunto e esse peixe ao longo dos meses nas arrecadações cegas duras de pedra na quinta no sol livre ao vento liso raso nulo seco cego seco lento falso seco morno podre?",
+                options: ["O Sal chupa e retira toda a água humidade do Bacalhau Célula de Músculo Morto e Carne Peixe por meio da OSMOSE Desidratante de Murchar Exterminar de Lise Cega Rasa Morta Murcha Rasa de Lise Túrgida Cega. E se não bastasse de cruel, se uma Bactéria Monera Atrever a tentar e Aterrar de Pouso Pura Livre Fofa Suja e Pisar no Sal Groso Salgado Marinho Base Hipertónico Cru do Cristal da Posta Seca Densa Dura Cega, o exterior do Sal Puxa Puxa Suga Chupa Toda A Água Vida H20 do Citoplasma Vivo Gel da Célula Bactéria e Micróbio Sujo Cego Invasor Nulo Pálido Cru e Podre, provocando instantaneamente uma Plasmólise Crenação Fria Desidratação Mortífera Letal Crua da Invasora Fria Tensa, Murchando e Assassinado Matando o Fungo Patogénico Cego Mole Pálido Suado Doente Suado Gato Gato e Microbo Animal de Sede Crónica E Sede De Sede Aguda Mestre Oca Falsa Base Plena Direta Exata Seca Limpa Certa Lenta Baça e Fixa do Sal De Sal Do Deserto Cruel.", "O bacalhau apanha com cloro de mar frio.", "A carne fita faz imunidade vacinal forte fofa murcha do fungo com a Ténia gigante cega de Saginata livre solta quente murcha pálida falsa nua de pó e terra solta baça e murcha mole lenta de suja e fina falsa rala oca rala. ", "Bactérias e Vírus do peixe sujo limpo e fungo mofo mole ralo adoram amam comem de devorar e sorver beijar cego doce ralo mudo o sal puro mineral ralo base mole nua baça murcha rasa baça rasa nula e de lá fogem porque escorregam na banha limpa." ],
+                correct: 0,
+                explanation: {
+                    correct: "A Osmose aplicada às prateleiras do supermercado! Bactérias não bebem Coca-Cola de praia cega rústica rural murcha falsa fofa e gorda para refrescar matar a sede da de calor doce fina nua de base nula murcha rala pura fina terna limpa! Elas precisam de água líquida no citoplasma delas sujas cruas lisas. Num pedaço de bacalhau carregado salgado mineralizado cego puro forte cru (Meio Brutalmente Hipertónico), qualquer água de dentro da coitada da bactéria vai saltar em osmose por causa do difusão passiva livre para o sal tentar equilibrar a maré estragada da fronteira. A bactéria desidrata fétida nua murcha murcha chata, o seu vacúolo seca doente cru e citoplasma cola colapsa lúgubre, os seus ribossomas param limpos opacos do osso, as reações param param e ela morre de sede, por osmose. E o bacalhau dura 5 anos intacto rijo de pau livre na lenha de tasca.",
+                    options: [
+                        "Esta é a alternativa correta higiénica microbiológica da osmolaridade extrema e desidratação osmótica pericial técnica forense alimentar genial limpa pura viva clara direta firme reta plena do conservante clássico.",
+                        "Cloro de piscina rio desinfeta de químico, não de osmose mineral halófila inorgânica de mesa rústica.",
+                        "Vacinas de parasita intestinal animal bizarro lúgubre raso baço podre oco falso não tem qualquer fundamento orgânico fidedigno com reações plasmáticas hipertônicas rurais citológicas salinas de de peixe gordo limpo cru seco raso seco duro macio cego fofo sujo gordo oco raso mole lento calmo fresco sujo doce frio e calmo mudo.",
+                        "Microbiomas biológicos e vida orgânica natural evitam ambientes de salinidade extrema e cristalizada lúgubre rala cega suja fina fria (exceto halófilos raros raros do mar morto falso mudo calmo morto murcho vazio falso frio)."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Homeostase Aprovada!' : '❌ Ops! Lise Celular do Conceito e Colapso da Membrana Mestra Falsa Rasa Limpa e Terna e Mole:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>A Verdade Fluida da Membrana Plástica Alfa e Límpida Dura Base Pura Exata Genial Clara Limpa Cega Livre Lenta Oca:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#083344; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #A5F3FC; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Diagnóstico Bioquímico das Opções Líticas Erradas Ocas Murchas Cegas Finas Doces Calmas Mortas Ralas e Cegas Sujas Falsas e Podres e Nuas Frias Livres Lentas Baças Nulas Frias Lisas Suadas Ocas Doces Cegas Rasa Murcha Calma Murcha Mudo Lenta Mole Oca Fria Rala Cega Baça Rasa Falsa Doce Limpa Podre Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício Ciano, Violeta e Laranja
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#06B6D4', '#8B5CF6', '#EA580C', '#083344']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#06B6D4', '#8B5CF6', '#EA580C', '#083344']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Relatório Laboratorial Fisiológico Molecular Base Liso Direto de Osmose e Difusão Reta Clara Fina Doce Seca Nula Livre Mestra Rica Crua Limpa Base Plena Imaculada Fixa Direita do Exame";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar na Microscopia Proteica de Transporte Poro Canal Ion Liso Mestre Oco Vivo Seco";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Destruíste a entropia orgânica molecular falsa nula do lixo em ${correct} de ${questions.length} mitos solutos livres soltos e cegos da biologia de membranas plásticas oleosas de gordura livre.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Colapso Termodinâmico Citoplasmático e Lise Fatal do Raciocínio Osmótico!</strong> A tua alfândega seletiva intelectual vazou e abriu a fronteira do cérebro. Confundir difusão passiva com gasto ATP ou inverter o fluxo de concentração é uma ofensa grave imperdoável letal de biologia exata cirúrgica. Atingir 80% (24 acertos) é obrigatório nesta prova letal fria de bioquímica pura mestre genial. Reabilitação mental e terapêutica hídrica urgente: Lê a Teoria e repõe as bombas limpas e fofas lisas e retas finas fortes duras vivas claras e diretas puras sólidas imaculadas ricas certas densas exatas puras maciças lentas certas e cegas antes de repetires o Exame Eucarionte Alfa Limpo Real!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Reconstruir Permeabilidade Seletiva Intelectual Fina Doce Forte (Refazer)</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Fisiologista Citológico Fluido Mestre Perfeito e Genial Dominador do ATP e do Na+ de Ouro Alfa Imortal e Perene e Certo Forte Firme Densa Plena!</strong> Sabes exatamente quem entra, quem paga pedágio e quem bebe água da chuva da alface. A tua análise à maquinaria de transporte proteico celular viva pura doce calórica e calórica de membrana lipídica de mosaico está clínica perfeita exata forense absoluta direta limpa sólida blindada e implacável imaculada e genial brutal e brilhante. Estás pronto para dominar as leis cruas duras secas reais retas da biologia celular do universo universal mestre!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Inspecionar a Grelha Celular e o Citosol Fosfolipídico Novamente</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Forense das Anomalias Osmóticas (Falhas da Membrana de Bloqueio Mudo Cego Ralo Seco Morto Lento Mole Raso Sujo Raso Frio Mole Pálido Nu Vazio Morto Oco Baço Calmo Fofo Falso Suado Cego Murcho):</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">O teu Mito Osmótico Perigoso Lógico e Morto Inerte Nulo Cego e Raso Frouxo: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">A Verdade Termodinâmica Fisiológica Celular Fina Molecular Bruta Limpa Direta e Pura Absoluta Viva Quente Biológica Real Clara: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Ciclo da Ténia - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-ANATOMIA (Cobre & Vermelho Intestinal) */
+            --bg-color: #FFFBEB; /* Fundo Amarelo Ténia/Pálido */
+            --text-color: #451A03; /* Castanho muito escuro */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #FDE68A; /* Amarelo Mostarda Claro */
+            --theme-medium: #F59E0B; /* Âmbar */
+            --theme-dark: #B45309; /* Cobre Escuro */
+            --theme-contrast: #9F1239; /* Vermelho Carne/Intestino (Destaque) */
+            --theme-accent: #047857; /* Verde Saúde (Saneamento) */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#fde68a 1px, transparent 1px), linear-gradient(90deg, #fde68a 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #9F1239;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #92400E;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #FFF1F2; /* Rosa suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #4C0519;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #9F1239; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #FCA5A5; line-height: 1.5; color: #4C0519; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🥩</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">A Anatomia e o Ciclo da Ténia</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Escólex)">
+            </div>
+            <div id="no-results"><p>😕 Nenhum parasita encontrado com essa palavra.</p></div>
+
+            <!-- TÓPICO 1: A ANATOMIA DO MONSTRO -->
+            <div class="content-group">
+                <div class="section-badge">🪱 1. A Anatomia do Monstro</div>
+                <div class="theory-box search-target">
+                    <h3>O Platelminto Gigante</h3>
+                    <p>A Ténia (bicha-solitária) é um platelminto incrivelmente adaptado ao parasitismo. O seu corpo em forma de fita pode chegar aos 8 metros de comprimento dentro do intestino humano!</p>
+                    
+                    <div class="visual-area">
+                        <svg width="260" height="150" viewBox="0 0 260 150">
+                            <!-- Cabeça (Escólex) -->
+                            <circle cx="40" cy="50" r="15" fill="#9F1239" stroke="#000" stroke-width="2"/>
+                            <!-- Ventosas -->
+                            <circle cx="35" cy="45" r="4" fill="#F43F5E" stroke="#000"/>
+                            <circle cx="45" cy="45" r="4" fill="#F43F5E" stroke="#000"/>
+                            <circle cx="40" cy="55" r="4" fill="#F43F5E" stroke="#000"/>
+                            <!-- Ganchos (Rostelo) - T. solium -->
+                            <path d="M 35 35 Q 40 25 45 35" fill="none" stroke="#000" stroke-width="2"/>
+                            <line x1="38" y1="32" x2="38" y2="35" stroke="#000" stroke-width="2"/>
+                            <line x1="42" y1="32" x2="42" y2="35" stroke="#000" stroke-width="2"/>
+                            
+                            <!-- Colo (Pescoço) -->
+                            <rect x="35" y="65" width="10" height="15" fill="#BE123C" stroke="#000" stroke-width="2"/>
+                            
+                            <!-- Estrobilo (Corpo de Proglótides) -->
+                            <path d="M 40 80 Q 60 120 100 100 T 160 110 T 220 90" fill="none" stroke="#F43F5E" stroke-width="12" stroke-linecap="round"/>
+                            <!-- Segmentações -->
+                            <line x1="50" y1="88" x2="55" y2="100" stroke="#000"/>
+                            <line x1="70" y1="95" x2="75" y2="107" stroke="#000"/>
+                            <line x1="90" y1="94" x2="95" y2="106" stroke="#000"/>
+                            <line x1="120" y1="102" x2="125" y2="114" stroke="#000"/>
+                            <line x1="150" y1="105" x2="152" y2="117" stroke="#000"/>
+                            <line x1="180" y1="98" x2="182" y2="110" stroke="#000"/>
+                            <line x1="200" y1="92" x2="205" y2="102" stroke="#000"/>
+                            
+                            <!-- Labels -->
+                            <text x="40" y="15" text-anchor="middle" font-size="9" font-weight="bold" fill="#9F1239">Escólex</text>
+                            <text x="180" y="80" text-anchor="middle" font-size="9" font-weight="bold" fill="#B45309">Proglótides Grávidas</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Escólex (A "cabeça"):</strong> Tem o tamanho de uma cabeça de alfinete. Possui <em>ventosas</em> e, no caso da Ténia do porco, ganchos (rostelo) para se cravar na parede do teu intestino e não ser arrastada pelas fezes.</li>
+                        <li><strong>Proglótides (Os "anéis"):</strong> O corpo é feito de milhares de segmentos chamados proglótides. Cada anel é hermafrodita (tem órgãos masculinos e femininos). Os anéis do fim da cauda amadurecem, autofecundam-se, enchem-se de ovos e desprendem-se para sair nas fezes.</li>
+                        <li><strong>Sem sistema digestivo:</strong> Ela não tem boca nem estômago. Como tu já digeriste a tua comida (no intestino delgado), ela atua como uma esponja, absorvendo os nutrientes diretamente através da pele dela.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: TENÍASE -->
+            <div class="content-group">
+                <div class="section-badge">🍽️ 2. Teníase (O Inquilino Gigante)</div>
+                <div class="theory-box search-target">
+                    <h3>Como ganhas um monstro na barriga?</h3>
+                    <p>A Teníase ocorre quando o <strong>verme ADULTO</strong> vive dentro do teu intestino. Nesta doença, tu ages como o <strong>Hospedeiro Definitivo</strong>.</p>
+                    
+                    <div class="visual-area" style="background:#FEF2F2; border-color:#9F1239;">
+                        <ol style="padding-left: 15px; margin: 0; display:flex; flex-direction:column; gap:10px; font-size:0.9rem; color:#4C0519;">
+                            <li><strong>O Porco/Vaca come o Ovo:</strong> O animal ingere ovos de ténia espalhados num pasto contaminado por fezes humanas. O animal é o <em>Hospedeiro Intermediário</em>.</li>
+                            <li><strong>O Ovo choca no animal:</strong> A larva nasce, perfura o intestino do porco, viaja pelo sangue e aloja-se no músculo (carne) do animal, formando uma bolhinha branca chamada <strong>Cisticerco</strong> (popularmente "canjiquinha").</li>
+                            <li><strong>TU COMES A CARNE:</strong> Se tu comeres aquele bife de porco ou vaca <strong>CRU ou mal passado</strong>, a larva sobrevive.</li>
+                            <li><strong>O verme acorda:</strong> A larva chega ao teu intestino, o escólex sai da bolha, prende-se e começa a crescer até aos 8 metros.</li>
+                        </ol>
+                    </div>
+
+                    <div class="highlight-box">
+                        <strong>Prevenção da Teníase:</strong> Cozinhar, assar ou fritar muito bem as carnes bovinas e suínas (o calor mata o cisticerco). Além disso, a inspeção rigorosa das carnes nos matadouros é essencial.
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: CISTICERCOSE -->
+            <div class="content-group">
+                <div class="section-badge">🧠 3. Cisticercose (A Invasão Enganosa)</div>
+                <div class="theory-box search-target">
+                    <h3>O Erro Fatal: Tu viras o Porco!</h3>
+                    <p>Esta é a rasteira clássica! A Cisticercose <strong>NÃO se apanha por comer carne!</strong> Apanha-se exatamente pelo mesmo processo que o porco apanha.</p>
+                    
+                    <div class="visual-area" style="background:#FFFBEB; border-color:#B45309;">
+                        <ul style="padding-left: 15px; margin: 0; display:flex; flex-direction:column; gap:10px; font-size:0.9rem; color:#78350F;">
+                            <li><strong>O Contágio:</strong> Tu bebes <strong>ÁGUA</strong> ou comes <strong>SALADAS/FRUTA crua</strong> mal lavadas que estão contaminadas com fezes humanas contendo os <strong>OVOS</strong> da <em>Taenia solium</em>.</li>
+                            <li><strong>O Hospedeiro Acidental:</strong> Como engoliste o ovo (e não a larva na carne), tu assumiste acidentalmente o papel de <em>Hospedeiro Intermediário</em>.</li>
+                            <li><strong>A Tragédia Clínica:</strong> O ovo choca no teu estômago. A larva perfura o teu intestino, entra na corrente sanguínea e perde-se no teu corpo. Em vez de ir para o músculo de um porco, ela aloja-se frequentemente no teu <strong>CÉREBRO (Neurocisticercose)</strong> ou nos teus olhos.</li>
+                            <li>A larva calcifica no cérebro, causando inflamação severa, dores de cabeça agonizantes, convulsões epiléticas e, muitas vezes, a morte.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: SOLIUM VS SAGINATA -->
+            <div class="content-group">
+                <div class="section-badge">⚖️ 4. Solium vs Saginata</div>
+                <div class="theory-box search-target">
+                    <h3>Diferenças Anatómicas e de Risco</h3>
+                    <p>Existem duas espécies principais que parasitam o ser humano. É imperativo não as confundir:</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding:0; background:transparent; border:none;">
+                        <!-- SOLIUM -->
+                        <div style="background:white; border:2px solid #9F1239; padding:15px; border-radius:8px;">
+                            <h4 style="color:#9F1239; text-align:center; font-size:1.1rem; margin-bottom:10px;">Taenia solium</h4>
+                            <ul style="font-size:0.85rem; padding-left:15px; line-height:1.5;">
+                                <li>Hospedeiro Intermediário: <strong>Porco</strong>.</li>
+                                <li>Escólex com <strong>Ventosas E Ganchos</strong> (Rostelo), como uma coroa de espinhos. É muito mais agressiva a prender-se.</li>
+                                <li>É a ÚNICA das duas cujos ovos causam a terrível <strong>Cisticercose humana</strong> se ingeridos.</li>
+                            </ul>
+                        </div>
+                        <!-- SAGINATA -->
+                        <div style="background:white; border:2px solid #B45309; padding:15px; border-radius:8px;">
+                            <h4 style="color:#B45309; text-align:center; font-size:1.1rem; margin-bottom:10px;">Taenia saginata</h4>
+                            <ul style="font-size:0.85rem; padding-left:15px; line-height:1.5;">
+                                <li>Hospedeiro Intermediário: <strong>Boi/Vaca</strong>.</li>
+                                <li>Escólex <strong>Apenas com Ventosas</strong> (inerme), sem ganchos.</li>
+                                <li>Geralmente é maior (mais comprida).</li>
+                                <li>Os seus ovos NÃO causam cisticercose em humanos (o corpo humano destrói-os no estômago antes de chocarem).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar Diagnóstico Clínico (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">Microbiologia Forense</h2>
+                <p style="color: #92400E; font-size: 0.95rem; font-weight:600;">
+                    30 questões focadas no ciclo anatómico da Ténia. Acerta <strong>80% (24/30)</strong> para provares que não cais na armadilha da carne e da salada. Lê a correção após cada tentativa!
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Relatório Laboratorial</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS RIGOROSOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Anatomia da Ténia (1-6)
+            {
+                id: 1, level: "Fácil",
+                text: "A que filo zoológico pertence a Ténia (bicha-solitária)?",
+                options: ["Nematelmintos (Vermes cilíndricos).", "Anelídeos (Vermes segmentados em anéis verdadeiros).", "Artrópodes (Animais com exoesqueleto).", "Platelmintos (Vermes de corpo achatado em forma de fita)."],
+                correct: 3,
+                explanation: {
+                    correct: "A Ténia é o exemplo mais famoso dos Platelmintos (Platy = chato). O seu corpo espalmado maximiza a área de absorção de nutrientes no intestino humano.",
+                    options: [
+                        "Nematelmintos são tubulares (ex: Lombriga).",
+                        "Anelídeos são as minhocas.",
+                        "Artrópodes são insetos, aranhas e crustáceos.",
+                        "Esta é a alternativa correta."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Médio",
+                text: "O corpo de uma Ténia adulta divide-se em três partes principais. Como se chama a 'cabeça' da Ténia, responsável por se fixar à parede do intestino humano?",
+                options: ["Proglótide", "Cisticerco", "Escólex", "Hospedeiro"],
+                correct: 2,
+                explanation: {
+                    correct: "O Escólex é minúsculo (do tamanho da cabeça de um alfinete), mas é a âncora do parasita. Ele possui ventosas de sucção para não ser arrastado pelas contrações intestinais e fezes.",
+                    options: [
+                        "Proglótides são os anéis do corpo.",
+                        "Cisticerco é o nome da larva (vesícula) que vive na carne do porco/boi.",
+                        "Esta é a alternativa correta.",
+                        "Hospedeiro é o animal onde ela vive."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Fácil",
+                text: "Uma característica anatómica fascinante da Ténia adulta é a ausência total de um sistema vital. Qual sistema lhe falta por completo?",
+                options: ["Sistema Nervoso", "Sistema Reprodutor", "Sistema Digestivo (Boca e Estômago)", "Sistema Excretor"],
+                correct: 2,
+                explanation: {
+                    correct: "A evolução favoreceu a preguiça absoluta! Ela vive mergulhada num oceano de comida já digerida pelo estômago do ser humano. Ela não precisa de mastigar nem digerir nada, apenas absorve a sopa nutricional através da sua própria pele (tegumento).",
+                    options: [
+                        "Ela possui um sistema nervoso ganglionar simples no escólex.",
+                        "O sistema reprodutor dela é imenso (hermafrodita).",
+                        "Esta é a alternativa correta.",
+                        "Ela possui células-flama para excreção básica."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Médio",
+                text: "O corpo da Ténia é formado por uma fita de milhares de segmentos repetidos, que crescem a partir do 'pescoço'. Como se chamam estes segmentos que, na cauda do animal, se enchem de ovos maduros?",
+                options: ["Cistos", "Miracídios", "Proglótides", "Escólices"],
+                correct: 2,
+                explanation: {
+                    correct: "As proglótides vão empurrando umas às outras. As que estão na ponta final da fita são as mais velhas. Elas já se autofecundaram, transformando-se num 'saco' cheio de milhares de ovos prontos a sair nas fezes humanas.",
+                    options: [
+                        "Cistos são larvas encapsuladas.",
+                        "Miracídios são larvas aquáticas do Esquistossoma.",
+                        "Esta é a alternativa correta.",
+                        "Escólex é a cabeça (só há uma)."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Fácil",
+                text: "Porque é que a Ténia é vulgarmente conhecida como a 'bicha-solitária'?",
+                options: ["Porque ela vive em pântanos escuros e isolados sem ver a luz do sol.", "Porque normalmente, devido ao seu tamanho gigantesco e competição por nutrientes, apenas se desenvolve UM indivíduo adulto no intestino do hospedeiro humano.", "Porque ela recusa-se a reproduzir.", "Porque ela entra no cérebro da pessoa e apaga-lhe as memórias sociais."],
+                correct: 1,
+                explanation: {
+                    correct: "Um único verme pode atingir 5 a 8 metros de comprimento, preenchendo quase todo o espaço disponível no intestino delgado. O primeiro a instalar-se costuma inibir a fixação de outros rivais.",
+                    options: [
+                        "Vive no intestino humano, não em pântanos.",
+                        "Esta é a alternativa correta.",
+                        "Reproduz-se freneticamente (autofecundação hermafrodita).",
+                        "Isso é fantasia de neurocisticercose, não o motivo do nome 'solitária'."
+                    ]
+                }
+            },
+            {
+                id: 6, level: "Médio",
+                text: "A Ténia adulta é hermafrodita. Como se processa a fecundação numa Ténia que vive sozinha no intestino de um ser humano?",
+                options: ["Ela não se reproduz até encontrar um parceiro.", "Ela reproduz-se assexuadamente por fragmentação (os pedaços cortados geram novas ténias na barriga).", "Ocorre a autofecundação: uma proglótide dobra-se e fecunda outra proglótide do mesmo animal (ou os próprios órgãos sexuais cruzam na mesma proglótide).", "Ela rouba o DNA das células humanas."],
+                correct: 2,
+                explanation: {
+                    correct: "Sendo solitária, a evolução não a deixou dependente de um encontro romântico no intestino. Ela produz os seus próprios gâmetas masculinos e femininos e fecunda-se a si mesma, garantindo a produção de ovos.",
+                    options: [
+                        "Ela reproduz-se sozinha (autofecundação sexuada).",
+                        "Ela liberta ovos, a fita cortada é expulsa nas fezes e morre.",
+                        "Esta é a alternativa correta.",
+                        "Falso, ela usa o seu próprio material genético."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Solium vs Saginata (7-11)
+            {
+                id: 7, level: "Fácil",
+                text: "Existem duas espécies principais de Ténia que afetam os seres humanos. Qual é o hospedeiro intermediário da 'Taenia saginata'?",
+                options: ["O Porco.", "O Cão.", "O Gado Bovino (Boi/Vaca).", "O Peixe."],
+                correct: 2,
+                explanation: {
+                    correct: "A Saginata é transmitida pela carne de vaca contaminada. Podes decorar: o 's' de Saginata não é do porco (que é Solium).",
+                    options: [
+                        "Hospedeiro da T. solium.",
+                        "Não participa no ciclo clássico.",
+                        "Esta é a alternativa correta.",
+                        "Hospedeiro do Diphyllobothrium latum."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Médio",
+                text: "Anatômicamente, a 'Taenia solium' (ténia do porco) é considerada mais agressiva na sua fixação à parede intestinal. Que estrutura exclusiva o escólex da T. solium possui que a T. saginata NÃO possui?",
+                options: ["A T. solium possui ventosas de sucção.", "A T. solium possui uma coroa de ganchos quitinosos (Rostelo).", "A T. solium possui pequenos dentes venenosos.", "A T. solium possui uma cauda afiada."],
+                correct: 1,
+                explanation: {
+                    correct: "A T. solium é armada! Tem 4 ventosas E uma coroa de ganchos (rostelo) para se cravar profundamente na mucosa intestinal. A saginata é inerme (só tem as ventosas).",
+                    options: [
+                        "Ambas possuem ventosas.",
+                        "Esta é a alternativa correta.",
+                        "Não têm dentes (são acelomados simples).",
+                        "Não têm cauda afiada."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Difícil",
+                text: "Qual das duas espécies de Ténia é responsável por causar a Cisticercose no Ser Humano, e porquê?",
+                options: ["Ambas causam Cisticercose com a mesma probabilidade.", "A Taenia saginata, porque o boi é maior que o porco.", "A Taenia solium. Os ovos da saginata não conseguem sobreviver e eclodir no estômago humano para invadir a corrente sanguínea.", "A Taenia solium, porque o vírus do porco é mais agressivo."],
+                correct: 2,
+                explanation: {
+                    correct: "Apenas a T. solium consegue usar o Homem como Hospedeiro Intermediário acidental. Se engolires ovos da saginata, o ácido do estômago costuma destruí-los. Se engolires ovos da solium, a larva nasce e vai para o teu cérebro.",
+                    options: [
+                        "Falso, a solium é a verdadeira ameaça.",
+                        "O tamanho do hospedeiro animal original não dita a bioquímica do ovo.",
+                        "Esta é a alternativa correta.",
+                        "Ténia é um animal (platelminto), não é um vírus."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Médio",
+                text: "No ciclo de ambas as ténias (solium e saginata), qual é invariavelmente o papel assumido pelo Ser Humano quando ele desenvolve a doença TENÍASE?",
+                options: ["Vetor Acidental.", "Hospedeiro Intermediário.", "Hospedeiro Definitivo.", "Hospedeiro Paraténico."],
+                correct: 2,
+                explanation: {
+                    correct: "Teníase = verme adulto na barriga = reprodução sexuada. Sempre que o parasita faz reprodução sexuada no teu corpo, és o Hospedeiro Definitivo. Nós somos o destino final evolutivo do parasita.",
+                    options: [
+                        "Nós não o transportamos ativamente sem ser afetados.",
+                        "Seríamos hospedeiro intermediário na Cisticercose.",
+                        "Esta é a alternativa correta.",
+                        "Isso é um hospedeiro de transporte temporário (ex: rato para gato)."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Fácil",
+                text: "Quando a carne do porco ou vaca contém as pequenas larvas (cisticercos) em repouso no meio das fibras musculares, como é que essa carne contaminada é conhecida popularmente nos matadouros e meios rurais?",
+                options: ["Carne de canjiquinha (ou pipoca).", "Carne furada.", "Carne de sangue podre.", "Carne de mosca."],
+                correct: 0,
+                explanation: {
+                    correct: "Os cisticercos parecem pequenos grãos de canjica ou arroz branco presos na carne. Esta inspeção visual é a primeira defesa num talho higiénico.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "O verme não faz túneis grandes visíveis a olho nu desta forma no abate.",
+                        "O sangue não altera de cor.",
+                        "Moscas põem ovos de onde saem larvas moscardas, não cisticercos."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Teníase (Contágio e Prevenção) (12-16)
+            {
+                id: 12, level: "Fácil",
+                text: "Como é que uma pessoa adquire a doença TENÍASE?",
+                options: ["Bebendo água suja num rio.", "Comendo saladas mal lavadas com fezes de cão.", "Ingerindo CARNE CRUA ou MAL PASSADA (de boi ou porco) que contenha larvas vivas (cisticercos).", "Apanhando sol excessivo sem protetor."],
+                correct: 2,
+                explanation: {
+                    correct: "Este é o ponto fundamental! Teníase = Comer Carne com Larva. Ao comeres o bife mal passado, a larva sobrevive ao estômago, desce para o intestino e cresce até virar a 'fita' adulta gigante.",
+                    options: [
+                        "Isso pode causar cólera ou cisticercose (se a água tiver ovos de ténia solium).",
+                        "Isso pode causar problemas bacterianos.",
+                        "Esta é a alternativa correta.",
+                        "Raios solares não transmitem parasitas."
+                    ]
+                }
+            },
+            {
+                id: 13, level: "Médio",
+                text: "O que acontece à larva (cisticerco) no instante em que chega ao intestino delgado da pessoa que a ingeriu?",
+                options: ["Ela é digerida e morre devido à bílis.", "Ela desenvagina-se (o escólex sai para fora da bolha), prende as ventosas na parede do intestino e começa a desenvolver as proglótides.", "Ela migra para o sangue e vai para os pulmões tossir.", "Ela fura a barriga e sai pelo umbigo."],
+                correct: 1,
+                explanation: {
+                    correct: "A cápsula da larva é ativada pelos sucos gástricos. Como um transformer, a cabecinha do parasita sai do esconderijo, agarra-se com os ganchos/ventosas ao intestino e inicia o seu crescimento colossal.",
+                    options: [
+                        "Ela é resistente à bílis.",
+                        "Esta é a alternativa correta.",
+                        "A migração sanguínea ocorre na Cisticercose (estágio da larva a procurar músculo/cérebro), não aqui.",
+                        "A ténia fica presa no intestino para se alimentar."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Fácil",
+                text: "Quais são as principais medidas profiláticas (prevenção) para evitar que o ser humano contraia a TENÍASE?",
+                options: ["Usar máscara no campo e matar os cães vadios.", "Ferver a água da torneira por 5 minutos.", "Fiscalização sanitária rigorosa nos matadouros de carne bovina/suína e COZINHAR ou assar muito bem as carnes antes de as consumir.", "Aplicar creme antibiótico na pele."],
+                correct: 2,
+                explanation: {
+                    correct: "O calor intenso do fogão, forno ou fritadeira mata a larva cisticerco que estava na carne. Bife bem passado é bife seguro! Se o matadouro carimbar a carne como limpa, a segurança é dupla.",
+                    options: [
+                        "Não há transmissão aérea nem relação com canídeos.",
+                        "Isto previne doenças veiculadas pela água (cisticercose), não a infeção pela carne.",
+                        "Esta é a alternativa correta.",
+                        "A doença é alimentar (ingerida), pomadas na pele são inúteis."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Médio",
+                text: "Um paciente com Teníase nota que estão a sair pequenos 'pedaços brancos móveis' misturados nas suas fezes. O que são esses pedaços e qual a sua função biológica?",
+                options: ["São pedaços do seu próprio intestino destruído.", "São filhotes de ténia (pequenos vermes novos) que nasceram na barriga.", "São as Proglótides Grávidas: anéis terminais do corpo da ténia adulta que se destacaram, estando cheios de milhares de ovos prontos a contaminar o ambiente.", "São bactérias coaguladas."],
+                correct: 2,
+                explanation: {
+                    correct: "É assim que o parasita espalha os seus ovos! Os anéis mais velhos (cauda) rebentam de ovos e soltam-se da fita. Eles podem até mover-se sozinhos fora do corpo para se afastarem das fezes e prenderem-se na relva que o boi/porco vai comer.",
+                    options: [
+                        "Sintoma falso e assustadoramente anatómico.",
+                        "A Ténia não dá à luz vermes bebés no intestino, ela expulsa ovos na proglótide.",
+                        "Esta é a alternativa correta.",
+                        "Bactérias são microscópicas, não formam blocos móveis visíveis a olho nu desta forma."
+                    ]
+                }
+            },
+            {
+                id: 16, level: "Fácil",
+                text: "Como é feito o tratamento convencional e eficiente contra a Teníase num paciente hospitalar?",
+                options: ["Através de cirurgia para abrir a barriga e puxar o verme.", "Com administração oral de fármacos anti-helmínticos (desparasitantes/vermífugos como o praziquantel), que paralisam ou matam o verme para que ele seja excretado nas fezes.", "Tomando um chá forte de limão em jejum por 3 meses.", "Aplicando a vacina contra a ténia no braço."],
+                correct: 1,
+                explanation: {
+                    correct: "Os medicamentos modernos (vermífugos) são altamente eficazes. O químico dissolve o tegumento do verme ou bloqueia os seus músculos, fazendo-o largar a parede intestinal e sair morto na sanita.",
+                    options: [
+                        "Cirurgia é para casos de obstrução severa ou neurocisticercose, não para a ténia adulta num intestino permeável comum.",
+                        "Esta é a alternativa correta.",
+                        "Mitos rurais sem validação clínica.",
+                        "Não há vacina preventiva comercial em humanos para platelmintos."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Cisticercose (A Invasão Fatal) (17-24)
+            {
+                id: 17, level: "Difícil",
+                text: "O momento da verdade biológica! Para uma pessoa desenvolver CISTICERCOSE (ter as larvas alojadas nos músculos ou cérebro), o que é que ela tem de ingerir acidentalmente?",
+                options: ["Carne de porco crua infestada de cisticercos.", "Sangue bovino.", "Apenas água da chuva fria.", "Água ou alimentos crus (como alface) contaminados com OVOS de Taenia solium oriundos de FEZES HUMANAS."],
+                correct: 3,
+                explanation: {
+                    correct: "É essencial que decores isto: Cisticercose = OVO. Comer carne com larva causa Teníase (verme adulto). Comer salada com fezes humanas cheias de Ovos causa Cisticercose. O humano toma acidentalmente o lugar evolutivo do porco.",
+                    options: [
+                        "Isto causa TENÍASE.",
+                        "Falso.",
+                        "A chuva em si é limpa, a água subterrânea suja de esgoto é que é perigosa.",
+                        "Esta é a alternativa correta."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Difícil",
+                text: "Na Cisticercose, quando a pessoa ingere o ovo da Taenia solium, o que ocorre no seu corpo imediatamente após o ovo chegar ao estômago?",
+                options: ["O ovo choca, e cresce uma fita de 8 metros ali mesmo no estômago.", "O ovo choca libertando o embrião (oncosfera), que fura a parede intestinal, entra na corrente sanguínea e viaja espalhando-se pelo corpo para se alojar nos músculos, olhos ou cérebro, onde vira uma larva (cisticerco).", "O ovo morre no ácido gástrico na totalidade das vezes sem falha.", "O ovo choca e a larva fura os pulmões provocando tosse."],
+                correct: 1,
+                explanation: {
+                    correct: "Como o humano atuou como hospedeiro intermediário acidental, a biologia da larva dita que ela tem de procurar músculo (para ficar lá a dormir à espera que um predador te coma). Na sua jornada pelo sangue, ela pode acabar no teu cérebro.",
+                    options: [
+                        "Isso é Teníase, e só cresce fita a partir da ingestão da larva, não do ovo.",
+                        "Esta é a alternativa correta.",
+                        "A cápsula do ovo de Taenia solium resiste ao pH ácido.",
+                        "Esse ciclo pulmonar complexo (Ciclo de Loss) é a Lombriga (Ascaris), não a Ténia."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Médio",
+                text: "A forma mais grave de Cisticercose humana dá-se quando as larvas chegam e se instalam no Sistema Nervoso Central. Que nome tem essa condição clínica letal?",
+                options: ["Oftalmocisticercose", "Meningite viral aguda", "Neurocisticercose", "Encefalopatia espongiforme bovina"],
+                correct: 2,
+                explanation: {
+                    correct: "Neuro = Nervo/Cérebro. Os cistos formam calcificações no cérebro do doente. Isto gera pressão intracraniana, dores de cabeça horríveis, convulsões epiléticas severas e pode levar ao coma.",
+                    options: [
+                        "Isso é quando a larva vai para os Olhos (causa cegueira).",
+                        "É viral, não tem a ver com vermes.",
+                        "Esta é a alternativa correta.",
+                        "Isso é a 'doença das vacas loucas' (causada por priões proteicos)."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Médio",
+                text: "Como é diagnosticada geralmente uma Neurocisticercose assintomática inicial ou uma fase calcificada cerebral crónica num hospital avançado?",
+                options: ["Apenas com um exame de fezes (onde saem anéis de ténia).", "Através de exames de imagem como Tomografia Computorizada (TC) ou Ressonância Magnética do crânio, que mostram pontos brancos calcificados no cérebro.", "Soprando para um tubo de análise respiratória.", "O médico olha para a cor amarela da pele do paciente."],
+                correct: 1,
+                explanation: {
+                    correct: "Como a larva está escondida no cérebro, ela não sai nas fezes! O exame de fezes seria negativo. É preciso usar scanners radiológicos potentes para 'ver' os cistos brancos espalhados na massa encefálica.",
+                    options: [
+                        "O doente com cisticercose pode NÃO ter a ténia adulta no intestino, logo o exame de fezes falha o diagnóstico cerebral.",
+                        "Esta é a alternativa correta.",
+                        "Exame para bactérias ou asma.",
+                        "Sintoma hepático (Icterícia/Amarelão), não neurológico primário."
+                    ]
+                }
+            },
+            {
+                id: 21, level: "Difícil",
+                text: "Uma pessoa que SOFRE de Teníase (tem a Ténia adulta de Taenia solium no intestino) é um enorme perigo para a sua própria vida se não tiver boa higiene após ir à casa de banho. Porquê?",
+                options: ["Porque o verme adulto pode sair pelo ânus e morder-lhe a perna.", "Autoinfeção: Se a pessoa não lavar as mãos após defecar (ficando com ovos nas unhas) e tocar na sua boca/comida, ela própria vai ENGOLIR os ovos da sua ténia, gerando uma Cisticercose secundária fatal no seu próprio corpo.", "Porque a Ténia vai furar o umbigo de fora para dentro.", "Porque as fezes da ténia atraem predadores para a casa."],
+                correct: 1,
+                explanation: {
+                    correct: "A autoinfeção feco-oral é trágica. Tu albergas o verme, libertas os ovos nas fezes, sujas as mãos com eles, e tu próprio os engoles de volta no jantar. O que era uma doença intestinal incómoda passa a ser uma doença neurológica letal.",
+                    options: [
+                        "O verme adulto não sai e ataca membros inferiores.",
+                        "Esta é a alternativa correta.",
+                        "Falso.",
+                        "Sem lógica epidemiológica moderna."
+                    ]
+                }
+            },
+            {
+                id: 22, level: "Fácil",
+                text: "Se a Cisticercose humana é apanhada ao ingerir Ovos de Ténia presentes em alimentos regados com água de esgoto fecal humano, qual é a principal medida de Saúde Pública para a evitar a longo prazo?",
+                options: ["Dar botas de borracha grossa à população para os ovos não furarem os pés na lama da rua.", "Apenas ferver a carne da vaca na panela.", "Instalação de Saneamento Básico (esgotos e tratamento de águas), para que as fezes de doentes não cheguem nunca aos rios nem reguem as hortas locais de saladas.", "Comprar cães de guarda grandes."],
+                correct: 2,
+                explanation: {
+                    correct: "O ciclo fecal-oral corta-se isolando as fezes! Sem esgoto a céu aberto, as saladas são regadas com água limpa, e os ovos da Ténia solium nunca chegarão à mesa e à boca das populações rurais.",
+                    options: [
+                        "Os ovos de Ténia entram pela boca, não furam a pele dos pés (isso é o Amarelão/Ancylostoma).",
+                        "Isso previne Teníase (e saginata não dá cisticercose grave), não resolve a cisticercose da salada.",
+                        "Esta é a alternativa correta.",
+                        "Sem relação profilática sanitária."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Médio",
+                text: "O que explica o facto de o Porco contrair Cisticercose no ciclo rural da vida real?",
+                options: ["O porco nasce com cisticercos genéticos transmitidos pela mãe no leite.", "O porco come outros porcos mortos.", "Os porcos, criados soltos (sem pocilga fechada) em locais sem sanitas, tendem a fuçar e alimentar-se de matéria no solo, ingerindo acidentalmente ou propositadamente fezes humanas contaminadas com as proglótides da Ténia.", "O porco respira o ar contaminado da chaminé da quinta próxima do matadouro local."],
+                correct: 2,
+                explanation: {
+                    correct: "Os porcos são animais onívoros que chafurdam muito a terra. Em zonas rurais pobres de antigamente, as pessoas defecavam no mato. O porco ia atrás comer as fezes e engolia milhares de ovos de uma vez, enchendo a sua carne de larvas.",
+                    options: [
+                        "A doença é adquirida no ambiente, não congênita no leite.",
+                        "Podem comer carcaças, mas o foco primário inicial dos ovos é o dejeto humano maduro cheio de embriões puros.",
+                        "Esta é a alternativa correta.",
+                        "Não há contágio aéreo alveolar pulmonar."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Médio",
+                text: "Verdadeiro ou Falso: Um boi pastando no campo verde e limpo num país nórdico desenvolvido pode apanhar facilmente Cisticercose Bovina se chover muito na semana anterior à primavera.",
+                options: ["Verdadeiro, o excesso hídrico gera ovos espontaneamente de geração mágica rápida espontânea e letal.", "Falso, os bovinos apenas adquirem as larvas nos músculos se engolirem pasto ou água contaminados COM OVOS de T. saginata originários de FEZES de um ser Humano infetado nas redondezas rurais do campo e rio.", "Verdadeiro, o pasto europeu é imune à secagem UV forte.", "Falso, porque o boi atua como hospedeiro definitivo final puro adulto no rúmen gástrico."],
+                correct: 1,
+                explanation: {
+                    correct: "A chuva sozinha não cria vida! Para a vaca adoecer, um pastor (ou um esgoto mal tratado que poluiu o rio de rega) teve de deitar fezes com ovos da sua Ténia Saginata na relva onde a vaca pasta.",
+                    options: [
+                        "Geração espontânea (abiogênese) foi refutada no sec. XIX. Cistos requerem ovas parentais adultas.",
+                        "Esta é a alternativa correta microbiológica rigorosa estrita forense da epidemiologia animal veterinária comum geral.",
+                        "Falso.",
+                        "O bovino aloja a LARVA (Hospedeiro Intermediário), não o verme adulto final gordo gigante maduro reprodutor ovíparo pleno."
+                    ]
+                }
+            },
+
+            // BLOCO 5: Raciocínio Clínico Integrado Final Cruel (25-30)
+            {
+                id: 25, level: "Difícil",
+                text: "Cenário Clínico: O Sr. José bebeu água de um poço sujo contaminado com ovos de T. solium no interior do estado. Passados 3 anos, o Sr. José comerá um bife cru de uma vitela saudável de raça pura criada em estufa isolada rigorosa estéril controlada. O Sr. José irá desenvolver a doença Téniase (verme solitário no intestino)?",
+                options: ["Sim, porque ele engoliu água com os ovos de Taenia solium 3 anos antes e o ovo vira fita no estômago seco cru frio mudo morto baço liso calmo da serra limpa solta pura da vaca cega dura fria da aldeia gorda livre gasta.", "Não, porque a água fria dissolve a doença no ato.", "Sim, o bife limpo vai ativar os ovos velhos puros gástricos doentes cegos rudes e gordos longos fofos tenros puros velozes limpos duros rijos.", "NÃO. Os ovos que ele bebeu na água deram-lhe CISTICERCOSE (as larvas estão alojadas algures no cérebro ou músculo dele). Como o bife que ele comeu anos depois estava perfeitamente limpo de larvas e saudável, nenhum verme adulto (Teníase) nascerá no seu intestino delgado."],
+                correct: 3,
+                explanation: {
+                    correct: "Lógica perfeita de isolamento de variáveis! Beber ovos dá Cisticercose (ele pode estar gravemente doente do cérebro). MAS, para ter o verme adulto (Teníase), ele TEM DE COMER A CARNE COM LARVA. Como a vitela estava saudável e estéril, não havia larva para ele comer. Ele não tem Teníase.",
+                    options: [
+                        "Ovo engolido vira larva errante no humano (cisticercose), NÃO vira ténia adulta gorda fita.",
+                        "Água fria pura não anula ovos taenideos rústicos protegidos grossos quentes soltos falsos ocos finos vagos fracos moles lentos.",
+                        "Absurdo.",
+                        "Esta é a alternativa correta clínica analítica rigorosa dura letal brilhante fria da medicina parasitológica tropical exata fina e lógica perfeita."
+                    ]
+                }
+            },
+            {
+                id: 26, level: "Difícil",
+                text: "No tratamento da Neurocisticercose, muitas vezes o uso imediato de anti-helmínticos potentes que destroem os cistos no cérebro de uma vez não é a primeira opção, gerando antes a necessidade de fortes esteroides anti-inflamatórios ou cirurgia local da zona afetada cega e inflamada em redor. Porquê?",
+                options: ["Porque os vermes ganham vida com medicamentos anti-inflamatórios e fogem rastejantes e soltos da orelha vazia nua do utente.", "A morte maciça e súbita de dezenas de larvas calcificadas grandes no cérebro libertaria uma quantidade violenta brutal e súbita de antigénios e toxinas mortas, gerando uma inflamação imunitária cerebral edema fatal que mataria o doente em horas cruas agonizantes duras e brutas.", "Porque os cistos no cérebro são na verdade bactérias virais de febre da malária solta amarela e limpa clara e branda.", "Porque o cirurgião tem de remover a Ténia adulta de 5 metros puxando a cabeça pelo crânio e testa do hospedeiro dormente mole liso."],
+                correct: 1,
+                explanation: {
+                    correct: "Matar os invasores no cérebro é muito delicado. Se o remédio desfizer a 'carapaça' dos 50 cistos espalhados pelo cérebro, a matéria biológica 'podre' derramada lá dentro criará uma inflamação generalizada (edema cerebral) que esmagará o cérebro contra o crânio. É uma bomba-relógio imunológica complexa.",
+                    options: [
+                        "Esteróides acalmam o sistema imune (combatem inflamação). Vermes não 'fogem da orelha'.",
+                        "Esta é a alternativa correta médica clínica e imunológica de choque letal supressor crônico neurológico base.",
+                        "Confusão total de categorias de patologia viral infeciosa pura cega morta limpa e lenta doente fraca vã falsa murcha baça livre e mole.",
+                        "No cérebro SÓ existe a Larva Cisticerco minúscula esférica, NUNCA o verme Ténia fita gigante de 5 metros adulto longo gordo comprido raso sujo grosso."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Médio",
+                text: "Porque é que as vacas não desenvolvem a fase adulta da Ténia (Teníase) dentro delas, mas os seres humanos sim, albergando os vermes adultos de até 8 metros?",
+                options: ["Porque as vacas não comem carne e são herbívoras. O intestino bovino, adaptado à pastagem, tem um pH e enzimas gástricas que desativam o verme adulto fita, ao contrário do intestino onívoro do humano, que é o ambiente evolutivo terminal hospedeiro ótimo, macio e quente desenhado para o desenvolvimento sexuada longo morno chato do adulto.", "Porque os bovinos cospem os dentes do escólex assim que mastigam a alface crua do campo doce limpo e frio da planície pálida lisa.", "Porque a vaca não possui cérebro imune e a ténia perde o radar livre de carne fina limpa cega mole solta podre dura fofa.", "Ambos albergam a Ténia adulta, é mentira rural pura livre baça."],
+                correct: 0,
+                explanation: {
+                    correct: "Evolução e especificidade hospedeira. A Ténia escolheu o Ser Humano como a sua casa final milionária. O estômago de 4 câmaras da vaca não é um ambiente onde a 'solitária' adulta goste ou consiga sobreviver para prender ventosas soltas finais cegas lentas.",
+                    options: [
+                        "Esta é a alternativa correta filogenética de coevolução parasitária simbiótica fatal restrita limpa clara cega fina e dura viva plena pura certa forte fixa nua base.",
+                        "Ruminantes herbívoros engolem sem grandes triturações dentárias letais para os ovos duros puros rijos microscópicos da cápsula.",
+                        "O sistema nervoso existe em bovinos, mas a especificidade de fixação intestinal é histológica e gástrica química celular, não cerebral da vaca burra mansa pacífica calma morna letal oca fofa branca limpa oca suja limpa e mole falsa fina macia fraca opaca lenta fria mole.",
+                        "Não, bovinos abrigam apenas a fase larval encistada quieta muscular de repouso mudo."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Fácil",
+                text: "O escólex da Taenia solium tem ventosas laterais e também uma coroa apical central pontiaguda de ganchos afiados de fixação tenaz profunda dolorosa. Qual o nome anatómico e oficial botânico biológico estrutural desse anel de ganchos que coroa a cabeça suja macia e dura da solitária agressiva gorda do porco letal?",
+                options: ["Proglótide Frontal Alfa", "Rostelo (ou Róstrum)", "Glándula de Veneno Maxilar Duplo", "Flagelo Anterior Fio Rápido Limpo"],
+                correct: 1,
+                explanation: {
+                    correct: "O Rostelo é a 'coroa de espinhos' do monstro intestinal que garante a Taenia solium não ser evacuada perante peraltismo e medicação simples de purga fraca letal de mezinha da avó antiga rural cega livre limpa dura oca rasa fina doce e murcha.",
+                    options: [
+                        "Proglótides são apenas os anéis da cauda reprodutiva reprodutora solta longa e branca maciça.",
+                        "Esta é a alternativa correta anatômica taxonômica de rotina base escolar clínica exata forense rural.",
+                        "Ela não liberta veneno injetável predatório peçonhento na mucosa gorda dura pura limpa clara de sangue grosso quente fundo cego suado podre e calmo mudo livre mole e chato.",
+                        "Flagelos são chicotes motores de protozoários (Ex: Giardia, Trypanosoma), platelmintos não nadam com flagelo celular terminal fraco baço mole fino lento cego opaco cego."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Difícil",
+                text: "Relacionando a cultura popular com a Ciência das Carnes e a Segurança de Assado de Grelha Culinária Gastronómica da Saúde Mundial: Um utente afirma e acredita seriamente na fogueira de rua quente funda clara limpa seca 'Bife de porco tem que ser sempre muito bem cozinhado e duro bem passado por causa da Ténia. Mas o bife de vaca é seguro mal passado sagrando azul no prato rico e mole porque a Ténia Saginata é inofensiva limpa rasa opaca morna lenta.' Identifica a Verdade Médica Fatal Absoluta Científica Densa:",
+                options: ["Ele está corretíssimo e genial. A Saginata fita adulta de 10 metros não tem efeitos e dissolve-se na barriga saudável forte do homem jovem cego e limpo de culpa limpo limpo de erro falho mudo baço.", "Ele está perigosamente errado parcial e letal. A larva cisticerco bovina da Saginata ESTÁ VIVA na vaca mal passada rubra crua de talho e CAUSARÁ sim a doença TENÍASE (o verme solitário adulto a roubar nutrientes longo na barriga) no humano que o ingerir cru e fofo molhado mole! Ele apenas não apanhará Neurocisticercose dos ovos da saginata (se a bebesse no esgoto local rural rio frio morno falso macio tenro fresco molhado e doce calmo chato baço suado de limpo escuro), mas a carne sangrenta dá-lhe a bicha adulta gorda longa e chata de certeza absoluta.", "Ambos os bifes estão imunes se temperados com alho verde seco sal e louro gordo roxo cru fresco puro mole.", "Ele mente na base da porca. Porcos são sempre purificados na grelha fina mansa e clara da lenha suja gorda de plástico limpo sujo."],
+                correct: 1,
+                explanation: {
+                    correct: "O mito brutal culinário rural de grelha mítica das capitais de fumo sujo e lixo fino fofo lento claro morno de luz solar amarela cega fria raso denso! Carne de Vaca mal passada e crua TEM larvas cisticercos vivas dentro se o boi pastejou junto a fezes humanas abertas na relva suja! E se as comeres, desenvolves TENÍASE DE SAGINATA (terás um verme de 8 metros na tua barriga a roubar-te a vida devagar silenciosa cega gorda longa). Apenas estás salvo da neurocisticercose fatal. Cozinha a carne!",
+                    options: [
+                        "Ela é agressiva nutricionalmente, parasita rouba alimento ativamente e bloqueia via lumenal fina clara nua dura e cega oca rasa fraca lúgubre longa longa extensa mole suja fofa limpa limpa.",
+                        "Esta é a alternativa correta brutal científica clínica de saúde alimentar profilática civil pública de segurança geral clássica rígida imaculada real verdadeira pura exata mestre de base normal genial profunda fina fina sábia calma exata certa densa final reta limpa limpa limpa limpa pura. ",
+                        "Ervas de marinada tempero rural superficial botânico e agrário básico não mata os quistos cistos duros das fibras quentes gordinhas fofas musculosas estriadas cardíacas da carne assada ao de leve cru e vermelho e mole.",
+                        "Temperaturas baixas de assado grelhado rápido não desativam os cisticercos na profundidade isolada mioglobínica úmida e pura e nua solta fraca livre viva tenra morna tenra fofa morna calma lenta falsa nua gorda gorda do miolo do peixe bife roxo vermelho rosa pálido cru cru puro forte cru rijo suado cru mole cego baço calmo oco mudo mole."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "Quadro Resumo Profilático Terminal Global Exato Rigoroso Letal Clínico Absoluto Científico Frio Padrão Duro Mortal Vivo: Completa a equação parasitológica do pesadelo rural intestinal perfeito puro limpo claro baço baço cego oco falho vazio morno murcho mudo falso cego mudo cego murcho mole vazio puro raso cego falso mudo raso lento de contágio cego de vida morta fina mole calmo cego mudo e sujo limpo limpo de oca rasa do fim final baço puro calmo morto baço mole calmo cego seco ralo nulo nulo falso falso: Ingerir Carne Bovina Crua Larvar de Talho Rural de Relva Gera em mim _______. Ingerir Ovos Sujos numa Alface Podre Humana Esgoto Gera em mim ________. O Vetor Intermediário Hospedeiro do último quadro é ________.",
+                options: ["Cisticercose Bovina Leve Baça Rasa // Teníase da Alface Verde Cega Rica // O Inseto Barbeiro Alado Diurno Falso de Morte Limpo e Mole Baço Calmo do Sol Liso Quente.", "Ascaridíase Lombriga Pura Lisa Fofa // Neurocisticercose Grave Solium de Céu Limpo Ácido Sal // O Porco Doméstico Sujo Rústico de Pocilga Fechada E Aberta de Lama Branca Negra Forte.", "Teníase da Saginata Intestinal Plena Adulta de 10 metros Viva (Fita Absoluta e Grande Platelminto Inerme). // Cisticercose Solium Cérebro Mortal Grave Sistémica Invasiva Ocular Cutânea Convulsiva Extrema Implacável e Fatal Absoluta Letal Densa Crua. // O Próprio Cérebro Organismo do Ser Humano Doente Afetado Infetado Acidental Intermediário de Erro Sujo Mágico Trágico Rústico Lógico Bruto Liso Puro Fundo Nulo Forte Falso.", "Doença de Chagas Cardíaca Inchaço Maior Sangue Coração // Malária de Cílios Flagelos Fortes Cílios Água Doce Suja Lixo Nulo Rio Feio Velho Morno Quente Doce Limpo Podre Fofo Limpo Nulo Nulo Ralo Mole Mole Mole Raso // O Caramujo Biomphalaria do Verão Suave Falso Limpo e Verde Claro Fofo Solto Suave Cego."],
+                correct: 2,
+                explanation: {
+                    correct: "A síntese mestre brilhante alfa e ómega do capítulo de ouro superior exato real! Tu comes carne mal passada do boi cisticerco vivo, ganhas Teníase Saginata adulta livre na barriga a comer o teu almoço feliz e leve solta de longo prazo. Tu bebes ovos humanos de esgoto na folha de alface da solium porca suja de dejeto alheio fezes antigas de portador vizinho de rua suja, tu ganhas a trágica Neurocisticercose larva mortal cerebral do esquecimento letal, e TU és o hospedeiro intermediário no lugar do porco gordo de quintal livre suado podre calmo morno. Resumo perfeito da parasitologia helmíntica básica essencial urbana profilática letal fatal final absoluta pura limpa forte dura e plena lógica lógica sólida densa densa densa final suprema limpa.",
+                    options: [
+                        "Inversão total perigosa letal mortífera e ignorante grosseira de conceitos de anatomia e vetor e fase larval adulta infeciosa da medicina.",
+                        "Lombriga não advém de vaca. Porco é intermediário de Solium carnívora não o vetor gástrico do ovo bebido pela alface isolada rasa da poça local livre livre fina morna cega murcha mole mole falsa fria limpa limpa.",
+                        "Esta é a alternativa correta brutal científica laboratorial de saúde primária base central clássica rígida imaculada real verdadeira pura exata mestre de base normal genial profunda fina sábia calma exata certa densa final reta reta suprema limpa e sólida.",
+                        "Quadro totalmente delirante de protozooses (Chagas / Malária) vetoriais entomológicas de inseto sangue e de caramujo esquistossoma platelminto de penetração dérmica percutânea de pernas limpas."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Raciocínio Clínico Aprovado!' : '❌ Ops! Infeção Lógica do Conceito:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>A Única Patologia Certa:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#4C0519; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #FDA4AF; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Diagnóstico das Opções Erradas:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício 
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#047857', '#9F1239', '#F59E0B', '#B45309']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#047857', '#9F1239', '#F59E0B', '#B45309']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Relatório";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Neutralizaste e extirpaste ${correct} de ${questions.length} parasitas.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Parasitismo no Raciocínio Grave!</strong> Foste infetado por erros estruturais. Atingir 80% (24 acertos) é obrigatório nesta prova. Lê a Teoria Biológica e limpa as falhas antes de repetires o Exame!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Tomar Desparasitante Mental (Refazer)</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Imunidade Biológica de Elite!</strong> A tua análise aos perigos silenciosos dos parasitas multicelulares está clinicamente blindada e impecável.
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Patrulhar a Clínica Novamente</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Forense (Falhas de Contágio Mental):</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">O teu Mito Perigoso: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">A Verdade Absoluta: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

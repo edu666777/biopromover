@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vacinas e Soros - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-DEFESA (Azul Clínico & Vermelho Alerta) */
+            --bg-color: #F0F9FF; /* Azul muito claro (Hospitalar) */
+            --text-color: #0F172A; /* Slate 900 (Quase preto) */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #BFDBFE; /* Azul Claro */
+            --theme-medium: #3B82F6; /* Azul Médico */
+            --theme-dark: #1E3A8A; /* Azul Marinho Profundo */
+            --theme-contrast: #E11D48; /* Vermelho Alerta (Vírus/Sangue) */
+            --theme-accent: #10B981; /* Verde Cura/Saúde */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#bae6fd 1px, transparent 1px), linear-gradient(90deg, #bae6fd 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #475569;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #64748B;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-contrast); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #F8FAFC;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #FFF1F2; /* Vermelho muito suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #4C0519;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #475569; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E1; line-height: 1.5; color: #334155; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🛡️</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">O Sistema Imunitário: Vacinas e Soros</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Anticorpo)">
+            </div>
+            <div id="no-results"><p>😕 Nenhum conceito encontrado. Tenta outra palavra.</p></div>
+
+            <!-- TÓPICO 1: ANTIGÉNIOS E ANTICORPOS -->
+            <div class="content-group">
+                <div class="section-badge">🦠 1. Os Invasores e os Defensores</div>
+                <div class="theory-box search-target">
+                    <h3>Antigénios vs Anticorpos</h3>
+                    <p>O nosso corpo tem um exército próprio (os glóbulos brancos) pronto a combater qualquer ameaça microscópica. Para entenderes a imunidade, precisas de saber quem é quem:</p>
+                    
+                    <div class="visual-area">
+                        <svg width="250" height="120" viewBox="0 0 250 120">
+                            <!-- Antigénio (Vírus) -->
+                            <circle cx="50" cy="60" r="25" fill="#E11D48" stroke="#000" stroke-width="2"/>
+                            <!-- Espigões do Vírus -->
+                            <line x1="50" y1="35" x2="50" y2="20" stroke="#000" stroke-width="3"/>
+                            <line x1="50" y1="85" x2="50" y2="100" stroke="#000" stroke-width="3"/>
+                            <line x1="25" y1="60" x2="10" y2="60" stroke="#000" stroke-width="3"/>
+                            <line x1="75" y1="60" x2="90" y2="60" stroke="#000" stroke-width="3"/>
+                            <text x="50" y="115" text-anchor="middle" font-size="10" font-weight="bold" fill="#E11D48">Antigénio (Invasor)</text>
+                            
+                            <!-- Conflito -->
+                            <path d="M 100 60 L 140 60" stroke="#000" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
+                            
+                            <!-- Anticorpo -->
+                            <path d="M 190 60 L 220 30 M 190 60 L 220 90 M 190 60 L 160 60" stroke="#3B82F6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                            <text x="190" y="115" text-anchor="middle" font-size="10" font-weight="bold" fill="#1E3A8A">Anticorpo (Defesa em Y)</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Antigénio:</strong> É qualquer corpo estranho que invade o teu corpo e causa doença (vírus, bactérias, veneno de cobra, toxinas).</li>
+                        <li><strong>Anticorpo:</strong> É uma proteína de defesa (em forma de Y) produzida pelos teus linfócitos (glóbulos brancos) feita <em>à medida</em> para se agarrar e destruir um antigénio específico.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: VACINAS -->
+            <div class="content-group">
+                <div class="section-badge">💉 2. As Vacinas (Prevenção)</div>
+                <div class="theory-box search-target">
+                    <h3>Imunização Ativa: Treinar o Exército</h3>
+                    <p>A vacina não serve para te curar quando já estás doente. Ela é um <strong>treino preventivo</strong>. A vacina contém o <strong>antigénio morto ou enfraquecido</strong> (vírus atenuado).</p>
+                    
+                    <div class="visual-area" style="flex-direction:row; gap: 30px;">
+                        <svg width="240" height="120" viewBox="0 0 240 120">
+                            <!-- Seringa -->
+                            <rect x="20" y="50" width="60" height="20" fill="#FFF" stroke="#000" stroke-width="2"/>
+                            <line x1="80" y1="60" x2="110" y2="60" stroke="#000" stroke-width="2"/>
+                            <!-- Gotas de Vírus Enfraquecido -->
+                            <circle cx="120" cy="60" r="4" fill="#E11D48" opacity="0.5"/>
+                            <circle cx="135" cy="55" r="4" fill="#E11D48" opacity="0.5"/>
+                            <circle cx="130" cy="65" r="4" fill="#E11D48" opacity="0.5"/>
+                            <text x="50" y="40" font-size="9" font-weight="bold">Vírus Morto</text>
+                            
+                            <!-- Glóbulo Branco e Memória -->
+                            <circle cx="200" cy="60" r="25" fill="#3B82F6" stroke="#000" stroke-width="2"/>
+                            <circle cx="200" cy="60" r="10" fill="#1E3A8A"/>
+                            <text x="200" y="105" text-anchor="middle" font-size="9" font-weight="bold" fill="#1E3A8A">Célula de Memória</text>
+                        </svg>
+                    </div>
+                    
+                    <div class="highlight-box">
+                        <strong>Como funciona?</strong> O teu corpo deteta o vírus fraco, luta contra ele (sem ficares gravemente doente) e produz anticorpos. O grande truque é que o teu corpo guarda <strong>Células de Memória</strong>. Se o vírus real te atacar daqui a 10 anos, o teu corpo lembra-se da receita e destrói o vírus imediatamente!
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: SOROS -->
+            <div class="content-group">
+                <div class="section-badge">🚑 3. Os Soros (Cura Imediata)</div>
+                <div class="theory-box search-target">
+                    <h3>Imunização Passiva: Reforços de Emergência</h3>
+                    <p>Se fores mordido por uma cobra venenosa, não tens tempo para que o teu corpo "treine" e produza anticorpos. Morrerias em poucas horas. Precisas de <strong>anticorpos já prontos</strong>. É para isso que serve o Soro.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="260" height="120" viewBox="0 0 260 120">
+                            <!-- Cobra e Veneno -->
+                            <path d="M 20 80 Q 40 40 60 80 Q 80 120 100 80" fill="none" stroke="#10B981" stroke-width="4"/>
+                            <circle cx="20" cy="80" r="8" fill="#10B981"/>
+                            <path d="M 20 80 L 10 95 M 25 80 L 15 95" stroke="#E11D48" stroke-width="2"/> <!-- Dentes/Veneno -->
+                            <text x="60" y="30" font-size="9" font-weight="bold" fill="#E11D48">Veneno (Antigénio)</text>
+                            
+                            <!-- Soro -->
+                            <rect x="150" y="40" width="30" height="50" fill="#BFDBFE" stroke="#000" stroke-width="2" rx="5"/>
+                            <rect x="155" y="30" width="20" height="10" fill="#3B82F6" stroke="#000" stroke-width="2"/>
+                            <!-- Pequenos Anticorpos dentro -->
+                            <path d="M 165 50 L 165 60 M 160 50 L 165 55 L 170 50" stroke="#1E3A8A" stroke-width="2" fill="none"/>
+                            <path d="M 165 70 L 165 80 M 160 70 L 165 75 L 170 70" stroke="#1E3A8A" stroke-width="2" fill="none"/>
+                            <text x="165" y="105" text-anchor="middle" font-size="9" font-weight="bold" fill="#1E3A8A">Soro (Anticorpos Prontos)</text>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px;">
+                        <li>O Soro contém <strong>anticorpos puros</strong> produzidos por outro animal (geralmente um cavalo).</li>
+                        <li>A sua ação é <strong>curativa</strong> (serve para tratar, não prevenir).</li>
+                        <li>A desvantagem: É uma imunidade passageira. O soro <strong>NÃO cria células de memória</strong>. Se fores mordido de novo no ano seguinte, precisas de levar soro outra vez.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: QUADRO COMPARATIVO -->
+            <div class="content-group">
+                <div class="section-badge">⚖️ 4. O Grande Duelo: Vacina vs Soro</div>
+                <div class="theory-box search-target">
+                    <h3>Quadro Resumo</h3>
+                    <p>Muitos alunos confundem estes dois. Fixa bem as diferenças para a prova!</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding:0; background:transparent; border:none;">
+                        <!-- VACINA -->
+                        <div style="background:white; border:2px solid var(--theme-dark); padding:15px; border-radius:8px;">
+                            <h4 style="color:var(--theme-dark); text-align:center; font-size:1.1rem; margin-bottom:10px;">🛡️ VACINA</h4>
+                            <ul style="font-size:0.85rem; padding-left:15px; line-height:1.6;">
+                                <li>Contém <strong>Antigénios</strong> (vírus morto/fraco).</li>
+                                <li>Ação <strong>Preventiva</strong>.</li>
+                                <li>Imunidade <strong>Ativa</strong> (o teu corpo trabalha).</li>
+                                <li>Gera <strong>Memória</strong> Imunitária.</li>
+                                <li>Ação <strong>Lenta</strong>, mas duradoura.</li>
+                            </ul>
+                        </div>
+                        <!-- SORO -->
+                        <div style="background:white; border:2px solid var(--theme-contrast); padding:15px; border-radius:8px;">
+                            <h4 style="color:var(--theme-contrast); text-align:center; font-size:1.1rem; margin-bottom:10px;">🚑 SORO</h4>
+                            <ul style="font-size:0.85rem; padding-left:15px; line-height:1.6;">
+                                <li>Contém <strong>Anticorpos</strong> (defesas prontas).</li>
+                                <li>Ação <strong>Curativa</strong> (emergência).</li>
+                                <li>Imunidade <strong>Passiva</strong> (o teu corpo não trabalha).</li>
+                                <li><strong>Não gera</strong> Memória.</li>
+                                <li>Ação <strong>Rápida</strong>, mas passageira.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar Auditoria Clínica (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">O Teste de Imunidade</h2>
+                <p style="color: #334155; font-size: 0.95rem; font-weight:600;">
+                    30 questões vitais sobre as defesas do teu corpo. Acerta <strong>80% (24/30)</strong> para provares que os teus anticorpos intelectuais estão prontos!
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Diagnóstico Concluído</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS DETALHADOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Conceitos Básicos (Antigénio e Anticorpo)
+            {
+                id: 1, level: "Fácil",
+                text: "Em Biologia e Imunologia, qualquer corpo estranho (como um vírus, uma bactéria ou uma toxina) que invade o nosso organismo e provoca a produção de defesas chama-se:",
+                options: ["Anticorpo", "Antigénio", "Glóbulo Vermelho", "Soro"],
+                correct: 1,
+                explanation: {
+                    correct: "Exato! O Antigénio é o invasor. Podes decorar como 'Anti-Génio' (o génio do mal que entra no corpo).",
+                    options: [
+                        "O anticorpo é a defesa que o corpo produz contra o invasor.",
+                        "Esta é a alternativa correta.",
+                        "Transportam oxigénio, não são invasores.",
+                        "O soro é um tratamento médico."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Fácil",
+                text: "Como resposta à invasão de um vírus, o nosso sistema imunitário produz proteínas de defesa em forma de 'Y' desenhadas especificamente para se colarem a esse vírus e destruí-lo. Estas proteínas chamam-se:",
+                options: ["Antigénios", "Linfócitos", "Anticorpos", "Plaquetas"],
+                correct: 2,
+                explanation: {
+                    correct: "Correto! Os Anticorpos são as 'armas' específicas fabricadas pelo corpo para neutralizar um antigénio. São as nossas defesas.",
+                    options: [
+                        "Antigénio é o vírus/invasor.",
+                        "Linfócitos são as células (glóbulos brancos) que PRODUZEM os anticorpos, mas a proteína em si é o anticorpo.",
+                        "Esta é a alternativa correta.",
+                        "Plaquetas servem para coagular o sangue (estancar feridas)."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Fácil",
+                text: "Os anticorpos são produzidos por células especializadas de defesa presentes no nosso sangue. Que tipo de células são estas?",
+                options: ["Glóbulos Brancos (Leucócitos/Linfócitos)", "Glóbulos Vermelhos (Eritrócitos)", "Plaquetas", "Neurónios"],
+                correct: 0,
+                explanation: {
+                    correct: "Perfeito! Os glóbulos brancos são o exército do nosso corpo. Os linfócitos B, especificamente, são as 'fábricas' de anticorpos.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Servem apenas para transportar oxigénio.",
+                        "Servem para estancar hemorragias.",
+                        "São células do cérebro/sistema nervoso."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Médio",
+                text: "Uma característica fundamental dos anticorpos é a sua 'Especificidade'. O que significa isto na prática?",
+                options: ["Significa que um anticorpo ataca e destrói qualquer tipo de vírus ou bactéria que encontre.", "Significa que os anticorpos são sempre da mesma cor.", "Significa que o corpo produz um tipo de anticorpo diferente e específico para cada doença (ex: o anticorpo do sarampo não serve para o vírus da gripe).", "Significa que eles só funcionam se tomarmos medicamentos específicos."],
+                correct: 2,
+                explanation: {
+                    correct: "O anticorpo funciona como uma 'chave' para uma 'fechadura' (antigénio). Uma chave de casa não abre um carro. Os anticorpos do sarampo só matam o sarampo.",
+                    options: [
+                        "Falso, eles são altamente seletivos.",
+                        "A cor não é um conceito biológico a este nível molecular.",
+                        "Esta é a alternativa correta.",
+                        "Eles funcionam de forma natural e autónoma."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Médio",
+                text: "Para além de produzir anticorpos para lutar contra a doença no momento, o nosso corpo guarda 'Células de Memória'. Qual é a função fantástica destas células?",
+                options: ["Fazer com que nos lembremos do sabor do xarope.", "Guardar as proteínas do vírus para as usar depois.", "Garantir que, se o mesmo vírus voltar a invadir o corpo anos depois, as defesas sejam produzidas tão rapidamente que nem chegamos a ficar doentes.", "Apagar as memórias traumáticas da doença."],
+                correct: 2,
+                explanation: {
+                    correct: "É por isto que geralmente só apanhamos varicela uma vez na vida! O corpo guarda os 'planos de fabrico' do anticorpo e reage fulminantemente a uma segunda invasão.",
+                    options: [
+                        "A memória aqui é imunitária, não cerebral/psicológica.",
+                        "O corpo não guarda o vírus, guarda a 'receita' da arma contra ele.",
+                        "Esta é a alternativa correta.",
+                        "Memória psicológica não está relacionada."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Vacinas (Ação e Composição)
+            {
+                id: 6, level: "Fácil",
+                text: "As Vacinas são produtos médicos mundialmente utilizados. O que compõe o interior do frasquinho de uma vacina tradicional?",
+                options: ["Uma grande dose de anticorpos puros fabricados por um animal.", "Antibióticos fortes para matar bactérias.", "O próprio Antigénio causador da doença, mas morto ou enfraquecido (atenuado) para não causar a doença grave.", "Soro fisiológico e açúcar para dar energia ao sangue."],
+                correct: 2,
+                explanation: {
+                    correct: "Exatamente! Injetamos um 'inimigo falso ou fraco' para o nosso corpo treinar a defesa e criar memória sem correr risco de vida.",
+                    options: [
+                        "Isto descreve um Soro (ex: antiofídico).",
+                        "Vacinas não levam antibióticos como componente curativo primário.",
+                        "Esta é a alternativa correta.",
+                        "Falta o elemento imunitário."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Fácil",
+                text: "A finalidade de tomar uma vacina é a PREVENÇÃO (profilaxia). Por que não tomamos uma vacina DEPOIS de estarmos cheios de dores e doentes na cama com uma forte gripe?",
+                options: ["Porque a vacina é muito fria e faria mal à garganta.", "Porque a vacina demora semanas a fazer efeito e a obrigar o corpo a criar memória; não curaria a doença que já está a atacar no momento.", "Porque os vírus iriam comer a vacina.", "A premissa está errada, tomamos vacinas sempre para nos curarmos de imediato."],
+                correct: 1,
+                explanation: {
+                    correct: "A vacina é um 'treino'. Se a guerra já começou, não tens tempo para treinar o exército. Vacinas previnem, não curam o doente deitado na cama.",
+                    options: [
+                        "Falso.",
+                        "Esta é a alternativa correta.",
+                        "Biologicamente incorreto.",
+                        "Isso seria o trabalho do Soro e medicamentos."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Médio",
+                text: "A vacina promove no nosso organismo o que os biólogos chamam de 'Imunidade Ativa'. Por que tem este nome de ATIVA?",
+                options: ["Porque temos de correr e estar ativos após a injeção.", "Porque recebemos a cura pronta de forma ativa pela enfermeira.", "Porque o nosso próprio corpo tem de 'trabalhar', fabricar ativamente os anticorpos e as células de memória.", "Porque a vacina ataca ativamente a doença sozinha."],
+                correct: 2,
+                explanation: {
+                    correct: "O teu sistema imunitário vai ter de suar a camisa! Ele lê o vírus atenuado da vacina, desenha os anticorpos e ativa a memória. O teu corpo faz o trabalho todo.",
+                    options: [
+                        "Podes estar a dormir, a imunidade funciona.",
+                        "Isso seria imunidade passiva (receber algo pronto).",
+                        "Esta é a alternativa correta.",
+                        "A vacina só apresenta o inimigo, quem ataca são as tuas células."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Médio",
+                text: "Uma grande vantagem das vacinas em relação a outros tratamentos (como os soros) é a sua duração. Por norma, a imunidade dada por uma vacina é:",
+                options: ["Muito passageira, durando apenas umas horas ou dias.", "Duradoura, podendo proteger-nos durante anos ou até pela vida inteira.", "Eficaz apenas no dia em que se toma.", "Dependente da quantidade de água que bebemos."],
+                correct: 1,
+                explanation: {
+                    correct: "Como a vacina obriga o corpo a gerar Células de Memória, essa memória perdura. Se apanhares o vírus 10 anos depois, as células lembram-se dele e matam-no.",
+                    options: [
+                        "Isto é a desvantagem do Soro.",
+                        "Esta é a alternativa correta.",
+                        "Demora dias a fazer o primeiro efeito.",
+                        "Hidratação é boa, mas não dita a memória imunitária."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Difícil",
+                text: "Ouvimos falar muito em 'Imunidade de Grupo' (ou de rebanho) quando ocorrem campanhas de vacinação. O que significa?",
+                options: ["Se um grupo de amigos for vacinado junto no mesmo dia, dói menos.", "Quando a grande maioria das pessoas numa população está vacinada, a doença não consegue circular. Isto protege indiretamente bebés e pessoas doentes que não podem levar a vacina.", "Se vacinarmos as vacas e rebanhos, as pessoas não ficam doentes.", "Uma vacina que cura todas as doenças do grupo sanguíneo."],
+                correct: 1,
+                explanation: {
+                    correct: "É a magia da vacinação! Se 95% da turma tiver a vacina do sarampo, o vírus bate na 'parede' imunológica dessas pessoas e não consegue saltar para o bebé recém-nascido que ainda não pôde ser vacinado.",
+                    options: [
+                        "Falso e não científico.",
+                        "Esta é a alternativa correta.",
+                        "A saúde animal é importante, mas o termo refere-se à proteção indireta populacional.",
+                        "Não tem relação."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Soros (Ação e Composição)
+            {
+                id: 11, level: "Fácil",
+                text: "Foste fazer uma caminhada no mato e foste mordido por uma cobra muito venenosa (uma víbora). Ao chegares ao hospital, o médico dirá:",
+                options: ["'Rápido, deem-lhe uma vacina contra veneno de cobra!'", "'Rápido, deem-lhe o Soro Antiofídico!'", "'Rápido, deem-lhe um comprimido de vitaminas!'", "'Dá-lhe um copo de água com açúcar.'"],
+                correct: 1,
+                explanation: {
+                    correct: "Perfeito! Em emergências mortais, não há tempo para vacinas. Precisas do Soro que tem anticorpos que neutralizam o veneno imediatamente.",
+                    options: [
+                        "A vacina demoraria semanas a gerar defesa, e o doente morreria em horas.",
+                        "Esta é a alternativa correta.",
+                        "Vitaminas não anulam neurotoxinas.",
+                        "Não corta o efeito do veneno."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Fácil",
+                text: "O que contém o frasco de um Soro (por exemplo, o soro contra o veneno de escorpião)?",
+                options: ["O próprio veneno do escorpião atenuado para o corpo treinar.", "Apenas água salgada purificada.", "Uma grande quantidade de Anticorpos PRONTOS, criados em laboratório ou noutro animal, para agir imediatamente.", "Glóbulos vermelhos de escorpião."],
+                correct: 2,
+                explanation: {
+                    correct: "O Soro é a cura engarrafada. Traz o 'exército' já treinado e fabricado para atacar o veneno mal entra no sangue.",
+                    options: [
+                        "Isso é o princípio da Vacina.",
+                        "Isso é 'soro fisiológico' (usado para desidratação), não um soro imunológico.",
+                        "Esta é a alternativa correta.",
+                        "Invertebrados nem sequer têm glóbulos vermelhos da nossa forma."
+                    ]
+                }
+            },
+            {
+                id: 13, level: "Médio",
+                text: "O Soro confere-nos uma 'Imunidade Passiva'. Porque é chamada de PASSIVA?",
+                options: ["Porque o doente fica passivo a dormir.", "Porque o veneno da cobra é passivo e lento.", "Porque o nosso sistema imunitário não faz nenhum trabalho (fica 'passivo'); nós apenas recebemos os anticorpos prontos 'de bandeja'.", "Porque falha muitas vezes de forma passiva."],
+                correct: 2,
+                explanation: {
+                    correct: "Exato! O teu corpo não 'leu' o vírus, não fabricou a defesa. Alguém fabricou por ele. Ele recebeu tudo pronto.",
+                    options: [
+                        "Não tem relação com a atitude física do paciente.",
+                        "Venenos podem ser muito agressivos.",
+                        "Esta é a alternativa correta.",
+                        "Soros são altamente eficazes."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Médio",
+                text: "Uma grande desvantagem do Soro em relação à Vacina é a Duração da proteção. Quanto tempo dura a proteção de um soro e porquê?",
+                options: ["Dura para a vida toda, pois os anticorpos injetados nunca morrem.", "Dura apenas dias ou poucas semanas, pois os anticorpos injetados degradam-se e desaparecem, e o corpo NÃO criou Células de Memória.", "Dura 10 anos exatamente.", "Não dura nada, atua no passado."],
+                correct: 1,
+                explanation: {
+                    correct: "Os anticorpos têm um prazo de validade. Como o teu corpo recebeu-os prontos e não aprendeu a receita (sem memória), quando eles morrerem, a tua proteção desaparece. Se a cobra te morder de novo no ano a seguir, precisas de outro soro.",
+                    options: [
+                        "As proteínas degradam-se com o tempo.",
+                        "Esta é a alternativa correta.",
+                        "Vacinas podem durar anos, soros não.",
+                        "Cura o presente momentâneo."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Difícil",
+                text: "Como é que os cientistas costumam fabricar industrialmente grandes quantidades de soro antiofídico (contra picadas de cobra) para distribuir aos hospitais?",
+                options: ["Misturam produtos químicos numa panela fervente.", "Injetam pequenas doses (não mortais) de veneno num cavalo. O sistema imunitário FORTE do cavalo produz rios de anticorpos, que depois são extraídos do sangue dele, purificados e guardados em frascos.", "Cultivam cobras num jardim para recolher o seu sangue mágico.", "Esmagam os dentes da cobra e misturam com álcool."],
+                correct: 1,
+                explanation: {
+                    correct: "A técnica clássica salva milhares de vidas! O cavalo é grande e resistente. Ele recebe pequenas doses, gera imunidade ativa gigante, e nós recolhemos parte do plasma dele (com anticorpos) para criar o soro que salva o humano.",
+                    options: [
+                        "Anticorpos são proteínas biológicas complexas, não se fazem apenas misturando químicos simples.",
+                        "Esta é a alternativa correta.",
+                        "O soro é feito de anticorpos, não do sangue da cobra.",
+                        "Isso não gera defesas imunitárias."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Comparações Diretas e Casos Especiais
+            {
+                id: 16, level: "Fácil",
+                text: "Assinala a frase que melhor resume a principal diferença entre as duas ferramentas:",
+                options: ["A vacina previne, o soro cura.", "A vacina cura de imediato, o soro demora semanas a atuar.", "O soro é para os ossos, a vacina é para o sangue.", "Ambos são exatamente a mesma coisa, apenas muda a marca da farmacêutica."],
+                correct: 0,
+                explanation: {
+                    correct: "Resumo de Ouro! Tomas a vacina meses antes para não adoecer. Tomas o soro a correr quando já estás com o problema.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Ocorreu a troca completa dos papéis.",
+                        "Ambos atuam via corrente sanguínea e sistema imunitário.",
+                        "Têm funções, composições e atuações diametralmente opostas."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Médio",
+                text: "Um trabalhador pisou um prego enferrujado num terreno sujo de estrume. Tendo em conta o altíssimo e imediato risco da doença grave do Tétano, o que devem os médicos administrar logo nas urgências?",
+                options: ["Uma Vacina contra o tétano e esperar uma semana em casa.", "Apenas ligaduras quentes.", "Soro Antitetânico, pois ele contém anticorpos prontos para atacar a toxina fatal imediatamente.", "Um chá de camomila para acalmar os nervos."],
+                correct: 2,
+                explanation: {
+                    correct: "O tétano atua muito rapidamente. A vacina demoraria cerca de 15 dias a gerar imunidade, e o paciente morreria antes. O Soro Antitetânico fornece as tropas de resgate imediatas.",
+                    options: [
+                        "O paciente não pode esperar dias pela produção de anticorpos.",
+                        "Limpar a ferida é fulcral, mas insuficiente contra a bactéria letal do tétano.",
+                        "Esta é a alternativa correta.",
+                        "A doença é neurológica aguda letal, requer intervenção clínica."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Médio",
+                text: "Quando a mãe amamenta o seu recém-nascido através do leite materno (ou através do cordão umbilical antes do parto), o bebé recebe uma carga gigantesca de anticorpos maternos. Isto é classificado como:",
+                options: ["Imunidade Ativa Artificial", "Imunidade Ativa Natural", "Imunidade Passiva Natural", "Imunidade Passiva Artificial"],
+                correct: 2,
+                explanation: {
+                    correct: "É Passiva porque o bebé não trabalhou para fabricar os anticorpos (recebeu-os prontos da mãe). É Natural porque ocorreu através do leite/placenta (sem agulhas/médicos).",
+                    options: [
+                        "Ativa artificial é a Vacina.",
+                        "Ativa natural é quando apanhas a doença na rua e curas-te sozinho.",
+                        "Esta é a alternativa correta.",
+                        "Passiva artificial é o Soro injetável do hospital."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Difícil",
+                text: "As campanhas mundiais conseguiram erradicar completamente uma terrível doença do planeta Terra, recorrendo à vacinação em massa. Qual foi essa doença, que hoje já não existe?",
+                options: ["SIDA (HIV)", "Varíola (Smallpox)", "Cancro do pulmão", "Gripe comum"],
+                correct: 1,
+                explanation: {
+                    correct: "A Varíola matava ou desfigurava milhões. Graças a um esforço vacinal global heroico nos anos 60/70, a OMS declarou-a erradicada em 1980. O único vírus que o Homem extinguiu intencionalmente!",
+                    options: [
+                        "Ainda não existe cura ou vacina 100% eficaz para erradicar o VIH globalmente.",
+                        "Esta é a alternativa correta.",
+                        "Cancro não é uma doença infeciosa erradicável por vacina de vírus tradicional.",
+                        "A gripe sofre mutações anuais drásticas, impedindo a sua erradicação definitiva."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Difícil",
+                text: "O que é que acontece biologicamente se tu levares a vacina da Gripe de 2024, mas em 2025 o vírus da gripe sofrer uma grande mutação genética?",
+                options: ["Ficas doente com a gripe porque os vírus sofreram mutação e alteraram os seus Antigénios de superfície. Os teus Anticorpos antigos não vão reconhecer esta nova 'fechadura' do vírus.", "A vacina antiga protege-te para sempre, independentemente da mutação.", "O teu corpo sofre também uma mutação para acompanhar o vírus.", "A vacina transforma-se num Soro protetor permanente."],
+                correct: 0,
+                explanation: {
+                    correct: "Exatamente o porquê de os idosos vacinarem-se todos os anos contra a gripe! O vírus muda de 'fato' (mutação do antigénio). As tuas células de memória procuram o fato antigo e o vírus escapa.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "A especificidade dos anticorpos faz com que a proteção não sirva para vírus mutantes diferentes.",
+                        "Mutações evolutivas humanas não ocorrem em 1 ano e não são orientadas pela vacina.",
+                        "Conceitos errados."
+                    ]
+                }
+            },
+
+            // BLOCO 5: Questões de Síntese e Desafio de Casos
+            {
+                id: 21, level: "Fácil",
+                text: "Se uma pessoa tomar a Vacina do Tétano no seu plano de saúde normal aos 10 anos, e dez anos depois (aos 20) picar-se num prego limpo sem ferrugem grave. O seu corpo produzirá anticorpos rápidos. Este mecanismo baseia-se na:",
+                options: ["Magia do sangue", "Ativação das Células de Memória", "Morte celular imediata", "Ação de Soros passivos"],
+                correct: 1,
+                explanation: {
+                    correct: "As Células de Memória geradas pela vacina da infância acordam, reconhecem a possível ameaça e fabricam o exército em horas em vez de semanas.",
+                    options: [
+                        "Imunologia não é magia.",
+                        "Esta é a alternativa correta.",
+                        "Isso enfraqueceria o corpo.",
+                        "A vacina gera memória, o soro não."
+                    ]
+                }
+            },
+            {
+                id: 22, level: "Médio",
+                text: "Considera o caso clínico: Uma rapariga saudável foi a África trabalhar e precisa de uma defesa DURADOURA para não apanhar Febre Amarela nos próximos 5 anos. O que deve o médico dar-lhe?",
+                options: ["Soro anti-febre amarela, pois atua anos.", "Apenas analgésicos fortes na mala.", "A Vacina da Febre Amarela (vírus atenuado) um mês antes da viagem, para dar tempo de criar imunidade ativa e memória de longa duração.", "Soro e mandar ir de imediato."],
+                correct: 2,
+                explanation: {
+                    correct: "Se a necessidade é prevenção de longo prazo, a resposta é SEMPRE a Vacina. Toma-se antes da exposição para que as defesas estejam prontas quando ela aterrar em África.",
+                    options: [
+                        "Soro não tem duração de anos.",
+                        "Não previne a doença infeciosa.",
+                        "Esta é a alternativa correta.",
+                        "Soro seria se ela já tivesse a doença grave na fase letal."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Médio",
+                text: "Em caso de pandemia, qual é o principal objetivo da Saúde Pública ao querer vacinar toda a população de um país?",
+                options: ["Tornar as pessoas imunes a picadas de cobra.", "Curar ativamente as pessoas que já estão nos Cuidados Intensivos.", "Atingir a Imunidade de Grupo (Bloquear a circulação do vírus e proteger os mais fracos que não podem levar a vacina).", "Testar a dor das seringas na população."],
+                correct: 2,
+                explanation: {
+                    correct: "A vacina é uma ferramenta de saúde COMUNITÁRIA. Quando tu te vacinas, és um escudo para o teu avô doente ou para o teu primo recém-nascido, porque não deixas o vírus saltar de ti para eles.",
+                    options: [
+                        "Vacinas antivirais não são soros antiveneno.",
+                        "Vacina não cura pacientes graves, previne os saudáveis.",
+                        "Esta é a alternativa correta.",
+                        "Absurdo."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Difícil",
+                text: "O que é uma Vacina de RNA mensageiro (mRNA), tecnologia inovadora que ficou mundialmente famosa em 2020?",
+                options: ["Uma vacina que injeta água salgada apenas.", "Uma vacina que injeta o código (as instruções em RNA) para que as nossas PRÓPRIAS células fabriquem o espigão do vírus. O sistema imunitário vê esse espigão e cria anticorpos e memória sem nunca ter visto o vírus inteiro.", "Uma vacina que insere chips robóticos no sangue.", "Um soro retirado de sangue de coelho."],
+                correct: 1,
+                explanation: {
+                    correct: "Foi a revolução da biotecnologia! Em vez de cultivar litros de vírus perigosos em laboratório, os cientistas apenas injetam a 'receita' por SMS (mRNA). O teu braço lê o SMS, fabrica o 'boneco' inofensivo do vírus, e o teu exército treina a disparar contra o boneco.",
+                    options: [
+                        "Falso.",
+                        "Esta é a alternativa correta.",
+                        "Teorias da conspiração negacionistas da ciência sem qualquer base factual e absurdas fisicamente.",
+                        "É tecnologia genética sintética limpa, sem usar plasma de animais exóticos de forma arcaica."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Difícil",
+                text: "Num gráfico laboratorial medimos a quantidade de Anticorpos no sangue ao longo dos dias. Num caso de Imunidade ATIVA (Ex: Vacina), a curva mostra:",
+                options: ["Alta instantânea no Dia 1 e quebra rápida para zero no Dia 5.", "Zero no Dia 1, uma subida lenta nas primeiras semanas, e uma manutenção longa ao longo dos meses (e subida explosiva num segundo contacto).", "Linha plana para sempre.", "Aumento exponencial apenas de glóbulos vermelhos."],
+                correct: 1,
+                explanation: {
+                    correct: "O corpo demora as suas boas 2 a 3 semanas para identificar a vacina, construir a fábrica e libertar as defesas (Resposta Primária lenta). Na segunda vez (Resposta Secundária), a memória faz a curva explodir no céu em poucas horas.",
+                    options: [
+                        "Isto descreve o gráfico do SORO (Imunidade Passiva: dá muito logo, acaba rápido).",
+                        "Esta é a alternativa correta.",
+                        "Não há aumento defensivo imunológico detetável no plasma.",
+                        "Eles focam-se nos brancos, não nos vermelhos que transportam oxigénio."
+                    ]
+                }
+            },
+            {
+                id: 26, level: "Fácil",
+                text: "Quando te cortas com uma faca suja ou pisas terra contaminada na quinta, deves lavar com água e sabão. O que procuramos matar com essa higiene de base antes que o corpo precise dos anticorpos?",
+                options: ["Antigénios (bactérias patogénicas) à superfície que pretendem invadir o teu sangue.", "Os teus próprios anticorpos que fugiram da veia.", "Vírus digitais.", "As células de memória que estavam na terra."],
+                correct: 0,
+                explanation: {
+                    correct: "Lavar a ferida é a Primeira Linha de Defesa. Retira a sujidade, as bactérias e fungos (os antigénios invasores) antes que consigam penetrar a barreira da pele e exijam uma guerra imunitária interna.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Os teus anticorpos estão no plasma dentro da veia a defender-te.",
+                        "Fantasia informática.",
+                        "As tuas células de memória estão na tua medula, gânglios e baço, não no chão."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Médio",
+                text: "O Vírus da Raiva tem uma letalidade de quase 100% após surgirem os sintomas. Se fores mordido por um cão raivoso e não tratado na hora, é morte certa. O que aplicam os médicos numa mordida de urgência severa na cabeça para proteção dupla?",
+                options: ["Apenas pensos quentes.", "Vacina e Soro Antirrábico simultaneamente. O Soro neutraliza o vírus no local imediato, enquanto a Vacina obriga o corpo a gerar defesas ativas de memória para matar o que tentar entrar no cérebro nos próximos dias lentos da infeção.", "Um tratamento estético facial.", "Apenas soro hidratante na veia do braço."],
+                correct: 1,
+                explanation: {
+                    correct: "A Profilaxia Pós-Exposição pesada! Como o vírus demora dias a viajar do braço até ao cérebro, a injeção do Soro ataca já, e as doses de Vacina treinam o teu corpo a criar uma barreira final para esmagar os vírus teimosos.",
+                    options: [
+                        "Inútil contra neurovírus letais.",
+                        "Esta é a alternativa correta.",
+                        "Irrelevante face ao perigo mortal eminente agressivo infeccioso do patógeno animal silvestre.",
+                        "Não possui fator imunitário de bloqueio estrutural viral."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Difícil",
+                text: "Um erro imunitário gravíssimo é quando os teus próprios anticorpos se confundem e passam a atacar e destruir as células saudáveis e inocentes do teu próprio corpo, achando que são Antigénios invasores. Que nome se dá a estas doenças?",
+                options: ["Doenças Autoimunes (ex: Lúpus, Artrite Reumatoide, Diabetes Tipo 1).", "Doenças Parasitárias externas transmissíveis.", "Intoxicações Alimentares passageiras.", "Fraturas Crónicas por falta de cálcio na derme."],
+                correct: 0,
+                explanation: {
+                    correct: "Autoimune (Auto = a ti próprio). O exército enlouquece e faz 'fogo amigo'. O teu sistema imunitário destrói a cartilagem do teu joelho, ou a insulina do teu pâncreas. Vacinas e soros tradicionais não curam isto.",
+                    options: [
+                        "Esta é a alternativa correta.",
+                        "Isto são parasitas como lombrigas e malária que vêm de fora ativamente.",
+                        "Causadas por comida estragada no estômago rápido.",
+                        "Não tem relação com a guerra química no plasma branco."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Médio",
+                text: "Quem inventou o conceito da primeira vacina moderna (contra a mortal Varíola) em 1796, reparando que as mulheres que ordenhavam vacas e apanhavam a versão fraca da doença nas mãos não morriam da versão humana letal?",
+                options: ["Albert Einstein", "Edward Jenner", "Galileu Galilei", "Isaac Newton"],
+                correct: 1,
+                explanation: {
+                    correct: "Edward Jenner, o pai da imunologia! Ele raspou as feridas das vacas ('vaccinia') e inoculou num rapazinho. O rapaz ficou imune à varíola letal. A palavra 'Vacina' vem literalmente do latim 'Vacca'.",
+                    options: [
+                        "Físico (Relatividade).",
+                        "Esta é a alternativa correta.",
+                        "Astrónomo italiano do renascimento primitivo.",
+                        "Físico da gravidade e ótica britânica clássica matemática."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "Resumo Estrutural Final: Relaciona o Procedimento com o Tempo e o Fator de Ação! Qual opção está 100% CIENTIFICAMENTE EXATA?",
+                options: ["VACINA: Soro fisiológico com oxigênio -> Cura rápida sem memória longa. // SORO: Antigênios vivos -> Prevenção celular.", "VACINA: Antigénios (Vírus atenuados) -> Preventivo -> Imunidade Ativa com Células de Memória duradouras. // SORO: Anticorpos prontos -> Curativo/Emergência -> Imunidade Passiva rápida e sem memória biológica celular permanente.", "VACINA: Anticorpos sintéticos azuis -> Cura de ossos. // SORO: Glóbulos vermelhos concentrados -> Prevenção da tosse noturna prolongada em crianças saudáveis nascidas no campo florestal isolado sem acesso a saneamento fluvial moderno municipal europeu standard comum.", "Ambos são vitaminas C concentradas que alteram o genoma da criança para bloquear venenos no nascimento independentemente do tipo da mordida tóxica em ambiente selvagem."],
+                correct: 1,
+                explanation: {
+                    correct: "Perfeito! Guardaste a essência do quadro. Vacina = Treino (Antigénio), Prevê, Ativo, Demora e tem Memória. Soro = Reforço Urgente (Anticorpo pronto), Cura na hora, Passivo e Não lembra de ti amanhã.",
+                    options: [
+                        "Inversão absoluta e letal dos factos patológicos vitais da enfermagem biológica imune básica.",
+                        "Esta é a alternativa correta Magistral.",
+                        "Absurdo fisiológico surrealista sem base real médica em imunidade hematológica.",
+                        "Fantasia irreal de ficção baseada num erro mitológico popular perigoso de suplementos."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Imunidade Aprovada!' : '❌ Ops! Infeção no Raciocínio:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>Solução:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#0F172A; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #CBD5E1; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Relatório Clínico dos Erros:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício azuis e vermelhos (Médico/Saúde)
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#3B82F6', '#E11D48', '#FFFFFF', '#10B981']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#3B82F6', '#E11D48', '#FFFFFF', '#10B981']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Auditoria Clínica";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Neutralizaste ${correct} de ${questions.length} invasores intelectuais.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Sistema Imunitário Fraco!</strong> Falhaste nas tuas defesas biológicas. Precisas de 80% (24 acertos) para garantires a cura intelectual. Toma uma dose de Teoria e tenta de novo!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Injetar Nova Dose (Repetir)</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Saúde de Ferro!</strong> A tua análise às vacinas e soros foi uma operação cirúrgica de sucesso. Estás protegido e pronto para a Prova Final!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Patrulhar Novamente</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Médico (Toma nota dos Erros):</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">A tua Escolha: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">Verdade Científica: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>
