@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conceitos de Genética - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-CÓDIGO (Índigo Profundo & Ciano Genético) */
+            --bg-color: #EEF2FF; /* Índigo muito claro */
+            --text-color: #1E3A8A; /* Azul/Índigo quase preto */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #C7D2FE; /* Índigo Claro */
+            --theme-medium: #4F46E5; /* Índigo Vibrante */
+            --theme-dark: #312E81; /* Índigo Profundo */
+            --theme-contrast: #06B6D4; /* Ciano Elétrico (Destaque/DNA) */
+            --theme-accent: #E11D48; /* Rosa/Carmim (Alerta/Mutações) */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#c7d2fe 1px, transparent 1px), linear-gradient(90deg, #c7d2fe 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #4F46E5;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #4F46E5;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #ECFEFF; /* Ciano muito suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #083344;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #312E81; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E1; line-height: 1.5; color: #1E293B; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🧬</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Conceitos de Genética: O Código-Fonte da Vida</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Fenótipo)">
+            </div>
+            <div id="no-results"><p>😕 Gene não encontrado no locus. Verifica a ortografia.</p></div>
+
+            <!-- TÓPICO 1: O ARQUIVO CENTRAL -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-dark);">📚 1. A Biblioteca da Vida</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-dark);">
+                    <h3 style="color: var(--theme-dark);">Cromossomas, DNA e Genes</h3>
+                    <p>O núcleo das tuas células guarda a "receita" de como construir e manter o teu corpo. Precisamos de ter as definições arrumadas por ordem de tamanho:</p>
+                    
+                    <div class="visual-area" style="padding: 20px 0; background-color: var(--white); border: 2px solid var(--border-color);">
+                        <svg width="100%" height="auto" viewBox="0 0 350 180" style="max-width: 400px; font-family: 'Poppins', sans-serif;">
+                            
+                            <!-- Célula -->
+                            <circle cx="50" cy="90" r="40" fill="#E0E7FF" stroke="#312E81" stroke-width="2"/>
+                            <circle cx="50" cy="90" r="15" fill="#312E81"/>
+                            <text x="50" y="145" font-size="10" font-weight="900" fill="#1E3A8A" text-anchor="middle">CÉLULA E NÚCLEO</text>
+
+                            <path d="M 70 90 L 100 90" stroke="#000" stroke-width="2" marker-end="url(#arrowBlue)"/>
+
+                            <!-- Cromossoma -->
+                            <path d="M 130 50 Q 140 70 140 90 Q 140 110 130 130" fill="none" stroke="#4338CA" stroke-width="12" stroke-linecap="round"/>
+                            <path d="M 150 50 Q 140 70 140 90 Q 140 110 150 130" fill="none" stroke="#4338CA" stroke-width="12" stroke-linecap="round"/>
+                            <circle cx="140" cy="90" r="8" fill="#FACC15"/> <!-- Centrómero -->
+                            <text x="140" y="145" font-size="10" font-weight="900" fill="#4338CA" text-anchor="middle">CROMOSSOMA</text>
+
+                            <path d="M 165 90 L 195 90" stroke="#000" stroke-width="2" marker-end="url(#arrowBlue)"/>
+
+                            <!-- Fita de DNA / Gene -->
+                            <path d="M 210 40 Q 230 65 210 90 Q 230 115 210 140" fill="none" stroke="#06B6D4" stroke-width="3"/>
+                            <path d="M 230 40 Q 210 65 230 90 Q 210 115 230 140" fill="none" stroke="#E11D48" stroke-width="3"/>
+                            <!-- Ligações (Bases) -->
+                            <line x1="215" y1="52" x2="225" y2="52" stroke="#000" stroke-width="1"/>
+                            <line x1="220" y1="65" x2="220" y2="65" stroke="#000" stroke-width="1"/>
+                            <line x1="211" y1="90" x2="229" y2="90" stroke="#000" stroke-width="2"/>
+                            
+                            <!-- Gene Highlight -->
+                            <rect x="205" y="45" width="30" height="30" fill="#FACC15" opacity="0.3" stroke="#CA8A04" stroke-dasharray="2,2"/>
+                            <text x="260" y="65" font-size="10" font-weight="900" fill="#CA8A04" text-anchor="start">GENE</text>
+                            
+                            <text x="220" y="155" font-size="10" font-weight="900" fill="#06B6D4" text-anchor="middle">FITA DE DNA</text>
+
+                            <defs>
+                                <marker id="arrowBlue" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#000"/>
+                                </marker>
+                            </defs>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>DNA (Ácido Desoxirribonucleico):</strong> A fita química gigante em hélice dupla.</li>
+                        <li><strong>Gene:</strong> Um "bocadinho" (segmento) da fita de DNA. Um gene é a <strong>receita exata para construir uma proteína</strong> (por exemplo, a proteína que dá a cor castanha ao teu olho).</li>
+                        <li><strong>Cromossoma:</strong> A fita de DNA é enorme. Para caber no núcleo e não se emaranhar durante a divisão celular, ela enrola-se sobre si mesma até formar um bastonete espesso. O ser humano tem <strong>46 cromossomas (23 pares)</strong> nas células somáticas.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: O DICIONÁRIO GENÉTICO -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-medium);">📖 2. O Dicionário Essencial</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-medium);">
+                    <h3 style="color: var(--theme-dark);">Fenótipo, Genótipo e Alelos</h3>
+                    <p>A genética tem uma linguagem própria. Confundir estas palavras num exame é fatal.</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Fenótipo:</strong> O que se VÊ ou mede. É a característica que se manifesta no organismo (ex: Olhos azuis, Sangue tipo A, Cabelo encaracolado). <br><em>Atenção: Fenótipo = Genótipo + Ambiente (o sol pode escurecer a pele, mudando o fenótipo, mas não altera o genótipo).</em></li>
+                        <li><strong>Genótipo:</strong> O que está ESCONDIDO no teu DNA. É a constituição genética, representada por letras (ex: Aa, BB, ii).</li>
+                        <li><strong>Alelos:</strong> São as "versões" diferentes do mesmo gene. (Ex: O gene é "Cor do Olho". O Alelo A diz "castanho", o Alelo a diz "azul").</li>
+                        <li><strong>Locus (Locus génico):</strong> O "endereço" ou local físico exato que um gene ocupa num cromossoma.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: A LUTA DE FORÇAS -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-contrast);">🥊 3. Dominante vs. Recessivo</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-contrast);">
+                    <h3 style="color: var(--theme-contrast);">A Luta de Forças (Homozigoto e Heterozigoto)</h3>
+                    <p>Tu herdas um cromossoma do teu pai e um da tua mãe. Logo, tens <strong>dois alelos</strong> para cada característica. Como é que eles "disputam" qual vai aparecer no teu fenótipo?</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding:0; background:transparent; border:none;">
+                        
+                        <div style="background:white; border:2px solid #000; padding:15px; border-radius:8px; text-align:center;">
+                            <h4 style="font-size:1.5rem; color:#1E3A8A; margin-bottom:5px;">AA</h4>
+                            <p style="font-size:0.8rem; font-weight:bold; color:#1E3A8A;">Homozigoto<br>Dominante</p>
+                            <p style="font-size:0.7rem; margin-top:5px; color:#555;">(Puro). O pai e a mãe deram a mesma ordem forte.</p>
+                        </div>
+
+                        <div style="background:white; border:2px solid #000; padding:15px; border-radius:8px; text-align:center;">
+                            <h4 style="font-size:1.5rem; color:#CA8A04; margin-bottom:5px;">Aa</h4>
+                            <p style="font-size:0.8rem; font-weight:bold; color:#CA8A04;">Heterozigoto<br>(Híbrido)</p>
+                            <p style="font-size:0.7rem; margin-top:5px; color:#555;">Letras diferentes. O <strong>Dominante (A)</strong> mascara e silencia completamente o Recessivo (a).</p>
+                        </div>
+
+                        <div style="background:white; border:2px solid #000; padding:15px; border-radius:8px; text-align:center;">
+                            <h4 style="font-size:1.5rem; color:#E11D48; margin-bottom:5px;">aa</h4>
+                            <p style="font-size:0.8rem; font-weight:bold; color:#E11D48;">Homozigoto<br>Recessivo</p>
+                            <p style="font-size:0.7rem; margin-top:5px; color:#555;">(Puro). Como não há gene forte para o silenciar, a característica fraca manifesta-se.</p>
+                        </div>
+
+                    </div>
+                    
+                    <div class="highlight-box blue">
+                        <strong>O Mito do Dominante:</strong> A palavra "Dominante" <strong>NÃO</strong> significa que a característica seja melhor, mais frequente na população ou "normal". Exemplo: O nanismo acondroplásico e ter seis dedos na mão (polidactilia) são características causadas por um gene <strong>Dominante</strong>. Ter cinco dedos normais é Recessivo!
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: AS LEIS DE MENDEL -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: #6D28D9;">🌱 4. As Leis de Mendel</div>
+                <div class="theory-box search-target" style="border-left-color: #6D28D9;">
+                    <h3 style="color: #4C1D95;">O Quadro de Punnett e a Segregação</h3>
+                    <p>Gregor Mendel fundou a genética ao cruzar ervilhas. Ele descobriu que as características não se "misturavam" como tintas (verde + amarelo = verde claro), mas sim que as características são "partículas" (alelos) que não perdem a identidade.</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>1ª Lei (Lei da Segregação):</strong> Na formação dos gâmetas (meiose), os pares de alelos (ex: Aa) têm de se SEPARAR (segregar). Um espermatozoide leva o 'A', o outro leva o 'a'. Nunca levam os dois!</li>
+                        <li><strong>Como fazer o Cruzamento Aa x Aa?</strong><br>
+                            - A probabilidade de sair AA = 25% (1/4)<br>
+                            - A probabilidade de sair Aa = 50% (2/4)<br>
+                            - A probabilidade de sair aa = 25% (1/4)<br>
+                            <em>(Ou seja, há 75% de probabilidade do filho ter o fenótipo dominante).</em>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 5: HEREDOGRAMAS -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: #E11D48;">🌳 5. Árvores Genealógicas</div>
+                <div class="theory-box search-target" style="border-left-color: #E11D48;">
+                    <h3 style="color: #BE123C;">Como ler Heredogramas?</h3>
+                    <p>Os heredogramas (ou árvores genealógicas) usam símbolos matemáticos para seguir características genéticas numa família.</p>
+                    
+                    <div class="visual-area" style="flex-direction:row; gap: 30px;">
+                        <div style="display:flex; flex-direction:column; align-items:center;">
+                            <svg width="40" height="40" viewBox="0 0 40 40">
+                                <rect x="5" y="5" width="30" height="30" fill="none" stroke="#1E3A8A" stroke-width="4"/>
+                            </svg>
+                            <span style="font-size:0.8rem; font-weight:bold;">Homem (Normal)</span>
+                        </div>
+                        <div style="display:flex; flex-direction:column; align-items:center;">
+                            <svg width="40" height="40" viewBox="0 0 40 40">
+                                <circle cx="20" cy="20" r="15" fill="none" stroke="#1E3A8A" stroke-width="4"/>
+                            </svg>
+                            <span style="font-size:0.8rem; font-weight:bold;">Mulher (Normal)</span>
+                        </div>
+                        <div style="display:flex; flex-direction:column; align-items:center;">
+                            <svg width="40" height="40" viewBox="0 0 40 40">
+                                <rect x="5" y="5" width="30" height="30" fill="#1E3A8A"/>
+                            </svg>
+                            <span style="font-size:0.8rem; font-weight:bold;">Homem Afetado</span>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" style="background-color: #FEF2F2; border-color: #BE123C; color: #881337;">
+                        <strong>A REGRA DE OURO INFALÍVEL DA GENÉTICA:</strong><br>
+                        Se vires num heredograma um casal com o MESMO FENÓTIPO (ex: ambos pintados ou ambos brancos) e eles tiverem um FILHO COM FENÓTIPO DIFERENTE deles (ex: filho branco de pais pintados)... A conclusão é absoluta e automática: <strong>Os pais são HETEROZIGOTOS (Aa) e o filho "diferente" é obrigatoriamente RECESSIVO (aa).</strong>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar Diagnóstico Genético (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">Genética Mendeliana</h2>
+                <p style="color: #1E3A8A; font-size: 0.95rem; font-weight:600;">
+                    30 questões de cálculo e raciocínio hereditário. Acerta <strong>80% (24/30)</strong> ou admito que a tua meiose intelectual sofreu uma mutação severa.
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Relatório do Genoma</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS RIGOROSOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Estrutura Base do DNA (1-6)
+            {
+                id: 1, level: "Fácil",
+                text: "Em termos estruturais e funcionais, o que é um GENE na biologia?",
+                options: ["É toda a fita completa de DNA dentro de um núcleo.", "É um segmento/fragmento da molécula de DNA que contém as instruções químicas (o código) necessário para a célula fabricar uma proteína específica.", "É um invólucro de gordura que protege a célula de mutações.", "É um conjunto de glóbulos vermelhos hereditários."],
+                correct: 1,
+                explanation: {
+                    correct: "Perfeito! O DNA é um 'livro' gigante. O gene é uma única 'receita' dentro desse livro. Essa receita é lida pelo ribossoma, que a transforma numa proteína (por exemplo, na queratina do teu cabelo).",
+                    options: [
+                        "Isso seria o Cromossoma/Genoma.",
+                        "Esta é a alternativa correta estrutural exata.",
+                        "Gordura (lípido) não guarda código de informação da hereditariedade.",
+                        "Glóbulos vermelhos não são as unidades de hereditariedade primárias."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Fácil",
+                text: "Nas células humanas (eucariontes), onde se localiza e guarda a esmagadora maioria do material genético (DNA)?",
+                options: ["Disperso solto no líquido do citoplasma.", "Dentro da parede de celulose.", "Armazenado e protegido no interior do Núcleo Celular.", "No interior da membrana plasmática superficial."],
+                correct: 2,
+                explanation: {
+                    correct: "O Núcleo é o cofre-forte da célula eucarionte! A dupla membrana da carioteca protege os cromossomas de serem danificados pelos processos de digestão no citoplasma.",
+                    options: [
+                        "Isto acontece nos procariontes (bactérias).",
+                        "Humanos/animais não têm celulose.",
+                        "Esta é a alternativa correta anatómica basal.",
+                        "A membrana é lipídica, não é o arquivo genético."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Médio",
+                text: "Quantos cromossomos tem, de forma regular, uma célula somática humana típica (como a célula da tua pele, fígado ou osso)?",
+                options: ["23 cromossomas isolados.", "46 cromossomas (organizados em 23 pares de homólogos).", "92 cromossomas.", "Apenas os cromossomos sexuais X e Y."],
+                correct: 1,
+                explanation: {
+                    correct: "As nossas células somáticas (do corpo) são DIPLOIDES (2n). Isto significa que herdas um conjunto inteiro de 23 livros do teu pai e uma cópia exata do índice de 23 livros da tua mãe, somando os 46 cromossomas de sobrevivência.",
+                    options: [
+                        "Isto é o número de um Gâmeta (esperma ou óvulo haploide).",
+                        "Esta é a alternativa correta e o cariótipo humano padrão.",
+                        "Isto só acontece muito temporariamente no milissegundo de mitose da divisão.",
+                        "Estes são apenas 2 dos 46 cromossomas totais."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Médio",
+                text: "A respeito dos 'Cromossomas Homólogos'. O que dita que dois cromossomos numa célula humana façam 'um par'?",
+                options: ["Têm sempre os alelos rigorosamente idênticos a 100% (letras iguais).", "Eles têm formas, tamanhos idênticos e carregam os genes para as mesmas características no mesmo exato local (Locus), embora possam trazer informações de alelos opostos (um do pai, outro da mãe).", "Estão colados permanentemente na célula em todas as fases da vida.", "Um é de DNA e o outro é de RNA viral."],
+                correct: 1,
+                explanation: {
+                    correct: "O cromossomo 15 da tua mãe junta-se ao cromossomo 15 do teu pai. Ambos dizem 'Cor do Olho' na linha 2. A mãe pode dizer 'A' (Castanho) e o pai 'a' (Azul), mas o TEMA de arquitetura anatômica que trazem é o mesmo. Por isso são homólogos (semelhantes).",
+                    options: [
+                        "Seriam idênticos se fosses homozigoto ou na duplicação (cromátides-irmãs).",
+                        "Esta é a alternativa correta cromossómica citogenética.",
+                        "Eles ficam soltos no núcleo durante a vida normal da célula (interfase).",
+                        "Não contêm RNA viral."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Fácil",
+                text: "Como se chama o local físico, a morada, o 'endereço exato' onde um gene específico se aloja no fio longo de um cromossoma?",
+                options: ["Locus génico (Plural: Loci).", "Centrómero.", "Alelo dominante.", "Bainha de mielina."],
+                correct: 0,
+                explanation: {
+                    correct: "O Locus (em latim significa lugar). O gene do grupo sanguíneo mora sempre no mesmo bairro, na mesma rua e na mesma casa do cromossoma 9 em qualquer ser humano.",
+                    options: [
+                        "Esta é a alternativa correta topográfica genética.",
+                        "O 'nó' que aperta o centro do cromossoma na divisão.",
+                        "Isto é a variação (a versão) da informação, não a morada em si.",
+                        "Faz parte dos neurônios (sistema nervoso)."
+                    ]
+                }
+            },
+            {
+                id: 6, level: "Médio",
+                text: "Ordena hierarquicamente do MAIOR conceito biológico, para o menor e mais ínfimo componente:",
+                options: ["Gene > DNA > Cromossoma > Genoma.", "Genoma > Cromossoma > Gene > Nucleótido de DNA.", "DNA > Nucleótido > Genoma > Gene.", "Genoma > Gene > Cromossoma > Átomo."],
+                correct: 1,
+                explanation: {
+                    correct: "A Biblioteca inteira com todos os livros (GENOMA) > O Livro físico grosso encadernado (CROMOSSOMA) > A Receita escrita numa folha (GENE) > As letras químicas impressas no papel de duplo hélice (DNA / Nucleótidos).",
+                    options: [
+                        "A ordem está invertida completamente de escala.",
+                        "Esta é a alternativa correta da arrumação escalar citológica da biologia molecular.",
+                        "Incoerente a ordem de genoma.",
+                        "O Gene não é maior que o Cromossomo que o engloba e encerra."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Dicionário: Alelos, Genótipo e Fenótipo (7-12)
+            {
+                id: 7, level: "Fácil",
+                text: "O Gene é a característica (ex: Cor da Flor). Como chamamos às Variações ou 'versões' diferentes que esse gene pode apresentar na natureza (ex: versão vermelha, versão branca)?",
+                options: ["Mutantes letais", "Genomas", "Alelos", "Gâmetas"],
+                correct: 2,
+                explanation: {
+                    correct: "Os alelos são as variantes do gene! Se a característica do carro é 'Pintura', os alelos são 'preto, cinza, branco'. Representamo-los no papel por letras A, a, B, b.",
+                    options: [
+                        "Os alelos não são na sua maioria anomalias letais, são a variedade normal da vida pura viva.",
+                        "Genoma é a caixa inteira total de todos os cromossomos soltos do humano.",
+                        "Esta é a alternativa correta clássica de terminologia mendeliana exata.",
+                        "Gametas são as células reprodutoras, não são fragmentos do código alelo em si."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Fácil",
+                text: "Em Genética, quando escrevemos as letras 'Aa' num exercício, estamos a classificar o indivíduo perante a sua característica como sendo um ser:",
+                options: ["Homozigoto Dominante", "Homozigoto Recessivo", "Heterozigoto (Híbrido)", "Autossómico letal"],
+                correct: 2,
+                explanation: {
+                    correct: "Hetero = Diferente. Zigoto = célula. Como tens uma letra Maiúscula (Dominante) e uma minúscula (Recessiva), tu trouxeste versões diferentes da mãe e do pai. És misto. És Heterozigoto.",
+                    options: [
+                        "Isso seria 'AA' (letras iguais maiúsculas).",
+                        "Isso seria 'aa' (letras iguais minúsculas).",
+                        "Esta é a alternativa correta taxonómica.",
+                        "Não indica letalidade orgânica nem doença basal geral."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Médio",
+                text: "O que distingue a força bioquímica de um Alelo DOMINANTE face a um Alelo RECESSIVO no par genético das nossas células?",
+                options: ["O Dominante mata a célula se não for expresso ativamente.", "O Alelo Dominante ('A') mascara, inibe e oculta totalmente a expressão física do Alelo Recessivo ('a') num indivíduo heterozigoto. A característica recessiva só consegue aparecer se estiver sozinha a par consigo mesma na dose dupla (aa).", "O Alelo Recessivo destrói sempre os ossos da célula.", "O Alelo Dominante só atua se for ativado pela luz solar ambiente."],
+                correct: 1,
+                explanation: {
+                    correct: "O Dominante é o ditador barulhento! Se herdaste o gene dos olhos castanhos (Dominante) da mãe, e o gene dos olhos azuis (Recessivo) do teu pai... ficas com olhos castanhos! O azul fica trancado caladinho a dormir no teu DNA. O Recessivo só atua quando emparelhas 'aa'.",
+                    options: [
+                        "Genes não cometem suicídio celular (apoptose) só por supressão alélica silênciosa.",
+                        "Esta é a alternativa correta clássica de mendel de força pleiotrópica de lise cega pura viva.",
+                        "Características recessivas são a maioria da normalidade (como ter 5 dedos na mão, é genótipo recessivo!).",
+                        "Fotosensibilidade epigenética extrema irreal de mito abstrato falso."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Difícil",
+                text: "A equação fundamental da vida: Genótipo + Ambiente = FENÓTIPO. O que dita esta lei magna na biologia das aparências na derme e sangue vivo denso?",
+                options: ["O Ambiente muda ativamente e rasga e rescreve o teu DNA dos genes para tu te adaptares (Lamarckismo puro).", "O Fenótipo é apenas o que tu imaginas e pensas na tua cabeça de ilusão ótica lúgubre nula de doente falsa.", "O Genótipo (código interno cego) define os limites e o potencial, mas é o Ambiente externo que vai ditar ou modificar como essa característica se exibe visivelmente de facto. (Ex: Tens genótipo para pele clara, mas vais à praia apanhar Sol (ambiente) e o teu Fenótipo torna-se pele morena/bronzeada temporária sem mudares a letra do teu DNA).", "Genótipo e Fenótipo são exatamente a mesma coisa técnica."],
+                correct: 2,
+                explanation: {
+                    correct: "Exato! Podes ter Genótipo (AA) para crescer até aos 2 metros de altura! Mas se na infância passares fome e desnutrição grave (Ambiente lixo severo), nunca passarás de 1,50m (Fenótipo visível atual final real). A tinta do papel DNA chocou com as restrições da obra ambiente cru e frio do tempo do universo.",
+                    options: [
+                        "O ambiente não reescreve a fita interior nucleotídica (mito refutado de Lamarck).",
+                        "O Fenótipo são traços reais, cor física sangue e forma, não fantasia psiquiátrica de ilusão óptica.",
+                        "Esta é a alternativa correta biomolecular da epigenética base comportamental do fenótipo estrutural exato imaculado clara.",
+                        "Um é o código oculto da base, o outro é a pintura na parede acabada visual visível do corpo."
+                    ]
+                }
+            },
+            {
+                id: 11, level: "Médio",
+                text: "Na biologia, existe a curiosa e frequente exceção genética à força do ditador dominante puro: A CODOMINÂNCIA. O que se verifica fisicamente no indivíduo que transporta este alelo de codominância?",
+                options: ["Ambos os alelos do Heterozigoto (ex: I^A I^B) manifestam as suas características TOTALMENTE e ao MESMO TEMPO no fenótipo. Um não máscara ou anula o outro. (Exemplo clássico e mestre: O Grupo Sanguíneo AB, onde a célula tem ambas as proteínas A e B sem se baterem de trancarem e esmagarem).", "O organismo fica branco pálido morto sem sangue murcho falso.", "As cores e características misturam-se como um copo de leite e café, gerando uma terceira cor totalmente intermédia sem traços das originais puras de lise e pura de e murcha.", "A característica dominante engole a recessiva matando o gene base."],
+                correct: 0,
+                explanation: {
+                    correct: "Codominância é Co-Habitação! Ninguém perde. Tem sangue do pai A, tem sangue da mãe B. As hemácias do filho vão ter bandeirinhas A e bandeirinhas B ao mesmo tempo no telhado. Atenção: Não confundas com 'Dominância Incompleta' (onde as cores misturavam: flor vermelha + flor branca = filho flor cor de rosa intermédia).",
+                    options: [
+                        "Esta é a alternativa correta molecular imuno serológica da herança mendeliana de co-expressão alélica de proteínas exata direta clara.",
+                        "Falso.",
+                        "Isto descreve a Dominância Incompleta, onde não expressam o original mas sim a mistura física.",
+                        "Não corresponde ao efeito fisiológico de de mudo."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Fácil",
+                text: "A respeito do grande Mito do Gene Dominante. Se tu te cruzares e casares e no teu casamento o teu parceiro é Acondroplásico (Anão). Sabendo que o nanismo acondroplásico é condicionado por um gene DOMINANTE. Como é possível as pessoas nas ruas de não serem quase todas anãs se o gene é 'Forte e Dominante'?",
+                options: ["A Dominância química biológica alélica não significa Frequência de Distribuição. Um gene pode ser um dominador forte, mas ser RARO na população. A maioria de nós é homozigótica recessiva para os ossos longos (aa).", "A dominância de muda com o calor da noite fria.", "Porque os ossos não têm genética de DNA.", "Mito, todo o gene dominante engole o fraco e domina toda a população num ano."],
+                correct: 0,
+                explanation: {
+                    correct: "A rasteira sociológica e de lógica! Dominante dita só a briga entre as duas letras 'A' e 'a' dentro do teu DNA nuclear privado. Não rege o censo e o número de pessoas no país! Ter cinco dedos (pentadactilia) é Recessivo e 99% das pessoas têm cinco dedos! Ter os olhos vermelhos em alguns insetos é recessivo mas frequente. A força da biologia não é o volume, é a química local.",
+                    options: [
+                        "Esta é a alternativa correta de epidemiologia estatística genética basal clínica clara firme mestre e pura.",
+                        "Falso orgânico",
+                        "Falso anatômico",
+                        "Falácia estatística e populacional da biologia de Darwin"
+                    ]
+                }
+            },
+
+            // BLOCO 3: Gâmetas, Meiose e Cromossomas Sexuais (13-18)
+            {
+                id: 13, level: "Fácil",
+                text: "O óvulo e o espermatozoide humanos (Gâmetas Células Sexuais) precisam de ter metade do número normal de cromossomas do corpo animal adulto. Quantos cromossomas leva no seu núcleo solitário um Óvulo saudável humano?",
+                options: ["10 cromossomas soltos e 2 vírus puros.", "46 cromossomas gigantes e largos densos.", "23 cromossomas (É uma célula Haploide, representada por 'n').", "92 cromossomas de osso rijo gordo longo cego mole."],
+                correct: 2,
+                explanation: {
+                    correct: "Magia da matemática da vida! O Óvulo traz 23 da mãe. O Espermatozoide traz 23 do pai. 23 + 23 = O primeiro Zigoto (tu) nasce com 46! Se não fossem haploides, as gerações iam duplicar de tamanho infinito até a célula rebentar num monstro cromossómico.",
+                    options: [
+                        "Falso quantitativo.",
+                        "Isso é o número somático diploide de célula de pele.",
+                        "Esta é a alternativa correta cromossômica e gametogénica oficial sã pura limpa.",
+                        "Totalmente inviável e abortivo instantâneo fatal agudo no núcleo tenro leve cego."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Médio",
+                text: "A grande magia química da Reprodução Sexuada Humana: Qual é o evento crucial, mágico, genial exato que ocorre OBRIGATORIAMENTE durante a formação dos espermatozoides e óvulos (na Meiose celular na fase de Prófase I), que garante que TUDO, mas rigorosamente todos os teus filhos e espermatozoides sejam geneticamente ÚNICOS e impossíveis de repetir?",
+                options: ["A gravidade altera o peso das pernas.", "Ocorre o Crossing-Over (Recombinação Genética Fina). Os cromossomas que vieram do teu avô paterno abraçam-se fortemente ao cromossoma que veio da tua avó, cruzam as pernas e TROCAM fatias e bocados de DNA entre si! Eles embaralham o baralho das cartas antes de os fecharem em sacos de gâmetas isolados.", "O cérebro corta com faca o DNA.", "Não há recombinação, tu és um clone 100% igual ao teu avô paterno."],
+                correct: 1,
+                explanation: {
+                    correct: "A peça do puzzle da evolução genial de Darwin e Mendel! A Natureza exige Diferença para o vírus não matar a raça humana toda de uma vez. O Crossing-Over obriga a que os genes do teu cabelo e cor dos olhos fiquem misturados na misturadora antes de o bebé nascer. Cada gâmeta do teu corpo é um pacote exclusivo que nunca o mundo viu nem verá.",
+                    options: [
+                        "Falso.",
+                        "Esta é a alternativa correta genética mendeliana de permutação cromossómica de meiose mestre direta exata sólida real pura de recombinação alélica.",
+                        "Ficção patológica abstrata.",
+                        "Negar a variabilidade é negar a reprodução sexuada inteira."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Médio",
+                text: "A determinação genética do Sexo Biológico Humano. A Mulher é XX e o Homem é XY. Quem é o responsável genético que define o sexo final do zigoto feto criança na hora da fecundação?",
+                options: ["As luas do cosmos espaço estrelado de ar pálido murcho a do sol frio.", "A Mãe Mulher (Pois os seus óvulos são maiores).", "Apenas e unicamente o Pai Homem! A mulher nos seus óvulos SÓ PODE doar o cromossoma X. O homem fabrica milhões de espermatozoides: Metade 50% deles leva a letra X e a outra metade 50% leva a Letra Y. O que ganhar a corrida de natação dita se serás Rapaz XY ou Rapariga XX.", "É aleatório pela mutação radioativa."],
+                correct: 2,
+                explanation: {
+                    correct: "A matemática fria da natureza XY de Mamíferos e Ser Humano! As mulheres não têm a peça 'Y' na sua loja genética para doar no ovário. O macho porta o Y. Por isso o espermatozoide é o portador final da decisão sexual. Se um espermatozoide com a fita X fecundar o óvulo, nasce menina (XX). Se o que lá chegar com o acrosomo tiver fita Y, o gene SRY ativa-se e forma a virilização e testículos do rapaz (XY).",
+                    options: [
+                        "A astrologia não pauta a cariotipagem genética molecular molecular e de replicação.",
+                        "A fêmea não dita a variável seletiva e cromossômica heterogamética basal.",
+                        "Esta é a alternativa correta genética de determinação de de a sexual de base XY de fecundação clara direta e reta imaculada.",
+                        "Não tem mutação química externa ambiental ou radiação no ato clássico biológico de encontro ovariano trompal de de."
+                    ]
+                }
+            },
+            {
+                id: 16, level: "Difícil",
+                text: "O que dita a Genética Clínica Mundial sobre as Mutações Genéticas no DNA?",
+                options: ["As mutações são todas sempre perigosas, más fatais cruéis doenças rústicas letais mortais agudas nulas pálidas cegas que devem ser extintas com antibiótico.", "Mutações não existem na biologia, só em laboratórios com radiação.", "A Mutação é a 'Fábrica e Motor da Inovação' e a fonte primordial de NOVA VARIABILIDADE GENÉTICA E CÓDIGO DA VIDA no Universo. Muitas mutações de troca de letras são SILENCIOSAS (neutras não fazem dano), algumas são letais doenças, MAS algumas são altamente Benéficas Protetoras Positivas Vantajosas para a Evolução de Darwin.", "Mutações só acontecem à luz do sol quente."],
+                correct: 2,
+                explanation: {
+                    correct: "Se o DNA copiasse tudo na perfeição de impressora limpa exata a 100% da vida de eras anos, nós nunca teríamos saído do mar da e seríamos bactérias eternas! Os 'erros' cópias a Mutação dão defeitos. Às vezes nasces e sem braço doença, mas as de outras vezes a mutação dá te osso pernas grossas ou defesas contra febres vírus, e ficas super forte e adaptado Darwin vivo de Seleção natural e deixas descendência e filhotes limpos. É o motor do avanço do tempo vivo real duro cru claro imaculado da vida.",
+                    options: [
+                        "Falso, a maior parte do código mutacional atual do teu DNA é DNA lixo silencioso e ou variações inócuas não letais fenotípicas nulas rasas doces e claras.",
+                        "Acontecem milhões de erros por segundo nas tuas mitoses divisão somáticas base diária celular de sol e sombra.",
+                        "Esta é a alternativa correta neodarwinista evolutiva cito-genética magna letal direta pura clara firme forte fina doce limpa exata real cega de a e da biologia.",
+                        "A radiação de sol gera o melanoma cancro UV de mutação epidérmica letal celular, mas as mutações de DNA de cópia celular divisão erro ocorrem 24h sem sem estímulo de lux de lux luz limpo base."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Leis de Mendel e Punnett (Cruzamentos Genéticos Letais de Escola Mestre Forte Bruta) (17-24)
+            {
+                id: 17, level: "Médio",
+                text: "A Primeira Lei de Mendel (Lei da Segregação dos Fatores) dita Oficial e Puramente e Cirurgicamente o quê?",
+                options: ["Falso.", "É a Segregação! Durante a Meiose (na hora de fazer os Gâmetas Espermatozoides e Óvulos) a célula não manda as duas letras (alelos) para o filho! O Par Separa-se Foge Segrega (Vai um alelo para cada célula haploide independente). Um espermatozoide SÓ LEVA OU um 'A' ou um 'a', nunca os dois juntos da mesma letra Aa no mesmo gameta normal.", "Falso.", "Falso."],
+                correct: 1,
+                explanation: {
+                    correct: "A peça do puzzle letal! Mendel via que as coisas não se misturavam como tintas. Ele percebeu (sem sequer ver microscópios) que tu tens 2 fatores (ex: Aa), mas na hora de fazeres o teu espermatozóide, ou mandas a letra A, ou mandas a letra a. Isto é segregação! Se um espermatozoide levasse as duas letras (Aa) a fecundação iria dar 3 ou 4 letras no bebé, o que seria uma aneuploidia trágica letal.",
+                    options: [
+                        "Não tem relação.",
+                        "Esta é a alternativa correta genética e cromossômica de segregação meiose I e da formação de gametas haploides puros limpos fortes.",
+                        "Não tem lógica.",
+                        "Erro de formatação textual."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Médio",
+                text: "Gregor Mendel observou uma coisa genial: Se ele cruzasse uma flor que tinha a cor de semente Amarela Pura Forte Dominante (AA) com uma de cor Verde Fraca Recessiva (aa)... A primeira Geração (Os Filhotes Híbridos da F1) Nascem de Que Cor de Fenótipo?",
+                options: ["Nascem às riscas listradas de verde e amarelo.", "Nascem TODAS 100% Amarelas Híbridas (Genótipo Aa Heterozigoto)! O amarelo ganha, silencia mascara e domina a verde recessivo fraco na biologia química. Só vês amarelo nas filhas!", "Nascem 50% amarelas e 50% verde.", "Nascem azuis por mutação."],
+                correct: 1,
+                explanation: {
+                    correct: "A 1ª Lei de Dominância e Uniformidade na F1! Se cruzas um Homozigoto Dominante (AA) com um Recessivo puro (aa), todos os filhos herdam as letras (Aa). O 'A' grande ganha sempre ao 'a' pequeno. A cor amarela abafa a verde, logo vês 100% de fenótipo amarelo. Mas o gene verde não morreu, está adormecido, passando à geração seguinte de neto! Mendel deitou por terra a teoria estúpida da 'Mistura das Tintas'.",
+                    options: [
+                        "Não há codominância de cores emparelhadas aqui na ervilha de Mendel.",
+                        "Esta é a alternativa correta probabilística cruzada da 1ª Lei mendeliana exata clara.",
+                        "Isso ocorreria se cruzasses Aa x aa (cruzamento-teste).",
+                        "Nonsense biológico."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Médio",
+                text: "E se na 2ª Geração (F2), Mendel cruzar dois desses filhos Híbridos Amarelos entre si (Aa x Aa)? Qual é a probabilidade matemática de nascer uma ervilha VERDE (aa)?",
+                options: ["0%, o verde já tinha desaparecido e morrido limpo nulo.", "100%, para compensar a geração passada e limpar a honra da ervilha verde livre.", "25% (ou 1/4) de probabilidade da recessiva aa verde voltar a aparecer se as duas letras minúsculas se encontrarem no quadro de Punnett cego da roleta de gâmetas puras e mestre.", "50%."],
+                correct: 2,
+                explanation: {
+                    correct: "O salto genial de Mendel! O verde regressa dos mortos! Ao cruzar Aa x Aa, os gametas são A, a, A, a. O Quadro de Punnett dá-nos: 1 AA, 2 Aa, e 1 maravilhoso 'aa'. A característica recessiva pulou uma geração e voltou a manifestar-se nos netos numa exata proporção de 25% matemática pura exata limpa e direta da vida sã.",
+                    options: [
+                        "A característica recessiva nunca se extingue por dominação num heterozigoto.",
+                        "Estatisticamente falso.",
+                        "Esta é a alternativa correta mendeliana de proporção 3:1 de cruzamento monohíbrido Aa x Aa.",
+                        "50% é a proporção de saírem Heterozigotos (Aa) portadores do gene adormecido verde."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Médio",
+                text: "O que significa dizer que um indivíduo é Heterozigoto para uma certa característica?",
+                options: ["Não tem cromossomas suficientes.", "Tem cromossomas de plástico.", "Um indivíduo que transporta dois ALELOS totalmente DIFERENTES e DISTINTOS para a mesma característica do gene (Exemplo: Um 'A' grande e um 'a' pequeno -> Genótipo Aa ou Bb ou I^A I^B).", "Que tem febre na medula espinhal."],
+                correct: 2,
+                explanation: {
+                    correct: "Hetero = Diferente / Zigoto = Célula inicial de união! Homozigoto são iguais puros (AA ou aa). Heterozigoto são de linhagens alelicas díspares mistas (Aa). Genética básica e terminologia vital de punnett para resolver quadros e árvores herdogramas cruciais.",
+                    options: [
+                        "Falso.",
+                        "Falso.",
+                        "Esta é a alternativa correta mendeliana heterozigótica pura imaculada certa densa rica firme clara.",
+                        "Falso."
+                    ]
+                }
+            },
+
+            // BLOCO 5: Heredogramas e Sistema ABO (21-26)
+            {
+                id: 21, level: "Difícil",
+                text: "A Regra Sagrada Mestra de Ouro Absoluta de Heredograma (Árvore Familiar): Se tu lês e cruzas dois PAIS que têm o FENÓTIPO IGUAL (ex: Ambos são normais brancos ou ambos são doentes afetados pintados a preto) e lhes nasce UM FILHO que é DIFERENTE DELES (ex: Pais brancos têm filho pintado de preto). Qual a única dedução biológica e matemática possível e irrefutável imediata da prova clínica?",
+                options: ["A mãe traiu o pai.", "Não há prova de nada, é magia pura livre limpa.", "OS PAIS São obrigatoriamente HETEROZIGOTOS (Aa x Aa) E O FILHO que é diferente deles é OBRIGATORIAMENTE RECESSIVO Puro (aa). Esta lei não falha nunca na genética mendeliana clássica de biologia de herança base.", "O filho é uma mutação alienígena de vírus cego morto."],
+                correct: 2,
+                explanation: {
+                    correct: "Nunca te esqueças deste truque no exame de 9 e 11 ano! Pais IGUAIS com filho DIFERENTE? Os pais são sempre Aa (heterozigotos). E a cor do filho 'estranho' é a cor do Recessivo 'aa'. Porque se os pais fossem aa, só podiam dar 'a', e o filho seria igual a eles. Se eles deram uma coisa que estava escondida (recessiva), eles tinham o gene escondido (Aa). A biologia não falha.",
+                    options: [
+                        "Assunção sociológica falaciosa não biológica de prova genética autossômica mendeliana clássica.",
+                        "A matemática genética tem prova cabal rigorosa estrita e lógica.",
+                        "Esta é a alternativa correta de heredogramas de genealogia padrão magna de biologia exata direta letal viva pura.",
+                        "Falso e absurdo poético raso."
+                    ]
+                }
+            },
+            {
+                id: 22, level: "Médio",
+                text: "Na genética do Sistema Sanguíneo ABO humano, o alelo I^A e o alelo I^B são ambos fortes e não deixam ninguém ser o patrão. Se herdardes o I^A do pai e o I^B da mãe, as tuas hemácias nascem com as duas proteínas de bandeira juntas. Que fenómeno genético é este e qual o teu sangue?",
+                options: ["Herança Recessiva e sangue Tipo O.", "Codominância Pura Plena. Sangue Tipo AB (Ambos os alelos expressam o seu domínio 100% em conjunto pacífico sem um tapar abafar o outro no código fenotípico livre).", "Morte celular.", "Sangue A apenas."],
+                correct: 1,
+                explanation: {
+                    correct: "Co (junto) + Dominância. Ninguém manda calar ninguém. As hemácias ganham as proteínas A e as B. É o único caso clássico humano da genética AB onde o híbrido mostra os dois dominantes em igual força mestre viva e sã clara.",
+                    options: [
+                        "O tipo O é duplamente recessivo (ii) sem proteínas, o exato oposto murcho ralo cego de base limpa.",
+                        "Esta é a alternativa correta da imunologia e serologia genética base letal da de de.",
+                        "Falso.",
+                        "Se fosse dominância completa o A abafava o B (Falso)."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Fácil",
+                text: "Quem é o famoso Dador (Doador) Universal do Sistema Sanguíneo ABO, que pode atirar o seu sangue caridoso puro cego ralo a qualquer doente moribundo da rua de hospital livre porque as suas células vermelhas NÃO TÊM nenhuma proteína (antigénio A ou B) para gerar ataque e alergia imunitária dos anticorpos de choque lise?",
+                options: ["Sangue Tipo AB", "Sangue Tipo A", "Sangue Tipo O (Genótipo ii puro recessivo cego de carapaça nua e lisa limpa).", "Sangue Tipo B"],
+                correct: 2,
+                explanation: {
+                    correct: "O Sangue O (Zero) é a dádiva mágica de emergência mestre cega! Como os glóbulos vermelhos dele são 'carecas', não têm proteínas de picos (nem A nem B), o sistema imunitário doente da pessoa que recebe não vê nada de estranho para atacar! A alergia não desperta e o sangue é aceite. É por isso que é Dador Universal.",
+                    options: [
+                        "AB é Recetor Universal (Recebe de todos porque já tem tudo e não ataca nada).",
+                        "A ataca o B.",
+                        "Esta é a alternativa correta imuno-hematológica da transfusão sagrada letal limpa de base.",
+                        "B ataca o A."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Difícil",
+                text: "No caso dos Herdeiros e Cruzamentos Frios da Matemática do Sangue: Um Pai de Sangue O (ii) e uma Mãe de Sangue AB (I^A I^B) podem biologicamente gerar e parir uma criança que tenha também o sangue tipo O (ii) ou o tipo AB (I^A I^B) como eles da genética cega?",
+                options: ["Sim, a mãe manda o AB e o pai não manda nada.", "NÃO É POSSÍVEL! A Mãe AB obrigatoriamente e sempre atira um A ou atira um B (nunca um i). O Pai O (ii) atira obrigatoriamente sempre a letra 'i' minúscula. Logo, as crianças só e apenas podem nascer com Sangue TIPO A (I^A i) ou TIPO B (I^B i) híbridos! Genialidade Matemática da exclusão paternal limpa.", "Sim, o sangue mistura na barriga e fica O.", "O pai pode atirar sangue de tipo C inventado limpo murcho."],
+                correct: 1,
+                explanation: {
+                    correct: "Magistral e Letal Rasteira Forense de Paternidade! Num quadro de Punnett (Cruzamento ii x I^A I^B), o resultado é 50% de hipótese de (I^A i) e 50% de (I^B i). Os filhos de um casal (AB x O) NUNCA podem ser do sangue dos pais! Nascerá sempre uma criança de Sangue A ou Sangue B. Se nascer um O ou um AB, o hospital trocou os bebés na maternidade ou o carteiro interveio na genética.",
+                    options: [
+                        "Na meiose os genes separam-se, não vão os dois I^A e I^B num só gâmeta.",
+                        "Esta é a alternativa correta mendeliana do sistema ABO alélico múltiplo brutal exato claro.",
+                        "O sangue fetal e materno nunca se misturam diretamente na gravidez sã (barreira placentária).",
+                        "Sem lógica científica."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Médio",
+                text: "A Genética Ligada ao Sexo (Cromossoma X). Doenças como o Daltonismo (não ver verde/vermelho) e a Hemofilia (sangue não coagular) são causadas por genes RECESSIVOS defeituosos escondidos encravados mortos que moram unicamente no Cromossoma X, e não no Cromossoma Y pequeno. Porque é que os HOMENS sofrem muito mais e têm muito mais estas doenças que as Mulheres?",
+                options: ["Porque os homens comem mal.", "Porque o homem tem a fórmula XY. Sendo o Y inútil para esta doença, o homem só tem UM cromossoma X! Se a mãe lhe der um X doente (com a letra recessiva do Daltonismo), o Homem não tem outro X suplente e bom dominante dominante para o encobrir salvar abafar! Ele fica logo doente letal. A Mulher é XX. Se herdar um X doente, o outro X dela bom dominante dominante mascara a doença e salva a rapariga cega a cores.", "Porque a mulher tem visão a laser biológica.", "Porque o cromossoma Y é mágico e atrai as dores da de de vida fina."],
+                correct: 1,
+                explanation: {
+                    correct: "A matemática da tragédia genética masculina! O Cromossoma Y é minúsculo e quase não tem genes (só o de fazer testículos). A mulher tem dois cromossomas X gordos. Ela tem pneu suplente! Se um falha (daltonismo), ela usa o outro (fica portadora sã sã). O homem (XY) não tem pneu suplente! Ou ganha ou perde. A mãe passou-lhe um X estragado? Ele fica doente crónico a 100%.",
+                    options: [
+                        "Não é alimentar.",
+                        "Esta é a alternativa correta ligada ao sexo de Morgan e do sistema X letal puro heterogamético claro exato.",
+                        "Não.",
+                        "Não."
+                    ]
+                }
+            },
+
+            // BLOCO 6: Síntese Forense Final Direta Cega Limpa (26-30)
+            {
+                id: 26, level: "Difícil",
+                text: "Um Homem tem Grupo Sanguíneo A. Uma Mulher tem Grupo Sanguíneo B. Eles têm um Filho com Grupo Sanguíneo O (Zero, Genótipo ii). Isto é um erro biológico e traição forense ou é pura magia biológica viável?",
+                options: ["É perfeitamente viável e normal! Se o Pai for Híbrido Heterozigoto Portador Misto (I^A i) e a Mãe for Híbrida Heterozigota Portadora Mista (I^B i), ambos possuem escondido recôndito abafado no seu DNA o alelo recessivo fraco 'i' do sangue Zero! Na lotaria da fecundação, o Pai atirou o espermatozóide com o 'i', a mãe atirou o óvulo com o 'i', e o bebé fez par recessivo (ii) e nasceu Sangue Zero Perfeito!", "É traição pura oca, porque pais A e B só dão filhos AB.", "É erro do laboratório de vampiros de de de teste.", "O bebé roubou as letras aos pais e ficou em zero de divida biológica murcha cega de sangue mole."],
+                correct: 0,
+                explanation: {
+                    correct: "Genética Forense de Paternidade! Os pais têm sangue A e B (Fenótipos). Mas o que eles escondem no escuro do Genótipo? Se ambos tiverem lá uma letrinha pequena de sangue O (o 'i' recessivo escondido de dos avós de o e de), o milagre acontece de no quadro de Punnett! Há 25% de chances de o filho nascer sangue O (ii). Cuidado a acusar pessoas sem fazer a árvore genealógica de Punnett inteira de lise fina e letal mestre!",
+                    options: [
+                        "Esta é a alternativa correta mendeliana heterozigótica do teste de paternidade puro e clássico duro letal claro exato reto e firme.",
+                        "Eles dão AB se doarem o (I^A e o I^B).",
+                        "Não há vampiros.",
+                        "Fantasia cega fofa suja."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Fácil",
+                text: "Quem determina sempre o sexo do bebé humano e porquê da lei de Darwin e Genética Animal Mestra de Mamífero de Cérebro Cego?",
+                options: ["A Mulher Óvulo Gigante Rica de Fogo Doce de Ovo Branco e Gordo Doce Liso.", "O Espermatozóide do Pai Homem! A mulher nos seus óvulos XX só tem e só dá doar o cromossoma X sempre invariável cego limpo forte mestre. O homem XY fabrica milhões de soldados de gâmetas onde Metade é X e a Metade é Y! O de quem nadar e de ganhar dita o sexo do feto da de gravidez.", "Os vírus do Cérebro Cego Mudo Doente Raso Baço Ralo Murcho Lento Frio Oco.", "A Lua e as marés da de vida de osso e pele cega murcha de de mar raso." ],
+                correct: 1,
+                explanation: {
+                    correct: "A matemática fria da natureza XY de Mamíferos e Ser Humano! As mulheres não têm a peça 'Y' na sua loja genética para doar no ovário. O macho porta o Y. Por isso o espermatozoide é o portador final da decisão sexual. Se um espermatozoide com a fita X fecundar o óvulo, nasce menina (XX). Se o que lá chegar com o acrosomo tiver fita Y, o gene SRY ativa-se e forma a virilização e testículos do rapaz (XY).",
+                    options: [
+                        "A fêmea não dita a variável seletiva e cromossômica heterogamética basal.",
+                        "Esta é a alternativa correta genética de determinação sexual de base XY de fecundação clara direta e reta imaculada viva e sã e mestre.",
+                        "Não tem mutação química.",
+                        "A astrologia não pauta a cariotipagem genética molecular molecular e de replicação."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Fácil",
+                text: "O que diz a Lei Citológica e Imunológica Obstétrica Mestre Absoluta sobre a 'PLACENTA' (órgão panqueca de disco temporário mágico único rico base calmo que o bebé e a mãe formam e geram na parede da derme do útero da grávida)?",
+                options: ["A Placenta é uma mangueira grossa oca que MISTURA ATIVAMENTE o sangue vermelho da mãe com o sangue do bebé.", "O Sangue Mestre da Mãe e do Bebé NUNCA SE MISTURAM DIRETAMENTE E CRUAMENTE NA VEIA. A Placenta atua como 'FILTRO E ALFÂNDEGA Passiva' permitindo que através da DIFUSÃO e OSMOSE (Nutrientes, Glicose e O2) saltem passem do rio da mãe para a rede da criança, e o Lixo (CO2/Ureia) passe do bebé para o sangue mãe.", "A Placenta não permite a troca de oxigénio.", "A placenta é feita de osso rígido cálcico forte."],
+                correct: 1,
+                explanation: {
+                    correct: "A barreira hemato-placentária letal e cirúrgica perfeita genial do milagre evolutivo imune! Se a mãe A-positivo misturasse na veia crua aberta o sangue no feto B-positivo, o seu sistema imunitário branco criava anticorpos agudos imunes e matava o 'invasor' embrião em minutos de choque hemolítico trombótico (ataque auto-imune aborto). A placenta permite a nutrição gasosa e calórica sem misturar os fluxos de choque letal direto puro.",
+                    options: [
+                        "Falso, a mistura sangrenta aberta cruzada em veia de sangue distinto incompatível dita o choque imune fatal abortivo.",
+                        "Esta é a alternativa correta ginecológica obstétrica de membrana placentária vascular fetal pura letal mestre.",
+                        "A difusão da oxigenação depende a 100% absoluto destas trocas e permutas de difusão base de hematose placentária.",
+                        "É tecido mole orgânico altamente vascularizado de corion viloso esponjoso carnudo."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Médio",
+                text: "Mutações não existem na biologia, só em laboratórios com radiação nula cega e pura e rasa oca de falso limpo. Concordas com a afirmação e porquê da ciência pura cega de de base letal fina e cega?",
+                options: ["A Mutação é a 'Fábrica e Motor da Inovação' e a fonte primordial basilar vital orgânica principal primária final letal única bruta de NOVA VARIABILIDADE GENÉTICA E CÓDIGO DA VIDA no de o no Universo Cego das espécies animais puras. Sem erros e falhas nas cópias de DNA o mundo seria povoado só de clones puros fracos e chatos mortos cegos à mercê do predador letal cego livre.", "As mutações são todas sempre perigosas, más fatais cruéis doenças rústicas letais mortais agudas.", "Concordo, Mutações só acontecem à luz de sol.", "A mutação é o apêndice do lixo morto e sã."],
+                correct: 0,
+                explanation: {
+                    correct: "Se o DNA copiasse tudo na perfeição de impressora limpa exata a 100% da vida de eras anos, nós nunca teríamos saído do mar e seríamos bactérias eternas! Os 'erros' cópias a Mutação dão defeitos. Às vezes nasces e sem braço doença, mas outras vezes a mutação dá te osso pernas grossas ou defesas contra febres vírus, e ficas super forte e adaptado Darwin vivo de Seleção natural e deixas descendência e filhotes limpos. É o motor do avanço do tempo vivo real duro cru claro imaculado da vida.",
+                    options: [
+                        "Esta é a alternativa correta neodarwinista evolutiva cito-genética magna letal direta pura clara firme forte fina doce limpa exata real cega de a e da biologia.",
+                        "Falso, a maior parte do código mutacional atual do teu DNA é DNA lixo silencioso e ou variações inócuas não letais fenotípicas nulas rasas doces e claras.",
+                        "A radiação de sol gera o melanoma cancro UV de mutação epidérmica letal celular, mas as mutações de DNA de cópia celular divisão erro ocorrem 24h sem sem estímulo de lux de lux luz limpo base.",
+                        "As mutações não são órgãos residuais mortos cegos baços."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "Síntese Epistemológica Celular Citológico Universal Absoluto Base da Teoria Científica Alfa Supremo Superior Cruel Duro Final Letal Terminal Exato Liso Frio Claro Puro Denso Intenso Pleno Fixa Sólida Pura Clara Limpa Fina de Topo Exato Base da Citologia e Microbiologia Geral da Biologia do Secundário Médio Curto Raso Médio Fixo. Seleciona a opção em que não há falhas nem mentiras em nenhuma das ligações de Hormona-Função-Glândula de Mosaico Cego de Vida Limpa Suada Cega Pura Cega e Nua Morna Doce Limpa Suada Seca Rala Fria Suave Murcha Murcha Lenta Morna Mole Doce Suave Branda Base Rasa Fraca Cega do Mudo Mudo Chato Oco do Fio Raso Raso Seco Baço Podre Podre Murcha Nula e Morta Oca Nula Murcha Oca do Fim Raso Frio Falso Ralo Baço Baço Vazio Baço Falso Cego Nulo Morto Fio Raso Raso Frio Limpo Puro Limpo Certa Limpa Pura Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?",
+                options: ["Vírus = Organelo Completo Procarionte Bactéria // Bactéria Monera = Citoplasma do Fungo Verde Mitocôndria DNA // Fungi Bolor = Animal da Plantas Lúgubre Oco Pleno Seco Forte Fogo Quente. ", "Bactéria Procarionte Monera Sem Núcleo Livre Cego = Possui Mitocôndria Gorda Falsa Clara Livre Viva Pura Doce Seca Limpa // Planta Vegetal Flora Botânica Clorofila Fina Folha = Possui Exclusivamente Ganchos Cílios de Natação Parasita Raso Cego Oco Morto Doce de Cisticerco Pálido Morto Mudo Calmo // Célula Animal Carne Sangue Humano = Possui Parede Celulose da Quitina Celulose Cega Cega Rasa Fria Suja Grossa Lenta Murcha Murcha Murcha Seca Forte Forte.", "INSULINA (Abaixa Reduz Hipoglicemia Cega e Abre Portas Pâncreas). // GLUCAGINA (Glucagon Manda Fígado Subir Hiperglicemiante Liberta Açúcar Sangue Açúcar Sobe O Eleva Na O Fome). // ADRENALINA (Stress Medula Suprarrenal Coração Perna Taquicardia O Acelera Midríase Adrenal Susto Susto Pânico Caça Medo Choque Vivo Fuga). // TIROXINA T3 T4 (Tiroide Frio Calor Ritmo Combustão Do De Iodo Bócio Bócio Ritmo Rápido Emagrece Motor O Metabolismo Lento Acelerado). // ADH (Guarda Água Mija Menos Urina Falsa Anti Álcool Diurese Filtro Urina Cego Escura Reta Rim Hipotálamo Cérebro).", "CÉLULA ANIMAL HUMANA DO SANGUE HOMEM CÃO LOBO: Com Cloroplasto Vacúolo da Mitocôndria Verde e com a Parede Fina Suja Verde Limpa Cega // BACTÉRIA VIRAL MONERA VÍRUS DO AR DA CONSTIPAÇÃO: Com Núcleo Oco Falso Doente Murcho Raso Baço Frio Cego Plasmídeo Falso Chato de Bolor da Parede Parede do Parede Parede Fungo." ],
+                correct: 2,
+                explanation: {
+                    correct: "A tabela periódica da Fisiologia Endocrinológica Glicémica Pancreática Tiroidiana Mestra Suprarrenal Folicular Ovariana Renal Adrenal HPA Eixo Exata Letal Fria Pura de Alfa Biológico Imaculado Reta Direta Homeostasia Base Geral Clássica Escolar Curricular do Ensino 9. O aluno memorizando as associações de Glândula -> Hormona -> Função Sangue Resposta Célula Alvo, passa com nota magna em qualquer vestibular avaliação teste rigoroso limpo cego cego cego cego de do murcho fofo vivo e morto vivo lúgubre denso longo cego oco frio mole mudo doente raso baço podre oco cego nulo de falsa de rala viva. Insulina (Açúcar Para Baixo, guarda-o nas células e converte e tira do sangue); Glucagina (Açúcar Para Cima, manda o fígado soltar e e e atirar tudo cego para o sangue); Adrenalina (Luta Stress Fuga Pânico Corre Rápido Forte Imediato do Leão Músculo); Tiroxina (Velocidade Calor Ritmo Bócio Obeso Iodo Motor Geral); ADH (Retém de e segura da Água não Mija Salva Água Álcool Sangue Rio Cego). Perfeito imaculado de e e sã certa reta letal dura dura firme densa.",
+                    options: [
+                        "Salada letal confusa esquizofrénica de taxonomia biológica misturada sem critério nulo de base.",
+                        "Bactéria procarionte não possui mitocôndria (organelo membranoso complexo eucarionte extra luxo alien). Animal cão lobo urso pássaro não tem parede celulósica da alface de mato forte.",
+                        "Esta é a alternativa correta macroestrutural taxativa clara rigorosa biológica exata padrão de ouro do teste de biologia do nono ano superior de fecho mental sólido duro indestrutível final absoluto cego de dúvida livre de erro isento de falha cego mudo final claro reto curto denso exato forte sólido firme limpo genérico basilar genial denso exato real firme suprema letal dura reta imaculada viva e pura.",
+                        "Inversão do material biológico de clorofila botânica injetada na célula somática zoológica de mamífero heterotrófico do lobo cão homem ser fauna carne e osso. Vírus é acelular alien morto não procarionte Monera vida de bactérias célula de base."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Recetor Hormonal Aprovado!' : '❌ Ops! Falha no Feedback Negativo Metabólico:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>A Verdade Biológica Imaculada Pura Reta Direta Certa:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#4C0519; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #FBCFE8; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Diagnóstico Metabólico da Morte Falsa Limpa e Terna e Mole dos Mitos Patológicos Errados:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício Endócrinos (Magenta, Âmbar, Roxo)
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#E11D48', '#D97706', '#0369A1', '#9F1239']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#E11D48', '#D97706', '#0369A1', '#9F1239']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Relatório Metabólico Mestre";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar Terapia";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Destruíste ${correct} de ${questions.length} mitos endócrinos rasos e perigosos e cegos.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Colapso Endócrino Severo Agudo Lítico Letal Pálido Mudo Cego Doente Murcho Ralo Doce Cego Frio Nulo Falso Cego Mudo Frio Lento Frio Oco Raso Lento Fofo!</strong> A tua balança homeostática intelectual falhou a inibição de feedback negativo letal de bloqueio a e de de de de de de de de de. Confundir o pâncreas com a tiroide de de ou inverter a glicémia de de de e de no de na num num exame na o exame de de é é um e e um de e um de coma de um coma diabético coma diabético diabético na da nota de nota na final nota a e final de o da pauta lúgubre denso mudo livre limpo de de rústico forte. Atingir 80% (24 acertos) é obrigatório nesta prova vital médica forense pura e clínica animal animal de de. Terapia de Reposição Hormonal e de de O o de e de de de Estudo a de de de a Urgente Estudo Frio Limpo: Lê a Teoria Endócrina e e limpa limpa a e limpa as a o as do as e falhas do a as de falhas e de as recetoras de de as falhas recetoras da a de da do a da de membrana antes da antes a antes a o de antes de do de de repetires e de o de o a o de repetires a de do a repetires o a o e e o o Exame Exame Exame Alfa!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Reconstruir Feedback Negativo Hormonal (Refazer Prova Metabólica Alfa Limpa Pura Exata Direta Segura Sólida e Dura Certa)</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Endocrinologista Sistêmico de Homeostasia Mestre de Ouro Alfa Superior Real e Direta Plena Imaculada!</strong> Sabes a diferença milimétrica fisiológica química eletrofisiológica e letal química letal química de de do de a do de a a o receptor de receptor receptor entre a a e a a do e de entre insulina e a insulina glucagina tiroide glucagina e a do de o de tiroide e e e medula e medula tiroide da medula adrenal da do de medula a e da de adrenal a adrenal e de adrenal de e do do e do de de. A tua análise endócrina de endócrina análise química a do de laboratório a o a laboratório o de do está está e clinicamente de a clinicamente a de a do de a blindada o do blindada blindada a e a perfeita e e de perfeita exata e exata exata o forte rica sem rica forte sem a sem a de a o sem falhas a a e falhas a falhas e o a falhas! O corpo e a balança química da de química do a do a termostato da de a o mestre a do a de mestre o o a do da da a a da o e natureza da e a a natureza do humana e a a humana não a o e não não o do de a não tem não tem segredos a e segredos de do a teóricos a o de a o teóricos de a a de teóricos a para a de o a para a de de o teu a o e a a o a o o cérebro a o o de o o a o cérebro! Estás pronto e a de e o de para para para o a do de o o do de de a e de a para o de a vencer a o de o a de o de a o a de de a de de e de de a a do e de vencer!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Inspecionar o Citosol Sangue Vasos Insulina Glucagon e Recetores Novamente Reta e Viva Doce</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Forense das Anomalias Hormonais Falsas Cegos Mitos Murchas Nulas Lentas Ocas Lentas Frias Baças Cegas Ralas Nuas Pálidas Murchas Falsas Mudos Falsos Ocos Frios Cegos Vazios Sujos Gordinhos Doentes Mudos Ocos Cegos Fios Frios Rasos Mudos Ocos Falsos Podres Lentos Ralos Mudos Doces Cegos Lentos Frios Rasos Frios Limpos Puros Limpos Certas Limpas Puras Limpas Limpas Claras Retas Duras Duras Certas Verdades Puras Fim Certas Duras Limpas Retas Vivas Duras Certas (Falhas Bioquímicas Letais):</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">O teu Mito Hormonal Perigoso Oco e Falso: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">A Verdade Metabólica Fisiológica Fina e Direta Pura Absoluta Viva Quente Real Clara: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>

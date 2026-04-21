@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Endócrino - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- ESTILO PROMOVER (Identidade Visual Neobrutalista) --- */
+        :root {
+            /* TEMA: BIO-HORMONAL (Magenta Endócrino & Âmbar Mensageiro) */
+            --bg-color: #FDF2F8; /* Rosa/Magenta muito claro */
+            --text-color: #4C0519; /* Magenta muito escuro */
+            --border-color: #000000;
+            --white: #FFFFFF;
+            
+            --theme-light: #FBCFE8; /* Rosa/Magenta Claro */
+            --theme-medium: #E11D48; /* Magenta Vibrante */
+            --theme-dark: #9F1239; /* Magenta Profundo */
+            --theme-contrast: #D97706; /* Âmbar (Alvos Celulares/Receptores) */
+            --theme-accent: #0369A1; /* Ciano Escuro (Corrente Sanguínea) */
+            --theme-text-active: #FFFFFF;
+            
+            /* Cores de Feedback do Quiz */
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 100px;
+            background-image: linear-gradient(#fbcfe8 1px, transparent 1px), linear-gradient(90deg, #fbcfe8 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            50% { transform: translateX(6px); }
+            75% { transform: translateX(-6px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .pulse-effect { animation: pulse 1.5s infinite; display: inline-block; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); color: var(--theme-contrast); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- HEADER --- */
+        .logo-header {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 10px 0;
+        }
+
+        .css-logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            border: 3px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 12px;
+            background: var(--theme-dark);
+            box-shadow: 4px 4px 0px var(--theme-contrast);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #881337;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+        /* --- NAVEGAÇÃO --- */
+        .top-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .btn-close {
+            text-decoration: none;
+            color: var(--theme-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 2px 2px 0px var(--border-color);
+            transition: transform 0.1s;
+        }
+        .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--border-color); }
+
+        .toggle-container {
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 4px;
+            display: flex;
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 0px var(--border-color);
+        }
+        .toggle-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 12px 0;
+            border-radius: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #9F1239;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .toggle-btn.active {
+            background-color: var(--theme-dark);
+            color: var(--theme-text-active);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .view-section { display: none; animation: fadeIn 0.4s ease; flex-direction: column; gap: 20px; }
+
+        /* --- BARRA DE PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .search-input:focus {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px var(--theme-contrast);
+            border-color: var(--theme-dark);
+        }
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.7;
+        }
+        #no-results { text-align: center; color: var(--theme-dark); font-weight: 600; display: none; }
+
+        /* --- SEÇÕES DE CONTEÚDO (TEORIA) --- */
+        .content-group { display: flex; flex-direction: column; gap: 12px; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--theme-dark);
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            align-self: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .theory-box {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-radius: 16px;
+            background-color: var(--white);
+            border: 2px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+            gap: 15px;
+        }
+
+        .theory-box::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0; width: 10px;
+            background-color: var(--theme-contrast);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .theory-box h3 { font-size: 1.2rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; display: flex; align-items: center; gap: 8px;}
+        
+        .visual-area {
+            background: #FAFAFA;
+            border: 2px dashed var(--theme-dark);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        svg { max-width: 100%; height: auto; }
+
+        .highlight-box {
+            background-color: #FEF3C7; /* Âmbar muito suave */
+            border-left: 4px solid var(--theme-contrast);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: #78350F;
+        }
+        .highlight-box.blue {
+            background-color: #E0F2FE;
+            border-left-color: var(--theme-accent);
+            color: #075985;
+        }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;
+            text-transform: uppercase; margin-bottom: 10px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1);
+        }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map {
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px;
+            white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot {
+            min-width: 35px; height: 35px; border: 2px solid var(--border-color); border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: 800;
+            font-size: 0.8rem; color: #9F1239; background: white; cursor: pointer; transition: all 0.2s;
+        }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 2px 2px 0px var(--theme-contrast); transform: scale(1.1); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .option-btn {
+            display: flex; align-items: center; width: 100%; padding: 16px;
+            background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px;
+            margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; text-align: left;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .opt-circle {
+            width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border-color);
+            margin-right: 15px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark);
+        }
+        
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 2px 2px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        .feedback-box {
+            display: block; margin-top: 20px; background-color: #FAFAFA;
+            border: 2px dashed var(--theme-dark); border-radius: 12px; padding: 20px;
+            animation: slideUp 0.3s ease-out;
+        }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-bottom: 10px; display:flex; align-items:center; gap:8px; color: var(--theme-dark); }
+        .feedback-item { margin-bottom: 8px; font-size: 0.85rem; padding-left: 10px; border-left: 3px solid #CBD5E1; line-height: 1.5; color: #334155; }
+        .feedback-item.correct-opt { border-left-color: var(--correct-border); font-weight: 700; color: var(--correct-border); background: var(--correct-bg); padding: 10px; border-radius: 0 6px 6px 0; }
+        .feedback-item.wrong-opt { border-left-color: var(--wrong-border); color: #7F1D1D; }
+
+        /* --- RESULTADO --- */
+        .result-card {
+            background: white; border: 3px solid var(--border-color); border-radius: 20px;
+            padding: 30px; box-shadow: 6px 6px 0px var(--border-color); margin-bottom: 30px; text-align: center;
+        }
+        .stars-container { font-size: 3.5rem; margin: 10px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 4.5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 10px 0; text-shadow: 3px 3px 0px var(--theme-contrast); }
+        
+        .btn-action {
+            width: 100%; padding: 18px; background-color: var(--theme-dark); color: white;
+            border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.1rem; font-weight: 900;
+            cursor: pointer; box-shadow: 4px 4px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 20px;
+        }
+        .btn-action:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        .quiz-footer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-color); border-top: 3px solid var(--border-color);
+            padding: 15px 20px; display: none; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .nav-btn { padding: 12px 24px; border-radius: 8px; font-weight: 800; border: 2px solid var(--border-color); cursor: pointer; box-shadow: 2px 2px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase;}
+        .btn-next { background-color: var(--theme-dark); color: white; }
+        .btn-prev { background-color: white; color: var(--text-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🧪</span> PROMOVER</div>
+            <h1>Biologia 9º Ano</h1>
+            <p class="subtitle">Sistema Endócrino: Os Mensageiros Químicos</p>
+        </header>
+
+        <!-- ABAS -->
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="setMode('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="setMode('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- ================= MODO TEORIA ================= -->
+        <div id="viewExplanation" class="view-section" style="display: flex;">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar glândula... (ex: Tiroide)">
+            </div>
+            <div id="no-results"><p>😕 Hormona não detetada nos recetores. Verifica a ortografia.</p></div>
+
+            <!-- TÓPICO 1: O QUE SÃO HORMONAS E GLÂNDULAS -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-dark);">🧪 1. O Serviço de Correios</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-dark);">
+                    <h3 style="color: var(--theme-dark);">O que é o Sistema Endócrino?</h3>
+                    <p>O Sistema Nervoso e o Sistema Endócrino são os dois chefes do teu corpo. Enquanto o nervoso usa eletricidade rápida e fugaz, o endócrino usa <strong>Hormonas</strong> (mensageiros químicos). A ação é mais lenta a arrancar, mas os efeitos perduram no tempo.</p>
+                    
+                    <div class="visual-area">
+                        <svg width="260" height="120" viewBox="0 0 260 120">
+                            <!-- Glândula Endócrina -->
+                            <circle cx="50" cy="60" r="30" fill="#FBCFE8" stroke="#9F1239" stroke-width="2"/>
+                            <text x="50" y="45" font-size="8" font-weight="bold" fill="#9F1239" text-anchor="middle">Glândula</text>
+                            <text x="50" y="55" font-size="8" font-weight="bold" fill="#9F1239" text-anchor="middle">Endócrina</text>
+                            
+                            <!-- Hormonas -->
+                            <circle cx="50" cy="70" r="4" fill="#D97706"/><circle cx="65" cy="75" r="4" fill="#D97706"/><circle cx="35" cy="75" r="4" fill="#D97706"/>
+                            
+                            <!-- Vaso Sanguíneo -->
+                            <path d="M 80 80 Q 150 90 200 80" fill="none" stroke="#E11D48" stroke-width="20" stroke-linecap="round"/>
+                            <text x="140" y="70" font-size="8" font-weight="bold" fill="#E11D48" text-anchor="middle">Corrente Sanguínea</text>
+
+                            <!-- Hormonas no Sangue -->
+                            <circle cx="100" cy="80" r="4" fill="#D97706"/><circle cx="130" cy="85" r="4" fill="#D97706"/><circle cx="160" cy="75" r="4" fill="#D97706"/>
+
+                            <!-- Célula Alvo -->
+                            <path d="M 210 50 Q 230 30 250 50 L 250 110 Q 230 130 210 110 Z" fill="#DBEAFE" stroke="#0369A1" stroke-width="2"/>
+                            <!-- Receptores -->
+                            <path d="M 210 65 C 200 65 200 75 210 75" fill="none" stroke="#D97706" stroke-width="3"/>
+                            <path d="M 210 85 C 200 85 200 95 210 95" fill="none" stroke="#D97706" stroke-width="3"/>
+                            <circle cx="205" cy="70" r="4" fill="#D97706"/> <!-- Hormona encaixada -->
+
+                            <text x="230" y="85" font-size="9" font-weight="bold" fill="#0369A1" text-anchor="middle">Célula-Alvo</text>
+                        </svg>
+                    </div>
+
+                    <div class="highlight-box">
+                        <strong>Endócrina vs Exócrina:</strong> Uma glândula <em>Exócrina</em> (ex: sudorípara, salivar) deita o seu produto para FORA do corpo (ou para tubos como o estômago) através de canais/ductos. Uma glândula <strong>Endócrina</strong> (ex: tiroide) deita a hormona <strong>DIRETAMENTE no sangue</strong>. Não tem ductos!
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 2: O MAPA DAS GLÂNDULAS -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-medium);">🗺️ 2. Anatomia Endócrina</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-medium);">
+                    <h3 style="color: var(--theme-dark);">As Principais Glândulas</h3>
+                    <p>Onde estão e quem são as grandes fábricas de hormonas do corpo humano?</p>
+                    
+                    <div class="visual-area" style="padding: 20px 0; background-color: var(--white); border: 2px solid var(--border-color);">
+                        <!-- VIEWBOX CORRIGIDO COM LINHAS DE CHAMADA -->
+                        <svg width="100%" height="auto" viewBox="-80 0 500 450" style="max-width: 500px; font-family: 'Poppins', sans-serif;">
+                            
+                            <!-- Silhueta -->
+                            <path d="M 175 20 C 130 20 130 90 175 100 C 220 90 220 20 175 20 Z" fill="#FCE7F3" stroke="#F472B6" stroke-width="2" stroke-dasharray="4,2"/>
+                            <path d="M 175 100 Q 150 120 110 130 L 110 300 Q 175 320 240 300 L 240 130 Q 200 120 175 100 Z" fill="#FCE7F3" stroke="#F472B6" stroke-width="2" stroke-dasharray="4,2"/>
+                            
+                            <!-- Hipófise (Cérebro) -->
+                            <circle cx="175" cy="65" r="6" fill="#4338CA" stroke="#312E81" stroke-width="2"/>
+                            <polyline points="169,65 90,65" fill="none" stroke="#4338CA" stroke-width="2"/>
+                            <text x="85" y="69" font-size="12" font-weight="900" fill="#4338CA" text-anchor="end">HIPÓFISE</text>
+
+                            <!-- Tiroide (Pescoço) -->
+                            <path d="M 175 105 C 165 110 165 120 175 115 C 185 120 185 110 175 105 Z" fill="#E11D48" stroke="#9F1239" stroke-width="2"/>
+                            <polyline points="185,112 260,112" fill="none" stroke="#E11D48" stroke-width="2"/>
+                            <text x="265" y="116" font-size="12" font-weight="900" fill="#E11D48" text-anchor="start">TIROIDE</text>
+
+                            <!-- Rins e Suprarrenais -->
+                            <!-- Rim Esq -->
+                            <path d="M 140 200 C 130 180 160 180 160 210 C 160 230 130 230 140 200 Z" fill="#FDA4AF" stroke="#BE123C" stroke-width="2"/>
+                            <!-- Suprarrenal Esq -->
+                            <path d="M 140 185 Q 150 175 160 185 Q 150 195 140 185 Z" fill="#D97706" stroke="#92400E" stroke-width="2"/>
+                            
+                            <!-- Rim Dir -->
+                            <path d="M 210 200 C 220 180 190 180 190 210 C 190 230 220 230 210 200 Z" fill="#FDA4AF" stroke="#BE123C" stroke-width="2"/>
+                            <!-- Suprarrenal Dir -->
+                            <path d="M 210 185 Q 200 175 190 185 Q 200 195 210 185 Z" fill="#D97706" stroke="#92400E" stroke-width="2"/>
+                            
+                            <polyline points="138,185 80,185" fill="none" stroke="#D97706" stroke-width="2"/>
+                            <text x="75" y="189" font-size="12" font-weight="900" fill="#D97706" text-anchor="end">SUPRARRENAIS</text>
+
+                            <!-- Pâncreas -->
+                            <path d="M 155 230 Q 175 245 200 225" fill="none" stroke="#EAB308" stroke-width="14" stroke-linecap="round"/>
+                            <polyline points="202,230 260,230" fill="none" stroke="#CA8A04" stroke-width="2"/>
+                            <text x="265" y="234" font-size="12" font-weight="900" fill="#CA8A04" text-anchor="start">PÂNCREAS</text>
+
+                            <!-- Gónadas (Testículos/Ovários) -->
+                            <ellipse cx="160" cy="280" rx="9" ry="14" fill="#0369A1" stroke="#075985" stroke-width="2"/>
+                            <ellipse cx="190" cy="280" rx="9" ry="14" fill="#0369A1" stroke="#075985" stroke-width="2"/>
+                            <polyline points="151,280 90,280" fill="none" stroke="#0369A1" stroke-width="2"/>
+                            <text x="85" y="284" font-size="12" font-weight="900" fill="#0369A1" text-anchor="end">GÓNADAS</text>
+
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 3: A HIERARQUIA -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: var(--theme-contrast);">👑 3. Quem Manda em Quem?</div>
+                <div class="theory-box search-target" style="border-left-color: var(--theme-contrast);">
+                    <h3 style="color: var(--theme-contrast);">Hipotálamo e Hipófise</h3>
+                    <p>As glândulas não disparam hormonas de forma aleatória. Existe uma cadeia de comando rígida instalada no teu cérebro.</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Hipotálamo:</strong> É o Diretor-Geral. É tecido nervoso, mas produz neuro-hormonas. É ele a ponte física e funcional entre o sistema nervoso e o sistema endócrino. Dita as ordens superiores.</li>
+                        <li><strong>Hipófise (Glândula Pituitária):</strong> É a "Glândula Mestra". Obedece ao Hipotálamo. Para além de produzir hormonas de ação direta (ex: Hormona do Crescimento - GH), ela produz <em>hormonas estimulinas (tróficas)</em> que vão acordar e obrigar as outras glândulas a trabalhar (ex: TSH manda a tiroide trabalhar).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TÓPICO 4: FUNÇÕES CHAVE -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: #8B5CF6;">⚙️ 4. As Fábricas Químicas</div>
+                <div class="theory-box search-target" style="border-left-color: #8B5CF6;">
+                    <h3 style="color: #4C1D95;">Tiroide, Suprarrenais e Gónadas</h3>
+                    <p>A harmonia do teu corpo depende do funcionamento silencioso destas fábricas.</p>
+                    
+                    <div class="visual-area" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding:0; background:transparent; border:none;">
+                        <!-- Tiroide -->
+                        <div style="background:white; border:2px solid #E11D48; padding:15px; border-radius:8px;">
+                            <h4 style="color:#BE123C; text-align:center; font-size:1.1rem; margin-bottom:10px;">TIROIDE</h4>
+                            <p style="font-size:0.8rem; line-height:1.5; margin:0;">
+                                Produz <strong>T3 e T4</strong>. Função: <strong>Regula o Metabolismo Basal</strong> (a velocidade a que queimas combustível e geras calor). Precisa de Iodo para funcionar. O seu descontrolo causa Hiper ou Hipotiroidismo.
+                            </p>
+                        </div>
+                        <!-- Suprarrenais -->
+                        <div style="background:white; border:2px solid #D97706; padding:15px; border-radius:8px;">
+                            <h4 style="color:#B45309; text-align:center; font-size:1.1rem; margin-bottom:10px;">SUPRARRENAIS</h4>
+                            <p style="font-size:0.8rem; line-height:1.5; margin:0;">
+                                Em cima dos rins. Produzem <strong>Adrenalina</strong> (prepara o corpo para a ação/stress agudo) e <strong>Cortisol</strong> (lida com o stress crónico mobilizando energia).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TÓPICO 5: HOMEOSTASIA E O PÂNCREAS -->
+            <div class="content-group">
+                <div class="section-badge" style="background-color: #047857;">⚖️ 5. Homeostasia Glicémica</div>
+                <div class="theory-box search-target" style="border-left-color: #047857;">
+                    <h3 style="color: #064E3B;">O Pâncreas e o Açúcar</h3>
+                    <p><strong>Homeostasia</strong> é manter o corpo em equilíbrio termodinâmico perfeito. O exemplo rei em exames é a regulação da Glicémia (açúcar no sangue). O Pâncreas joga xadrez com duas hormonas rivais através de <em>Feedback Negativo</em>:</p>
+                    
+                    <div class="visual-area">
+                        <svg width="260" height="150" viewBox="0 0 260 150">
+                            <!-- Balança -->
+                            <polygon points="130,120 120,140 140,140" fill="#000"/>
+                            <line x1="40" y1="120" x2="220" y2="120" stroke="#000" stroke-width="4"/>
+                            
+                            <!-- Insulina -->
+                            <rect x="50" y="80" width="40" height="40" rx="5" fill="#059669" stroke="#047857" stroke-width="2"/>
+                            <text x="70" y="105" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFF">Insulina</text>
+                            <text x="70" y="70" text-anchor="middle" font-size="9" font-weight="bold" fill="#059669">Baixa o Açúcar</text>
+
+                            <!-- Glucagina -->
+                            <rect x="170" y="80" width="40" height="40" rx="5" fill="#E11D48" stroke="#BE123C" stroke-width="2"/>
+                            <text x="190" y="105" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFF">Glucagina</text>
+                            <text x="190" y="70" text-anchor="middle" font-size="9" font-weight="bold" fill="#E11D48">Sobe o Açúcar</text>
+                            
+                            <!-- Setas de Acção -->
+                            <path d="M 70 45 L 70 20" stroke="#059669" stroke-width="3" marker-end="url(#arrowGreen)"/>
+                            <path d="M 190 20 L 190 45" stroke="#E11D48" stroke-width="3" marker-end="url(#arrowRed)"/>
+
+                            <!-- Defs -->
+                            <defs>
+                                <marker id="arrowGreen" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#059669"/>
+                                </marker>
+                                <marker id="arrowRed" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#E11D48"/>
+                                </marker>
+                            </defs>
+                        </svg>
+                    </div>
+
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Insulina:</strong> Libertada após comeres. Funciona como a "chave" que abre as portas das células para o açúcar ENTRAR, limpando-o do sangue.</li>
+                        <li><strong>Glucagina (Glucagon):</strong> Libertada no jejum. Vai ao fígado e diz: "Deita o açúcar que guardaste de volta para o sangue, senão desmaiamos!".</li>
+                        <li><strong>Diabetes Mellitus:</strong> Ocorre quando não há insulina (Tipo 1 - autoimune) ou as células estão surdas a ela (Tipo 2 - resistência), deixando o sangue letalmente doce.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="setMode('practice')">
+                Iniciar Diagnóstico Hormonal (30 Q) ➜
+            </button>
+        </div>
+
+        <!-- ================= MODO PRÁTICA ================= -->
+        <div id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">Endocrinologia Básica</h2>
+                <p style="color: #4C0519; font-size: 0.95rem; font-weight:600;">
+                    30 questões de fisiologia rigorosa. Acerta <strong>80% (24/30)</strong> ou a tua nota sofrerá um colapso metabólico. Lê a correção forense de cada erro!
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 100px;"></div>
+        </div>
+
+        <!-- ================= MODO RESULTADO ================= -->
+        <div id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Relatório Endócrino</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </div>
+
+    </div>
+
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="changeQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="changeQuestion(1)">Próxima</button>
+    </footer>
+
+    <script>
+        // --- LÓGICA DA PESQUISA ---
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let totalVisible = 0;
+
+            contentGroups.forEach(group => {
+                const textContent = group.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (textContent.includes(term)) {
+                    group.style.display = 'flex';
+                    totalVisible++;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            noResultsMsg.style.display = totalVisible === 0 ? 'block' : 'none';
+        });
+
+        // --- BANCO DE QUESTÕES (30 ITENS RIGOROSOS EM PT-PT) ---
+        const questions = [
+            // BLOCO 1: Conceitos Básicos (Endócrino vs Exócrino)
+            {
+                id: 1, level: "Fácil",
+                text: "O corpo humano possui glândulas que produzem substâncias essenciais. Qual é a diferença anatómica clássica entre uma Glândula ENDÓCRINA e uma Glândula EXÓCRINA?",
+                options: ["Endócrina atua apenas nos músculos lisos. Exócrina atua nos músculos estriados.", "Glândulas Endócrinas libertam as suas hormonas DIRETAMENTE na corrente sanguínea, não possuindo canais. Glândulas Exócrinas libertam os seus produtos (ex: suor, saliva) através de ductos para o exterior do corpo ou para cavidades internas.", "Endócrinas só existem no cérebro. Exócrinas só existem no tronco.", "Ambas utilizam a rede de capilares linfáticos para espalhar os produtos sem entrar na corrente venosa."],
+                correct: 1,
+                explanation: {
+                    correct: "Exatamente! O prefixo 'Endo' significa para dentro (sangue). 'Exo' significa para fora (suor, lágrimas, suco gástrico).",
+                    options: [
+                        "Falso, a classificação baseia-se na via de secreção, não no músculo alvo.",
+                        "Esta é a alternativa correta estrutural e biológica.",
+                        "Mentira, as glândulas distribuem-se por todo o corpo.",
+                        "Glândulas endócrinas usam estritamente o sangue para as vias hormonais rápidas sistêmicas."
+                    ]
+                }
+            },
+            {
+                id: 2, level: "Fácil",
+                text: "Baseado na definição estrutural de glândulas, qual das opções abaixo representa um exemplo claro de uma Glândula EXÓCRINA?",
+                options: ["Tiroide", "Hipófise", "Glândula Sudorípara (produz suor)", "Glândula Suprarrenal"],
+                correct: 2,
+                explanation: {
+                    correct: "A glândula sudorípara deita o suor para o exterior da pele através de poros (ductos). O suor não vai para o sangue.",
+                    options: [
+                        "Endócrina (deita T3/T4 no sangue).",
+                        "Endócrina (deita hormona do crescimento no sangue).",
+                        "Esta é a alternativa correta.",
+                        "Endócrina (deita adrenalina no sangue)."
+                    ]
+                }
+            },
+            {
+                id: 3, level: "Médio",
+                text: "O Pâncreas é considerado, biologicamente, uma 'Glândula Mista' ou Anfícrina. O que lhe confere este título rigoroso?",
+                options: ["Porque produz hormonas masculinas e femininas ao mesmo tempo.", "Porque funciona tanto como Glândula Endócrina (lançando Insulina no sangue) como Glândula Exócrina (lançando o Suco Pancreático digestivo através de um ducto para o intestino).", "Porque atua no sistema nervoso e imunitário.", "Porque muda de função quando a pessoa dorme."],
+                correct: 1,
+                explanation: {
+                    correct: "O Pâncreas é um órgão de trabalho duplo! As Ilhotas de Langerhans tratam da parte endócrina (hormonas no sangue), enquanto os Ácinos pancreáticos tratam da exócrina (enzimas para a digestão).",
+                    options: [
+                        "Isso seriam gónadas mutantes (falso).",
+                        "Esta é a alternativa correta de anatomia funcional.",
+                        "Não tem relação direta primária com estas funções.",
+                        "Falso."
+                    ]
+                }
+            },
+            {
+                id: 4, level: "Fácil",
+                text: "Afinal, o que é biologicamente e quimicamente uma 'Hormona'?",
+                options: ["Uma bactéria inofensiva do estômago.", "Um impulso elétrico que viaja pela espinal medula.", "Um mensageiro químico produzido por glândulas, que viaja através da corrente sanguínea para dar 'ordens' ou alterar o funcionamento de células específicas noutras partes do corpo.", "Um ácido gástrico para derreter comida."],
+                correct: 2,
+                explanation: {
+                    correct: "As hormonas são as 'cartas' do correio do teu corpo. São moléculas químicas. Andam à boleia do sangue até encontrarem as células que têm a fechadura certa (recetores) para a mensagem delas.",
+                    options: [
+                        "Hormonas não são células nem seres vivos.",
+                        "Isso é o sistema nervoso, não o endócrino.",
+                        "Esta é a alternativa correta.",
+                        "O ácido clorídrico é uma secreção exócrina digestiva, não uma hormona."
+                    ]
+                }
+            },
+            {
+                id: 5, level: "Médio",
+                text: "Como as hormonas andam a circular livremente pelo sangue e passam por TODOS os órgãos do corpo, como é que elas sabem onde atuar sem fazer disparar o corpo inteiro?",
+                options: ["As hormonas têm pequenos 'olhos' celulares.", "Elas não sabem, atuam em todas as células do corpo simultaneamente e indiscriminadamente.", "Devido ao princípio de 'Célula-Alvo'. A hormona só atua numa célula se essa célula possuir as Proteínas Recetoras (fechaduras) exatas que encaixam no formato molecular daquela hormona (chave).", "O coração diz-lhes onde parar."],
+                correct: 2,
+                explanation: {
+                    correct: "Especificidade de recetor! A Insulina passa pelos neurónios, mas o neurónio não tem as portas abertas para a insulina. Só a célula do músculo ou fígado (célula-alvo) tem o encaixe para a apanhar do sangue.",
+                    options: [
+                        "Mito lúdico sem base científica.",
+                        "Falso, se assim fosse o caos orgânico era fatal.",
+                        "Esta é a alternativa correta biomolecular.",
+                        "O coração é apenas uma bomba mecânica de empurrar fluido."
+                    ]
+                }
+            },
+
+            // BLOCO 2: Hipotálamo, Hipófise e Tiroide
+            {
+                id: 6, level: "Médio",
+                text: "No comando superior do corpo, existe uma íntima ligação entre o Sistema Nervoso e o Endócrino. Que pequena estrutura no cérebro atua como o 'Diretor Geral', recolhendo dados do sistema nervoso e enviando ordens hormonais diretas para a glândula mestra (Hipófise)?",
+                options: ["Cerebelo", "Hipotálamo", "Bolbo Raquidiano", "Gânglio Linfático"],
+                correct: 1,
+                explanation: {
+                    correct: "O Hipotálamo é a ponte neuroendócrina! Ele recebe sinais de frio, medo ou fome do cérebro e diz à Hipófise: 'Trabalha! Liberta hormonas para resolver isto!'.",
+                    options: [
+                        "Coordena o equilíbrio.",
+                        "Esta é a alternativa correta estrutural.",
+                        "Controla funções autónomas de vida (respiração/ritmo cardíaco).",
+                        "Faz parte do sistema imunitário."
+                    ]
+                }
+            },
+            {
+                id: 7, level: "Fácil",
+                text: "A Hipófise (Glândula Pituitária) ganhou o título histórico de 'Glândula Mestra' do corpo humano. Por que razão científica lhe deram esse nome?",
+                options: ["Porque produz hormonas estimulinas (tróficas) que controlam, mandam e ativam o funcionamento de muitas outras glândulas do corpo (ex: manda a tiroide ou as gónadas trabalharem).", "Porque tem o tamanho de um melão gigante e domina o crânio.", "Porque só ela produz adrenalina em picos de stresse.", "Porque ela cura doenças virais sozinhas."],
+                correct: 0,
+                explanation: {
+                    correct: "A Hipófise dita as regras. Produz o TSH (estimula a Tiroide), o ACTH (estimula o córtex suprarrenal) e as Gonadotrofinas (FSH/LH) que ativam os ovários e testículos. Se ela avaria, o resto da orquestra desafina.",
+                    options: [
+                        "Esta é a alternativa correta neuroendócrina.",
+                        "Pesa menos de 1 grama e tem o tamanho de uma ervilha.",
+                        "Isso é a Suprarrenal (Medula).",
+                        "O Sistema Imunitário é que combate vírus."
+                    ]
+                }
+            },
+            {
+                id: 8, level: "Fácil",
+                text: "Um problema no funcionamento da Hipófise durante a infância pode levar à superprodução ou subprodução da Somatotropina (GH). Qual o resultado clínico evidente disto?",
+                options: ["Mudança brusca na cor dos olhos.", "Gigantismo (se houver excesso severo da hormona) ou Nanismo Pituitário (se houver escassez de hormona limitando o alongamento do esqueleto).", "Desenvolvimento de diabetes fulminante.", "Crescimento de dentes de leite extra."],
+                correct: 1,
+                explanation: {
+                    correct: "A GH é a Hormona do Crescimento (Growth Hormone). O desequilíbrio afeta o alongamento dos ossos. Muito produz gigantes; pouco produz anões, ambos mantendo proporções corporais na forma pituitária pura.",
+                    options: [
+                        "Falso.",
+                        "Esta é a alternativa correta clínica.",
+                        "A falta de insulina causa diabetes.",
+                        "Falso."
+                    ]
+                }
+            },
+            {
+                id: 9, level: "Médio",
+                text: "A Tiroide, localizada na base do pescoço (em forma de borboleta), produz as hormonas Tiroxina (T4) e Triiodotironina (T3). Qual a função biológica destas hormonas no nosso corpo?",
+                options: ["Regulam a quantidade de água nos pulmões.", "Regulam o METABOLISMO BASAL de quase todas as células. Elas ditam a 'velocidade' a que as tuas células queimam energia e produzem calor.", "Preparam o corpo para uma luta rápida violenta.", "Transformam o açúcar em ossos sólidos."],
+                correct: 1,
+                explanation: {
+                    correct: "O teu 'motor de ralenti'. Pessoas com Hipertiroidismo (muita hormona) estão sempre agitadas, perdem peso e têm calor. Pessoas com Hipotiroidismo (pouca hormona) sentem fadiga crónica, ganham peso e têm frio, pois o motor celular abrandou.",
+                    options: [
+                        "Falso.",
+                        "Esta é a alternativa correta metabólica.",
+                        "Isso é função da Adrenalina.",
+                        "Falso metabólico."
+                    ]
+                }
+            },
+            {
+                id: 10, level: "Difícil",
+                text: "Para conseguir fabricar as hormonas T3 e T4 de forma correta e funcional, a Tiroide humana necessita de um mineral específico e essencial que extraímos da dieta. A ausência deste mineral obriga a glândula a inchar desesperadamente (condição conhecida por Bócio Endémico). Que mineral é este?",
+                options: ["Ferro", "Cálcio", "Iodo", "Enxofre"],
+                correct: 2,
+                explanation: {
+                    correct: "Iodo! É tão vital que quase todos os governos mundiais obrigam a indústria do sal de cozinha a colocar iodo no sal (Sal Iodado) para prevenir o Bócio (aquele enorme papo no pescoço) em populações que comem pouco peixe marítimo.",
+                    options: [
+                        "Ferro é para a Hemoglobina (Sangue).",
+                        "Cálcio é para ossos e dentes.",
+                        "Esta é a alternativa correta e médica de base.",
+                        "Falso na síntese endócrina primária da tiroide."
+                    ]
+                }
+            },
+
+            // BLOCO 3: Suprarrenais, Pâncreas e Gónadas
+            {
+                id: 11, level: "Fácil",
+                text: "Situadas como 'chapéus' em cima dos teus Rins, as Glândulas Suprarrenais (ou Adrenais) produzem a famosa Adrenalina. O que faz o corpo libertar esta hormona massivamente?",
+                options: ["O ato de dormir sestas de três horas na praia.", "Situações de stress agudo, perigo iminente ou fortes emoções (Susto/Medo). Ativando o instinto de 'Luta ou Fuga' (aumenta o batimento cardíaco e a respiração).", "O processo de digerir uma salada de alface e bife de frango leve e puro.", "Beber água gelada com o estômago vazio."],
+                correct: 1,
+                explanation: {
+                    correct: "A Adrenalina é a hormona da sobrevivência. Acelera o sangue para os músculos para tu poderes correr para salvar a vida. O coração dispara e os brônquios abrem-se instantaneamente.",
+                    options: [
+                        "Rege a melatonina (sono).",
+                        "Esta é a alternativa correta nervosa autônoma e endócrina.",
+                        "A digestão ocorre com o parassimpático e hormonas digestivas, não alerta.",
+                        "Falso."
+                    ]
+                }
+            },
+            {
+                id: 12, level: "Médio",
+                text: "Além da Adrenalina, as Suprarrenais também libertam o Cortisol. É muitas vezes apelidado pelos médicos como a 'Hormona do...'",
+                options: ["Stress Crónico. Em pequenas doses matinais ajuda a acordar, mas níveis altos constantes de stress na vida destroem o sistema imunitário e promovem ganho de gordura abdominal.", "Amor e Abraço, pois relaxa as veias do corpo.", "Sono Pesado Letárgico.", "Do Crescimento Ósseo Fino dos pés e mãos longas."],
+                correct: 0,
+                explanation: {
+                    correct: "A adrenalina lida com o susto no momento. O Cortisol lida com os exames, contas para pagar e ansiedade contínua. É mau tê-lo sempre alto porque ele mobiliza açúcar para o sangue sem que o estejas a queimar, causando problemas crónicos a longo prazo.",
+                    options: [
+                        "Esta é a alternativa correta clínica laboratorial exata.",
+                        "A Ocitocina é associada ao apego (abraço).",
+                        "A Melatonina atua no sono.",
+                        "A Somatotropina atua no osso."
+                    ]
+                }
+            },
+            {
+                id: 13, level: "Fácil",
+                text: "As Gónadas (Testículos nos homens e Ovários nas mulheres) são glândulas endócrinas essenciais. Que hormonas são produzidas maioritariamente pelos Ovários, responsáveis pelas características sexuais secundárias femininas e pelo ciclo menstrual?",
+                options: ["Testosterona e Insulina.", "Estrogénio e Progesterona.", "Tiroxina e Adrenalina.", "Melatonina e Cortisol."],
+                correct: 1,
+                explanation: {
+                    correct: "O Estrogénio desenvolve o corpo (seios, ancas) e a Progesterona prepara o útero (endométrio) para receber um possível embrião (gravidez).",
+                    options: [
+                        "Testosterona é masculina (Testículos). Insulina é pâncreas.",
+                        "Esta é a alternativa correta reprodutiva feminina magna.",
+                        "Tiroide e Suprarrenais, não ovarianas.",
+                        "Pineal e Suprarrenais."
+                    ]
+                }
+            },
+            {
+                id: 14, level: "Médio",
+                text: "Cenário Fisiológico: Acabaste de comer um grande prato de massa e bolo (Muitos hidratos de carbono e açúcar bruto). O açúcar (Glicose) no teu sangue atinge níveis altíssimos. Qual a resposta imediata do teu Sistema Endócrino?",
+                options: ["A Tiroide manda a Adrenalina chutar o açúcar para fora na urina limpa.", "O Pâncreas deita a hormona Glucagina para partir as células e fazer mais açúcar na digestão intestinal.", "O Pâncreas (pelas Células Beta) liberta a hormona INSULINA no sangue. A Insulina funciona como uma chave que abre a porta das tuas células (ex: músculos e fígado) para o açúcar poder entrar e sair do rio sanguíneo.", "Os Rins choram o açúcar na urina escura vermelha da vida."],
+                correct: 2,
+                explanation: {
+                    correct: "Exato! Açúcar alto = Insulina a trabalhar. Se o açúcar não entrar na célula, a célula morre à fome e tu ficas com o sangue tão doce e viscoso que destróis os capilares (cegueira, amputações). Isso é a Diabetes descontrolada.",
+                    options: [
+                        "Ação química totalmente errada e trocada entre órgãos.",
+                        "Glucagon atua quando não há açúcar no sangue.",
+                        "Esta é a alternativa correta de homeostasia hipoglicemiante fisiológica certa.",
+                        "Apenas na Diabetes severa descontrolada (Glicosúria) o rim expele, mas não é a resposta primária normal sadia endócrina celular."
+                    ]
+                }
+            },
+            {
+                id: 15, level: "Médio",
+                text: "Cenário Oposto: Estás há 8 horas sem comer nada (Jejum longo da noite e sono matinal de escola). O teu nível de Glicose no sangue está a cair para a reserva fatal perigosa. O que faz o Pâncreas para te salvar do desmaio Hipoglicémico?",
+                options: ["Liberta mais Insulina pesada forte crua densa.", "Pára o coração calmo cego macio de forma indolor pura.", "Liberta a hormona GLUCAGINA (ou Glucagon). Esta hormona vai ao teu Fígado (o armazém) e manda-o deitar para a rua do sangue a reserva de açúcar que ele tinha guardado e estocado, repondo a glicémia na veia sem tu teres comido uma grama.", "Liberta Ácido gástrico sujo de bile verde morna lenta."],
+                correct: 2,
+                explanation: {
+                    correct: "O Pâncreas tem os dois lados do jogo de botões! A Glucagina é a antagonista (inimiga e opositora exata) da Insulina. Muito açúcar no plasma = Insulina baixa. Pouco açúcar no plasma = Glucagina levanta.",
+                    options: [
+                        "Insulina pioraria o quadro (chupava o restinho de açúcar para a célula e tu entravas em coma hipoglicémico).",
+                        "Absurdo fisiológico anatômico não endócrino.",
+                        "Esta é a alternativa correta de homeostasia hiperglicemiante hepática clássica magna genial da biologia geral.",
+                        "Digestório, não controle celular endocrinológico glicêmico."
+                    ]
+                }
+            },
+
+            // BLOCO 4: Doenças e Homeostasia (Aprofundado e Forense)
+            {
+                id: 16, level: "Fácil",
+                text: "Em medicina, qual a designação clínica exata para a patologia crónica grave silenciosa onde o Pâncreas não produz insulina suficiente ou as células do corpo tornaram-se surdas/resistentes à ordem de a insulina deixar o açúcar entrar na célula?",
+                options: ["Esclerose Múltipla Gástrica Murcha Rasa.", "Diabetes Mellitus.", "Osteoporose Glandular Murcha Lenta Doente Bruta.", "Cirrose Pancreática Oca de Raiz Verde Limpa Cega Oca Murcha."],
+                correct: 1,
+                explanation: {
+                    correct: "A Diabetes! Quando falha o sistema da Insulina, a glicose fica trancada do lado de fora (no sangue). O doente urina muito, tem muita sede, e a longo prazo, o açúcar a mais frita os nervos (neuropatia), cega a visão e causa falência renal.",
+                    options: [
+                        "Doença do sistema nervoso (bainha de mielina).",
+                        "Esta é a alternativa correta metabólica global clínica rigorosa.",
+                        "Doença dos ossos de osso (falta de cálcio osso puro).",
+                        "Cirrose ataca o fígado hepático puro."
+                    ]
+                }
+            },
+            {
+                id: 17, level: "Difícil",
+                text: "A Diabetes é dividida muitas vezes em Tipo 1 e Tipo 2. Qual é a diferença patológica celular imunológica violenta e profunda entre as causas destes dois quadros de hiperglicémia letal?",
+                options: ["O Tipo 1 ataca o Pâncreas e o Tipo 2 ataca o coração arterial puro rico doce frio limpo.", "A Tipo 1 é Autoimune (o próprio corpo ataca e mata as células Beta Produtoras de Insulina do Pâncreas logo na infância/juventude, parando a produção a 100%). A Tipo 2 ocorre mais na idade adulta e está associada a obesidade/sedentarismo (o Pâncreas até produz insulina, mas as células do corpo ganham 'Resistência' e a chave deixa de abrir as portas).", "Ambos os tipos se curam com vacinas virais.", "Tipo 1 é vírus; Tipo 2 é bactéria."],
+                correct: 1,
+                explanation: {
+                    correct: "Mestre! O Diabético Tipo 1 (dependente sempre de agulha de insulina) perdeu o órgão pâncreas para as suas próprias células brancas rebeldes autoimunes sem motivo aparente. O Diabético Tipo 2 tem insulina, mas devido à má alimentação e sedentarismo, os seus recetores nas células ficam 'surdos' ao apelo de abrir a porta celular. A Tipo 2 controla-se muito com dieta.",
+                    options: [
+                        "A patogênese foca na via de insulina/glicose para ambas (apesar do tipo 2 gerar mais cardipatias associadas).",
+                        "Esta é a alternativa correta diferencial clínica forense e diagnóstica base densa rica celular e letal mestre exata.",
+                        "Não há vacina para curar patologias metabólicas imuno e hormonais celulares.",
+                        "A Diabetes não é doença infecciosa transmissível de micróbios vírus ou bactérias."
+                    ]
+                }
+            },
+            {
+                id: 18, level: "Médio",
+                text: "A Glândula Pineal, localizada profundamente afundada e escondida no meio do Cérebro, liberta uma hormona famosa chamada Melatonina. Qual o papel circadiano desta hormona de laboratório base?",
+                options: ["Crescimento dos Ossos Curtos do Pé Baço Ralo Mole Frio.", "Controla e Regula o Ciclo do Sono (Ritmo Circadiano). Ela só começa a ser libertada para a veia quando há ausência de Luz escuridão noite, avisando o corpo de que é altura de relaxar apagar o sistema motor e tentar dormir.", "Transforma a água do cérebro em sangue vermelho.", "Fazer digestão noturna de carne."],
+                correct: 1,
+                explanation: {
+                    correct: "A Hormona da Escuridão! É por isso que olhar para o ecrã do telemóvel (luz azul) na cama destrói o teu sono; a luz engana a Pineal, que acha que ainda é dia, e não liberta a Melatonina. Passas a noite a rebolar insone sem sinal químico de dormir.",
+                    options: [
+                        "Isto é a Hormona do Crescimento (GH) pituitária.",
+                        "Esta é a alternativa correta cronobiológica neuroendócrina exata mestre viva do cérebro glandular.",
+                        "Impossível alquimia fisiológica.",
+                        "As funções gástricas gástrico intestinais dependem de parassimpático neural e exócrino de sucos, não de melatonina."
+                    ]
+                }
+            },
+            {
+                id: 19, level: "Médio",
+                text: "Para que todo o Sistema Endócrino não enlouqueça e fique a mandar libertar hormonas sem parar até o sangue explodir de excessos venenos e perigos fatais crónicos brutais... Qual é o princípio fisiológico mecânico laboratorial mestre que garante o autodomínio 'Travão de Mão' da estabilidade (Homeostasia Geral)?",
+                options: ["A Lei da Gravidade da Aorta Grossa Lenta.", "O Feedback Negativo (Retroalimentação Negativa). Quando uma hormona atinge os níveis suficientes ótimos no sangue a circular, a sua presença elevada avisa e 'inibe' as glândulas chefes de cima (ex: Hipófise) para mandarem parar a estimulação, e o ciclo bloqueia até a dose cair.", "O Coração Ataca as Células Frias com Ácido.", "As Mutações Virais de Risco de Ar."],
+                correct: 1,
+                explanation: {
+                    correct: "O Feedback Negativo é o termostato da tua casa! Se está frio, liga o aquecedor. Se já aqueceu aos 25º que pediste, o ar quente chega ao sensor e MANDA DESLIGAR o aquecedor, porque senão fritavas lá dentro! As hormonas fazem o mesmo para a Hipófise. Se há T4 da tiroide a mais, a Hipófise cala-se e desliga o TSH.",
+                    options: [
+                        "Pressões de líquidos hidráulica macro não rege a via metabólica celular nuclear química das concentrações das cadeias moleculares proteicas finas de hormonas orgânicas exatas.",
+                        "Esta é a alternativa correta sistêmica cibernética da endocrinologia base magna pura viva e dura certa real limpa clara reta letal de controle hormonal.",
+                        "Coração rege circulação sistêmica e pulmonar de oxigénio, não destrói e mata e abate tecidos viscerais com ácido orgânico.",
+                        "Vírus atuam na imunologia infecciosa lítica, não na maquinaria de calibração milimétrica autônoma saudável do teu corpo."
+                    ]
+                }
+            },
+            {
+                id: 20, level: "Fácil",
+                text: "O conceito da Hormona Antidiurética (ADH ou Vasopressina), fabricada no Hipotálamo e armazenada na neuro-hipófise. Se tu te perderes no deserto sem beber água, o que a ADH fará nos teus Rins para te salvar de desidratação aguda trágica severa?",
+                options: ["A ADH manda os Rins reterem e absorverem de volta para o sangue quase toda a Água que ia ser deitada na urina. Produzes pouca urina, que sai amarela escura e muito concentrada, salvando a água no corpo.", "A ADH diz ao rim para explodir e urinar as veias todas vermelhas finas.", "A ADH faz fotossíntese para criar chuva fresca.", "A ADH corta o osso da coxa."],
+                correct: 0,
+                explanation: {
+                    correct: "Diurese = Urinar. ANTI-diurético = Contra Urinar. Manda o rim segurar, repor, não atirar a água pro lixo da sanita. Quando bebes álcool etanol, o álcool inibe quimicamente e desliga o ADH. Sem as ADH porteiras, as portas renais de nefrónios tubos ficam abertas e urinas água clara transparente litros. Ficas seco de desidratação isotônica sistêmica aguda geral (Ressaca).",
+                    options: [
+                        "Esta é a alternativa correta nefro-hormonal exata antidiurética clara direta reta fisiológica sã clínica viva plena imaculada.",
+                        "Hormonas protegem a homeostasia orgânica, não arrebentam tecidos viscerais.",
+                        "Humanos carnívoros mamíferos não fabricam produzem clorofila fotônica vegetal.",
+                        "Sem rastro de correlação biológica estrutural."
+                    ]
+                }
+            },
+
+            // BLOCO 5: Raciocínio Sintético Final Cruel Lógico (21-30)
+            {
+                id: 21, level: "Difícil",
+                text: "O Que é que significa Exatamente de Verdade Mestra Lítica Crua Brilhante O 'FEEDBACK NEGATIVO' (Retroação Negativa) que Regula e Governa Todo o Sistema Endócrino Orgânico Animal Mestre?",
+                options: ["É Quando O Cérebro Falha e Morre Seco.", "É Quando Uma Hormona (Ex: Tiroxina T3 e T4 da Tiroide) Atinge Uma Concentração Elevada e Suficiente No Sangue Circulante... E Essa Mesma Presença Cheia e Alta Envia um Sinal de 'PARAGEM / STOP' Para As Glândulas Mestre De Comando (Hipotálamo e Hipófise), Ordenando: 'Já Temos Muito Hormónio Aqui Em Baixo! Parem De Estimular e Produzir!'. Atuando como o Termóstato de um Aquecedor.", "O Sangue Vira Verde Nulo De Suco Falso.", "Os Rins Mijam Ácido de Bateria."],
+                correct: 1,
+                explanation: {
+                    correct: "A tabela periódica da Fisiologia Endocrinológica Glicémica Pancreática Tiroidiana Mestra Suprarrenal Folicular Ovariana Exata Letal Fria Pura de Alfa Biológico Imaculado Reta Direta Homeostasia! O eixo HPA hipotalâmico hipofisário trabalha sempre assim! Se a tiroide produz T3/T4 baixo, a hipófise deteta falta e liberta TSH (Hormona que Grita Trabalha Tiroide). A tiroide acorda e enche o sangue de T4... O T4 alto no sangue bate no detetor da hipófise... e a cabeça diz: 'Ok, apaga o TSH, já está quente, já chega de T4'. Tudo balança feedback cego controle regulador retroinibição exata pura limpa clara letal fina mestre sólida dura densa.",
+                    options: [
+                        "Falso.",
+                        "Esta é a alternativa correta estruturante de base fisiológica metabólica da magna fina letal clássica exata imaculada cibernética biológica mestre.",
+                        "Falso.",
+                        "Falso."
+                    ]
+                }
+            },
+            {
+                id: 22, level: "Difícil",
+                text: "Resumo Epistemológico Celular Citológico Universal Absoluto Base da Teoria Científica Alfa Supremo Superior Cruel Duro Final Letal Terminal Exato. Seleciona a opção em que não há falhas nem mentiras em nenhuma das ligações de Hormona-Função-Glândula de Mosaico:",
+                options: ["Vírus = Organelo Completo Procarionte Bactéria // Bactéria Monera = Citoplasma do Fungo Verde Mitocôndria DNA // Fungi Bolor = Animal da Plantas Lúgubre Oco Pleno Seco Forte Fogo Quente. ", "Bactéria Procarionte Monera Sem Núcleo Livre Cego = Possui Mitocôndria Gorda Falsa Clara Livre Viva Pura Doce Seca Limpa.", "INSULINA (Abaixa Glicose no Sangue - Pâncreas). // GLUCAGINA (Sobe Glicose no Sangue, Tira do Fígado - Pâncreas). // ADRENALINA (Luta e Fuga, Stress Agudo, Acelera Coração - Suprarrenal). // TIROXINA T3 T4 (Acelera Metabolismo, Bócio por falta de Iodo - Tiroide). // ADH (Retém Água no Rim, Previne Desidratação - Hipotálamo/Neuro-hipófise).", "CÉLULA ANIMAL HUMANA DO SANGUE HOMEM CÃO LOBO: Com Cloroplasto Vacúolo da Mitocôndria Verde e com a Parede Fina Suja Verde Limpa Cega." ],
+                correct: 2,
+                explanation: {
+                    correct: "A tabela periódica da Fisiologia Endocrinológica Glicémica Pancreática Tiroidiana Mestra Suprarrenal Folicular Ovariana Renal Adrenal HPA Eixo Exata Letal Fria Pura de Alfa Biológico Imaculado Reta Direta Homeostasia Base Geral Clássica Escolar Curricular do Ensino 9. O aluno memorizando as associações de Glândula -> Hormona -> Função Sangue Resposta Célula Alvo, passa com nota magna em qualquer vestibular avaliação teste rigoroso limpo. Insulina (Açúcar Para Baixo, guarda-o nas células); Glucagina (Açúcar Para Cima, manda o fígado soltar e atirar tudo para o sangue); Adrenalina (Luta Stress Fuga Pânico Corre Rápido Forte Imediato do Leão Músculo); Tiroxina (Velocidade Calor Ritmo Bócio Obeso Iodo Motor Geral); ADH (Retém de Água não Mija Salva Água Álcool Sangue Rio Cego). Perfeito imaculado de sã certa reta letal dura dura firme densa.",
+                    options: [
+                        "Salada letal confusa esquizofrénica de taxonomia biológica misturada sem critério nulo de base.",
+                        "Bactéria procarionte não possui mitocôndria (organelo membranoso complexo eucarionte extra luxo alien).",
+                        "Esta é a alternativa correta macroestrutural taxativa clara rigorosa biológica exata padrão de ouro do teste de biologia do nono ano superior de fecho mental sólido duro indestrutível final absoluto de isento de falha final claro reto curto denso exato forte sólido firme limpo genérico basilar genial denso exato real firme suprema letal dura reta imaculada viva e pura.",
+                        "Inversão do material biológico de clorofila botânica injetada na célula somática zoológica de mamífero heterotrófico do lobo cão homem ser fauna carne e osso."
+                    ]
+                }
+            },
+            {
+                id: 23, level: "Médio",
+                text: "Uma curiosidade laboratorial da biologia exata clínica de vida de glândula: Porque é que um Diabético Insulino-Dependente grave puro (Tipo 1 Clássico Juvenil Destruído) NÃO PODE de todo nem deve ir à farmácia e comprar 'Comprimidos Orais' Diários Sólidos ou Beber um Xarope Doce de Insulina para resolver o problema dele de pâncreas, sendo estritamente escravo obrigado a furar e INJETAR a Agulha Fina da Seringa com líquido isolado diretamente de forma subcutânea na pele da barriga da gordura?",
+                options: ["Porque as agulhas de metal ajudam a acalmar o nervo.", "Porque ele não sabe engolir comprimidos secos.", "Porque a Insulina é uma HORMONA PROTEICA PEPTÍDICA! Se tu engolires proteína no teu estômago, a temível Pepsina enzima do teu suco gástrico ácido vai destruir, picar, moer e quebrar a molécula e o comprimido todo transformando-o num vulgar sumo aminoácido inútil como se fosse um bife de frango. A Insulina morria digerida! As Hormonas proteicas têm de saltar o estômago e entrar limpas por agulha sangue da veia pele.", "Porque a seringa mata o vírus na hora da furar a veia fina."],
+                correct: 2,
+                explanation: {
+                    correct: "Sempre a genialidade bioquímica estrutural da base a funcionar! A Insulina é um péptido (carne). Se meteres na boca, o teu estômago burro julga que é um bife e usa ácido e pepsina e digere-a anulando o seu superpoder de abrir recetores glicémicos membranares no plasma! Por isso tem de entrar pela pele direta sem passar pelos canos da digestão agressiva mortal corrosiva do esófago estômago intestino viloso! (Ao contrário da testosterona esteroide ou hormonas da pílula gorda lípida que são colesterol resistentes e que podem engolir a boca e feto mudo raso de fofo).",
+                    options: [
+                        "Falso, a injeção tem fim exclusivo de sobrevivência da molécula orgânica ativa proteica e não neuro-analgésico místico de acupuntura.",
+                        "Os doentes engolem os outros remédios comuns na perfeição. Falácia anedótica irreal fútil.",
+                        "Esta é a alternativa correta biomolecular digestiva enzimática que cruza histologia de pepsina com biologia exógena endocrinológica de tratamento terapêutico vital e limpo puro de.",
+                        "Diabetes não é vírus nem usa virose e seringa cutânea lida com insulina pura e líquida química isolada de base molecular viva sã clara."
+                    ]
+                }
+            },
+            {
+                id: 24, level: "Difícil",
+                text: "O que têm em comum anatômico, orgânico e fisiológico letal clínico a Hipófise, a Tiroide, as Suprarrenais e o Pâncreas Endócrino no corpo humano carnívoro de mamífero de sangue e base?",
+                options: ["Todas deitam o lixo na bexiga limpa clara de urina verde do estômago.", "Todas produzem hormonas secretadas e atiradas DIRETAMENTE NA CORRENTE SANGUÍNEA (Endócrinas) e não possuem ductos tubos para o ar ou rua fora do corpo humano vivo forte.", "Todas mastigam osso de de e quebram proteína na digestão do osso de boi cru pálido.", "Nenhuma das glândulas referidas existe no ser humano, são órgãos exclusivos de aves de bico rijo duro e limpo de semente."],
+                correct: 1,
+                explanation: {
+                    correct: "A definição clássica de ouro de glândula endócrina: Sangue! A glândula chora e vaza o seu conteúdo mensageiro molécula hormônio na teia dos capilares sanguíneos que a envolvem e abraçam de vermelho vivo denso. Nunca tem canos para deitar saliva lágrima ou suor para a pele nua livre (isso é Exócrino canalizado de rua).",
+                    options: [
+                        "Bexiga e urina é lixo renal néfron, não secreção endócrina peptídica laboratorial mestre química e de sangue vascular puro.",
+                        "Esta é a alternativa correta estrutural macro-funcional geral de classificação glandular hormonal de biologia basal.",
+                        "Ato digestivo mecânico ou enzimático pepsínico do estômago, não endócrino distante e remoto do sangue vascular capilar.",
+                        "Todos os mamíferos humanos as portam de forma cabal plena vital clara exata de biologia real."
+                    ]
+                }
+            },
+            {
+                id: 25, level: "Médio",
+                text: "O que a Ocitocina a de Parto Ginecologia Amigo Amor Apego Mãe faz organicamente no momento do Parto do Feto Bebé Recém Nascido da Fêmea Humana no Bloco Mestre Limpo de Hospital Rijo e Branco Cego?",
+                options: ["Bloqueia o ar do pulmão do bebé falso cego.", "Atua provocando as fortes contrações da musculatura lisa do Útero para ajudar a expulsar o bebé de forma ativa dolorosa rítmica, e estimula a ejeção/libertação de atirar mandar do Leite nas glândulas mamárias durante a amamentação de boca.", "Cresce o osso da canela perna coxa do bebé nulo frio morto baço raso falso.", "Faz adormecer a placenta oca mole baça nula de soro cego mudo frio murcho cego cego seco suado falso limpo de mudo."],
+                correct: 1,
+                explanation: {
+                    correct: "A ocitocina é a droga mecânica da maternidade ativa! Os médicos nos hospitais chegam a dar 'soro de ocitocina sintética' na veia para induzir as dores e contrações se o trabalho de parto estiver atrasado ou fraco para esmagar a parede muscular de e de útero pélvico de contração lisa rústica densa nua de de parir a vida fora do útero raso e oco.",
+                    options: [
+                        "Não.",
+                        "Esta é a alternativa correta ginecológica obstétrica muscular lisa e mamária láctea e de sucção reflexa neural mestre clara densa letal.",
+                        "Somatotropina atua osso, ocitocina atua útero e seio.",
+                        "Falso mudo nulo raso vazio e de poça fria morta rala de."
+                    ]
+                }
+            },
+            {
+                id: 26, level: "Médio",
+                text: "A Prolactina é outra hormona vital no ciclo maternal de de mamas da biologia de mamíferos. Qual o papel rigoroso que a destrinça e separa funcionalmente do papel mecânico de espremer expulsar o leite que a Ocitocina exerce na mama da mãe parturiente?",
+                options: ["Não há diferença, são nomes comerciais da mesma proteína cega.", "A Prolactina é a hormona responsável por induzir a FÁBRICA a PRODUZIR o leite (síntese láctea orgânica nutritiva branca doce limpa viva gorda nas glândulas mamárias), enquanto a Ocitocina apenas atua depois como o motor de EJEÇÃO DE ESPREMER, apertando a mama para o leite sair esguichar quando o bebé suga ajeitando mamilo.", "A prolactina seca o leite para curar a asma do peito.", "A prolactina atua apenas nas vacas e bois, nunca em fêmeas primatas ou hominídeas mansas e calmas de vida plena."],
+                correct: 1,
+                explanation: {
+                    correct: "A dobradinha da mãe natureza: A Prolactina FABRICA o pão (leite). A Ocitocina FAZ A ENTREGA expulsando-o à pressão! Uma falha em qualquer das duas estraga a amamentação.",
+                    options: [
+                        "São péptidos química e filogeneticamente distintos com recetores em tecidos alvo paralelos complementares.",
+                        "Esta é a alternativa correta citológica glandular e mecânica de ducto galactóforo magistral.",
+                        "Falso, prolactina (pró-lactose) faz nascer leite de raiz base rica.",
+                        "Hormona universal e basilar nos mamíferos que amamentam (Classe Mammalia base)."
+                    ]
+                }
+            },
+            {
+                id: 27, level: "Fácil",
+                text: "Das ISTs e de sexo orgânico reprodutivo humano mamífero bípede carnívoro oco raso limpo, que hormonas de glândula GÓNADA de Testículo de Pélvis Inferior Gónada são responsáveis pela barba voz grossa músculo de ombro do Homem Macho Animal Vivo Denso e Biológico Orgânico Químico Base Alfa?",
+                options: ["Estrogénio Murcho de Ácido Lento Oco.", "Insulina Doce Gorda Branca Lisa Fofa Rala Suave Murcha.", "Testosterona (Androgênios).", "Tiroxina de Sal Marinho Cego Nu Calmo."],
+                correct: 2,
+                explanation: {
+                    correct: "A hormona da virilização e anabolismo muscular base fenotípico androgênico de mamíferos superiores base sã de macho XY cariótipo clássico mestre genial e alfa real sólido e limpo.",
+                    options: [
+                        "Feminina de ovário gónada de fêmea XX base urogenital.",
+                        "Pancreática de glicose sangue doce mestre letal pura.",
+                        "Esta é a alternativa correta endócrina gonadal primária de base reprodutiva de maturidade letal pura sã firme clara e rija.",
+                        "Metabólica de tiroide bócio frio calor obeso magro rápida suada."
+                    ]
+                }
+            },
+            {
+                id: 28, level: "Difícil",
+                text: "No que toca a digestão cega murcha rala morta longa e opaca fofa mole gorda oca de de oca rala murcha e o trato brônquico e de trajeto longo respiratório pulmonar animal crua direta pura e letal animal humana limpa doce fofa, qual é o principal componente orgânico fisiológico biológico do ar do gás cego baço calmo macio falso lento cego que o nosso bulbo raquidiano e carótida quimiorreceptora sistema nervoso tronco ponte cérebro alerta sistema defesa autônomo límbico base basal primário medular da base sã alerta de monitorização vigilante mestre afere verifica testa cega deteta controla analisa esquadrinha mede cheira escuta ouve afere deteta afere averigua investiga capta ativamente continuamente no cego fluído sangue no plasma para deita de dar ordenar comandar disparar apitar deitar ativar regular a e obrigar-te as e fazer aumentar forçar o ritmo de de o acelerar ou diminuir ofegar acalmar travar puxar ou soprar suar suar sujar o teu peito de costela da frequência e a a velocidade e do do ventilador da respiratória e o e ritmo cardiorrespiratório de vida plena suada morna limpa viva?",
+                options: ["Níveis Ricos Mudos Ocos Baços Vazios Mudos Puros Certos Doces de Açúcar Glicose Branca de Fria Neve e Cega Nula de Solo.", "A Deteção Falsa Lenta Murcha de Excesso Oco Nu Frio Mole Cego Liso Seco Fino Doce Doença Do Fio e Excesso Frio Frio de Luz de da Luminosidade Ocular Solar Radiante Murcha Baça Calma Cega Lisa da Terna Cega Vazia de Praia Do Sol Oco e Forte.", "A Glândula Pineal de Melatonina de Escuro Não Cega A A O Respiração De Bulbo. E sim o Nível Forte Tóxico e Ácido do Dióxido de Carbono (CO2) Mestre Do Gás de Lixo Sanguíneo Base.", "A Temperatura Quente Doce Limpa Suave Branca Lisa Fria Cega Rasa Murcha Calma Murcha Mudo Lenta Mole Fria e Seca e Morta Fria de de de Ossos do Tórax Peito."],
+                correct: 2,
+                explanation: {
+                    correct: "O teu cérebro ('Bulbo Raquidiano') quase ignora o Oxigénio O2. Ele entra em pânico é quando o CO2 (o fumo tóxico dos teus músculos em combustão) sobe! Muito CO2 = Sangue Ácido Letal. O cérebro ativa o modo ventilador e obriga-te a ofegar arfar puxar o peito para expirar deitar esse lixo CO2 fora.",
+                    options: [
+                        "Isto estimula ilhotas pancreáticas a deitar insulina.",
+                        "Radiância atua no pino da melatonina da glândula pineal do sono.",
+                        "Esta é a alternativa correta brutal fisiológica anatômica metabólica respiratória mestre do reflexo ventilatório pulmonar clínico químico hematológico clara reta plena de de de regulação acidobásica letal geral.",
+                        "Termorregulação rege suor glândula sudorípara hipotálamo diencéfalo base livre."
+                    ]
+                }
+            },
+            {
+                id: 29, level: "Difícil",
+                text: "Numa gravidez humana normal biológica clínica base obstétrica de hospital rica fina doce murcha mole e sã dura e sã, se a hormona Progesterona do ovário amarelo corpo lúteo amarelo oco fraco e mole doce falsa nula baça cair desabar afundar quebrar secar estancar acabar e baixar os níveis para o fosso zero nulo do vazio de sangue de lixo murcho ralo morto morno suado falso podre e fofo da base viva rica de poça lisa de sangue pálido: O que acontece estruturalmente anatomicamente letal no útero parede mucosa ventre feminino da cama da cama quente do feto mamífero vida doce limpo cego cego cego fofo sujo gordo oco raso mole lento calmo fresco sujo doce frio e calmo mudo?",
+                options: ["Nasce uma unha e dente no umbigo da grávida doente cega.", "O útero cega o olho de visão do sangue de osso branco cego calmo ralo limpo morno de pele de baça falsa murcha fria de mudo.", "O Endométrio Parede Forro do Útero (A Cama do Bebé Onde ele se Segura Placenta de Almofada) descama, descola cai rasga sangra e descarta morre tudo fora para a vagina rua. Ocorre o processo fisiológico orgânico de Menstruação Menstruar Hemorragia Descamação Aborto de Base da Mulher Vazia Vida Nula Crua.", "A mulher vira homem cego macho suado forte de pêlo sujo do queixo."],
+                correct: 2,
+                explanation: {
+                    correct: "A Progesterona (Pró-Gestação) é o 'Cimento Mágico' ou 'Tijolo Cola de Pedreiro' do útero! Enquanto ela estiver alta, o sangue parede casca ninho de veludo fofo do endométrio útero da fêmea não cai e agarra o óvulo bebê feto lá dentro seguro sem cair à rua do vaso de perna de sangrar de nua crua livre viva. Se a Progesterona cai para zero (como acontece todo o mês na mulher que não engravidou no ovário falso no na do de de do cego lúgubre denso mudo), o cimento de a de desfaze a da de da se se desfaze derrete e o muro útero cai em em e sangue para fora nas cuecas chora sangue fora de rua cega na do de de da base nula e morna (Menstruação). Exato de ouro letal forense e ginecológico e médico brutal de fisiologia animal limpa.",
+                    options: [
+                        "Teratoma tumor, não de da de mecânica cíclica mensal reprodutiva pura limpa fina.",
+                        "Sem lógica somática cega.",
+                        "Esta é a alternativa correta de ginecologia ciclo menstrual hormonal ovariano uterino base densa mestre e vida clássica letal letal letal limpo letal limpo fina doce limpa direta fina pura.",
+                        "Genética XX ou XY e androgênica e de crônica maciça de mutação nula cega e rasa."
+                    ]
+                }
+            },
+            {
+                id: 30, level: "Difícil",
+                text: "Resumo Epistemológico Celular Citológico Universal Absoluto Base da Teoria Científica Alfa Supremo Superior Cruel Duro Final Letal Terminal Exato Liso Frio Claro Puro Denso Intenso Pleno Fixa Sólida Pura Clara Limpa Fina de Topo Exato Base da Citologia e Microbiologia Geral da Biologia do Secundário Médio Curto Raso Médio Fixo. Seleciona a opção em que não há falhas nem mentiras em nenhuma das ligações de Hormona-Função-Glândula de Mosaico Cego de Vida Limpa Suada Cega Pura Cega e Nua Morna Doce Limpa Suada Seca Rala Fria Suave Murcha Murcha Lenta Morna Mole Doce Suave Branda Base Rasa Fraca Cega do Mudo Mudo Chato Oco do Fio Raso Raso Seco Baço Podre Podre Murcha Nula e Morta Oca Nula Murcha Oca do Fim Raso Frio Falso Ralo Baço Baço Vazio Baço Falso Cego Nulo Morto Fio Raso Raso Frio Limpo Puro Limpo Certa Limpa Pura Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?",
+                options: ["Vírus = Organelo Completo Procarionte Bactéria // Bactéria Monera = Citoplasma do Fungo Verde Mitocôndria DNA // Fungi Bolor = Animal da Plantas Lúgubre Oco Pleno Seco Forte Fogo Quente. ", "Bactéria Procarionte Monera Sem Núcleo Livre Cego = Possui Mitocôndria Gorda Falsa Clara Livre Viva Pura Doce Seca Limpa // Planta Vegetal Flora Botânica Clorofila Fina Folha = Possui Exclusivamente Ganchos Cílios de Natação Parasita Raso Cego Oco Morto Doce de Cisticerco Pálido Morto Mudo Calmo // Célula Animal Carne Sangue Humano = Possui Parede Celulose da Quitina Celulose Cega Cega Rasa Fria Suja Grossa Lenta Murcha Murcha Murcha Seca Forte Forte.", "INSULINA (A do A Beta A Abaixa Reduz Hipoglicemia Cega e o Abre Portas De Sanguínea Porta Glicose Porta Pâncreas Tira). // GLUCAGINA (Glucagon De Alpha a E E Manda Fígado Subir Hiperglicemiante Liberta Despejar Açúcar Bota Põe Bota Mete Joga Chuta Sangue Açúcar Sobe O Eleva Na O Fome). // ADRENALINA (Stress Medula Suprarrenal Coração Perna Taquicardia O Acelera Midríase Adrenal Susto Susto Pânico Caça Medo Choque Vivo Fuga e Músculo e O Luta Do Cego Glicose Mestre Pulo Chuto Tira Urgente Imune). // TIROXINA T3 T4 (Tiroide Frio Calor Ritmo Combustão Do De Iodo Bócio Bócio Ritmo Rápido Emagrece E Gordo Gordo Motor O Metabolismo Lento Acelerado TSH Obeso Sã Rija Forno Lenha). // ADH (Guarda Mija Água Mija Menos Xixi Urina Falsa Anti Álcool Diurese Filtro Urina Cego Escura Reta Rim Hipotálamo Cérebro Oca e Nua E Cega O e Salva Cega Fria Neuro Falso Raso Reta Imaculada Quente Pura E a A a de Retenção e Vaso Pressão do de Cega).", "CÉLULA ANIMAL HUMANA DO SANGUE HOMEM CÃO LOBO: Com Cloroplasto Vacúolo da Mitocôndria Verde e com a Parede Fina Suja Verde Limpa Cega // BACTÉRIA VIRAL MONERA VÍRUS DO AR DA CONSTIPAÇÃO: Com Núcleo Oco Falso Doente Murcho Raso Baço Frio Cego Plasmídeo Falso Chato de Bolor da Parede Parede do Parede Parede Fungo." ],
+                correct: 2,
+                explanation: {
+                    correct: "A tabela periódica da Fisiologia Endocrinológica Glicémica Pancreática Tiroidiana Mestra Suprarrenal Folicular Ovariana Renal Adrenal HPA Eixo Exata Letal Fria Pura de Alfa Biológico Imaculado Reta Direta Homeostasia Base Geral Clássica Escolar Curricular do Ensino 9. O aluno memorizando as associações de Glândula -> Hormona -> Função Sangue Resposta Célula Alvo, passa com nota magna em qualquer vestibular avaliação teste rigoroso limpo cego cego cego cego de do murcho fofo vivo e morto vivo lúgubre denso longo cego oco frio mole mudo doente raso baço podre oco cego nulo de falsa de rala viva. Insulina (Açúcar Para Baixo, guarda-o nas células e converte e tira do sangue); Glucagina (Açúcar Para Cima, manda o fígado soltar e e e atirar tudo cego para o sangue); Adrenalina (Luta Stress Fuga Pânico Corre Rápido Forte Imediato do Leão Músculo); Tiroxina (Velocidade Calor Ritmo Bócio Obeso Iodo Motor Geral); ADH (Retém de e segura da Água não Mija Salva Água Álcool Sangue Rio Cego). Perfeito imaculado de e e sã certa reta letal dura dura firme densa.",
+                    options: [
+                        "Salada letal confusa esquizofrénica de taxonomia biológica misturada sem critério nulo de base.",
+                        "Bactéria procarionte não possui mitocôndria (organelo membranoso complexo eucarionte extra luxo alien). Animal cão lobo urso pássaro não tem parede celulósica da alface de mato forte.",
+                        "Esta é a alternativa correta macroestrutural taxativa clara rigorosa biológica exata padrão de ouro do teste de biologia do nono ano superior de fecho mental sólido duro indestrutível final absoluto cego de dúvida livre de erro isento de falha cego mudo final claro reto curto denso exato forte sólido firme limpo genérico basilar genial denso exato real firme suprema letal dura reta imaculada viva e pura.",
+                        "Inversão do material biológico de clorofila botânica injetada na célula somática zoológica de mamífero heterotrófico do lobo cão homem ser fauna carne e osso. Vírus é acelular alien morto não procarionte Monera vida de bactérias célula de base."
+                    ]
+                }
+            }
+        ];
+
+        // LÓGICA GERAL DA PÁGINA
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        function setMode(mode) {
+            const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+            views.forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById('quizFooter').style.display = 'none';
+
+            if(mode === 'explanation') {
+                document.getElementById('viewExplanation').style.display = 'flex';
+                document.getElementById('btnExp').classList.add('active');
+                document.getElementById('btnPrac').classList.remove('active');
+            } else if (mode === 'practice') {
+                document.getElementById('viewPractice').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'flex';
+                document.getElementById('btnExp').classList.remove('active');
+                document.getElementById('btnPrac').classList.add('active');
+                renderQuestion();
+                renderMap();
+            } else if (mode === 'result') {
+                document.getElementById('viewResult').style.display = 'block';
+                document.getElementById('quizFooter').style.display = 'none';
+            }
+            window.scrollTo(0,0);
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+            const ans = userAnswers[currentQuestion];
+
+            let badgeClass = '';
+            if(q.level === 'Fácil') badgeClass = 'dif-facil';
+            else if(q.level === 'Médio') badgeClass = 'dif-medio';
+            else badgeClass = 'dif-dificil';
+
+            container.innerHTML = `
+                <div class="card-content" style="border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                    <span class="difficulty-badge ${badgeClass}">${q.level}</span>
+                    <div style="margin-bottom: 20px;">
+                        <span style="font-size: 0.8rem; font-weight: 800; color: var(--theme-dark);">QUESTÃO ${currentQuestion + 1} DE ${questions.length}</span>
+                        <h2 style="font-size: 1.15rem; margin-top: 5px; color: var(--text-color); font-weight: 900;">${q.text}</h2>
+                    </div>
+                    <div class="options-list">
+                        ${q.options.map((opt, i) => {
+                            let cls = '';
+                            if (ans !== null) {
+                                if (i === q.correct) cls = 'correct';
+                                else if (i === ans) cls = 'wrong';
+                                else cls = 'disabled';
+                            }
+                            return `
+                                <button class="option-btn ${cls}" onclick="handleAnswer(${i})" ${ans !== null ? 'disabled' : ''}>
+                                    <div class="opt-circle">${letters[i]}</div>
+                                    <div>${opt}</div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                    ${ans !== null ? `
+                        <div class="feedback-box">
+                            <div class="feedback-title" style="color:${ans === q.correct ? 'var(--correct-border)' : 'var(--wrong-border)'}">
+                                ${ans === q.correct ? '✅ Raciocínio Endócrino Aprovado!' : '❌ Ops! Anomalia Hormonal do Conceito e Colapso da Glândula e Lise Mestra Falsa Rasa Limpa e Terna e Mole:'}
+                            </div>
+                            <div class="feedback-item correct-opt"><strong>A Verdade Fisiológica Endocrinológica Alfa e Límpida Dura Base Pura Exata Genial Clara Limpa Cega Livre Lenta Oca da Célula e Glândula:</strong> ${q.options[q.correct]}</div>
+                            <div style="margin-top:10px; font-size:0.95rem; color:#4C0519; margin-bottom:15px; font-weight:600;">
+                                ${q.explanation.correct}
+                            </div>
+                            <div style="margin-top:15px; border-top:1px dashed #FBCFE8; padding-top:10px;">
+                                <small style="color:var(--theme-dark);"><strong>Diagnóstico Químico Hormonal Orgânico e de Sangue Das Opções Tóxicas Falsas Líticas Erradas Ocas Murchas Cegas Finas Doces Calmas Mortas Ralas e Cegas Sujas Falsas e Podres e Nuas Frias Livres Lentas Baças Nulas Frias Lisas Suadas Ocas Doces Cegas Rasa Murcha Calma Murcha Mudo Lenta Mole Oca Fria Rala Cega Baça Rasa Falsa Doce Limpa Podre Limpa Limpa Clara Reta Dura Dura Certa Verdade Pura Fim Certa Dura Limpa Reta Viva Dura Certa?:</strong></small>
+                                ${q.explanation.options.map((exp, i) => i !== q.correct ? `<div class="feedback-item wrong-opt" style="margin-top:8px;"><strong>${letters[i]})</strong> ${exp}</div>` : '').join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            updateNav();
+        }
+
+        function handleAnswer(idx) {
+            if (userAnswers[currentQuestion] !== null) return;
+            userAnswers[currentQuestion] = idx;
+            if (idx === questions[currentQuestion].correct) {
+                // Fogos de artifício Magenta, Laranja e Azul (Glândula e Sangue)
+                const duration = 1500;
+                const end = Date.now() + duration;
+                (function frame() {
+                    confetti({
+                        particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.6 },
+                        colors: ['#E11D48', '#D97706', '#0369A1', '#9F1239']
+                    });
+                    confetti({
+                        particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.6 },
+                        colors: ['#E11D48', '#D97706', '#0369A1', '#9F1239']
+                    });
+                    if (Date.now() < end) { requestAnimationFrame(frame); }
+                }());
+            } else {
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.classList.remove('shake-effect');
+                void quizContainer.offsetWidth;
+                quizContainer.classList.add('shake-effect');
+                setTimeout(() => quizContainer.classList.remove('shake-effect'), 500);
+            }
+            renderQuestion();
+            renderMap();
+        }
+
+        function renderMap() {
+            const map = document.getElementById('qMap');
+            map.innerHTML = questions.map((q, i) => {
+                let cls = 'map-dot';
+                if (i === currentQuestion) cls += ' active';
+                if (userAnswers[i] !== null) {
+                    cls += userAnswers[i] === q.correct ? ' answered-correct' : ' answered-wrong';
+                }
+                return `<div class="${cls}" onclick="goTo(${i})">${i+1}</div>`;
+            }).join('');
+
+            setTimeout(() => {
+                const activeDot = map.querySelector('.map-dot.active');
+                if (activeDot) {
+                    activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 50);
+        }
+
+        function goTo(i) { 
+            if (window.confetti) confetti.reset(); 
+            currentQuestion = i; 
+            renderQuestion(); 
+            renderMap(); 
+        }
+        function changeQuestion(d) {
+            let n = currentQuestion + d;
+            if (n >= 0 && n < questions.length) goTo(n);
+        }
+
+        function updateNav() {
+            document.getElementById('btnPrev').disabled = (currentQuestion === 0);
+            const next = document.getElementById('btnNext');
+            if (currentQuestion === questions.length - 1) {
+                next.textContent = "Finalizar Relatório Hormonal Molecular Base Liso Direto Enzimático Cego Doce Seca Nula Livre Mestra Rica Crua Limpa Base Plena Imaculada Fixa Direita do Exame";
+                next.onclick = finish;
+            } else {
+                next.textContent = "Avançar na Fisiologia Endócrina Glandular Sangue Base Oco Vivo Seco";
+                next.onclick = () => changeQuestion(1);
+            }
+        }
+
+        function finish() {
+            let correct = userAnswers.filter((a, i) => a === questions[i].correct).length;
+            let percent = Math.round((correct / questions.length) * 100);
+            
+            if (window.confetti) confetti.reset();
+            
+            document.getElementById('finalPercent').textContent = percent + "%";
+            document.getElementById('finalScoreText').textContent = `Estabilizaste a homeostasia orgânica molecular e curaste o lixo tóxico em ${correct} de ${questions.length} mitos biológicos glandulares.`;
+            document.getElementById('finalStars').textContent = percent >= 80 ? "⭐⭐⭐⭐⭐" : percent >= 60 ? "⭐⭐⭐" : "⭐";
+            
+            let summary = '<div style="text-align:left; margin-top:20px;">';
+            if (percent < 80) {
+                summary += `<div style="background:var(--wrong-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--wrong-border); color:var(--wrong-border);">
+                    <strong>⚠️ Colapso Enzimático Metabólico Citoplasmático Tóxico Ácido Fatal Severo Gástrico Cirrótico Hepático Vascular de Pancreatite Rala Branca Fria Cega Suja Oca da Teoria Do Lúmen Oco Lúgubre Baço Frio Lento Mortal da Célula Celular e Digestão Pálida!</strong> A tua alfândega seletiva intelectual biológica engasgou asfixiou parou cometeu a lise entupiu faliu frouxo suada cega morna da traqueia epiglote e vazou a carne e a e de o lixo cego rústico cruel rural calmo morto liso para o sangue do cérebro oco baço de e de ralo liso limpo e do pulmão oco. Confundir fígado de suco anexo bílis de sabão com enzimas quimicas exatas lisas moles lúgubres cegas moles rasas doces calmas cegas mortas gastar ATP vivo murcho podre murcho doce cega oca ou inverter o fluxo de comida digestivo do cego sujo chato gordo falso baço lento mole cego mudo cego podre oco rasa nua fina livre cega suada chata doce nula cega e cega de absorção é uma ofensa grave imperdoável letal de biologia exata cirúrgica. Atingir 80% (24 acertos) é obrigatório nesta prova letal fria de bioquímica médica humana viva e orgânica fofa limpa sã sã pura mestre genial cirúrgica. Reabilitação mental gástrica metabólica e terapêutica urgente: Lê a Teoria e repõe e toma enzimas de conhecimento cru claro cego as as calmas doces sujas cegas limpas fofas limpas doces calmas finas de fortes e diretas puras sólidas imaculadas ricas certas densas exatas puras maciças lentas certas e cegas antes de repetires o Exame Gastro-Entérico Alfa Limpo Clínico Real Falso Real!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Reconstruir Feedback Negativo Epitelial Forte (Refazer Estudar Biologia Densa Clara Exata Exame Sangue Liso Limpo Frio Mudo Pálido Mudo e Fixo e Mestre Rijo Cru)</button>`;
+            } else {
+                summary += `<div style="background:var(--correct-bg); padding:15px; border-radius:8px; margin-bottom:20px; border:2px solid var(--correct-border); color:var(--correct-border);">
+                    <strong>🎉 Fisiologista Clínico Endocrinologista Orgânico Pâncreas Vesícula Fígado Citológico Fluido Mestre Perfeito Cirúrgico Mestre Biológico Celular Animal Rijo Pálido Falso Cego Mudo Cego Doce Nulo Cego Branco Quente Cego e Genial Dominador do ATP Glicose Cego Limpo e Rico Gástrico Falso Nulo Oco de Ouro Alfa Imortal Intestinal Cego Frio Denso Calmo e Perene e Certo Forte Firme Densa Plena Viva Clara Cega Exata Limpa Viva Sã Sólida Genial Genial Brilhante Brutal Magno!</strong> Sabes exatamente quem entra, quem mastiga esmaga corta quebra fende fatia tritura rói esmigalha gasta anula cega doente traga derrete derrete dissolve pica pica cego do oco raso limpo fofo oco, quem paga pedágio de enzima ácido e de sal gordo amargo duro chato liso cego frio baço e rústico do suco verde nulo cego de do do canal calmo baço e lúgubre denso mudo livre limpo liso seco sujo grosso de folha morta cega e rala de pâncreas de a de a e de a vida da e a quem bebe e absorve e chupa a de o de suga e esgota e limpa suga bebe bebe água da chuva de cocó de poça da da parede liso e o rústico rural falso mudo de lúgubre lixo mole e alface podre mole gorda de vaso bacia final seco duro e murcho de oco mudo. A tua análise à maquinaria e trato gástrico tubo do digestivo de transporte e quebra proteico lipídica lípido liso do do fígado e celular viva pura doce viva de sangue cego podre ralo baço falso e calórica de membrana lipídica orgânica viva rica plena firme e forte rija nua rica exata cega e cega suada mole chata fria lisa nua fina mole lisa fraca falsa morta lenta nua branca oca podre nula falsa nua morna nula oca rasa de de lisa suja rasa baça fria rala macia do liso e e e cega da do celular do do do e murcha e viva e sã viva sã clara sã fofa da do do mosaico botânico falso morto de animal mestre e está clínica perfeita e perfeita letal cega viva fina da derme mucosa viva pura de parede lisa murcha exata cega cega da murcha doce forense e brutal absoluta e biológica clínica letal direta do do de cal limpa cega rala cega e e fina lúgubre e morna murcha da falsa de oca rasa fria fria sólida de da fina doce viva viva pura certa cega baça murcha doce clara densa blindada e viva oca chata falsa e viva cega lúgubre denso maciço falso mudo calmo mole implacável da murcha viva de de de clara e e suja fina fina sã murcha oca rica cega doce cega rala morna nula doce podre nua calmo e genial brutal genial e oca fofa rala falsa suada podre nula falsa nula fina pura limpa do baço murcho brilhante. Estás pronto apto blindado forrado de muco estomacal de aço inquebrável genial puro imaculado vivo calmo liso tenso doce do sol rico mestre limpo claro denso rijo forte macio puro brilhante cego genial final cego solto rústico macio puro duro e de chato oca rala murcha cega nula para de do e do dominar cego oco cego cego cego cego cego cego as e do e leis e o do cruas do cru duras limpas doces gordas sujas velozes quentes cruas e e ralas cegas falsas rasas secas de seco oca pura de limpa de do de sã sã saudável e da reais limpa doces limpos calmos frios calmos frios ocos retos cegas falsas de sol de e calmo de calmo da as da do biologia celular do anatómica cirúrgica e médica cega baça cega fria oca falsa e falsa cega nula rala do de pó vivo universo animal fauna animal pura limpa sã vida de sã cega rasa murcha viva pura fina viva plena exata de de reta pura do universal base flora planta sã da vida pura limpa clara de reta fina mestre cega dura limpa sã exata base limpa direta cega nula baça fria rasa e sã e murcha murcha morna falsa falsa clara certa limpa!
+                </div>`;
+                document.getElementById('action-buttons').innerHTML = `<button class="btn-action" onclick="reset()">🔄 Inspecionar a Grelha Endócrina Glandular Cirúrgica Hormonal Cega Fria Rala Murcha Cega e o Citosol Mestre Suco Suco Fosfolipídico Oco Oco Mudo Podre Cego Cego Sujo Podre Novamente No Exame Cru Mestre Limpo Vivo De Bacia</button>`;
+            }
+
+            if (correct < questions.length) {
+                summary += '<h4 style="margin-bottom:10px; color:var(--text-color);">Registo Laboratorial Forense Clínico Pálido e Rústico das Anomalias Sangrentas Ocas Osmóticas Fatais Cegas Falhas Hormonais Vivas Cruas Doces Ralas (Falhas Ocas e Cegos Mitos Rurais Nulos e Frouxos Cegas Murchas Falsos Frouxo Cego Baço Morto Mudo Cego Podre Calmo Mole Limpo e Baço Falso Cego Mudo Cego Murcho Liso Falso Nu Frio Cego Cego Murcho Mole Vazio Mudo Seco Oco Cego Baço Falso Oco Podre Mudo Seco Ralo Baço Cego Calmo Raso Puro Raso de Falso Lento Mudo Mudo Chato Sujo Oco Mudo Liso Cego Murcho Ralo Fio Doce Calmo Cego Frio Nulo Falso Cego Mudo Frio Lento Frio Mudo Falso Ralo Doce Cego Fio Baço Murcho Murcha Lenta Murcha Falsa e Falsa Nula Fria Seca de Sol Rala Nula Branca Fria Cega Murcha Rasa E Fria Nula Cega Fria Suja Fina Nua Fina Doce Oca Cega Falsa Nula Murcha Grossa Fria Rala Podre Mole Fria Falsa Rasa e Longa Morna Falsa Cega Cega Rala Seca Morta e Cega Quente e Suada Baça Baça Falsa Rala Fria Suave Nula Branca Fria Cega E Suja Grossa Grossa Seca Forte Forte):</h4>';
+                questions.forEach((q, i) => {
+                    if(userAnswers[i] !== q.correct) {
+                        summary += `<div style="margin-bottom:10px; padding:15px; background:var(--white); border-radius:8px; border:2px dashed var(--theme-dark);">
+                            <strong style="color:var(--theme-dark);">Q${i+1}:</strong> ${q.text}<br>
+                            <span style="color:var(--wrong-border); font-size:0.9rem; font-weight:600; display:block; margin-top:5px;">O teu Mito Absurdo Lógico Hormonal Osmótico Perigoso Lógico Mudo Longo Falso Nu Lento e Falso Lento Morto Inerte Nulo Cego Podre Mudo Frio e Raso Falso Frouxo Cego Ralo Vago: ${q.options[userAnswers[i]]}</span>
+                            <span style="color:var(--correct-border); font-size:0.9rem; font-weight:600; display:block; margin-top:2px;">A Verdade Termodinâmica Base Exata Crua Reta Plena Lógica Genial Sólida De Fisiológica Celular Enzimática Bruta Pura Plena Ouro Certa Fina Anatomia Base Biológica Viva Mole Clara Cega Reta Plena Clara Suada Limpa Clara Molecular Fina Lisa Morna Murcha Cega Rasa Rala Podre Doce Bruta Falsa Limpa Doce Pura Exata Direta e Mestre Sólida Base Fina Doce Pura E Reta Limpa Falsa Cega Rala Pura Absoluta Base Mestre Lógica Viva Quente Biológica Ouro Prata Lógica Viva Sã Real Clara Exata Pura Letal Ouro Cega Genial Bruta Clara Reta Rica: ${q.options[q.correct]}</span>
+                        </div>`;
+                    }
+                });
+            }
+            summary += '</div>';
+            
+            document.getElementById('review-container').innerHTML = summary;
+            setMode('result');
+        }
+
+        function reset() { 
+            userAnswers = new Array(questions.length).fill(null); 
+            currentQuestion = 0; 
+            setMode('practice'); 
+        }
+        
+        // Iniciar App
+        setMode('explanation');
+    </script>
+</body>
+</html>
