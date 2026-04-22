@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biologia: Reino Animalia (Vertebrados) - Promover</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* --- VARIÁVEIS DE COR E TEMA: FAUNA & SAVANA (Zoologia) --- */
+        :root {
+            --bg-color: #FEFCE8; /* Âmbar muito claro */
+            --text-color: #451A03; /* Castanho escuro */
+            --border-color: #78350F; /* Contorno castanho */
+            --white: #FFFFFF;
+            
+            --theme-light: #FEF3C7; /* Âmbar pastel */
+            --theme-medium: #F59E0B; /* Âmbar vivo / Dourado */
+            --theme-dark: #B45309; /* Laranja escuro / Ferrugem */
+            --theme-contrast: #15803D; /* Verde folha (Contraste) */
+            --theme-accent: #0369A1; /* Azul (Água/Anfíbios) */
+            --theme-text-active: #FFFFFF;
+            
+            --correct-bg: #D1FAE5;
+            --correct-border: #059669;
+            --wrong-bg: #FFE4E6;
+            --wrong-border: #BE123C;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 15px 120px 15px;
+            background-image: linear-gradient(rgba(180, 83, 9, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(180, 83, 9, 0.08) 1px, transparent 1px);
+            background-size: 25px 25px;
+        }
+
+        /* --- ANIMAÇÕES --- */
+        @keyframes slideUp { from { transform: translateY(15px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1) rotate(-5deg); color: var(--theme-contrast); } }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+        
+        .pulse-effect { animation: pulse 2s infinite; display: inline-block; }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+
+        /* --- LAYOUT PRINCIPAL --- */
+        .container { width: 100%; max-width: 650px; display: flex; flex-direction: column; gap: 25px; }
+
+        .logo-header { display: flex; flex-direction: column; align-items: center; padding: 15px 0 25px 0; text-align: center; }
+        .css-logo { font-size: 1.5rem; font-weight: 900; color: var(--theme-text-active); text-transform: uppercase; letter-spacing: -1px; border: 3px solid var(--border-color); padding: 8px 24px; border-radius: 12px; background: var(--theme-dark); box-shadow: 4px 4px 0px var(--theme-contrast); margin-bottom: 15px; transform: rotate(-2deg); }
+        h1 { font-size: 2rem; font-weight: 900; color: var(--text-color); text-transform: uppercase; letter-spacing: -0.5px; line-height: 1.1; }
+        .subtitle { font-size: 1rem; color: var(--white); font-weight: 700; margin-top: 5px; background: var(--theme-contrast); padding: 4px 12px; border-radius: 8px; border: 2px solid var(--border-color); }
+
+        /* --- NAVEGAÇÃO --- */
+        .toggle-container { background-color: var(--white); border: 3px solid var(--border-color); border-radius: 12px; padding: 6px; display: flex; box-shadow: 4px 4px 0px var(--border-color); position: sticky; top: 15px; z-index: 50; }
+        .toggle-btn { flex: 1; border: none; background: none; padding: 12px 0; border-radius: 8px; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.05rem; color: var(--text-color); cursor: pointer; transition: all 0.2s ease; }
+        .toggle-btn.active { background-color: var(--theme-dark); color: var(--theme-text-active); border: 2px solid var(--border-color); box-shadow: 2px 2px 0px var(--border-color); }
+
+        .view-section { display: none; animation: fadeIn 0.3s ease; flex-direction: column; gap: 35px; }
+        .view-section.active { display: flex; }
+
+        /* --- PESQUISA --- */
+        .search-container { position: relative; width: 100%; }
+        .search-input { width: 100%; padding: 16px 20px 16px 55px; border: 3px solid var(--border-color); border-radius: 12px; background-color: var(--white); font-family: 'Poppins', sans-serif; font-size: 1.05rem; font-weight: 600; color: var(--text-color); box-shadow: 4px 4px 0px var(--border-color); outline: none; transition: all 0.2s ease; }
+        .search-input:focus { transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--theme-contrast); border-color: var(--theme-dark); }
+        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); font-size: 1.4rem; }
+        #no-results { text-align: center; color: var(--wrong-border); font-weight: 800; display: none; background: var(--wrong-bg); padding: 15px; border: 3px solid var(--wrong-border); border-radius: 8px; }
+
+        /* --- TEORIA --- */
+        .content-group { display: flex; flex-direction: column; position: relative; padding-top: 15px; }
+        .section-badge { display: inline-flex; align-items: center; gap: 10px; background-color: var(--theme-dark); color: var(--white); font-size: 1.1rem; font-weight: 800; padding: 8px 20px; border-radius: 8px; border: 3px solid var(--border-color); box-shadow: 3px 3px 0px var(--theme-contrast); text-transform: uppercase; position: absolute; top: -5px; left: 15px; z-index: 10; transform: rotate(-1.5deg); }
+        .theory-box { display: flex; flex-direction: column; padding: 35px 25px 25px 35px; border-radius: 12px; background-color: var(--white); border: 3px solid var(--border-color); box-shadow: 6px 6px 0px var(--border-color); font-weight: 500; font-size: 1rem; line-height: 1.7; position: relative; overflow: hidden; gap: 20px; border-left: 14px solid var(--theme-medium); }
+        .theory-box h3 { font-size: 1.35rem; font-weight: 900; color: var(--theme-dark); margin-bottom: 5px; display: flex; align-items: center; gap: 8px; letter-spacing: -0.5px; }
+        .theory-box h4 { font-size: 1.1rem; font-weight: 800; color: var(--text-color); margin-top: 10px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; }
+        
+        .inline-example { display: block; width: fit-content; max-width: 100%; margin-top: 6px; margin-bottom: 6px; padding: 6px 14px; background-color: var(--theme-light); border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.85rem; color: var(--text-color); font-weight: 700; letter-spacing: 0.5px; box-shadow: 2px 2px 0px rgba(0,0,0,0.05); }
+        
+        .highlight-box { background-color: #FEF3C7; border: 3px solid var(--border-color); border-left: 8px solid var(--theme-contrast); padding: 18px 20px; border-radius: 8px; font-size: 0.95rem; color: #78350F; font-weight: 600; box-shadow: 3px 3px 0px rgba(0,0,0,0.1); }
+        .highlight-box.water { background-color: #E0F2FE; border-left-color: #0284C7; color: #0C4A6E; }
+
+        /* --- MAPA DA BIODIVERSIDADE (VERTEBRADOS) --- */
+        .kingdoms-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; width: 100%; margin-top: 10px; }
+        .k-card { flex: 1 1 calc(50% - 15px); min-width: 130px; border-radius: 12px; padding: 15px 10px; text-align: center; border: 3px solid; display: flex; flex-direction: column; align-items: center; box-shadow: 4px 4px 0px rgba(0,0,0,0.1); background-color: var(--white); transition: transform 0.2s; }
+        .k-card:hover { transform: translateY(-3px); }
+        .k-card.full-width { flex: 1 1 100%; max-width: 280px; }
+        .k-icon { font-size: 2.8rem; margin-bottom: 8px; line-height: 1; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.15)); }
+        .k-title { font-size: 1.05rem; font-weight: 900; margin-bottom: 4px; }
+        .k-examples { font-size: 0.85rem; font-weight: 600; color: var(--text-color); margin-bottom: 4px; line-height: 1.2; }
+        .k-traits { font-size: 0.75rem; font-style: italic; font-weight: 700; opacity: 0.9; line-height: 1.2; }
+        
+        .k-peixes { background-color: #CFFAFE; border-color: #0891B2; }
+        .k-peixes .k-title, .k-peixes .k-traits { color: #0891B2; }
+        
+        .k-anfibios { background-color: #D1FAE5; border-color: #059669; }
+        .k-anfibios .k-title, .k-anfibios .k-traits { color: #059669; }
+        
+        .k-repteis { background-color: #FEF3C7; border-color: #B45309; }
+        .k-repteis .k-title, .k-repteis .k-traits { color: #B45309; }
+        
+        .k-aves { background-color: #E0E7FF; border-color: #4338CA; }
+        .k-aves .k-title, .k-aves .k-traits { color: #4338CA; }
+
+        .k-mamiferos { background-color: #FFEDD5; border-color: #C2410C; }
+        .k-mamiferos .k-title, .k-mamiferos .k-traits { color: #C2410C; }
+
+        /* --- BOTÕES GERAIS --- */
+        .btn-action { width: 100%; padding: 20px; background-color: var(--theme-dark); color: white; border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.15rem; font-weight: 900; cursor: pointer; box-shadow: 6px 6px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 10px; }
+        .btn-action:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0px var(--theme-contrast); }
+
+        /* --- QUIZ UI --- */
+        .difficulty-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 900; text-transform: uppercase; margin-bottom: 15px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,1); }
+        .dif-facil { background: #D1FAE5; color: #065F46; }
+        .dif-medio { background: #FEF08A; color: #713F12; }
+        .dif-dificil { background: #FECACA; color: #7F1D1D; }
+
+        .question-map { display: flex; gap: 8px; overflow-x: auto; padding: 10px 5px; margin-bottom: 20px; white-space: nowrap; scroll-behavior: smooth; }
+        .question-map::-webkit-scrollbar { display: none; }
+        .map-dot { min-width: 38px; height: 38px; border: 2px solid var(--border-color); border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem; color: var(--theme-dark); background: white; cursor: pointer; transition: all 0.2s; }
+        .map-dot.active { background-color: var(--theme-dark); color: white; box-shadow: 3px 3px 0px var(--theme-contrast); transform: scale(1.15); }
+        .map-dot.answered-correct { background-color: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .map-dot.answered-wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .quiz-question-card { border: 4px solid var(--border-color); box-shadow: 6px 6px 0px var(--border-color); padding: 30px; border-radius: 16px; background: var(--white); }
+        .quiz-question-counter { font-size: 0.85rem; font-weight: 900; color: var(--theme-dark); letter-spacing: 1px; }
+        .quiz-question-text { font-size: 1.2rem; margin-top: 8px; color: var(--text-color); font-weight: 800; line-height: 1.5; margin-bottom: 25px;}
+
+        .option-btn { display: flex; align-items: center; width: 100%; padding: 18px; background-color: var(--white); border: 3px solid var(--border-color); border-radius: 12px; margin-bottom: 12px; cursor: pointer; transition: all 0.1s ease; box-shadow: 4px 4px 0px rgba(0,0,0,0.1); font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 600; text-align: left; color: var(--text-color); }
+        .option-btn:hover:not(:disabled) { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px var(--theme-contrast); }
+        .opt-circle { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--border-color); margin-right: 15px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.05rem; flex-shrink: 0; background: var(--theme-light); color: var(--theme-dark); }
+        .option-btn.correct { background-color: var(--correct-bg); border-color: var(--correct-border); box-shadow: 3px 3px 0px var(--correct-border); }
+        .option-btn.correct .opt-circle { background-color: var(--correct-border); color: white; border-color: var(--correct-border); }
+        .option-btn.wrong { background-color: var(--wrong-bg); border-color: var(--wrong-border); opacity: 0.9; box-shadow: none; }
+        .option-btn.wrong .opt-circle { background-color: var(--wrong-border); color: white; border-color: var(--wrong-border); }
+        .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+        /* --- FEEDBACK DA QUESTÃO --- */
+        .feedback-box { display: block; margin-top: 25px; background-color: var(--white); border: 3px solid var(--border-color); border-radius: 12px; padding: 25px; animation: slideUp 0.3s ease-out; box-shadow: 5px 5px 0px rgba(0,0,0,0.1); }
+        .feedback-title { font-weight: 900; text-transform: uppercase; font-size: 1.1rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .feedback-item { margin-bottom: 10px; font-size: 0.95rem; padding: 12px; border-radius: 8px; border: 2px solid var(--border-color); line-height: 1.5; font-weight: 500; }
+        .feedback-item.correct-opt { background: var(--correct-bg); border-color: var(--correct-border); color: #064E3B; font-weight: 700; box-shadow: 3px 3px 0px var(--correct-border); }
+        .feedback-item.wrong-opt { background: #F1F5F9; border-color: #94A3B8; color: #475569; border-style: dashed; margin-top: 8px; }
+
+        /* --- RESULTADOS --- */
+        .result-card { background: white; border: 4px solid var(--border-color); border-radius: 16px; padding: 40px 20px; box-shadow: 8px 8px 0px var(--border-color); margin-bottom: 30px; text-align: center; }
+        .stars-container { font-size: 2.5rem; margin: 15px 0; letter-spacing: 5px; }
+        .percentage-big { font-size: 5rem; font-weight: 900; color: var(--theme-dark); line-height: 1; margin: 15px 0; text-shadow: 4px 4px 0px var(--theme-contrast); }
+        
+        .result-summary-box { padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 3px solid; box-shadow: 4px 4px 0px rgba(0,0,0,0.1); }
+        .result-summary-box.success { background: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
+        .result-summary-box.error { background: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
+
+        .error-log-item { margin-bottom: 15px; padding: 20px; background: var(--bg-color); border-radius: 12px; border: 3px dashed var(--theme-medium); text-align: left;}
+
+        /* --- RODAPÉ DE NAVEGAÇÃO --- */
+        .quiz-footer { position: fixed; bottom: 0; left: 0; width: 100%; background-color: var(--white); border-top: 3px solid var(--border-color); padding: 15px 20px; display: none; justify-content: center; gap: 20px; z-index: 100; box-shadow: 0px -4px 10px rgba(0,0,0,0.05); }
+        .nav-btn { padding: 15px 30px; border-radius: 12px; font-weight: 900; border: 3px solid var(--border-color); cursor: pointer; box-shadow: 3px 3px 0px var(--border-color); font-family: 'Poppins', sans-serif; text-transform: uppercase; background: white; color: var(--text-color); font-size: 1rem; transition: transform 0.1s; }
+        .nav-btn:active:not(:disabled) { transform: translate(2px, 2px); box-shadow: 0px 0px 0px transparent; }
+        .btn-next { background-color: var(--theme-dark); color: white; box-shadow: 3px 3px 0px var(--theme-contrast); border-color: var(--border-color); }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header class="logo-header">
+            <div class="css-logo"><span class="pulse-effect">🐅</span> PROMOVER</div>
+            <h1>Biologia / 9º Ano</h1>
+            <p class="subtitle">Reino Animalia: Vertebrados</p>
+        </header>
+
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btnExp" onclick="changeApplicationView('explanation')">📘 Teoria</button>
+            <button class="toggle-btn" id="btnPrac" onclick="changeApplicationView('practice')">🧠 Prática (30)</button>
+        </div>
+
+        <!-- VISTA: TEORIA -->
+        <main id="viewExplanation" class="view-section active">
+            
+            <div class="search-container">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Mamíferos, Endotermia, Anfíbios)">
+            </div>
+            <div id="no-results"><p>😕 Termo não encontrado na zoologia.</p></div>
+
+            <section class="content-group">
+                <div class="section-badge">🧬 1. O que é um Cordado?</div>
+                <article class="theory-box search-target">
+                    <h3>O Eixo da Evolução</h3>
+                    <p>Todos os vertebrados pertencem ao Filo dos <strong>Cordados</strong>. Para ser um cordado, o embrião do animal tem de apresentar, em alguma fase da sua vida, características únicas:</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Notocorda:</strong> Um bastão flexível nas costas do embrião. Nos vertebrados, ela desaparece e é substituída pela <strong>Coluna Vertebral</strong> (ossos ou cartilagem).</li>
+                        <li><strong>Tubo Nervoso Dorsal:</strong> Fica por cima da notocorda. Nos vertebrados, a ponta incha e forma o <strong>Cérebro</strong>, e o resto forma a medula espinhal (protegida pela coluna).</li>
+                        <li><strong>Fendas Branquiais:</strong> Fendas na garganta do embrião (que em nós fecham antes de nascermos).</li>
+                    </ul>
+                </article>
+            </section>
+
+            <section class="content-group">
+                <div class="section-badge">🐾 2. As 5 Classes Principais</div>
+                <article class="theory-box search-target">
+                    <h3>A Conquista da Terra</h3>
+                    <p>A evolução dos vertebrados mostra uma clara transição do ambiente aquático para o ambiente totalmente seco.</p>
+                    
+                    <div class="visual-area" style="background: transparent; border: none; padding: 0;">
+                        <div class="kingdoms-grid">
+                            <!-- Peixes -->
+                            <div class="k-card k-peixes">
+                                <div class="k-icon">🦈</div>
+                                <div class="k-title">PEIXES</div>
+                                <div class="k-examples">Tubarões, Sardinhas</div>
+                                <div class="k-traits">Respiração branquial. Podem ser cartilaginosos ou ósseos.</div>
+                            </div>
+                            
+                            <!-- Anfíbios -->
+                            <div class="k-card k-anfibios">
+                                <div class="k-icon">🐸</div>
+                                <div class="k-title">ANFÍBIOS</div>
+                                <div class="k-examples">Sapos, Rãs, Salamandras</div>
+                                <div class="k-traits">Vida dupla: fase larval aquática e fase adulta terrestre (úmida).</div>
+                            </div>
+                            
+                            <!-- Répteis -->
+                            <div class="k-card k-repteis">
+                                <div class="k-icon">🐊</div>
+                                <div class="k-title">RÉPTEIS</div>
+                                <div class="k-examples">Cobras, Jacarés, Tartarugas</div>
+                                <div class="k-traits">Pele seca (escamas). Primeira conquista definitiva da terra.</div>
+                            </div>
+                            
+                            <!-- Aves -->
+                            <div class="k-card k-aves">
+                                <div class="k-icon">🦅</div>
+                                <div class="k-title">AVES</div>
+                                <div class="k-examples">Galinhas, Águias, Pinguins</div>
+                                <div class="k-traits">Corpo coberto por penas, ossos ocos e voo (maioria).</div>
+                            </div>
+
+                            <!-- Mamíferos -->
+                            <div class="k-card k-mamiferos full-width">
+                                <div class="k-icon">🐒</div>
+                                <div class="k-title">MAMÍFEROS</div>
+                                <div class="k-examples">Humanos, Cães, Baleias, Morcegos</div>
+                                <div class="k-traits">Presença de Glândulas Mamárias (leite) e Pelos.</div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <section class="content-group">
+                <div class="section-badge">🔥 3. Inovações de Sobrevivência</div>
+                <article class="theory-box search-target">
+                    <h3>Ovo e Sangue Quente</h3>
+                    <p>O que separa um sapo de um lagarto, e um lagarto de uma ave?</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>A Invenção do Ovo Amniótico:</strong> Os peixes e anfíbios põem ovos gelatinosos na água. Os <strong>Répteis</strong> inventaram um ovo com casca dura e uma bolsa de água dentro (âmnio). Isto impediu que o ovo secasse, libertando os animais da água para se reproduzirem.</li>
+                        <li><strong>O Controle da Temperatura:</strong> Peixes, anfíbios e répteis são <em>Ectotérmicos</em> (sangue frio: precisam do sol para se aquecerem). As <strong>Aves e os Mamíferos</strong> são <em>Endotérmicos</em> (sangue quente: queimam energia para manter o corpo quente sozinhos, podendo caçar à noite ou na neve).</li>
+                    </ul>
+
+                    <div class="highlight-box water">
+                        <strong>Respiração pela Pele:</strong> Os Anfíbios (sapos) têm um pulmão muito fraco. Eles precisam de respirar através da pele (Respiração Cutânea). Se a pele secar ao sol, o sapo morre sufocado! É por isso que vivem em locais úmidos.
+                    </div>
+                </article>
+            </section>
+
+            <button class="btn-action" onclick="changeApplicationView('practice')">
+                Iniciar a Avaliação (30 Questões) ➜
+            </button>
+        </main>
+
+        <!-- VISTA: PRÁTICA (QUIZ) -->
+        <main id="viewPractice" class="view-section">
+            <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
+                <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">A Prova de Fogo - IFCE</h2>
+                <p style="color: var(--theme-contrast); font-size: 0.95rem; font-weight:600;">
+                    30 questões de Zoologia (formato Ensino Técnico Integrado). Acerta <strong>80% (24/30)</strong> para garantires a aprovação.
+                </p>
+            </div>
+            
+            <div class="question-map" id="qMap"></div>
+            <div id="quizContainer" style="margin-bottom: 40px;"></div>
+        </main>
+
+        <!-- VISTA: RESULTADOS -->
+        <main id="viewResult" class="view-section">
+            <div class="result-card">
+                <h2 style="font-weight:900; text-transform:uppercase;">Relatório Final</h2>
+                <div class="stars-container" id="finalStars">⭐⭐⭐</div>
+                <div class="percentage-big" id="finalPercent">0%</div>
+                <p style="font-size:1.2rem; font-weight:700; color:#555;" id="finalScoreText">Acertaste 0 de 30</p>
+                <div id="review-container" style="text-align: left; margin-top: 20px;"></div>
+            </div>
+            <div id="action-buttons"></div>
+        </main>
+
+    </div>
+
+    <!-- RODAPÉ DE NAVEGAÇÃO -->
+    <footer class="quiz-footer" id="quizFooter">
+        <button class="nav-btn btn-prev" id="btnPrev" onclick="navigateQuestion(-1)">Anterior</button>
+        <button class="nav-btn btn-next" id="btnNext" onclick="navigateQuestion(1)">Próxima</button>
+    </footer>
+
+<script>
+    /* --- ESTRUTURA DE DADOS (BASE DE QUESTÕES - NÍVEL IFCE TÉCNICO INTEGRADO) --- */
+    const questionsDatabase = [
+        { level: "Fácil", text: "Todos os animais vertebrados (peixes, anfíbios, répteis, aves e mamíferos) pertencem a um grande grupo evolutivo maior. Como se chama o Filo que engloba todos os vertebrados?", options: ["Filo dos Artrópodes", "Filo dos Cnidários", "Filo dos Cordados (Chordata)", "Filo dos Poríferos"], correctIndex: 2, explanation: { correctText: "Todos os vertebrados são Cordados, pois possuem (pelo menos na fase de embrião) a notocorda e o tubo nervoso dorsal.", otherOptions: ["Artrópodes são insetos.", "Cnidários são águas-vivas.", "Poríferos são esponjas."] } },
+        { level: "Médio", text: "No embrião humano, existe uma estrutura flexível em forma de bastão chamada NOTOCORDA. O que acontece a esta estrutura à medida que o feto se desenvolve e nasce?", options: ["Ela transforma-se no coração.", "Ela desaparece e é substituída pela Coluna Vertebral.", "Ela transforma-se no cérebro.", "Ela cai e forma o cordão umbilical."], correctIndex: 1, explanation: { correctText: "Nos vertebrados, a notocorda serve de molde e é depois substituída pelos ossos (ou cartilagem) que vão formar a coluna vertebral para sustentar o corpo.", otherOptions: ["Coração vem da mesoderme.", "O cérebro vem do tubo nervoso dorsal.", "O cordão umbilical é da placenta."] } },
+        { level: "Fácil", text: "Os peixes dividem-se em duas grandes classes: os peixes Ósseos (Osteícties, como a tilápia e o salmão) e os peixes Cartilaginosos (Condrícties). Qual dos animais abaixo é um peixe Cartilaginoso?", options: ["Sardinha", "Bacalhau", "Tubarão", "Cavalo-marinho"], correctIndex: 2, explanation: { correctText: "Tubarões, raias (ou arraias) e quimeras têm o esqueleto feito apenas de cartilagem, sendo muito mais leves do que se tivessem ossos.", otherOptions: ["Todos os outros possuem esqueleto de osso verdadeiro."] } },
+        { level: "Médio", text: "Muitos peixes ósseos possuem um órgão interno parecido com um 'balão de ar' que os ajuda a flutuar sem precisarem de estar sempre a nadar. Como se chama esse órgão?", options: ["Pulmão primitivo", "Opérculo", "Bexiga natatória", "Linha lateral"], correctIndex: 2, explanation: { correctText: "A bexiga natatória enche-se de gás para o peixe subir na água, ou esvazia-se para ele descer (controlo de flutuabilidade). Os tubarões não têm este órgão (por isso afundam se pararem de nadar).", otherOptions: ["Pulmão é nos terrestres.", "Opérculo é a tampa da brânquia.", "Linha lateral é para os sentidos."] } },
+        { level: "Médio", text: "Se observares um peixe com atenção, notarás uma 'risca' que percorre a lateral do seu corpo. Esta 'Linha Lateral' tem uma função vital no ambiente aquático. Qual é?", options: ["Realizar a fotossíntese.", "Detetar vibrações, pressão e movimentos na água ao seu redor.", "Absorver o oxigénio da água.", "Segregar veneno contra predadores."], correctIndex: 1, explanation: { correctText: "A linha lateral é um órgão sensorial (como um '6º sentido') que permite ao peixe 'sentir' um predador a aproximar-se ou um cardume a mover-se, mesmo no escuro ou em águas turvas.", otherOptions: ["Animais não fazem fotossíntese.", "Brânquias absorvem oxigénio.", "Incorreto."] } },
+        { level: "Fácil", text: "A palavra 'Anfíbio' vem do grego 'amphi' (dois/ambos) + 'bios' (vida). Por que razão os sapos, rãs e salamandras recebem este nome?", options: ["Porque têm dois corações.", "Porque podem viver tanto de dia como de noite.", "Porque o seu ciclo de vida tem uma fase larval aquática (girino) e uma fase adulta terrestre.", "Porque comem plantas e animais."], correctIndex: 2, explanation: { correctText: "A 'vida dupla' refere-se ao facto de nascerem na água (onde respiram por brânquias) e, após a metamorfose, irem para terra (respirando por pulmões e pele).", otherOptions: ["Têm 1 coração (com 3 cavidades).", "Incorreto.", "Isso é ser omnívoro."] } },
+        { level: "Difícil", text: "Os anfíbios adultos (como o sapo) já possuem pulmões, mas estes são muito simples e pouco eficientes (parecem sacos vazios). Para não morrerem sufocados, de que outra forma eles precisam de absorver oxigénio?", options: ["Pelas brânquias laterais.", "Pela cauda.", "Pelo estômago.", "Através da pele úmida (Respiração Cutânea)."], correctIndex: 3, explanation: { correctText: "A respiração cutânea é vital para eles. O oxigénio passa diretamente pela pele húmida para o sangue. É por isso que, se atirarem sal a um sapo, ele desidrata e morre por asfixia.", otherOptions: ["O sapo adulto perde as brânquias da fase de girino.", "Perdem a cauda.", "Incorreto."] } },
+        { level: "Médio", text: "Nas aulas de Zootecnia do IFCE, estuda-se que os Anfíbios NUNCA poderiam sobreviver a viver e a reproduzir-se no meio do deserto do Saara. Por qual motivo evolutivo?", options: ["Eles são de sangue quente e morreriam de calor.", "Os seus ovos não têm casca dura e as larvas precisam nadar, logo secariam e morreriam sem água.", "Os sapos só comem peixes.", "Não existem insetos no deserto."], correctIndex: 1, explanation: { correctText: "A reprodução dos anfíbios é externa e na água. Os ovos são apenas bolas de gelatina (sem casca protetora). No deserto, a reprodução seria impossível.", otherOptions: ["Eles são ectotérmicos (sangue frio).", "Comem insetos.", "Desertos têm muitos insetos."] } },
+        { level: "Fácil", text: "Os Répteis (cobras, lagartos, tartarugas) foram o primeiro grupo de vertebrados a conquistar verdadeiramente e definitivamente o ambiente terrestre seco. Que adaptação visível na pele lhes permitiu isto?", options: ["Uma pele úmida cheia de muco.", "Uma pele coberta por pelos macios.", "Uma pele grossa, seca e coberta por escamas ou placas impermeáveis.", "A capacidade de transpirar muito."], correctIndex: 2, explanation: { correctText: "As escamas e placas de queratina dos répteis formam uma armadura que impede a água do corpo de evaporar, permitindo que vivam em locais escaldantes e secos.", otherOptions: ["Pele úmida é dos anfíbios.", "Pelos são dos mamíferos.", "Eles transpiram muito pouco para poupar água."] } },
+        { level: "Difícil", text: "O grande 'salto tecnológico' da evolução dos Répteis foi a invenção do OVO AMNIÓTICO. O que é que este ovo tem de tão especial comparado com o ovo dos peixes e sapos?", options: ["É microscópico e invisível a predadores.", "Possui uma casca porosa (que impede a dessecação) e uma bolsa de líquido interna (o âmnio) que funciona como um 'aquário portátil' para o embrião.", "Permite que a cria já nasça a voar.", "Não precisa de ser fecundado pelo macho."], correctIndex: 1, explanation: { correctText: "O ovo com casca (e o líquido amniótico) resolveu o problema da água. O embrião desenvolve-se na sua própria 'piscina privada', libertando os répteis da necessidade de voltar aos rios para acasalar.", otherOptions: ["É grande.", "Incorreto.", "A fecundação é interna nos répteis."] } },
+        { level: "Difícil", text: "Para viverem em desertos sem beberem água durante meses, os Répteis (e também as Aves) não urinam líquido como nós (que deitamos fora muita água na urina). Em vez de ureia, eles excretam uma pasta branca e sólida. Qual é a substância?", options: ["Amónia", "Ácido Úrico", "Suor", "Cloreto de Sódio"], correctIndex: 1, explanation: { correctText: "O Ácido Úrico é muito pouco tóxico e não precisa ser diluído em água. Eles deitam fora uma 'pasta branca' junto com as fezes, poupando praticamente 100% da água do seu corpo.", otherOptions: ["Amónia é tóxica e usada por peixes na água.", "Répteis não suam.", "Sal comum."] } },
+        { level: "Médio", text: "Se um jacaré (réptil) tiver frio de manhã cedo, o que ele faz para aquecer o corpo e conseguir caçar?", options: ["Começa a tremer os músculos para gerar calor interno.", "Acelera o batimento do seu coração.", "Deita-se ao sol numa pedra (porque é ectotérmico / sangue frio).", "Produz suor quente."], correctIndex: 2, explanation: { correctText: "Os ectotérmicos (animais de 'sangue frio') não geram calor metabólico suficiente para se aquecerem. Eles dependem do calor do meio ambiente (Sol) para que as suas enzimas funcionem e eles ganhem agilidade.", otherOptions: ["Tremer (calafrios) é uma reação de mamíferos/aves.", "Coração não aquece.", "Não suam."] } },
+        { level: "Médio", text: "As Aves e os Mamíferos conquistaram ambientes gelados como o Pólo Sul (pinguins e ursos polares) graças a uma adaptação fisiológica notável chamada ENDOTERMIA (sangue quente). O que é a endotermia?", options: ["A capacidade de ter a mesma temperatura do gelo.", "A capacidade de gerar e manter o calor do corpo constante através do próprio metabolismo (queimando os alimentos).", "A capacidade de absorver o calor das estrelas.", "O poder de congelar o próprio sangue."], correctIndex: 1, explanation: { correctText: "Endotérmicos (ou homeotérmicos) mantêm a temperatura interna estável (ex: humanos nos 36,5ºC) independentemente de estar frio ou calor lá fora. Isto custa muita energia, por isso aves e mamíferos comem muito mais do que os répteis.", otherOptions: ["Isso é impossível para nós.", "Incorreto.", "Incorreto."] } },
+        { level: "Fácil", text: "As Aves são os mestres do voo. Além das penas e das asas, os pássaros possuem uma adaptação incrível no seu esqueleto para ficarem mais leves. Como são os ossos das aves voadoras?", options: ["São feitos de cartilagem macia como nos tubarões.", "São ossos maciços e muito pesados para dar força.", "São ossos pneumáticos (ocos por dentro, cheios de ar).", "Eles não têm esqueleto."], correctIndex: 2, explanation: { correctText: "Os ossos pneumáticos possuem cavidades cheias de ar ligadas aos sacos aéreos (pulmões). Isto reduz drasticamente o peso da ave, poupando energia durante o voo.", otherOptions: ["Aves têm ossos calcificados fortes.", "Ossos maciços impediriam o voo.", "São vertebrados, têm esqueleto."] } },
+        { level: "Fácil", text: "As aves não têm dentes no bico. Como é que uma galinha (que come sementes de milho duras) consegue triturar a comida no estômago?", options: ["Engole o milho inteiro e vomita a casca.", "Usa um órgão especial muito musculoso chamado Moela (muitas vezes engolindo pequenas pedrinhas para ajudar a esmagar o grão).", "O bico dissolve o milho com ácido.", "As galinhas têm dentes na garganta."], correctIndex: 1, explanation: { correctText: "O estômago mecânico das aves é a Moela. Os músculos fortes deste órgão, ajudados por pedrinhas (gastrólitos) que a ave engole de propósito, trituram os grãos de forma muito eficiente.", otherOptions: ["Elas digerem o grão todo.", "Bico não deita ácido.", "Aves não têm qualquer dente."] } },
+        { level: "Médio", text: "Para pertencer à Classe dos Mamíferos (Mammalia), da qual o ser humano faz parte, o animal deve obrigatoriamente possuir duas características exclusivas. Quais são?", options: ["Asas e sangue quente.", "Respiração pulmonar e quatro patas.", "Glândulas Mamárias (produção de leite) e Pelos no corpo.", "Ovos com casca e escamas."], correctIndex: 2, explanation: { correctText: "Todos os mamíferos alimentam as suas crias com leite produzido pelas glândulas mamárias. Além disso, todos possuem pelos em alguma fase da vida (mesmo as baleias têm alguns pelinhos quando nascem).", otherOptions: ["Morcegos voam, mas têm leite e pelos.", "Anfíbios/répteis também têm pulmão e 4 patas.", "Características de Répteis/Aves."] } },
+        { level: "Fácil", text: "Na biologia, o morcego é frequentemente confundido. O que o morcego é verdadeiramente?", options: ["Uma ave sem penas.", "O único Mamífero capaz de voo verdadeiro (ativo).", "Um inseto gigante.", "Um réptil voador sobrevivente."], correctIndex: 1, explanation: { correctText: "O morcego tem o corpo coberto de pelos, a fêmea amamenta as crias com leite e o embrião desenvolve-se na barriga da mãe (placenta). É um mamífero voador perfeito.", otherOptions: ["Não é ave.", "Não é inseto.", "Não é réptil."] } },
+        { level: "Fácil", text: "A baleia-azul e o golfinho vivem exclusivamente no mar e têm formato de peixe. Contudo, respiram oxigénio do ar atmosférico e as fêmeas dão de mamar às crias. A que classe pertencem?", options: ["Peixes Ósseos", "Anfíbios", "Mamíferos Aquáticos", "Peixes Cartilaginosos"], correctIndex: 2, explanation: { correctText: "São mamíferos totais. Os seus ancestrais viviam em terra firme e, ao longo de milhões de anos de evolução, adaptaram-se para voltar a viver no oceano.", otherOptions: ["Peixes respiram por brânquias.", "Anfíbios não dão de mamar.", "Tubarões são cartilaginosos."] } },
+        { level: "Difícil", text: "A maioria dos mamíferos (como cães, vacas e humanos) desenvolve o embrião dentro do útero da mãe com a ajuda de um órgão que faz a troca de nutrientes, oxigénio e lixo entre o sangue da mãe e o do feto. Qual é este órgão?", options: ["Placenta", "Bexiga natatória", "Saco vitelino gigante", "Moela"], correctIndex: 0, explanation: { correctText: "Os Mamíferos Placentários (Eutérios) desenvolveram a placenta. É uma ligação altamente sofisticada que permite ao bebé ficar protegido na barriga até estar totalmente desenvolvido.", otherOptions: ["Órgão de peixe.", "Saco vitelino é típico de aves/répteis.", "Órgão de ave."] } },
+        { level: "Difícil", text: "A natureza é cheia de surpresas. Existe um grupo de mamíferos muito primitivos, que vive na Austrália, e que DÁ DE MAMAR, mas PÕE OVOS como os répteis. Quem são eles?", options: ["Marsupiais (Canguru).", "Monotremados (Ornitorrinco e Équidna).", "Cetáceos (Baleias).", "Primatas (Macacos)."], correctIndex: 1, explanation: { correctText: "O ornitorrinco é um dos animais mais bizarros da Terra. Ele tem bico de pato, põe ovos com casca, mas... a mãe 'sua' leite pela barriga para os bebés lamberem. Ele é o elo vivo entre répteis e mamíferos.", otherOptions: ["Canguru não põe ovos.", "Baleias dão à luz.", "Macacos dão à luz."] } },
+        { level: "Médio", text: "Os Marsupiais são outra subdivisão curiosa dos mamíferos. O canguru e o coala, bem como o gambá (no Brasil), nascem prematuros (muito pequeninos) e completam o seu crescimento num local especial. Qual?", options: ["Num casulo tecido pela mãe.", "Num ovo deitado na areia quente.", "Numa bolsa de pele na barriga da mãe, o Marsúpio, onde ficam colados à mama.", "Eles já nascem a andar e correr."], correctIndex: 2, explanation: { correctText: "Como não possuem uma placenta complexa (são Metatérios), a cria nasce cega, surda e minúscula, rasteja até ao marsúpio (bolsa) e lá fica presa ao mamilo durante meses até estar pronta.", otherOptions: ["Insetos fazem casulos.", "Eles dão à luz.", "Cavalos e vacas já nascem a correr, marsupiais não."] } },
+        { level: "Médio", text: "Em fisiologia comparada (muito comum nas provas do IFCE): Um peixe tem um coração com APENAS 2 cavidades (1 átrio e 1 ventrículo). Por lá passa apenas o sangue venoso (sujo, sem oxigênio). Qual destes animais, pelo contrário, tem um coração avançado de 4 cavidades separadas (2 átrios e 2 ventrículos)?", options: ["O sapo.", "A tartaruga marinha.", "O ser humano (e todos os mamíferos/aves).", "O tubarão branco."], correctIndex: 2, explanation: { correctText: "Aves e Mamíferos possuem um septo perfeito que divide o coração em metades (direita venosa, esquerda arterial), não permitindo a mistura do sangue. Isso garante o alto nível de energia da Endotermia.", otherOptions: ["Anfíbios têm 3 cavidades (sangue mistura).", "Répteis têm 3 (com exceção do jacaré que tem 4 mas com um forame que ainda mistura).", "Tubarão tem 2."] } },
+        { level: "Difícil", text: "No que toca a fertilização, a maioria dos Peixes e Anfíbios deita os seus gâmetas (esperma e óvulos) na água, ocorrendo a união fora do corpo da fêmea. Como se chama isto?", options: ["Fecundação Interna.", "Fecundação Externa.", "Fecundação Assexuada.", "Cópula Placental."], correctIndex: 1, explanation: { correctText: "A fecundação externa depende estritamente da água. O macho abraça a fêmea (como o 'abraço' do sapo) e ambos ejetam milhares de células na água, contando com a sorte.", otherOptions: ["Interna é quando o esperma é introduzido dentro do corpo da fêmea (répteis, aves, mamíferos).", "Não é assexuada porque há óvulo e esperma.", "Incorreto."] } },
+        { level: "Fácil", text: "As cobras são répteis fascinantes. Elas não têm braços nem pernas. Como é que o esqueleto e o corpo da cobra estão adaptados para rastejar tão depressa?", options: ["Eles não têm coluna vertebral (são invertebrados disfarçados).", "Eles arrastam-se através de fluidos mágicos.", "Possuem uma coluna vertebral super flexível com centenas de costelas ligadas a músculos poderosos nas escamas da barriga.", "Eles usam pequenas asas escondidas sob as escamas."], correctIndex: 2, explanation: { correctText: "A cobra é um vertebrado. A sua coluna alongou-se ao extremo, suportando até 400 vértebras e pares de costelas. A contração coordenada destes músculos impulsiona a cobra pelo solo.", otherOptions: ["Têm coluna, sim.", "Incorreto.", "Falso."] } },
+        { level: "Médio", text: "A pele de um anfíbio (rã) é húmida e sem escamas. A pele de um réptil (lagarto) é seca e grossa. A pele de uma ave (galinha) tem penas. E a pele de um mamífero (cão)?", options: ["É coberta de escamas úmidas.", "É coberta por pelos, e possui glândulas de suor (sudoríparas) e de gordura (sebáceas).", "É impermeável mas sem anexos.", "É oca e cheia de ar."], correctIndex: 1, explanation: { correctText: "Os pelos e as glândulas que produzem suor (para arrefecer o corpo) e sebo (para lubrificar os pelos) são exclusivos da complexa epiderme dos mamíferos.", otherOptions: ["Isso é uma mistura de réptil e anfíbio.", "Isso é de réptil.", "Isso são os ossos das aves."] } },
+        { level: "Difícil", text: "Qual destes sistemas de reprodução é classificado como 'Vivíparo'?", options: ["O animal põe ovos com casca dura que eclodem no ninho.", "O animal deita ovos moles no rio.", "O embrião cresce dentro do ovo, mas o ovo fica retido DENTRO da barriga da mãe até nascer (ex: alguns tubarões).", "O embrião desenvolve-se inteiramente DENTRO do corpo da mãe, sem ovo com casca, ligado a ela pela placenta, nascendo vivo (ex: Humanos)."], correctIndex: 3, explanation: { correctText: "Ovíparo = põe ovos fora (galinha). Ovovivíparo = ovo choca dentro da mãe (algumas cobras/tubarões). Vivíparo = sem ovo, com útero/placenta (cão, humano).", otherOptions: ["Ovíparo.", "Ovíparo.", "Ovovivíparo."] } },
+        { level: "Médio", text: "No final do aparelho digestivo de muitos vertebrados, existe um único 'buraco' para onde vai o lixo intestinal (fezes), o lixo renal (urina) e também os ovos/esperma. Essa saída multifunções (comum em Anfíbios, Répteis e Aves) chama-se:", options: ["Ânus", "Boca", "Cloaca", "Opérculo"], correctIndex: 2, explanation: { correctText: "A Cloaca é a câmara terminal que une o trato digestivo, urinário e reprodutor. (A galinha, por exemplo, defeca, urina e põe o ovo pelo mesmo orifício). Os mamíferos dividiram as saídas (ânus separado da uretra/vagina).", otherOptions: ["O ânus é exclusivo para fezes.", "Boca é a entrada.", "Opérculo tapa as guelras dos peixes."] } },
+        { level: "Médio", text: "O diafragma é um músculo em forma de cúpula que separa o tórax (pulmões/coração) do abdómen (estômago/intestinos). A sua contração ajuda a puxar o ar para os pulmões (respiração). Este músculo existe em qual grupo?", options: ["Em todos os vertebrados terrestres.", "Exclusivamente nos Répteis.", "Exclusivamente nas Aves e Mamíferos.", "Exclusivamente nos Mamíferos."], correctIndex: 3, explanation: { correctText: "O diafragma é uma exclusividade e marca registada da Classe dos Mamíferos (o ser humano soluça quando o diafragma tem espasmos). Nenhum sapo, cobra ou ave tem diafragma.", otherOptions: ["Falso.", "Falso.", "Falso, aves não o possuem (usam sacos aéreos)."] } },
+        { level: "Difícil", text: "A linha evolutiva que separa os peixes dos anfíbios possui um fóssil transicional muito importante: os 'Peixes Pulmonados' e os Celacantos (que têm barbatanas grossas com ossos). Como se chamavam esses ancestrais?", options: ["Peixes ósseos simples (Actinopterígios).", "Peixes de barbatanas lobadas (Sarcopterígios), cujas barbatanas musculosas deram origem às quatro patas dos animais terrestres.", "Tubarões terrestres.", "Anfíbios primitivos sem pernas."], correctIndex: 1, explanation: { correctText: "Os Sarcopterígios (como o Celacanto) têm barbatanas carnudas com articulações ósseas no interior parecidas com pulsos, que evoluíram lentamente para formar as pernas dos tetrápodes (animais com 4 patas).", otherOptions: ["Têm barbatanas de raios (sem carne/ossos no eixo).", "Incorreto.", "Incorreto."] } },
+        { level: "Fácil", text: "Resumo da Conquista da Terra: Qual é a sequência evolutiva correta do surgimento dos Vertebrados na história do planeta Terra?", options: ["Peixes → Répteis → Anfíbios → Aves e Mamíferos", "Anfíbios → Peixes → Mamíferos → Aves → Répteis", "Peixes → Anfíbios → Répteis → Aves e Mamíferos (em ramificações separadas)", "Mamíferos → Répteis → Peixes → Aves → Anfíbios"], correctIndex: 2, explanation: { correctText: "A vida surge na água (Peixes). Rasteja para a margem húmida (Anfíbios). Conquista o deserto seco com o ovo (Répteis). A partir dos grandes dinossauros répteis surgiram as Aves; e de pequenos répteis primitivos noturnos surgiram os Mamíferos.", otherOptions: ["Anfíbios vieram antes dos répteis.", "Falso, peixes foram os primeiros.", "Falso, os mamíferos foram dos últimos."] } }
+    ];
+
+    /* --- GESTÃO DE ESTADO (STATE) --- */
+    const quizState = {
+        currentIndex: 0,
+        userAnswers: new Array(questionsDatabase.length).fill(null),
+        confettiAnimationId: null
+    };
+
+    /* --- FUNCIONALIDADES DE PESQUISA (TEORIA) --- */
+    function initializeSearch() {
+        const searchInput = document.getElementById('searchInput');
+        const contentGroups = document.querySelectorAll('.content-group');
+        const noResultsMsg = document.getElementById('no-results');
+
+        if (!searchInput) return;
+
+        searchInput.addEventListener('input', function(event) {
+            const searchTerm = normalizeText(event.target.value);
+            let totalVisibleElements = 0;
+            
+            contentGroups.forEach(group => {
+                const groupContent = normalizeText(group.textContent);
+                const isMatch = groupContent.includes(searchTerm);
+                
+                group.style.display = isMatch ? 'flex' : 'none';
+                if (isMatch) totalVisibleElements++;
+            });
+            
+            noResultsMsg.style.display = totalVisibleElements === 0 ? 'block' : 'none';
+        });
+    }
+
+    function normalizeText(text) {
+        return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    /* --- CONTROLO DE VISTAS (VIEWS) --- */
+    function changeApplicationView(viewName) {
+        const views = ['viewExplanation', 'viewPractice', 'viewResult'];
+        
+        views.forEach(viewId => document.getElementById(viewId).classList.remove('active'));
+        
+        const quizFooter = document.getElementById('quizFooter');
+        if (quizFooter) quizFooter.style.display = 'none';
+
+        if (viewName === 'explanation') {
+            document.getElementById('viewExplanation').classList.add('active');
+            document.getElementById('btnExp').classList.add('active');
+            document.getElementById('btnPrac').classList.remove('active');
+        } else if (viewName === 'practice') {
+            document.getElementById('viewPractice').classList.add('active');
+            if (quizFooter) quizFooter.style.display = 'flex';
+            document.getElementById('btnExp').classList.remove('active');
+            document.getElementById('btnPrac').classList.add('active');
+            
+            renderCurrentQuestion();
+            renderNavigationMap();
+        } else if (viewName === 'result') {
+            document.getElementById('viewResult').classList.add('active');
+        }
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* --- GERAÇÃO DE INTERFACE DO QUIZ --- */
+    function getDifficultyBadgeClass(level) {
+        const mapping = { 'Fácil': 'dif-facil', 'Médio': 'dif-medio', 'Difícil': 'dif-dificil' };
+        return mapping[level] || 'dif-facil';
+    }
+
+    function buildOptionsHTML(question, selectedAnswerIndex) {
+        const alphabet = ['A', 'B', 'C', 'D'];
+        
+        return question.options.map((optionText, optionIndex) => {
+            let cssClass = '';
+            
+            if (selectedAnswerIndex !== null) {
+                if (optionIndex === question.correctIndex) cssClass = 'correct';
+                else if (optionIndex === selectedAnswerIndex) cssClass = 'wrong';
+                else cssClass = 'disabled';
+            }
+
+            const isDisabled = selectedAnswerIndex !== null ? 'disabled' : '';
+
+            return `
+                <button class="option-btn ${cssClass}" onclick="handleOptionSelection(${optionIndex})" ${isDisabled}>
+                    <div class="opt-circle">${alphabet[optionIndex]}</div>
+                    <div>${optionText}</div>
+                </button>
+            `;
+        }).join('');
+    }
+
+    function buildFeedbackHTML(question, selectedAnswerIndex) {
+        const isCorrect = selectedAnswerIndex === question.correctIndex;
+        const alphabet = ['A', 'B', 'C', 'D'];
+        
+        const titleClass = isCorrect ? 'success' : 'error';
+        const titleText = isCorrect ? '✅ Raciocínio Correto!' : '❌ Diagnóstico de Falha!';
+        
+        const distortionsHTML = question.explanation.otherOptions.map((explanationText, idx) => {
+            if (idx === question.correctIndex) return '';
+            return `<div class="feedback-item wrong-opt"><strong>${alphabet[idx]})</strong> ${explanationText}</div>`;
+        }).join('');
+
+        return `
+            <div class="feedback-box show">
+                <div class="feedback-title ${titleClass}" style="color: ${isCorrect ? 'var(--correct-border)' : 'var(--wrong-border)'}">${titleText}</div>
+                <div class="feedback-item correct-opt"><strong>O Facto:</strong> ${question.options[question.correctIndex]}</div>
+                <div style="margin-top:15px;font-size:1rem;color:var(--text-color);margin-bottom:15px;font-weight:600;">${question.explanation.correctText}</div>
+                <div style="margin-top:15px;border-top:2px dashed var(--theme-medium);padding-top:15px;">
+                    <small style="color:var(--theme-dark);"><strong>Análise das Distorções:</strong></small>
+                    ${distortionsHTML}
+                </div>
+            </div>
+        `;
+    }
+
+    function renderCurrentQuestion() {
+        const container = document.getElementById('quizContainer');
+        if (!container) return;
+
+        const question = questionsDatabase[quizState.currentIndex];
+        const selectedAnswerIndex = quizState.userAnswers[quizState.currentIndex];
+        const badgeClass = getDifficultyBadgeClass(question.level);
+        
+        let feedbackHTML = selectedAnswerIndex !== null ? buildFeedbackHTML(question, selectedAnswerIndex) : '';
+
+        container.innerHTML = `
+            <div class="quiz-question-card">
+                <span class="difficulty-badge ${badgeClass}">${question.level}</span>
+                <div style="margin-bottom:25px;">
+                    <span class="quiz-question-counter">QUESTÃO ${quizState.currentIndex + 1} DE ${questionsDatabase.length}</span>
+                    <h2 class="quiz-question-text">${question.text}</h2>
+                </div>
+                <div class="options-list">
+                    ${buildOptionsHTML(question, selectedAnswerIndex)}
+                </div>
+                ${feedbackHTML}
+            </div>
+        `;
+        
+        updateNavigationButtons();
+    }
+
+    /* --- LÓGICA DO QUIZ --- */
+    function handleOptionSelection(selectedIndex) {
+        if (quizState.userAnswers[quizState.currentIndex] !== null) return;
+        
+        quizState.userAnswers[quizState.currentIndex] = selectedIndex;
+        const isCorrect = selectedIndex === questionsDatabase[quizState.currentIndex].correctIndex;
+        
+        if (isCorrect) startSuccessAnimation();
+        else triggerErrorShakeEffect();
+        
+        renderCurrentQuestion();
+        renderNavigationMap();
+    }
+
+    function triggerErrorShakeEffect() {
+        const container = document.getElementById('quizContainer');
+        if (container) { 
+            container.classList.remove('shake-effect'); 
+            void container.offsetWidth; 
+            container.classList.add('shake-effect'); 
+            setTimeout(() => container.classList.remove('shake-effect'), 500); 
+        }
+    }
+
+    /* --- ANIMAÇÕES (CONFETTI) --- */
+    function startSuccessAnimation() {
+        const duration = 1500;
+        const end = Date.now() + duration;
+        
+        stopSuccessAnimation();
+        
+        function animateFrame() {
+            if(window.confetti && typeof confetti === 'function') {
+                const config = { particleCount: 5, spread: 55, colors: ['#F59E0B', '#15803D', '#B45309', '#0369A1'] };
+                confetti({ ...config, angle: 60, origin: { x: 0, y: 0.6 } });
+                confetti({ ...config, angle: 120, origin: { x: 1, y: 0.6 } });
+            }
+            if (Date.now() < end) quizState.confettiAnimationId = requestAnimationFrame(animateFrame);
+        }
+        animateFrame();
+    }
+
+    function stopSuccessAnimation() {
+        if (window.confetti && typeof confetti.reset === 'function') confetti.reset(); 
+        if (quizState.confettiAnimationId) {
+            cancelAnimationFrame(quizState.confettiAnimationId);
+            quizState.confettiAnimationId = null;
+        }
+    }
+
+    /* --- NAVEGAÇÃO MAPA --- */
+    function renderNavigationMap() {
+        const mapContainer = document.getElementById('qMap');
+        if (!mapContainer) return;
+        
+        mapContainer.innerHTML = questionsDatabase.map((question, index) => {
+            const isCurrent = index === quizState.currentIndex;
+            const userAnswer = quizState.userAnswers[index];
+            const hasAnswered = userAnswer !== null;
+            const isCorrect = userAnswer === question.correctIndex;
+            
+            let cssClass = 'map-dot';
+            if (isCurrent) cssClass += ' active';
+            if (hasAnswered) cssClass += isCorrect ? ' answered-correct' : ' answered-wrong';
+            
+            return `<div class="${cssClass}" onclick="goToQuestion(${index})">${index + 1}</div>`;
+        }).join('');
+        
+        setTimeout(() => { 
+            const activeDot = mapContainer.querySelector('.map-dot.active'); 
+            if (activeDot) activeDot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); 
+        }, 50);
+    }
+
+    function goToQuestion(targetIndex) { 
+        stopSuccessAnimation();
+        quizState.currentIndex = targetIndex; 
+        renderCurrentQuestion(); 
+        renderNavigationMap(); 
+    }
+    
+    function navigateQuestion(directionOffset) { 
+        const nextIndex = quizState.currentIndex + directionOffset; 
+        if (nextIndex >= 0 && nextIndex < questionsDatabase.length) goToQuestion(nextIndex); 
+    }
+
+    function updateNavigationButtons() {
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+        
+        if (btnPrev) btnPrev.disabled = (quizState.currentIndex === 0);
+        
+        if (btnNext) {
+            const isLastQuestion = quizState.currentIndex === questionsDatabase.length - 1;
+            if (isLastQuestion) { 
+                btnNext.textContent = "Finalizar Avaliação"; 
+                btnNext.onclick = finishQuiz; 
+            } else { 
+                btnNext.textContent = "Próxima ➡️"; 
+                btnNext.onclick = () => navigateQuestion(1); 
+            }
+        }
+    }
+
+    /* --- CÁLCULO DE RESULTADOS --- */
+    function calculateStars(percent) {
+        if (percent === 100) return "⭐⭐⭐⭐⭐";
+        if (percent >= 80) return "⭐⭐⭐⭐";
+        if (percent >= 60) return "⭐⭐⭐";
+        if (percent >= 40) return "⭐⭐";
+        if (percent > 0) return "⭐";
+        return "🌑"; // zero stars
+    }
+
+    function finishQuiz() {
+        const unansweredCount = quizState.userAnswers.filter(answer => answer === null).length;
+        
+        if (unansweredCount > 0) {
+            const confirmMessage = `Existem ${unansweredCount} questões por responder. Quer terminar mesmo assim (as em branco serão dadas como erradas)?`;
+            if (!confirm(confirmMessage)) return;
+        }
+
+        stopSuccessAnimation();
+
+        const correctAnswersCount = quizState.userAnswers.filter((answer, index) => answer === questionsDatabase[index].correctIndex).length;
+        const totalQuestions = questionsDatabase.length;
+        const percentageScore = Math.round((correctAnswersCount / totalQuestions) * 100);
+        const isApproved = percentageScore >= 80;
+        
+        renderResultsView(percentageScore, correctAnswersCount, totalQuestions, isApproved);
+        changeApplicationView('result');
+    }
+
+    function renderResultsView(percentageScore, correctAnswersCount, totalQuestions, isApproved) {
+        document.getElementById('finalPercent').textContent = `${percentageScore}%`;
+        document.getElementById('finalScoreText').textContent = `Acertaste ${correctAnswersCount} de ${totalQuestions}`;
+        document.getElementById('finalStars').textContent = calculateStars(percentageScore);
+        
+        const reviewContainer = document.getElementById('review-container');
+        const actionButtonsContainer = document.getElementById('action-buttons');
+        
+        let summaryHTML = '';
+
+        if (isApproved) {
+            summaryHTML += `
+                <div class="result-summary-box success">
+                    <strong>🎉 EXCELENTE ZOÓLOGO!</strong> O teu domínio sobre os Cordados e Vertebrados garante-te uma base formidável para a biologia animal no IFCE.
+                </div>
+            `;
+            actionButtonsContainer.innerHTML = `<button class="btn-action" onclick="resetQuiz()">🔄 REPETIR PARA 100%</button>`;
+        } else {
+            summaryHTML += `
+                <div class="result-summary-box error">
+                    <strong>⚠️ ATENÇÃO!</strong> Foste avaliado abaixo da meta (80%). Revisa a evolução e a transição da vida da água (peixes/anfíbios) para a terra seca (répteis, aves e mamíferos).
+                </div>
+            `;
+            actionButtonsContainer.innerHTML = `<button class="btn-action" onclick="resetQuiz()">🔄 REFAZER AVALIAÇÃO</button>`;
+        }
+        
+        if (correctAnswersCount < totalQuestions) {
+            summaryHTML += '<h4 style="margin-bottom:15px; color:var(--text-color); font-size:1.15rem;">Revisão das Falhas:</h4>';
+            questionsDatabase.forEach((question, index) => {
+                const userAnswerIndex = quizState.userAnswers[index];
+                if (userAnswerIndex !== question.correctIndex) {
+                    const userAnswerText = userAnswerIndex === null ? "Deixaste em branco" : question.options[userAnswerIndex];
+                    const correctAnswerText = question.options[question.correctIndex];
+                    
+                    summaryHTML += `
+                        <div class="error-log-item">
+                            <strong style="color:var(--theme-dark); font-size:1.05rem; display:block; margin-bottom:8px;">Q${index + 1}: ${question.text}</strong>
+                            <span style="color:var(--wrong-border); font-weight: 600; display:block; margin-bottom:5px;">A tua resposta: ${userAnswerText}</span>
+                            <span style="color:var(--correct-border); font-weight: 700; display:block;">O Facto Exato: ${correctAnswerText}</span>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        reviewContainer.innerHTML = summaryHTML;
+    }
+
+    function resetQuiz() { 
+        quizState.userAnswers = new Array(questionsDatabase.length).fill(null); 
+        quizState.currentIndex = 0; 
+        changeApplicationView('practice'); 
+    }
+    
+    // START APPLICATION
+    initializeSearch();
+    changeApplicationView('explanation');
+</script>
+</body>
+</html>

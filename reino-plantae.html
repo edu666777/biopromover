@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genética: Determinação do Sexo - Promover</title>
+    <title>Biologia: Reino Plantae - Promover</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,18 +11,18 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        /* --- VARIÁVEIS DE COR E TEMA PRINCIPAL (BIO-ERVILHA) --- */
+        /* --- VARIÁVEIS DE COR E TEMA: FLORESTA & SEIVA (Botânica) --- */
         :root {
-            --bg-color: #F0FDF4; 
-            --text-color: #064E3B; 
-            --border-color: #000000; 
+            --bg-color: #F0FDF4; /* Verde muito claro */
+            --text-color: #064E3B; /* Verde muito escuro */
+            --border-color: #022C22; /* Contorno escuro */
             --white: #FFFFFF;
             
-            --theme-light: #D1FAE5; 
-            --theme-medium: #10B981; 
-            --theme-dark: #047857; 
-            --theme-contrast: #8B5CF6; 
-            --theme-accent: #F59E0B; 
+            --theme-light: #D1FAE5; /* Verde pastel */
+            --theme-medium: #10B981; /* Verde esmeralda */
+            --theme-dark: #047857; /* Verde floresta */
+            --theme-contrast: #B45309; /* Castanho terra/tronco */
+            --theme-accent: #F59E0B; /* Amarelo sol/pólen */
             --theme-text-active: #FFFFFF;
             
             --correct-bg: #D1FAE5;
@@ -49,7 +49,7 @@
         /* --- ANIMAÇÕES --- */
         @keyframes slideUp { from { transform: translateY(15px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1) rotate(-5deg); color: var(--theme-contrast); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1) rotate(-5deg); color: var(--theme-accent); } }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             20%, 60% { transform: translateX(-6px); }
@@ -90,10 +90,30 @@
         .theory-box h4 { font-size: 1.1rem; font-weight: 800; color: var(--text-color); margin-top: 10px; border-bottom: 2px solid var(--theme-light); padding-bottom: 5px; }
         
         .inline-example { display: block; width: fit-content; max-width: 100%; margin-top: 6px; margin-bottom: 6px; padding: 6px 14px; background-color: var(--theme-light); border: 2px solid var(--border-color); border-radius: 8px; font-size: 0.85rem; color: var(--text-color); font-weight: 700; letter-spacing: 0.5px; box-shadow: 2px 2px 0px rgba(0,0,0,0.05); }
-        .visual-area { background: var(--bg-color); border: 3px dashed var(--theme-medium); border-radius: 12px; padding: 25px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 15px; width: 100%; }
         
         .highlight-box { background-color: #FEF3C7; border: 3px solid var(--border-color); border-left: 8px solid var(--theme-accent); padding: 18px 20px; border-radius: 8px; font-size: 0.95rem; color: #78350F; font-weight: 600; box-shadow: 3px 3px 0px rgba(0,0,0,0.1); }
-        .highlight-box.purple { background-color: #F3E8FF; border-left-color: var(--theme-contrast); color: #4C1D95; }
+        .highlight-box.water { background-color: #E0F2FE; border-left-color: #0284C7; color: #0C4A6E; }
+
+        /* --- MAPA DA BIODIVERSIDADE VEGETAL (CARDS) --- */
+        .kingdoms-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; width: 100%; margin-top: 10px; }
+        .k-card { flex: 1 1 calc(50% - 15px); min-width: 130px; border-radius: 12px; padding: 15px 10px; text-align: center; border: 3px solid; display: flex; flex-direction: column; align-items: center; box-shadow: 4px 4px 0px rgba(0,0,0,0.1); background-color: var(--white); transition: transform 0.2s; }
+        .k-card:hover { transform: translateY(-3px); }
+        .k-icon { font-size: 2.8rem; margin-bottom: 8px; line-height: 1; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.15)); }
+        .k-title { font-size: 1.05rem; font-weight: 900; margin-bottom: 4px; }
+        .k-examples { font-size: 0.85rem; font-weight: 600; color: var(--text-color); margin-bottom: 4px; line-height: 1.2; }
+        .k-traits { font-size: 0.75rem; font-style: italic; font-weight: 700; opacity: 0.9; line-height: 1.2; }
+        
+        .k-brio { background-color: #ECFCCB; border-color: #047857; }
+        .k-brio .k-title, .k-brio .k-traits { color: #047857; }
+        
+        .k-pteri { background-color: #D1FAE5; border-color: #059669; }
+        .k-pteri .k-title, .k-pteri .k-traits { color: #059669; }
+        
+        .k-gimno { background-color: #FEF3C7; border-color: #B45309; }
+        .k-gimno .k-title, .k-gimno .k-traits { color: #B45309; }
+        
+        .k-angio { background-color: #FFE4E6; border-color: #BE123C; }
+        .k-angio .k-title, .k-angio .k-traits { color: #BE123C; }
 
         /* --- BOTÕES GERAIS --- */
         .btn-action { width: 100%; padding: 20px; background-color: var(--theme-dark); color: white; border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.15rem; font-weight: 900; cursor: pointer; box-shadow: 6px 6px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 10px; }
@@ -141,7 +161,7 @@
         .result-summary-box.success { background: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
         .result-summary-box.error { background: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
 
-        .error-log-item { margin-bottom: 15px; padding: 20px; background: #F8FAFC; border-radius: 12px; border: 3px dashed var(--theme-medium); text-align: left;}
+        .error-log-item { margin-bottom: 15px; padding: 20px; background: #F0FDF4; border-radius: 12px; border: 3px dashed var(--theme-medium); text-align: left;}
 
         /* --- RODAPÉ DE NAVEGAÇÃO --- */
         .quiz-footer { position: fixed; bottom: 0; left: 0; width: 100%; background-color: var(--white); border-top: 3px solid var(--border-color); padding: 15px 20px; display: none; justify-content: center; gap: 20px; z-index: 100; box-shadow: 0px -4px 10px rgba(0,0,0,0.05); }
@@ -156,9 +176,9 @@
     <div class="container">
         
         <header class="logo-header">
-            <div class="css-logo"><span class="pulse-effect">🌱</span> PROMOVER</div>
+            <div class="css-logo"><span class="pulse-effect">🌿</span> PROMOVER</div>
             <h1>Biologia / 9º Ano</h1>
-            <p class="subtitle">Genética: Determinação do Sexo</p>
+            <p class="subtitle">Reino Plantae: A Conquista da Terra</p>
         </header>
 
         <div class="toggle-container">
@@ -171,66 +191,85 @@
             
             <div class="search-container">
                 <span class="search-icon" aria-hidden="true">🔍</span>
-                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: cariótipo, cromossoma, XX)">
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Xilema, Semente, Briófitas)">
             </div>
-            <div id="no-results"><p>😕 Termo não encontrado na genética.</p></div>
+            <div id="no-results"><p>😕 Termo não encontrado na botânica.</p></div>
 
             <section class="content-group">
-                <div class="section-badge">🧬 1. O Cariótipo Humano</div>
+                <div class="section-badge">🧬 1. O que é uma Planta?</div>
                 <article class="theory-box search-target">
-                    <h3>O Manual de Instruções</h3>
-                    <p>O corpo humano é formado por células que contêm o nosso material genético (DNA). Este DNA está organizado em estruturas chamadas <strong>Cromossomas</strong>.</p>
+                    <h3>As Características Fundamentais</h3>
+                    <p>Para pertencer ao Reino Plantae (ou Metaphyta), um ser vivo precisa de cumprir rigorosamente três requisitos celulares básicos:</p>
                     
                     <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
-                        <li><strong>Células Somáticas:</strong> (Células do corpo, como pele ou músculo) possuem <strong>46 cromossomas</strong>, organizados em 23 pares. Têm carga diploide (2n).</li>
-                        <li><strong>Autossomas:</strong> Os primeiros 22 pares determinam características gerais (cor do cabelo, tipo de sangue).</li>
-                        <li><strong>Par 23 (Sexuais):</strong> O último par é responsável por determinar o sexo biológico do indivíduo.</li>
+                        <li><strong>Eucariontes e Pluricelulares:</strong> Têm núcleo definido e são formadas por múltiplas células.</li>
+                        <li><strong>Autotróficas Fotossintetizantes:</strong> Produzem o próprio alimento através dos cloroplastos (com clorofila).</li>
+                        <li><strong>Parede Celular e Reserva:</strong> As suas células são revestidas por uma parede de <strong>Celulose</strong> e guardam energia na forma de <strong>Amido</strong>.</li>
                     </ul>
-
-                    <div class="highlight-box purple">
-                        <strong>O que diz a biologia?</strong> O conjunto completo de cromossomas de uma espécie chama-se Cariótipo. Nos humanos, a fórmula normal é <strong>46, XX</strong> (feminino) ou <strong>46, XY</strong> (masculino).
-                    </div>
                 </article>
             </section>
 
             <section class="content-group">
-                <div class="section-badge">⚖️ 2. O Sistema XY</div>
+                <div class="section-badge">🧗 2. A Escada Evolutiva</div>
                 <article class="theory-box search-target">
-                    <h3>Homens e Mulheres</h3>
-                    <p>No sistema humano (e na maioria dos mamíferos), a diferença sexual baseia-se num par de letras: X e Y.</p>
+                    <h3>Os 4 Grandes Grupos Botânicos</h3>
+                    <p>A evolução das plantas marca a adaptação progressiva da vida aquática para o ambiente terrestre e seco.</p>
                     
-                    <div class="visual-area">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="300" height="120" viewBox="0 0 300 120">
-                            <!-- Mulher XX -->
-                            <rect x="20" y="20" width="110" height="80" rx="12" fill="#FCE7F3" stroke="#DB2777" stroke-width="3"/>
-                            <text x="75" y="45" text-anchor="middle" font-size="14" font-weight="900" fill="#DB2777">MULHER</text>
-                            <text x="75" y="80" text-anchor="middle" font-size="28" font-weight="900" fill="#DB2777">X X</text>
+                    <div class="visual-area" style="background: transparent; border: none; padding: 0;">
+                        <div class="kingdoms-grid">
+                            <!-- Briófitas -->
+                            <div class="k-card k-brio">
+                                <div class="k-icon">🌱</div>
+                                <div class="k-title">1. BRIÓFITAS</div>
+                                <div class="k-examples">Musgos</div>
+                                <div class="k-traits">Avasculares, sem sementes. Dependem da água para fecundação.</div>
+                            </div>
                             
-                            <!-- Homem XY -->
-                            <rect x="170" y="20" width="110" height="80" rx="12" fill="#DBEAFE" stroke="#2563EB" stroke-width="3"/>
-                            <text x="225" y="45" text-anchor="middle" font-size="14" font-weight="900" fill="#2563EB">HOMEM</text>
-                            <text x="225" y="80" text-anchor="middle" font-size="28" font-weight="900" fill="#2563EB">X Y</text>
-                        </svg>
+                            <!-- Pteridófitas -->
+                            <div class="k-card k-pteri">
+                                <div class="k-icon">🌿</div>
+                                <div class="k-title">2. PTERIDÓFITAS</div>
+                                <div class="k-examples">Samambaias, Avencas</div>
+                                <div class="k-traits">Vasculares, sem sementes. Ainda dependem da água para fecundação.</div>
+                            </div>
+                            
+                            <!-- Gimnospermas -->
+                            <div class="k-card k-gimno">
+                                <div class="k-icon">🌲</div>
+                                <div class="k-title">3. GIMNOSPÉRMICAS</div>
+                                <div class="k-examples">Pinheiros, Araucárias</div>
+                                <div class="k-traits">Semente NUA. Têm pólen (não dependem da água), mas não têm frutos.</div>
+                            </div>
+                            
+                            <!-- Angiospermas -->
+                            <div class="k-card k-angio">
+                                <div class="k-icon">🍎</div>
+                                <div class="k-title">4. ANGIOSPÉRMICAS</div>
+                                <div class="k-examples">Árvores Frutíferas, Rosas</div>
+                                <div class="k-traits">Com Sementes, Flores e Frutos. Grupo mais diverso do planeta.</div>
+                            </div>
+                        </div>
                     </div>
 
-                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
-                        <li><strong>O Óvulo (Mãe):</strong> Como a mulher só tem cromossomas X, 100% dos óvulos saudáveis carregam apenas <strong>um Cromossoma X</strong>.</li>
-                        <li><strong>O Espermatozoide (Pai):</strong> Como o homem tem X e Y, metade dos espermatozoides carrega o <strong>X</strong> e a outra metade carrega o <strong>Y</strong>.</li>
-                    </ul>
+                    <div class="highlight-box water">
+                        <strong>O Tubo Condutor (Vasos):</strong> O grande salto de tamanho das Briófitas (que são rasteiras) para as Pteridófitas deve-se ao surgimento dos vasos condutores: o <strong>Xilema</strong> (sobe água e sais minerais) e o <strong>Floema</strong> (desce com o açúcar/seiva elaborada).
+                    </div>
                 </article>
             </section>
 
             <section class="content-group">
-                <div class="section-badge">🎲 3. A Lotaria Genética</div>
+                <div class="section-badge">🐝 3. A Inovação Reprodutiva</div>
                 <article class="theory-box search-target">
-                    <h3>Quem decide o sexo?</h3>
-                    <p>Do ponto de vista genético, <strong>é sempre o pai que determina o sexo do bebé</strong>. A mãe contribui sempre com um 'X'. O que o pai enviar no seu gameta, decide o resultado final na fecundação.</p>
+                    <h3>Flores e Frutos</h3>
+                    <p>Enquanto os pinheiros dependem do vento para espalhar o seu pólen, as Angiospérmicas criaram as <strong>Flores</strong> com cores vivas, aromas e néctar para atrair polinizadores (abelhas, pássaros, morcegos).</p>
                     
-                    <div class="inline-example">Espermatozoide (X) + Óvulo (X) = Menina (XX)</div>
-                    <div class="inline-example">Espermatozoide (Y) + Óvulo (X) = Menino (XY)</div>
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>O Fruto:</strong> É uma exclusividade das Angiospérmicas. Desenvolve-se a partir do ovário da flor.</li>
+                        <li><strong>A Função do Fruto:</strong> Proteger a semente e atrair animais para que eles comam o fruto e espalhem as sementes pelas fezes (Dispersão).</li>
+                    </ul>
 
                     <div class="highlight-box">
-                        <strong>A Matemática da Hereditariedade:</strong> Como o homem produz 50% de espermatozoides X e 50% de espermatozoides Y, a probabilidade de nascer um menino ou uma menina é sempre de <strong>1/2 (ou 50%)</strong> em qualquer gravidez, assumindo eventos independentes.
+                        <strong>Dica de Exame:</strong> A semente (óvulo fecundado) surgiu primeiro nas Gimnospérmicas (Pinheiros), libertando as plantas da necessidade de água líquida para que os gâmetas nadassem até se encontrarem.
                     </div>
                 </article>
             </section>
@@ -244,8 +283,8 @@
         <main id="viewPractice" class="view-section">
             <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
                 <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">A Prova de Fogo - IFCE</h2>
-                <p style="color: var(--theme-medium); font-size: 0.95rem; font-weight:600;">
-                    30 questões formato Ensino Técnico Integrado. Acerta <strong>80% (24/30)</strong> para provares que dominas a genética.
+                <p style="color: var(--theme-contrast); font-size: 0.95rem; font-weight:600;">
+                    30 questões de botânica (formato Ensino Técnico Integrado). Acerta <strong>80% (24/30)</strong> para garantires a aprovação.
                 </p>
             </div>
             
@@ -276,36 +315,36 @@
 <script>
     /* --- ESTRUTURA DE DADOS (BASE DE QUESTÕES - NÍVEL IFCE TÉCNICO INTEGRADO) --- */
     const questionsDatabase = [
-        { level: "Fácil", text: "Numa aula prática de biologia no laboratório do IFCE, o professor questiona: quem determina geneticamente o sexo biológico do bebé humano durante a fecundação?", options: ["O óvulo, pois é a maior célula.", "O espermatozoide, pois pode carregar o cromossomo X ou Y.", "Ambos os gametas em proporções iguais.", "O ambiente intrauterino nos primeiros meses."], correctIndex: 1, explanation: { correctText: "A mulher produz apenas óvulos com o cromossomo X. É o homem que produz espermatozoides X e Y, determinando assim o sexo.", otherOptions: ["O óvulo contribui apenas com o X.", "Incorreto.", "Em humanos a determinação é genética, não ambiental."] } },
-        { level: "Médio", text: "Um aluno do IFCE leu que um casal deseja ter dois filhos: primeiro um menino e depois uma menina. Sabendo que cada gestação é um evento independente, qual é a probabilidade de que este desejo se realize exatamente nesta ordem?", options: ["50% (1/2)", "25% (1/4)", "12,5% (1/8)", "75% (3/4)"], correctIndex: 1, explanation: { correctText: "A probabilidade de ser menino é 1/2. A de ser menina é 1/2. Probabilidade de menino E menina = 1/2 x 1/2 = 1/4 (25%).", otherOptions: ["50% é a probabilidade para apenas uma gestação.", "1/8 seria para três crianças.", "Incorreto."] } },
-        { level: "Fácil", text: "Ao observar células humanas ao microscópio, um estudante notou uma diferença fundamental. Qual é o número de cromossomos encontrados numa célula da pele (somática) e num óvulo (gameta), respetivamente?", options: ["46 e 46", "23 e 23", "46 e 23", "23 e 46"], correctIndex: 2, explanation: { correctText: "Células somáticas são diploides (2n = 46 cromossomos). Os gametas são haploides (n = 23 cromossomos) para a fecundação.", otherOptions: ["Gametas não podem ter 46.", "Células da pele não são haploides.", "A ordem foi invertida na pergunta."] } },
-        { level: "Médio", text: "O curso técnico de Segurança do Trabalho exige exames médicos. Um candidato descobriu ser daltônico (herança recessiva ligada ao cromossomo X). Se ele tiver filhos com uma mulher sem o gene do daltonismo, o que acontecerá com suas filhas?", options: ["100% serão daltônicas.", "100% serão portadoras do gene, mas terão visão normal.", "50% serão portadoras.", "Nenhuma terá o gene do daltonismo."], correctIndex: 1, explanation: { correctText: "O homem (Xd Y) passa obrigatoriamente o seu único cromossomo X (com o gene do daltonismo) para TODAS as filhas. Como a mãe envia um X normal, as filhas serão XDXd (portadoras, com visão normal).", otherOptions: ["Elas seriam daltônicas se a mãe também passasse o gene daltônico.", "Ele passa o Xd para 100% das filhas.", "Incorreto."] } },
-        { level: "Difícil", text: "Ainda sobre o daltonismo (herança ligada ao X): Uma mulher tem visão normal, mas o seu pai era daltônico. Ela casa com um homem de visão normal. Qual a probabilidade de um FILHO HOMEM desse casal nascer daltônico?", options: ["0%", "25%", "50%", "100%"], correctIndex: 2, explanation: { correctText: "A mulher é portadora (XDXd), pois herdou o Xd do seu pai. Ao ter um menino, ela passa o X ou o Xd (50% de chance). Se passar o Xd, o menino será daltônico, pois recebe o Y do pai normal.", otherOptions: ["Incorreto.", "25% é a chance para a prole total, a questão restringe a 'filho homem'.", "Ela pode passar o X normal (XD)."] } },
-        { level: "Fácil", text: "No estudo da reprodução humana, diz-se que gémeos monozigóticos (idênticos) são formados a partir do mesmo óvulo e do mesmo espermatozoide. Logo, em relação ao sexo biológico, eles:", options: ["Podem ser de sexos diferentes.", "Têm obrigatoriamente o mesmo sexo.", "A menina desenvolve-se sempre primeiro.", "Dependem do ambiente para definir o sexo."], correctIndex: 1, explanation: { correctText: "Como derivam exatamente da mesma célula inicial (zigoto) e dividem o mesmo DNA, gémeos monozigóticos têm sempre o mesmo sexo.", otherOptions: ["Apenas gémeos dizigóticos (bivitelinos) podem ser de sexos diferentes.", "Incorreto.", "Incorreto."] } },
-        { level: "Médio", text: "Ao analisar um heredograma num exame, um candidato percebe que uma determinada característica genética é passada EXCLUSIVAMENTE de pais afetados para TODOS os seus filhos do sexo masculino, nunca para as filhas. Esta herança está ligada a qual cromossomo?", options: ["Ao cromossomo X", "Aos Autossomos", "Ao cromossomo Y", "Ao DNA mitocondrial"], correctIndex: 2, explanation: { correctText: "Essa é a clássica Herança Holândrica. O cromossomo Y só existe nos homens e é passado diretamente de pai para filho homem.", otherOptions: ["A herança ligada ao X passa para as filhas.", "Autossomos afetam ambos os sexos.", "A herança mitocondrial é passada apenas pela MÃE para todos os filhos."] } },
-        { level: "Fácil", text: "No cariótipo humano normal, os cromossomos são divididos em categorias. Dos 46 cromossomos existentes, qual é a divisão exata entre autossomos e cromossomos sexuais?", options: ["44 autossomos e 2 cromossomos sexuais.", "22 autossomos e 2 cromossomos sexuais.", "40 autossomos e 6 cromossomos sexuais.", "Todos os 46 são sexuais se estiverem num gameta."], correctIndex: 0, explanation: { correctText: "São 22 pares de autossomos (total de 44) que definem características do corpo, e 1 par (total de 2) de cromossomos sexuais (XX ou XY).", otherOptions: ["22 é o número de pares autossomos, não o total.", "Incorreto.", "Os gametas têm autossomos e sexuais."] } },
-        { level: "Médio", text: "A biologia moderna descobriu que não é o cromossomo Y inteiro que define o desenvolvimento masculino, mas sim um gene específico presente nele. Como se chama este gene principal?", options: ["Gene XY", "Gene SRY", "Gene Testosterona", "Gene Holândrico Alfa"], correctIndex: 1, explanation: { correctText: "O gene SRY (Sex-determining Region Y) atua como um 'interruptor' que inicia o desenvolvimento dos testículos no embrião.", otherOptions: ["Incorreto.", "Testosterona é a hormona, não o gene.", "Incorreto."] } },
-        { level: "Difícil", text: "Existem casos onde a disjunção meiótica falha e o indivíduo nasce com a Síndrome de Turner, cujo cariótipo é 45,X0 (possui apenas um cromossomo X). Fenotipicamente, este indivíduo desenvolve características do sexo biológico:", options: ["Masculino, devido à ausência de um X.", "Feminino, devido à ausência do cromossomo Y.", "Neutro, não desenvolve gônadas.", "Masculino, se a mãe tiver passado o X."], correctIndex: 1, explanation: { correctText: "Na espécie humana, é a presença do Y (e do gene SRY) que induz o padrão masculino. Na sua ausência (mesmo com um só X), o padrão desenvolvido é o feminino.", otherOptions: ["O padrão base humano é o feminino sem o Y.", "Elas desenvolvem gônadas femininas, embora frequentemente inférteis.", "Incorreto."] } },
-        { level: "Difícil", text: "Em contrapartida, a Síndrome de Klinefelter apresenta o cariótipo 47,XXY. Apesar de possuir dois cromossomos X (como nas mulheres), a presença do cromossomo Y garante que o fenótipo do indivíduo seja do sexo biológico:", options: ["Feminino", "Masculino", "Hermafrodita", "Nulo"], correctIndex: 1, explanation: { correctText: "Mesmo com múltiplos cromossomos X (XXY, XXXY), se existir pelo menos um cromossomo Y funcional, o indivíduo será fenotipicamente masculino.", otherOptions: ["O Y impõe o desenvolvimento masculino.", "Incorreto.", "Incorreto."] } },
-        { level: "Médio", text: "Ao observar um exame laboratorial, a indicação 'Cariótipo: 46,XX' diz respeito a uma pessoa biologicamente do sexo:", options: ["Masculino, com cariótipo normal.", "Feminino, com Síndrome de Down.", "Feminino, com cariótipo normal.", "Masculino, com anomalia cromossômica."], correctIndex: 2, explanation: { correctText: "46 cromossomos no total, com o par sexual sendo XX, indica uma fêmea humana biologicamente normal e saudável.", otherOptions: ["Masculino é XY.", "Síndrome de Down teria 47 cromossomos (trissomia do 21).", "Incorreto."] } },
-        { level: "Médio", text: "Se extrairmos UM espermatozoide humano normal e analisarmos o seu núcleo, encontraremos exatamente:", options: ["23 pares de cromossomos.", "22 autossomos e 1 cromossomo sexual (X ou Y).", "44 autossomos e 2 cromossomos sexuais.", "Nenhum autossomo, apenas material sexual."], correctIndex: 1, explanation: { correctText: "O espermatozoide é haploide (n=23). Contém 22 cromossomos autossomos e 1 cromossomo sexual (que pode ser o X ou o Y).", otherOptions: ["Pares só existem nas células diploides.", "Isso seria uma célula somática inteira.", "Ele contém a receita completa (autossomos também)."] } },
-        { level: "Médio", text: "Quantos cromossomos SEXUAIS podemos encontrar dentro do núcleo de UM neurónio saudável de uma mulher?", options: ["Zero", "1", "2", "23"], correctIndex: 2, explanation: { correctText: "O neurónio é uma célula somática (diploide). Ele possui 46 cromossomos totais, sendo 44 autossomos e 2 cromossomos sexuais (XX).", otherOptions: ["Toda célula nucleada humana tem cromossomos sexuais.", "Isso seria um gameta (óvulo).", "Isso é o número de pares totais."] } },
-        { level: "Fácil", text: "O processo de divisão celular que reduz pela metade o número de cromossomos para formar os gametas (espermatozoides e óvulos) é conhecido como:", options: ["Mitose", "Meiose", "Fecundação", "Clonagem"], correctIndex: 1, explanation: { correctText: "A Meiose é a divisão reducional. Se não existisse, a cada geração o número de cromossomos duplicaria ao fundir os gametas.", otherOptions: ["A mitose mantém os 46 cromossomos (reparação da pele, crescimento).", "Fecundação é a união dos gametas.", "Incorreto."] } },
-        { level: "Médio", text: "João e Maria têm 5 filhos, e todos eles são meninas. A família descobriu uma nova gravidez. De acordo com a genética da determinação do sexo, a probabilidade do 6º filho ser um menino é de:", options: ["10%, pois a genética do pai favorece o cromossomo X.", "50%.", "90%, pois é muito raro ter 6 meninas seguidas.", "100%, é a lei da compensação biológica."], correctIndex: 1, explanation: { correctText: "Lançar a moeda não tem memória. Cada fecundação é independente, mantendo-se sempre a chance de 50% de o pai enviar o espermatozoide Y.", otherOptions: ["Não há preferência genética estabelecida no enunciado.", "A probabilidade não tem memória dos eventos passados.", "A lei da compensação não existe na estatística de eventos independentes."] } },
-        { level: "Difícil", text: "Numa aula avançada para o Técnico de Análises Clínicas do IFCE, o professor refere a Herança Mitocondrial. Estas doenças afetam órgãos que gastam muita energia. Quem transmite o DNA mitocondrial para os filhos (meninos e meninas)?", options: ["O pai.", "A mãe.", "Ambos de forma igual.", "Depende se o bebê for menino ou menina."], correctIndex: 1, explanation: { correctText: "Apenas a mãe transmite as mitocôndrias! Na fecundação, apenas a cabeça do espermatozoide (núcleo) entra no óvulo, as mitocôndrias do pai ficam de fora.", otherOptions: ["O pai não contribui com mitocôndrias.", "Incorreto.", "Incorreto."] } },
-        { level: "Médio", text: "A probabilidade de um casal ter, em 3 gestações consecutivas, três filhos onde todos sejam do sexo masculino é:", options: ["50% (1/2)", "33% (1/3)", "12,5% (1/8)", "6,25% (1/16)"], correctIndex: 2, explanation: { correctText: "Regra do 'E' (multiplicação de probabilidades): 1/2 (1º menino) × 1/2 (2º menino) × 1/2 (3º menino) = 1/8. Em porcentagem: 12,5%.", otherOptions: ["Incorreto.", "Incorreto.", "Isso seria para 4 filhos meninos."] } },
-        { level: "Médio", text: "Características como a Calvície são determinadas por genes nos autossomos, mas expressam-se de forma muito diferente em homens (dominante) e mulheres (recessiva). Porquê?", options: ["Estão no cromossomo Y.", "São influenciadas pelos cromossomos sexuais femininos.", "É uma herança influenciada pelo sexo, ativada principalmente pela testosterona.", "É uma mutação do cromossomo X."], correctIndex: 2, explanation: { correctText: "A calvície não está no X ou Y. Está nos autossomos, mas o ambiente hormonal masculino (alta testosterona) faz com que o gene se comporte como dominante nos homens.", otherOptions: ["Se estivesse no Y, nenhuma mulher seria calva.", "Incorreto.", "Não é ligada ao X."] } },
-        { level: "Fácil", text: "Em condições genéticas normais, considerando apenas o par de cromossomos sexuais, as mulheres produzem:", options: ["Óvulos X e Óvulos Y em quantidades iguais.", "100% de óvulos carregando o cromossomo X.", "Apenas óvulos com autossomos, sem sexuais.", "Óvulos cujo cromossomo sexual depende da fase lunar."], correctIndex: 1, explanation: { correctText: "As fêmeas humanas são homogaméticas (XX). Portanto, todos os gametas que elas produzem levam um cromossomo X.", otherOptions: ["Elas não têm cromossomo Y.", "Todo gameta tem 1 cromossomo sexual.", "Incorreto."] } },
-        { level: "Difícil", text: "A hemofilia é uma doença recessiva ligada ao cromossomo X, que prejudica a coagulação do sangue. Para que nasça uma MENINA hemofílica (Xh Xh), é rigorosamente OBRIGATÓRIO que:", options: ["A sua mãe seja hemofílica.", "O seu pai seja normal e a mãe hemofílica.", "O seu pai seja hemofílico.", "O avô paterno tenha tido a doença."], correctIndex: 2, explanation: { correctText: "Para a menina ser XhXh, ela precisa de um Xh da mãe e um Xh do pai. Como o pai só tem um cromossomo X (Xh Y), ele tem de ser, obrigatoriamente, hemofílico.", otherOptions: ["A mãe pode ser apenas portadora (XHXh) e não apresentar a doença.", "O pai passa o X dele. Se ele for normal (XH), a menina jamais será hemofílica.", "O avô paterno não passa o X para o pai, passa o Y."] } },
-        { level: "Médio", text: "Em técnicas de reprodução assistida na agropecuária (assunto de Zootecnia no IFCE), muitas vezes tenta-se fazer a 'sexagem', ou seja, escolher o sexo do animal antes da fecundação. Nos mamíferos, que gameta deve ser separado num laboratório para garantir o sexo desejado?", options: ["Os óvulos, separando os óvulos macho dos óvulos fêmea.", "O zigoto, antes que ele se transforme em embrião.", "Os espermatozoides, separando os que carregam o cromossomo X dos que carregam o Y.", "O cromossomo autossomo do macho reprodutor."], correctIndex: 2, explanation: { correctText: "A sexagem dos mamíferos em laboratório foca na centrifugação ou marcação do sémen (espermatozoides), pois é ele que define se nasce macho (Y) ou fêmea (X).", otherOptions: ["Óvulos de mamíferos são sempre X.", "No zigoto o sexo já está determinado.", "Autossomos não definem o sexo."] } },
-        { level: "Médio", text: "Para efeitos de estudo genético, a biologia divide as células em 'n' e '2n'. Na determinação do sexo humano, o zigoto (resultado da fecundação do óvulo pelo espermatozoide) é uma célula:", options: ["Haploide (n = 23)", "Diploide (2n = 46)", "Triploide (3n = 69)", "Assexuada (n = 0)"], correctIndex: 1, explanation: { correctText: "O óvulo traz 23 cromossomos e o espermatozoide mais 23. Eles unem-se, restaurando a carga diploide da nossa espécie (46 cromossomos), formando o zigoto 2n.", otherOptions: ["Gametas sozinhos é que são haploides.", "Incorreto.", "Incorreto."] } },
-        { level: "Difícil", text: "Quando um par de cromossomos homólogos não se separa corretamente durante a meiose, podem ocorrer alterações no número de cromossomos dos filhos. Este fenómeno (que causa as Síndromes de Klinefelter ou Turner) é chamado de:", options: ["Permutação Genética (Crossing-over)", "Não disjunção meiótica", "Mutação pontual do DNA", "Clonagem natural"], correctIndex: 1, explanation: { correctText: "A 'não disjunção' (não separação) faz com que um gameta receba cromossomos a mais (ex: um espermatozoide XY) e o outro a menos, gerando aneuploidias após a fecundação.", otherOptions: ["Crossing-over é normal e gera variabilidade genética.", "É uma anomalia de número de cromossomos, não mutação de uma letrinha de DNA.", "Incorreto."] } },
-        { level: "Fácil", text: "Em genética, o sexo biológico cromossômico (XX ou XY) com o qual nascemos faz parte do nosso:", options: ["Meio Ambiente", "Genótipo", "Sistema Circulatório", "RNA Mensageiro"], correctIndex: 1, explanation: { correctText: "O genótipo refere-se ao conjunto da nossa constituição genética (os genes e cromossomos que herdamos no DNA).", otherOptions: ["O meio ambiente não afeta o cariótipo humano básico.", "Incorreto.", "Incorreto."] } },
-        { level: "Médio", text: "Durante muito tempo, discutiu-se se o par XY poderia ser considerado um 'par homólogo' (cromossomos semelhantes). Hoje sabemos que:", options: ["São exatamente iguais em tamanho e genes.", "São completamente homólogos em toda a sua extensão.", "Possuem pequenas regiões homólogas (pseudoautossômicas) que permitem o seu pareamento na meiose.", "O cromossomo Y é uma cópia exata do cromossomo X, mas com cor diferente."], correctIndex: 2, explanation: { correctText: "Embora o X seja grande e o Y muito pequeno, eles têm pontas semelhantes (regiões PAR) que os ajudam a encontrar-se e emparelhar durante a divisão celular da meiose.", otherOptions: ["O X é gigante; o Y é minúsculo.", "Na maior parte são totalmente diferentes.", "Incorreto."] } },
-        { level: "Difícil", text: "Uma mulher daltônica (logo, obrigatoriamente Xd Xd) quer ter filhos com um homem de visão normal (XD Y). Considerando APENAS as crianças do sexo MASCULINO que este casal possa vir a ter, qual será o fenótipo deles?", options: ["100% terão visão normal.", "50% serão daltônicos, 50% terão visão normal.", "100% serão daltônicos.", "Depende se o avô materno era daltônico."], correctIndex: 2, explanation: { correctText: "Os meninos recebem o Y do pai (que não tem o gene de visão). O X deles vem obrigatoriamente da mãe. Como a mãe só tem Xd e Xd, 100% dos filhos homens receberão a doença.", otherOptions: ["Incorreto.", "A mãe não tem o gene dominante normal para lhes passar.", "Já sabemos que a mãe é daltônica."] } },
-        { level: "Médio", text: "A Síndrome de Down é uma aneuploidia numérica extremamente conhecida. Ela interfere com a determinação sexual da criança?", options: ["Sim, pessoas com Síndrome de Down são sempre do sexo masculino.", "Sim, afeta o par cromossômico 23.", "Não, pois trata-se da trissomia do cromossomo 21 (um autossomo), deixando o par sexual 23 intacto.", "Não, pois não existem cromossomos sexuais neste caso."], correctIndex: 2, explanation: { correctText: "Na Síndrome de Down, a falha ocorre no par autossômico 21 (existem 3 cromossomos em vez de 2). O par 23, que define o sexo, continua a operar normalmente como XX ou XY.", otherOptions: ["Afeta homens e mulheres.", "O par 23 não é afetado na base.", "Incorreto."] } },
-        { level: "Difícil", text: "Num estágio no setor de Avicultura do IFCE, um aluno descobriu que nas galinhas e pássaros o sistema que determina o sexo é o sistema ZW. Nesse sistema, ao contrário dos humanos:", options: ["O macho é ZZ (homogamético) e a fêmea é ZW (heterogamética).", "O macho não possui cromossomos sexuais.", "O sexo depende da temperatura em que o ovo é chocado.", "A fêmea é ZZ e o macho é ZW."], correctIndex: 0, explanation: { correctText: "No sistema ZW, as regras invertem-se face ao sistema XY. Nas aves, são as fêmeas que produzem gametas diferentes (Z e W) e determinam o sexo da descendência.", otherOptions: ["Possui o par ZZ.", "Isso ocorre em crocodilos e algumas tartarugas.", "Incorreto."] } },
-        { level: "Difícil", text: "No estudo das probabilidades condicionais da genética ligada ao sexo: Uma mulher portadora para daltonismo (XDXd) e um homem de visão normal (XDY) têm um menino. Sabe-se que esse menino já nasceu e foi testado, tendo uma visão perfeitamente NORMAL. Que cromossomo ele recebeu da mãe?", options: ["O cromossomo Y.", "O cromossomo Xd (com gene do daltonismo).", "O cromossomo XD (gene dominante normal).", "Impossível saber."], correctIndex: 2, explanation: { correctText: "Sendo menino, ele recebeu o Y do pai. Se ele tem a visão NORMAL, a única forma de isso acontecer foi ele ter recebido o XD (o X saudável dominante) da sua mãe portadora.", otherOptions: ["A mãe não tem cromossomo Y.", "Se recebesse o Xd, ele seria daltônico.", "Sabe-se pelo fenótipo manifestado no exame de visão."] } }
+        { level: "Fácil", text: "Nas aulas práticas de Agropecuária do IFCE, estuda-se que o Reino Plantae tem características específicas. Todas as plantas são seres:", options: ["Unicelulares e eucariontes.", "Pluricelulares e eucariontes.", "Pluricelulares e procariontes.", "Unicelulares e heterotróficos."], correctIndex: 1, explanation: { correctText: "Para pertencer ao Reino Plantae, o organismo deve ser formado por várias células (pluricelular) que possuem núcleo verdadeiro e organelas (eucariontes).", otherOptions: ["Não existem plantas unicelulares.", "Não existem plantas procariontes (apenas as bactérias o são).", "Plantas são autotróficas."] } },
+        { level: "Fácil", text: "As plantas conseguem produzir o seu próprio alimento orgânico (glicose) através da captação de energia solar. Este processo ocorre graças a uma organela rica no pigmento clorofila. Qual é a organela?", options: ["Ribossomo", "Mitocôndria", "Cloroplasto", "Complexo de Golgi"], correctIndex: 2, explanation: { correctText: "Os cloroplastos são as organelas responsáveis por realizar a fotossíntese nas células vegetais.", otherOptions: ["Ribossomos sintetizam proteínas.", "Mitocôndrias realizam a respiração celular (geram energia).", "O Complexo de Golgi secreta substâncias."] } },
+        { level: "Médio", text: "A parede celular protege a célula vegetal e permite que as árvores cresçam de forma rígida sem terem um esqueleto ósseo. Qual é o carboidrato estrutural que compõe esta parede?", options: ["Amido", "Celulose", "Quitina", "Glicogénio"], correctIndex: 1, explanation: { correctText: "A Celulose é um polissacarídeo estrutural resistente que forma a parede celular de todas as plantas.", otherOptions: ["O Amido é a reserva de energia das plantas, não estrutural.", "A Quitina forma a parede dos fungos e a carapaça de insetos.", "Glicogénio é a reserva de animais e fungos."] } },
+        { level: "Médio", text: "Num ecossistema florestal, se uma planta produz mais energia (através da fotossíntese) do que consome, ela armazena esse excedente em raízes (ex: mandioca) ou caules (ex: batata-inglesa). Qual é o nome dessa substância de reserva?", options: ["Celulose", "Amido", "Lípidos", "Peptidoglicano"], correctIndex: 1, explanation: { correctText: "As plantas convertem a glicose excedente num carboidrato complexo chamado Amido, que funciona como reserva de energia.", otherOptions: ["Celulose é para a estrutura (parede celular).", "A reserva principal é carboidrato (amido), não lípidos (gorduras).", "Peptidoglicano é a parede das bactérias."] } },
+        { level: "Fácil", text: "Os musgos, muito comuns em pedras húmidas e troncos sombreados, são os representantes mais famosos de qual grupo botânico?", options: ["Briófitas", "Pteridófitas", "Gimnospérmicas", "Angiospérmicas"], correctIndex: 0, explanation: { correctText: "As Briófitas englobam plantas avasculares de pequeno porte, sendo os musgos e as hepáticas os exemplos mais conhecidos.", otherOptions: ["Pteridófitas são as samambaias.", "Gimnospérmicas são os pinheiros.", "Angiospérmicas são as árvores com flores."] } },
+        { level: "Médio", text: "Qual foi a grande inovação evolutiva que permitiu às Pteridófitas (como as samambaias) crescerem muito mais em altura do que os pequenos musgos (Briófitas)?", options: ["O surgimento das sementes.", "A invenção da flor.", "O aparecimento dos vasos condutores de seiva (xilema e floema).", "A capacidade de fazer fotossíntese."], correctIndex: 2, explanation: { correctText: "O surgimento de um sistema vascular ('veias') permitiu transportar água das raízes para folhas muito distantes, possibilitando que as plantas ficassem altas.", otherOptions: ["Sementes só surgem depois (Gimnospérmicas).", "Flores só surgem nas Angiospérmicas.", "Briófitas também fazem fotossíntese, mas são pequenas por não terem vasos."] } },
+        { level: "Difícil", text: "As briófitas (musgos) e as pteridófitas (samambaias) ainda mantêm uma grande dependência do ambiente aquático. Elas precisam de água líquida no ambiente principalmente para:", options: ["Fazerem a respiração celular.", "Garantir o sucesso do processo de reprodução (fecundação).", "Produzirem frutos suculentos.", "Protegerem as suas sementes da seca."], correctIndex: 1, explanation: { correctText: "Nestes dois grupos, o gameta masculino (anterozóide) possui flagelo e precisa nadar através de uma película de água para chegar ao gameta feminino (oosfera) e ocorrer a fecundação.", otherOptions: ["Respiram com o oxigénio do ar.", "Elas não produzem frutos nem sementes."] } },
+        { level: "Médio", text: "No estudo das plantas vasculares (traqueófitas), a seiva bruta (água e sais minerais) precisa de subir da raiz até as folhas. Que tecido condutor realiza este transporte ascendente?", options: ["Floema", "Xilema", "Súber", "Epiderme"], correctIndex: 1, explanation: { correctText: "O Xilema (ou lenho) são tubos formados por células mortas que transportam a seiva bruta (água e sais) das raízes até à parte superior da planta.", otherOptions: ["Floema transporta a seiva elaborada (açúcares) das folhas para o resto da planta.", "Súber é a casca protetora.", "Epiderme é o revestimento superficial."] } },
+        { level: "Fácil", text: "A palavra 'Gimnospérmica' deriva do grego e significa literalmente 'semente nua'. Isto deve-se ao facto de que este grupo evolutivo produz sementes, mas NÃO produz:", options: ["Folhas", "Caules lenhosos", "Frutos para envolver a semente", "Raízes profundas"], correctIndex: 2, explanation: { correctText: "As Gimnospérmicas têm as sementes expostas (como o pinhão na pinha da araucária) porque ainda não desenvolveram o ovário da flor, que no futuro evoluiria para formar o fruto.", otherOptions: ["Elas possuem folhas, caules e raízes bem desenvolvidas."] } },
+        { level: "Difícil", text: "A grande revolução das Gimnospérmicas e Angiospérmicas foi a total independência da água líquida para a reprodução. Qual inovação biológica permitiu que os gâmetas masculinos viajassem pelo ar sem desidratar?", options: ["A formação do Fruto", "O surgimento do Grão de Pólen", "A criação das Samambaias", "O desenvolvimento das raízes Pivotantes"], correctIndex: 1, explanation: { correctText: "O Grão de Pólen protege o gameta masculino, permitindo que ele seja transportado pelo vento ou por animais até ao recetáculo feminino (polinização), sem precisar de nadar na água.", otherOptions: ["O fruto protege a semente, não o gameta antes da fecundação.", "Incorreto.", "Raízes buscam água no solo, não participam da fecundação aérea."] } },
+        { level: "Médio", text: "O Pinheiro-do-Paraná (Araucaria angustifolia) é a árvore símbolo do sul do Brasil e alvo frequente em provas federais. Botânicamente, ele é classificado como uma:", options: ["Briófita", "Pteridófita", "Gimnospérmica", "Angiospérmica"], correctIndex: 2, explanation: { correctText: "Os pinheiros, sequoias e ciprestes formam o grupo principal das Gimnospérmicas (plantas com sementes que nascem em 'pinhas' ou estróbilos, sem frutos verdadeiros).", otherOptions: ["Musgos.", "Samambaias.", "Árvores com flor verdadeira e fruto (ex: Mangueira)."] } },
+        { level: "Fácil", text: "As Angiospérmicas representam mais de 80% de todas as plantas verdes atuais. Elas dominaram o planeta porque foram o único grupo botânico a desenvolver duas estruturas novas. Quais?", options: ["Raiz e Caule", "Xilema e Floema", "Sementes e Folhas", "Flores complexas e Frutos"], correctIndex: 3, explanation: { correctText: "A grande exclusividade evolutiva das Angiospérmicas é a Flor (para atrair polinizadores eficientes) e o Fruto (para proteger e dispersar a semente de forma mais eficaz).", otherOptions: ["Raiz, caule, xilema e floema já existiam nas Pteridófitas.", "Sementes já existiam nas Gimnospérmicas."] } },
+        { level: "Médio", text: "Qual é a verdadeira função biológica de um fruto saboroso (como uma maçã ou uma manga) na natureza?", options: ["Alimentar o embrião da planta enquanto ele cresce.", "Atrair animais para que comam o fruto e espalhem as sementes (dispersão).", "Fazer fotossíntese de forma mais eficiente que a folha.", "Substituir a raiz na absorção de água da chuva."], correctIndex: 1, explanation: { correctText: "O fruto suculento é uma estratégia evolutiva. Os animais comem o fruto, deslocam-se, e defecam as sementes noutro local, garantindo que a nova planta não nasça na sombra da 'mãe'.", otherOptions: ["A semente (o endosperma) é que alimenta o embrião.", "O fruto raramente faz fotossíntese.", "Incorreto."] } },
+        { level: "Difícil", text: "As Angiospérmicas dividem-se em duas grandes classes: Monocotiledóneas (como o milho e a relva) e Dicotiledóneas (como o feijão e a mangueira). Qual das características abaixo é típica de uma Monocotiledónea?", options: ["Semente com dois cotilédones.", "Raiz axial ou pivotante (uma raiz central grossa).", "Folhas com nervuras paralelas (paralelinérveas).", "Flores com pétalas em múltiplos de 4 ou 5."], correctIndex: 2, explanation: { correctText: "O milho, a cana, o capim e as palmeiras são Monocotiledóneas. Elas possuem 1 cotilédone, raiz fasciculada (cabeleira) e folhas com as nervuras a correrem em paralelo umas às outras.", otherOptions: ["Característica de Dicotiledónea (Eudicotiledónea).", "Raiz central forte é de Dicotiledónea.", "Múltiplos de 4 e 5 são de Dicotiledóneas (Monocotiledóneas usam múltiplos de 3 - trímeras)."] } },
+        { level: "Médio", text: "Em Agronomia, sabe-se que a flor é o órgão de reprodução sexuada das plantas Angiospérmicas. Como se chama a parte masculina da flor que produz os grãos de pólen?", options: ["Pistilo", "Ovário", "Antera (Estame)", "Pétala"], correctIndex: 2, explanation: { correctText: "O sistema reprodutor masculino da flor é o Androceu, cujas hastes (estames) possuem uma ponta dilatada chamada Antera, onde o pólen é fabricado.", otherOptions: ["Pistilo e Ovário são a parte feminina (Gineceu).", "A pétala é apenas para atrair polinizadores."] } },
+        { level: "Fácil", text: "Os musgos são tapetes verdes e húmidos, frequentemente encontrados em cima de pedras. Eles não conseguem ficar altos como árvores. O fator biológico que impede o seu crescimento em altura é:", options: ["A ausência de clorofila.", "A falta de vasos condutores de seiva (são avasculares).", "A incapacidade de gerar sementes.", "Eles são plantas procariontes."], correctIndex: 1, explanation: { correctText: "Como as Briófitas (musgos) não possuem canais internos (xilema/floema), a água tem de passar de célula em célula (por difusão e osmose). É um processo tão lento que a planta morreria de sede se fosse alta.", otherOptions: ["Eles têm clorofila.", "Ausência de sementes não impede a altura (as samambaias são altas e não têm sementes).", "Eles são eucariontes."] } },
+        { level: "Difícil", text: "Nas Angiospérmicas, ocorre um processo único na natureza chamado 'Dupla Fecundação'. Um gâmeta masculino fecunda a oosfera (formando o embrião). O segundo gâmeta masculino fecunda duas células centrais femininas para formar o quê?", options: ["A casca do fruto.", "O endosperma secundário (3n), um tecido que vai nutrir o embrião na semente.", "A raiz principal da árvore adulta.", "As novas pétalas da flor seguinte."], correctIndex: 1, explanation: { correctText: "Esta dupla fecundação garante que o endosperma (a 'marmita' de nutrientes do embrião, rica em amido e gordura) só comece a crescer se a fecundação for um sucesso, poupando energia à planta-mãe.", otherOptions: ["A casca do fruto vem da parede do ovário da flor.", "A raiz vem do embrião.", "Incorreto."] } },
+        { level: "Médio", text: "Muitos agricultores introduzem caixas de abelhas perto das suas plantações de maçãs ou laranjas para aumentar enormemente a colheita dos frutos. O que as abelhas fazem de tão importante?", options: ["Comem os pulgões e pragas.", "Trazem água para as folhas nas asas.", "Aceleram o crescimento das sementes mordendo os frutos.", "Realizam a polinização cruzada transportando o pólen de flor em flor."], correctIndex: 3, explanation: { correctText: "As abelhas transportam o grão de pólen (parte masculina) para o estigma (parte feminina) de outra flor. Sem polinização não há fecundação, e sem fecundação, o ovário da flor não incha para se tornar o fruto.", otherOptions: ["Elas vão atrás de néctar e pólen, não de pulgões (isso são as joaninhas).", "Incorreto."] } },
+        { level: "Fácil", text: "As famosas Samambaias e Avencas que temos em casa como plantas ornamentais reproduzem-se libertando pequenos pontos castanhos ou poeira debaixo das folhas maduras. O que são esses pontos?", options: ["Pequenas sementes voadoras.", "Grãos de pólen escuros.", "Esporos, que germinarão no chão úmido.", "Pequenos frutos em desenvolvimento."], correctIndex: 2, explanation: { correctText: "As Pteridófitas (Samambaias) não têm sementes nem flores. Elas reproduzem-se libertando Esporos a partir de estruturas chamadas soros (os pontinhos escuros).", otherOptions: ["Elas são do grupo sem sementes e sem pólen/fruto."] } },
+        { level: "Médio", text: "As plantas capturam Gás Carbónico (CO2) e libertam Oxigénio (O2) pelas folhas durante a fotossíntese. Que estruturas minúsculas na superfície da folha abrem e fecham como 'bocas' para permitir esta troca de gases (e também a transpiração de vapor de água)?", options: ["Estômatos", "Cloroplastos", "Pelos radiculares", "Lenho"], correctIndex: 0, explanation: { correctText: "Os estômatos são pequenos poros na epiderme da folha. Eles regulam a entrada de CO2 para a fotossíntese e a saída de água (transpiração). Num dia muito seco, eles fecham para a planta não murchar.", otherOptions: ["Cloroplasto é dentro da célula.", "Pelo radicular fica na raiz.", "Lenho é o xilema (caule)."] } },
+        { level: "Difícil", text: "Qual das sequências abaixo apresenta corretamente a ORDEM EVOLUTIVA de surgimento dos grandes grupos de plantas no planeta Terra?", options: ["Angiospérmicas -> Gimnospérmicas -> Pteridófitas -> Briófitas", "Briófitas -> Pteridófitas -> Gimnospérmicas -> Angiospérmicas", "Pteridófitas -> Briófitas -> Angiospérmicas -> Gimnospérmicas", "Briófitas -> Gimnospérmicas -> Pteridófitas -> Angiospérmicas"], correctIndex: 1, explanation: { correctText: "Primeiro os musgos (Briófitas, sem vasos). Depois as samambaias (Pteridófitas, criam vasos). Depois os pinheiros (Gimnospérmicas, criam semente e pólen). Por fim, as frutíferas (Angiospérmicas, criam flor e fruto).", otherOptions: ["Esta é a ordem totalmente inversa.", "As Pteridófitas vieram depois das Briófitas.", "As Gimnospérmicas surgiram depois das Pteridófitas."] } },
+        { level: "Médio", text: "Um feijão cru é posto em algodão húmido. Em poucos dias ele 'brota' (germina), gerando uma pequena raiz e folhinhas antes mesmo de ver a luz do sol para fazer fotossíntese. De onde ele tirou energia para este crescimento inicial?", options: ["Sugou a celulose do algodão.", "Tirou os nutrientes da água pura.", "Consumiu a reserva de amido (endosperma/cotilédone) guardada dentro da própria semente.", "Sugou Gás Carbónico do ar e fez fermentação."], correctIndex: 2, explanation: { correctText: "A semente é uma estrutura de sobrevivência formidável: ela carrega o embrião adormecido e uma 'marmita' cheia de amido. A germinação usa esta reserva até que a planta ganhe folhas e possa fazer fotossíntese.", otherOptions: ["O algodão é celulose que as plantas não digerem.", "A água não dá calorias.", "Sem luz não há fotossíntese imediata."] } },
+        { level: "Difícil", text: "Em relação ao sistema de transporte de seiva nas Angiospérmicas, se removermos um anel completo da CASCA de uma árvore (cintamento ou anel de Malpighi), a árvore acaba por morrer, porquê?", options: ["Cortamos o xilema, impedindo a água de subir para as folhas.", "A árvore sangra todo o seu citoplasma.", "Cortamos o floema (que fica na periferia do caule), impedindo o alimento (açúcar) gerado nas folhas de descer para nutrir as raízes, que morrem de inanição.", "A árvore sufoca porque as folhas param de transpirar."], correctIndex: 2, explanation: { correctText: "Num tronco, o lenho (Xilema, que sobe água) fica mais ao centro/interior. O Floema (que desce a seiva com glicose para a raiz) fica na parte mais externa, logo abaixo da casca. Remover um anel da casca corta o fornecimento de comida às raízes.", otherOptions: ["O xilema (interior) fica intacto e a água continua a subir. As folhas continuam vivas inicialmente.", "Incorreto."] } },
+        { level: "Fácil", text: "Muitas sementes de Angiospérmicas, como o 'dente-de-leão' ou a samara do 'bordo', têm estruturas em forma de asas ou plumas levezinhas. Qual é a utilidade destas adaptações?", options: ["Atrair pássaros para comer a semente e as plumas.", "Facilitar a Dispersão da semente pelo vento (Anemocoria), garantindo que ela voe para longe da planta mãe.", "Acelerar o processo de fotossíntese na semente.", "Impedir que a semente germine na terra."], correctIndex: 1, explanation: { correctText: "Sementes secas e leves, com asas (samaras) ou 'pára-quedas' (papus), são desenhadas aerodinamicamente para serem transportadas por correntes de ar para habitats distantes.", otherOptions: ["Sementes que atraem pássaros geralmente estão dentro de frutos carnudos doces.", "Sementes não fazem fotossíntese voando.", "Incorreto."] } },
+        { level: "Médio", text: "A batata (inglesa) e a cebola são partes da planta que ficam debaixo da terra, mas botanicamente são classificadas como CAULES (do tipo tubérculo e bulbo). A cenoura também fica debaixo da terra, mas é uma RAIZ. Qual a principal função de ambas estas estruturas nas plantas?", options: ["Fazer a fotossíntese no lugar das folhas.", "Ser um local de acumulação e reserva de energia (amido) para os meses difíceis (Inverno ou seca).", "Formarem os novos frutos e flores de forma subterrânea.", "Fixar melhor a planta para não ser levada pelo vento."], correctIndex: 1, explanation: { correctText: "A planta trabalha arduamente no verão fazendo fotossíntese e guarda todo o excedente num cofre subterrâneo (raiz ou caule adaptado). Se a parte de cima secar ou for cortada, ela pode renascer usando essas reservas.", otherOptions: ["Sob a terra não há luz para fotossíntese.", "Flores precisam estar em cima para os polinizadores.", "A batata não serve primariamente como escora contra o vento."] } },
+        { level: "Médio", text: "No ciclo de vida das plantas (Alternância de Gerações), as samambaias e as grandes árvores que vemos no dia a dia pertencem a qual fase dominante?", options: ["Gametófito (a fase que produz gametas, células haploides).", "Esporófito (a fase que produz esporos, composta por células diplóides 2n).", "Fase Procarionte.", "Fase de Protozoário."], correctIndex: 1, explanation: { correctText: "A partir das Pteridófitas (samambaias), a fase que vive por muitos anos, fica grande e vistosa (a árvore em si) é a fase diploide: o Esporófito. (A única exceção é no musgo, onde o tapetinho verde é o gametófito).", otherOptions: ["O gametófito nas árvores é microscópico (fica no grão de pólen ou no ovário da flor).", "Plantas são eucariotas.", "Incorreto."] } },
+        { level: "Difícil", text: "Ao saborearmos um pinhão cozido (tradicional nas festas juninas do Brasil), estamos a comer a semente de uma:", options: ["Angiospérmica Dicotiledónea, porque tem fruto.", "Briófita, porque o pinheiro gosta de frio e humidade.", "Pteridófita, pois as suas folhas parecem agulhas.", "Gimnospérmica (Araucária), que produz sementes nuas (o pinhão) aglomeradas num estróbilo (a pinha), mas sem gerar um fruto verdadeiro."], correctIndex: 3, explanation: { correctText: "O pinhão é uma semente enorme cheia de amido. A Araucária, sendo Gimnospérmica, desenvolve as sementes abertas nas escamas da pinha, não existindo um ovário de flor para inchar e formar a 'carne' do fruto.", otherOptions: ["O pinhão não está dentro de um fruto biológico (pericarpo).", "Musgos não têm sementes.", "Samambaias não têm sementes."] } },
+        { level: "Médio", text: "Muitas plantas carnívoras (como a Dioneia) vivem em pântanos tropicais cheios de sol. Sendo do Reino Plantae, elas têm cloroplastos e FAZEM FOTOSSÍNTESE. Porque é que elas comem insetos?", options: ["Porque as suas folhas perderam a capacidade de fabricar açúcar (glicose).", "Porque elas vivem em solos extremamente pobres em minerais, especialmente Nitrogénio. O inseto fornece os nutrientes em falta (adubo).", "Porque elas estão a sofrer uma transição evolutiva e a tentar mudar para o Reino Animalia.", "Porque os insetos fornecem a água que a planta não consegue puxar da raiz."], correctIndex: 1, explanation: { correctText: "Elas fabricam a sua própria glicose (energia) ao sol perfeitamente. No entanto, o solo dos pântanos é tão ácido e pobre em azoto/fósforo que a planta precisa de 'caçar' adubo. Ela digere o inseto para extrair apenas esses minerais complementares.", otherOptions: ["Elas ainda fazem a própria glicose.", "Taxonomia não prevê a troca de reinos dessa forma.", "O pântano tem água abundante."] } },
+        { level: "Fácil", text: "Qual das opções abaixo NÃO É um representante do Reino Plantae?", options: ["Musgos", "Samambaias", "Cogumelos", "Milho e Soja"], correctIndex: 2, explanation: { correctText: "Os cogumelos (assim como os bolores e leveduras) são organismos heterotróficos pertencentes ao Reino Fungi.", otherOptions: ["Briófitas (planta).", "Pteridófitas (planta).", "Angiospérmicas (planta)."] } },
+        { level: "Difícil", text: "Para terminar: No cruzamento genético numa plantação (genética de Mendel e Botânica no IFCE), qual o nome do processo em que o pólen de uma flor de feijão fecunda o estigma DE OUTRA flor de feijão da planta vizinha?", options: ["Autofecundação", "Polinização Cruzada", "Clonagem Vegetativa", "Dispersão pelo Fruto"], correctIndex: 1, explanation: { correctText: "Quando o pólen é levado pelo vento ou abelhas para fecundar a flor de um parceiro diferente, chamamos Polinização Cruzada. Isto é vital para gerar variabilidade genética e frutos mais resistentes nas colheitas.", otherOptions: ["Autofecundação é quando a flor fecunda a si mesma.", "Clonagem (como tirar uma 'muda'/estaca) gera cópias idênticas.", "A dispersão ocorre depois do fruto formado, para espalhar a semente."] } }
     ];
 
     /* --- GESTÃO DE ESTADO (STATE) --- */
@@ -485,7 +524,7 @@
         
         function animateFrame() {
             if(window.confetti && typeof confetti === 'function') {
-                const config = { particleCount: 5, spread: 55, colors: ['#10B981', '#047857', '#F59E0B', '#8B5CF6'] };
+                const config = { particleCount: 5, spread: 55, colors: ['#10B981', '#047857', '#F59E0B', '#B45309'] };
                 confetti({ ...config, angle: 60, origin: { x: 0, y: 0.6 } });
                 confetti({ ...config, angle: 120, origin: { x: 1, y: 0.6 } });
             }
@@ -598,14 +637,14 @@
         if (isApproved) {
             summaryHTML += `
                 <div class="result-summary-box success">
-                    <strong>🎉 PARABÉNS!</strong> O teu domínio da genética é impressionante. Estás pronto para o exame.
+                    <strong>🎉 EXCELENTE CULTIVO!</strong> O teu domínio sobre a Botânica garante-te uma base fantástica para a prova do IFCE.
                 </div>
             `;
             actionButtonsContainer.innerHTML = `<button class="btn-action" onclick="resetQuiz()">🔄 REPETIR PARA 100%</button>`;
         } else {
             summaryHTML += `
                 <div class="result-summary-box error">
-                    <strong>⚠️ ATENÇÃO!</strong> Foste avaliado abaixo da meta (80%). Revisa a teoria sobre os cromossomos X e Y e Herança ligada ao Sexo.
+                    <strong>⚠️ ATENÇÃO!</strong> Foste avaliado abaixo da meta (80%). Revisa a evolução dos vasos, sementes, flores e frutos.
                 </div>
             `;
             actionButtonsContainer.innerHTML = `<button class="btn-action" onclick="resetQuiz()">🔄 REFAZER AVALIAÇÃO</button>`;

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genética: Determinação do Sexo - Promover</title>
+    <title>Genética e Biodiversidade: Os 5 Reinos - Promover</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,18 +11,18 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        /* --- VARIÁVEIS DE COR E TEMA PRINCIPAL (BIO-ERVILHA) --- */
+        /* --- VARIÁVEIS DE COR E TEMA: TERRA & VIDA (Biodiversidade) --- */
         :root {
-            --bg-color: #F0FDF4; 
-            --text-color: #064E3B; 
-            --border-color: #000000; 
+            --bg-color: #FFFBEB; /* Fundo âmbar muito claro */
+            --text-color: #451A03; /* Castanho muito escuro (quase preto) */
+            --border-color: #292524; /* Contorno */
             --white: #FFFFFF;
             
-            --theme-light: #D1FAE5; 
-            --theme-medium: #10B981; 
-            --theme-dark: #047857; 
-            --theme-contrast: #8B5CF6; 
-            --theme-accent: #F59E0B; 
+            --theme-light: #FEF3C7; /* Âmbar claro */
+            --theme-medium: #F59E0B; /* Âmbar vibrante */
+            --theme-dark: #B45309; /* Âmbar escuro / Ferrugem */
+            --theme-contrast: #15803D; /* Verde folha (Plantas/Natureza) */
+            --theme-accent: #0369A1; /* Azul oceano (Protistas/Água) */
             --theme-text-active: #FFFFFF;
             
             --correct-bg: #D1FAE5;
@@ -42,7 +42,7 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px 15px 120px 15px;
-            background-image: linear-gradient(rgba(16, 185, 129, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 185, 129, 0.1) 1px, transparent 1px);
+            background-image: linear-gradient(rgba(180, 83, 9, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(180, 83, 9, 0.08) 1px, transparent 1px);
             background-size: 25px 25px;
         }
 
@@ -95,6 +95,31 @@
         .highlight-box { background-color: #FEF3C7; border: 3px solid var(--border-color); border-left: 8px solid var(--theme-accent); padding: 18px 20px; border-radius: 8px; font-size: 0.95rem; color: #78350F; font-weight: 600; box-shadow: 3px 3px 0px rgba(0,0,0,0.1); }
         .highlight-box.purple { background-color: #F3E8FF; border-left-color: var(--theme-contrast); color: #4C1D95; }
 
+        /* --- MAPA DA BIODIVERSIDADE (CARDS) --- */
+        .kingdoms-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; width: 100%; margin-top: 10px; }
+        .k-card { flex: 1 1 calc(50% - 15px); min-width: 130px; border-radius: 12px; padding: 15px 10px; text-align: center; border: 3px solid; display: flex; flex-direction: column; align-items: center; box-shadow: 4px 4px 0px rgba(0,0,0,0.1); background-color: var(--white); transition: transform 0.2s; }
+        .k-card:hover { transform: translateY(-3px); }
+        .k-card.full-width { flex: 1 1 100%; max-width: 220px; }
+        .k-icon { font-size: 2.8rem; margin-bottom: 8px; line-height: 1; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.15)); }
+        .k-title { font-size: 1.05rem; font-weight: 900; margin-bottom: 4px; }
+        .k-examples { font-size: 0.85rem; font-weight: 600; color: var(--text-color); margin-bottom: 4px; line-height: 1.2; }
+        .k-traits { font-size: 0.75rem; font-style: italic; font-weight: 700; opacity: 0.9; line-height: 1.2; }
+        
+        .k-monera { background-color: #FEF3C7; border-color: #B45309; }
+        .k-monera .k-title, .k-monera .k-traits { color: #B45309; }
+        
+        .k-protista { background-color: #E0F2FE; border-color: #0369A1; }
+        .k-protista .k-title, .k-protista .k-traits { color: #0369A1; }
+        
+        .k-fungi { background-color: #F3E8FF; border-color: #7E22CE; }
+        .k-fungi .k-title, .k-fungi .k-traits { color: #7E22CE; }
+        
+        .k-plantae { background-color: #DCFCE7; border-color: #15803D; }
+        .k-plantae .k-title, .k-plantae .k-traits { color: #15803D; }
+        
+        .k-animalia { background-color: #FFE4E6; border-color: #BE123C; }
+        .k-animalia .k-title, .k-animalia .k-traits { color: #BE123C; }
+
         /* --- BOTÕES GERAIS --- */
         .btn-action { width: 100%; padding: 20px; background-color: var(--theme-dark); color: white; border: 3px solid var(--border-color); border-radius: 12px; font-size: 1.15rem; font-weight: 900; cursor: pointer; box-shadow: 6px 6px 0px var(--theme-contrast); transition: all 0.1s; text-transform: uppercase; margin-top: 10px; }
         .btn-action:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0px var(--theme-contrast); }
@@ -141,7 +166,7 @@
         .result-summary-box.success { background: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-border); }
         .result-summary-box.error { background: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-border); }
 
-        .error-log-item { margin-bottom: 15px; padding: 20px; background: #F8FAFC; border-radius: 12px; border: 3px dashed var(--theme-medium); text-align: left;}
+        .error-log-item { margin-bottom: 15px; padding: 20px; background: #FFFBEB; border-radius: 12px; border: 3px dashed var(--theme-medium); text-align: left;}
 
         /* --- RODAPÉ DE NAVEGAÇÃO --- */
         .quiz-footer { position: fixed; bottom: 0; left: 0; width: 100%; background-color: var(--white); border-top: 3px solid var(--border-color); padding: 15px 20px; display: none; justify-content: center; gap: 20px; z-index: 100; box-shadow: 0px -4px 10px rgba(0,0,0,0.05); }
@@ -156,9 +181,9 @@
     <div class="container">
         
         <header class="logo-header">
-            <div class="css-logo"><span class="pulse-effect">🌱</span> PROMOVER</div>
+            <div class="css-logo"><span class="pulse-effect">🌍</span> PROMOVER</div>
             <h1>Biologia / 9º Ano</h1>
-            <p class="subtitle">Genética: Determinação do Sexo</p>
+            <p class="subtitle">A Biodiversidade e os 5 Reinos</p>
         </header>
 
         <div class="toggle-container">
@@ -171,66 +196,89 @@
             
             <div class="search-container">
                 <span class="search-icon" aria-hidden="true">🔍</span>
-                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: cariótipo, cromossoma, XX)">
+                <input type="text" id="searchInput" class="search-input" aria-label="Pesquisar conteúdo" placeholder="Pesquisar conceito... (ex: Monera, Procarionte, Fungi)">
             </div>
-            <div id="no-results"><p>😕 Termo não encontrado na genética.</p></div>
+            <div id="no-results"><p>😕 Termo não encontrado na teoria dos Reinos.</p></div>
 
             <section class="content-group">
-                <div class="section-badge">🧬 1. O Cariótipo Humano</div>
+                <div class="section-badge">🔬 1. Os Critérios de Separação</div>
                 <article class="theory-box search-target">
-                    <h3>O Manual de Instruções</h3>
-                    <p>O corpo humano é formado por células que contêm o nosso material genético (DNA). Este DNA está organizado em estruturas chamadas <strong>Cromossomas</strong>.</p>
+                    <h3>Como organizar a vida?</h3>
+                    <p>O cientista Robert Whittaker propôs agrupar todos os seres vivos em 5 grandes Reinos. Para decidir quem vai para que "gaveta", os biólogos usam três perguntas fundamentais:</p>
                     
                     <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
-                        <li><strong>Células Somáticas:</strong> (Células do corpo, como pele ou músculo) possuem <strong>46 cromossomas</strong>, organizados em 23 pares. Têm carga diploide (2n).</li>
-                        <li><strong>Autossomas:</strong> Os primeiros 22 pares determinam características gerais (cor do cabelo, tipo de sangue).</li>
-                        <li><strong>Par 23 (Sexuais):</strong> O último par é responsável por determinar o sexo biológico do indivíduo.</li>
+                        <li><strong>1. Tipo de Célula:</strong> O núcleo é organizado (<em>Eucarionte</em>) ou o material genético está espalhado sem membrana nuclear (<em>Procarionte</em>)?</li>
+                        <li><strong>2. Número de Células:</strong> É formado por uma única célula (<em>Unicelular</em>) ou por muitas (<em>Pluricelular / Multicelular</em>)?</li>
+                        <li><strong>3. Nutrição:</strong> Produz o próprio alimento pela fotossíntese (<em>Autotrófico</em>) ou precisa de se alimentar de outros (<em>Heterotrófico</em>)?</li>
+                    </ul>
+                </article>
+            </section>
+
+            <section class="content-group">
+                <div class="section-badge">🌳 2. Os 5 Reinos da Natureza</div>
+                <article class="theory-box search-target">
+                    <h3>O Mapa da Biodiversidade</h3>
+                    <p>Conhecer os representantes de cada reino é vital para as provas de agropecuária, saúde e ecologia.</p>
+                    
+                    <div class="visual-area" style="background: transparent; border: none; padding: 0;">
+                        <div class="kingdoms-grid">
+                            <!-- Monera -->
+                            <div class="k-card k-monera">
+                                <div class="k-icon">🦠</div>
+                                <div class="k-title">1. MONERA</div>
+                                <div class="k-examples">Bactérias e Cianobactérias</div>
+                                <div class="k-traits">Unicelulares Procariontes</div>
+                            </div>
+                            
+                            <!-- Protista -->
+                            <div class="k-card k-protista">
+                                <div class="k-icon">💧</div>
+                                <div class="k-title">2. PROTISTA</div>
+                                <div class="k-examples">Algas e Protozoários</div>
+                                <div class="k-traits">Eucariontes (maioria uni)</div>
+                            </div>
+                            
+                            <!-- Fungi -->
+                            <div class="k-card k-fungi full-width">
+                                <div class="k-icon">🍄</div>
+                                <div class="k-title">3. FUNGI</div>
+                                <div class="k-examples">Cogumelos e Leveduras</div>
+                                <div class="k-traits">Heterotróficos por absorção</div>
+                            </div>
+                            
+                            <!-- Plantae -->
+                            <div class="k-card k-plantae">
+                                <div class="k-icon">🌳</div>
+                                <div class="k-title">4. PLANTAE</div>
+                                <div class="k-examples">Musgos, Samambaias, Árvores</div>
+                                <div class="k-traits">Pluricelulares Autotróficos</div>
+                            </div>
+                            
+                            <!-- Animalia -->
+                            <div class="k-card k-animalia">
+                                <div class="k-icon">🦊</div>
+                                <div class="k-title">5. ANIMALIA</div>
+                                <div class="k-examples">Insetos, Peixes, Humanos</div>
+                                <div class="k-traits">Pluri. Heterotróficos (ingestão)</div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <section class="content-group">
+                <div class="section-badge">⚠️ 3. A Exceção à Regra</div>
+                <article class="theory-box search-target">
+                    <h3>Onde estão os Vírus?</h3>
+                    <p>O vírus da Gripe, do HIV ou da COVID-19 <strong>NÃO PERTENCEM a nenhum dos 5 reinos</strong>.</p>
+                    
+                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
+                        <li><strong>Acelulares:</strong> Não possuem células. São apenas uma cápsula de proteína com material genético (DNA ou RNA) no interior.</li>
+                        <li><strong>Parasitas Intracelulares Obrigatórios:</strong> Fora de uma célula hospedeira, são inertes (não têm metabolismo próprio nem se reproduzem).</li>
                     </ul>
 
                     <div class="highlight-box purple">
-                        <strong>O que diz a biologia?</strong> O conjunto completo de cromossomas de uma espécie chama-se Cariótipo. Nos humanos, a fórmula normal é <strong>46, XX</strong> (feminino) ou <strong>46, XY</strong> (masculino).
-                    </div>
-                </article>
-            </section>
-
-            <section class="content-group">
-                <div class="section-badge">⚖️ 2. O Sistema XY</div>
-                <article class="theory-box search-target">
-                    <h3>Homens e Mulheres</h3>
-                    <p>No sistema humano (e na maioria dos mamíferos), a diferença sexual baseia-se num par de letras: X e Y.</p>
-                    
-                    <div class="visual-area">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="300" height="120" viewBox="0 0 300 120">
-                            <!-- Mulher XX -->
-                            <rect x="20" y="20" width="110" height="80" rx="12" fill="#FCE7F3" stroke="#DB2777" stroke-width="3"/>
-                            <text x="75" y="45" text-anchor="middle" font-size="14" font-weight="900" fill="#DB2777">MULHER</text>
-                            <text x="75" y="80" text-anchor="middle" font-size="28" font-weight="900" fill="#DB2777">X X</text>
-                            
-                            <!-- Homem XY -->
-                            <rect x="170" y="20" width="110" height="80" rx="12" fill="#DBEAFE" stroke="#2563EB" stroke-width="3"/>
-                            <text x="225" y="45" text-anchor="middle" font-size="14" font-weight="900" fill="#2563EB">HOMEM</text>
-                            <text x="225" y="80" text-anchor="middle" font-size="28" font-weight="900" fill="#2563EB">X Y</text>
-                        </svg>
-                    </div>
-
-                    <ul style="padding-left: 20px; display:flex; flex-direction:column; gap:8px;">
-                        <li><strong>O Óvulo (Mãe):</strong> Como a mulher só tem cromossomas X, 100% dos óvulos saudáveis carregam apenas <strong>um Cromossoma X</strong>.</li>
-                        <li><strong>O Espermatozoide (Pai):</strong> Como o homem tem X e Y, metade dos espermatozoides carrega o <strong>X</strong> e a outra metade carrega o <strong>Y</strong>.</li>
-                    </ul>
-                </article>
-            </section>
-
-            <section class="content-group">
-                <div class="section-badge">🎲 3. A Lotaria Genética</div>
-                <article class="theory-box search-target">
-                    <h3>Quem decide o sexo?</h3>
-                    <p>Do ponto de vista genético, <strong>é sempre o pai que determina o sexo do bebé</strong>. A mãe contribui sempre com um 'X'. O que o pai enviar no seu gameta, decide o resultado final na fecundação.</p>
-                    
-                    <div class="inline-example">Espermatozoide (X) + Óvulo (X) = Menina (XX)</div>
-                    <div class="inline-example">Espermatozoide (Y) + Óvulo (X) = Menino (XY)</div>
-
-                    <div class="highlight-box">
-                        <strong>A Matemática da Hereditariedade:</strong> Como o homem produz 50% de espermatozoides X e 50% de espermatozoides Y, a probabilidade de nascer um menino ou uma menina é sempre de <strong>1/2 (ou 50%)</strong> em qualquer gravidez, assumindo eventos independentes.
+                        <strong>Dica de Exame:</strong> Fungos NÃO são plantas! Apesar de não andarem e brotarem da terra, os fungos não fazem fotossíntese (são heterotróficos, tal como os animais, mas alimentam-se por absorção de matéria orgânica em decomposição).
                     </div>
                 </article>
             </section>
@@ -244,8 +292,8 @@
         <main id="viewPractice" class="view-section">
             <div style="margin-bottom: 20px; background-color: var(--white); padding: 15px; border-radius: 12px; border: 3px solid var(--border-color); box-shadow: 4px 4px 0px var(--border-color);">
                 <h2 style="color:var(--theme-dark); font-weight:900; margin-bottom: 5px;">A Prova de Fogo - IFCE</h2>
-                <p style="color: var(--theme-medium); font-size: 0.95rem; font-weight:600;">
-                    30 questões formato Ensino Técnico Integrado. Acerta <strong>80% (24/30)</strong> para provares que dominas a genética.
+                <p style="color: var(--theme-contrast); font-size: 0.95rem; font-weight:600;">
+                    30 questões formato Ensino Técnico Integrado sobre os 5 Reinos. Acerta <strong>80% (24/30)</strong> para garantires a aprovação.
                 </p>
             </div>
             
@@ -276,36 +324,36 @@
 <script>
     /* --- ESTRUTURA DE DADOS (BASE DE QUESTÕES - NÍVEL IFCE TÉCNICO INTEGRADO) --- */
     const questionsDatabase = [
-        { level: "Fácil", text: "Numa aula prática de biologia no laboratório do IFCE, o professor questiona: quem determina geneticamente o sexo biológico do bebé humano durante a fecundação?", options: ["O óvulo, pois é a maior célula.", "O espermatozoide, pois pode carregar o cromossomo X ou Y.", "Ambos os gametas em proporções iguais.", "O ambiente intrauterino nos primeiros meses."], correctIndex: 1, explanation: { correctText: "A mulher produz apenas óvulos com o cromossomo X. É o homem que produz espermatozoides X e Y, determinando assim o sexo.", otherOptions: ["O óvulo contribui apenas com o X.", "Incorreto.", "Em humanos a determinação é genética, não ambiental."] } },
-        { level: "Médio", text: "Um aluno do IFCE leu que um casal deseja ter dois filhos: primeiro um menino e depois uma menina. Sabendo que cada gestação é um evento independente, qual é a probabilidade de que este desejo se realize exatamente nesta ordem?", options: ["50% (1/2)", "25% (1/4)", "12,5% (1/8)", "75% (3/4)"], correctIndex: 1, explanation: { correctText: "A probabilidade de ser menino é 1/2. A de ser menina é 1/2. Probabilidade de menino E menina = 1/2 x 1/2 = 1/4 (25%).", otherOptions: ["50% é a probabilidade para apenas uma gestação.", "1/8 seria para três crianças.", "Incorreto."] } },
-        { level: "Fácil", text: "Ao observar células humanas ao microscópio, um estudante notou uma diferença fundamental. Qual é o número de cromossomos encontrados numa célula da pele (somática) e num óvulo (gameta), respetivamente?", options: ["46 e 46", "23 e 23", "46 e 23", "23 e 46"], correctIndex: 2, explanation: { correctText: "Células somáticas são diploides (2n = 46 cromossomos). Os gametas são haploides (n = 23 cromossomos) para a fecundação.", otherOptions: ["Gametas não podem ter 46.", "Células da pele não são haploides.", "A ordem foi invertida na pergunta."] } },
-        { level: "Médio", text: "O curso técnico de Segurança do Trabalho exige exames médicos. Um candidato descobriu ser daltônico (herança recessiva ligada ao cromossomo X). Se ele tiver filhos com uma mulher sem o gene do daltonismo, o que acontecerá com suas filhas?", options: ["100% serão daltônicas.", "100% serão portadoras do gene, mas terão visão normal.", "50% serão portadoras.", "Nenhuma terá o gene do daltonismo."], correctIndex: 1, explanation: { correctText: "O homem (Xd Y) passa obrigatoriamente o seu único cromossomo X (com o gene do daltonismo) para TODAS as filhas. Como a mãe envia um X normal, as filhas serão XDXd (portadoras, com visão normal).", otherOptions: ["Elas seriam daltônicas se a mãe também passasse o gene daltônico.", "Ele passa o Xd para 100% das filhas.", "Incorreto."] } },
-        { level: "Difícil", text: "Ainda sobre o daltonismo (herança ligada ao X): Uma mulher tem visão normal, mas o seu pai era daltônico. Ela casa com um homem de visão normal. Qual a probabilidade de um FILHO HOMEM desse casal nascer daltônico?", options: ["0%", "25%", "50%", "100%"], correctIndex: 2, explanation: { correctText: "A mulher é portadora (XDXd), pois herdou o Xd do seu pai. Ao ter um menino, ela passa o X ou o Xd (50% de chance). Se passar o Xd, o menino será daltônico, pois recebe o Y do pai normal.", otherOptions: ["Incorreto.", "25% é a chance para a prole total, a questão restringe a 'filho homem'.", "Ela pode passar o X normal (XD)."] } },
-        { level: "Fácil", text: "No estudo da reprodução humana, diz-se que gémeos monozigóticos (idênticos) são formados a partir do mesmo óvulo e do mesmo espermatozoide. Logo, em relação ao sexo biológico, eles:", options: ["Podem ser de sexos diferentes.", "Têm obrigatoriamente o mesmo sexo.", "A menina desenvolve-se sempre primeiro.", "Dependem do ambiente para definir o sexo."], correctIndex: 1, explanation: { correctText: "Como derivam exatamente da mesma célula inicial (zigoto) e dividem o mesmo DNA, gémeos monozigóticos têm sempre o mesmo sexo.", otherOptions: ["Apenas gémeos dizigóticos (bivitelinos) podem ser de sexos diferentes.", "Incorreto.", "Incorreto."] } },
-        { level: "Médio", text: "Ao analisar um heredograma num exame, um candidato percebe que uma determinada característica genética é passada EXCLUSIVAMENTE de pais afetados para TODOS os seus filhos do sexo masculino, nunca para as filhas. Esta herança está ligada a qual cromossomo?", options: ["Ao cromossomo X", "Aos Autossomos", "Ao cromossomo Y", "Ao DNA mitocondrial"], correctIndex: 2, explanation: { correctText: "Essa é a clássica Herança Holândrica. O cromossomo Y só existe nos homens e é passado diretamente de pai para filho homem.", otherOptions: ["A herança ligada ao X passa para as filhas.", "Autossomos afetam ambos os sexos.", "A herança mitocondrial é passada apenas pela MÃE para todos os filhos."] } },
-        { level: "Fácil", text: "No cariótipo humano normal, os cromossomos são divididos em categorias. Dos 46 cromossomos existentes, qual é a divisão exata entre autossomos e cromossomos sexuais?", options: ["44 autossomos e 2 cromossomos sexuais.", "22 autossomos e 2 cromossomos sexuais.", "40 autossomos e 6 cromossomos sexuais.", "Todos os 46 são sexuais se estiverem num gameta."], correctIndex: 0, explanation: { correctText: "São 22 pares de autossomos (total de 44) que definem características do corpo, e 1 par (total de 2) de cromossomos sexuais (XX ou XY).", otherOptions: ["22 é o número de pares autossomos, não o total.", "Incorreto.", "Os gametas têm autossomos e sexuais."] } },
-        { level: "Médio", text: "A biologia moderna descobriu que não é o cromossomo Y inteiro que define o desenvolvimento masculino, mas sim um gene específico presente nele. Como se chama este gene principal?", options: ["Gene XY", "Gene SRY", "Gene Testosterona", "Gene Holândrico Alfa"], correctIndex: 1, explanation: { correctText: "O gene SRY (Sex-determining Region Y) atua como um 'interruptor' que inicia o desenvolvimento dos testículos no embrião.", otherOptions: ["Incorreto.", "Testosterona é a hormona, não o gene.", "Incorreto."] } },
-        { level: "Difícil", text: "Existem casos onde a disjunção meiótica falha e o indivíduo nasce com a Síndrome de Turner, cujo cariótipo é 45,X0 (possui apenas um cromossomo X). Fenotipicamente, este indivíduo desenvolve características do sexo biológico:", options: ["Masculino, devido à ausência de um X.", "Feminino, devido à ausência do cromossomo Y.", "Neutro, não desenvolve gônadas.", "Masculino, se a mãe tiver passado o X."], correctIndex: 1, explanation: { correctText: "Na espécie humana, é a presença do Y (e do gene SRY) que induz o padrão masculino. Na sua ausência (mesmo com um só X), o padrão desenvolvido é o feminino.", otherOptions: ["O padrão base humano é o feminino sem o Y.", "Elas desenvolvem gônadas femininas, embora frequentemente inférteis.", "Incorreto."] } },
-        { level: "Difícil", text: "Em contrapartida, a Síndrome de Klinefelter apresenta o cariótipo 47,XXY. Apesar de possuir dois cromossomos X (como nas mulheres), a presença do cromossomo Y garante que o fenótipo do indivíduo seja do sexo biológico:", options: ["Feminino", "Masculino", "Hermafrodita", "Nulo"], correctIndex: 1, explanation: { correctText: "Mesmo com múltiplos cromossomos X (XXY, XXXY), se existir pelo menos um cromossomo Y funcional, o indivíduo será fenotipicamente masculino.", otherOptions: ["O Y impõe o desenvolvimento masculino.", "Incorreto.", "Incorreto."] } },
-        { level: "Médio", text: "Ao observar um exame laboratorial, a indicação 'Cariótipo: 46,XX' diz respeito a uma pessoa biologicamente do sexo:", options: ["Masculino, com cariótipo normal.", "Feminino, com Síndrome de Down.", "Feminino, com cariótipo normal.", "Masculino, com anomalia cromossômica."], correctIndex: 2, explanation: { correctText: "46 cromossomos no total, com o par sexual sendo XX, indica uma fêmea humana biologicamente normal e saudável.", otherOptions: ["Masculino é XY.", "Síndrome de Down teria 47 cromossomos (trissomia do 21).", "Incorreto."] } },
-        { level: "Médio", text: "Se extrairmos UM espermatozoide humano normal e analisarmos o seu núcleo, encontraremos exatamente:", options: ["23 pares de cromossomos.", "22 autossomos e 1 cromossomo sexual (X ou Y).", "44 autossomos e 2 cromossomos sexuais.", "Nenhum autossomo, apenas material sexual."], correctIndex: 1, explanation: { correctText: "O espermatozoide é haploide (n=23). Contém 22 cromossomos autossomos e 1 cromossomo sexual (que pode ser o X ou o Y).", otherOptions: ["Pares só existem nas células diploides.", "Isso seria uma célula somática inteira.", "Ele contém a receita completa (autossomos também)."] } },
-        { level: "Médio", text: "Quantos cromossomos SEXUAIS podemos encontrar dentro do núcleo de UM neurónio saudável de uma mulher?", options: ["Zero", "1", "2", "23"], correctIndex: 2, explanation: { correctText: "O neurónio é uma célula somática (diploide). Ele possui 46 cromossomos totais, sendo 44 autossomos e 2 cromossomos sexuais (XX).", otherOptions: ["Toda célula nucleada humana tem cromossomos sexuais.", "Isso seria um gameta (óvulo).", "Isso é o número de pares totais."] } },
-        { level: "Fácil", text: "O processo de divisão celular que reduz pela metade o número de cromossomos para formar os gametas (espermatozoides e óvulos) é conhecido como:", options: ["Mitose", "Meiose", "Fecundação", "Clonagem"], correctIndex: 1, explanation: { correctText: "A Meiose é a divisão reducional. Se não existisse, a cada geração o número de cromossomos duplicaria ao fundir os gametas.", otherOptions: ["A mitose mantém os 46 cromossomos (reparação da pele, crescimento).", "Fecundação é a união dos gametas.", "Incorreto."] } },
-        { level: "Médio", text: "João e Maria têm 5 filhos, e todos eles são meninas. A família descobriu uma nova gravidez. De acordo com a genética da determinação do sexo, a probabilidade do 6º filho ser um menino é de:", options: ["10%, pois a genética do pai favorece o cromossomo X.", "50%.", "90%, pois é muito raro ter 6 meninas seguidas.", "100%, é a lei da compensação biológica."], correctIndex: 1, explanation: { correctText: "Lançar a moeda não tem memória. Cada fecundação é independente, mantendo-se sempre a chance de 50% de o pai enviar o espermatozoide Y.", otherOptions: ["Não há preferência genética estabelecida no enunciado.", "A probabilidade não tem memória dos eventos passados.", "A lei da compensação não existe na estatística de eventos independentes."] } },
-        { level: "Difícil", text: "Numa aula avançada para o Técnico de Análises Clínicas do IFCE, o professor refere a Herança Mitocondrial. Estas doenças afetam órgãos que gastam muita energia. Quem transmite o DNA mitocondrial para os filhos (meninos e meninas)?", options: ["O pai.", "A mãe.", "Ambos de forma igual.", "Depende se o bebê for menino ou menina."], correctIndex: 1, explanation: { correctText: "Apenas a mãe transmite as mitocôndrias! Na fecundação, apenas a cabeça do espermatozoide (núcleo) entra no óvulo, as mitocôndrias do pai ficam de fora.", otherOptions: ["O pai não contribui com mitocôndrias.", "Incorreto.", "Incorreto."] } },
-        { level: "Médio", text: "A probabilidade de um casal ter, em 3 gestações consecutivas, três filhos onde todos sejam do sexo masculino é:", options: ["50% (1/2)", "33% (1/3)", "12,5% (1/8)", "6,25% (1/16)"], correctIndex: 2, explanation: { correctText: "Regra do 'E' (multiplicação de probabilidades): 1/2 (1º menino) × 1/2 (2º menino) × 1/2 (3º menino) = 1/8. Em porcentagem: 12,5%.", otherOptions: ["Incorreto.", "Incorreto.", "Isso seria para 4 filhos meninos."] } },
-        { level: "Médio", text: "Características como a Calvície são determinadas por genes nos autossomos, mas expressam-se de forma muito diferente em homens (dominante) e mulheres (recessiva). Porquê?", options: ["Estão no cromossomo Y.", "São influenciadas pelos cromossomos sexuais femininos.", "É uma herança influenciada pelo sexo, ativada principalmente pela testosterona.", "É uma mutação do cromossomo X."], correctIndex: 2, explanation: { correctText: "A calvície não está no X ou Y. Está nos autossomos, mas o ambiente hormonal masculino (alta testosterona) faz com que o gene se comporte como dominante nos homens.", otherOptions: ["Se estivesse no Y, nenhuma mulher seria calva.", "Incorreto.", "Não é ligada ao X."] } },
-        { level: "Fácil", text: "Em condições genéticas normais, considerando apenas o par de cromossomos sexuais, as mulheres produzem:", options: ["Óvulos X e Óvulos Y em quantidades iguais.", "100% de óvulos carregando o cromossomo X.", "Apenas óvulos com autossomos, sem sexuais.", "Óvulos cujo cromossomo sexual depende da fase lunar."], correctIndex: 1, explanation: { correctText: "As fêmeas humanas são homogaméticas (XX). Portanto, todos os gametas que elas produzem levam um cromossomo X.", otherOptions: ["Elas não têm cromossomo Y.", "Todo gameta tem 1 cromossomo sexual.", "Incorreto."] } },
-        { level: "Difícil", text: "A hemofilia é uma doença recessiva ligada ao cromossomo X, que prejudica a coagulação do sangue. Para que nasça uma MENINA hemofílica (Xh Xh), é rigorosamente OBRIGATÓRIO que:", options: ["A sua mãe seja hemofílica.", "O seu pai seja normal e a mãe hemofílica.", "O seu pai seja hemofílico.", "O avô paterno tenha tido a doença."], correctIndex: 2, explanation: { correctText: "Para a menina ser XhXh, ela precisa de um Xh da mãe e um Xh do pai. Como o pai só tem um cromossomo X (Xh Y), ele tem de ser, obrigatoriamente, hemofílico.", otherOptions: ["A mãe pode ser apenas portadora (XHXh) e não apresentar a doença.", "O pai passa o X dele. Se ele for normal (XH), a menina jamais será hemofílica.", "O avô paterno não passa o X para o pai, passa o Y."] } },
-        { level: "Médio", text: "Em técnicas de reprodução assistida na agropecuária (assunto de Zootecnia no IFCE), muitas vezes tenta-se fazer a 'sexagem', ou seja, escolher o sexo do animal antes da fecundação. Nos mamíferos, que gameta deve ser separado num laboratório para garantir o sexo desejado?", options: ["Os óvulos, separando os óvulos macho dos óvulos fêmea.", "O zigoto, antes que ele se transforme em embrião.", "Os espermatozoides, separando os que carregam o cromossomo X dos que carregam o Y.", "O cromossomo autossomo do macho reprodutor."], correctIndex: 2, explanation: { correctText: "A sexagem dos mamíferos em laboratório foca na centrifugação ou marcação do sémen (espermatozoides), pois é ele que define se nasce macho (Y) ou fêmea (X).", otherOptions: ["Óvulos de mamíferos são sempre X.", "No zigoto o sexo já está determinado.", "Autossomos não definem o sexo."] } },
-        { level: "Médio", text: "Para efeitos de estudo genético, a biologia divide as células em 'n' e '2n'. Na determinação do sexo humano, o zigoto (resultado da fecundação do óvulo pelo espermatozoide) é uma célula:", options: ["Haploide (n = 23)", "Diploide (2n = 46)", "Triploide (3n = 69)", "Assexuada (n = 0)"], correctIndex: 1, explanation: { correctText: "O óvulo traz 23 cromossomos e o espermatozoide mais 23. Eles unem-se, restaurando a carga diploide da nossa espécie (46 cromossomos), formando o zigoto 2n.", otherOptions: ["Gametas sozinhos é que são haploides.", "Incorreto.", "Incorreto."] } },
-        { level: "Difícil", text: "Quando um par de cromossomos homólogos não se separa corretamente durante a meiose, podem ocorrer alterações no número de cromossomos dos filhos. Este fenómeno (que causa as Síndromes de Klinefelter ou Turner) é chamado de:", options: ["Permutação Genética (Crossing-over)", "Não disjunção meiótica", "Mutação pontual do DNA", "Clonagem natural"], correctIndex: 1, explanation: { correctText: "A 'não disjunção' (não separação) faz com que um gameta receba cromossomos a mais (ex: um espermatozoide XY) e o outro a menos, gerando aneuploidias após a fecundação.", otherOptions: ["Crossing-over é normal e gera variabilidade genética.", "É uma anomalia de número de cromossomos, não mutação de uma letrinha de DNA.", "Incorreto."] } },
-        { level: "Fácil", text: "Em genética, o sexo biológico cromossômico (XX ou XY) com o qual nascemos faz parte do nosso:", options: ["Meio Ambiente", "Genótipo", "Sistema Circulatório", "RNA Mensageiro"], correctIndex: 1, explanation: { correctText: "O genótipo refere-se ao conjunto da nossa constituição genética (os genes e cromossomos que herdamos no DNA).", otherOptions: ["O meio ambiente não afeta o cariótipo humano básico.", "Incorreto.", "Incorreto."] } },
-        { level: "Médio", text: "Durante muito tempo, discutiu-se se o par XY poderia ser considerado um 'par homólogo' (cromossomos semelhantes). Hoje sabemos que:", options: ["São exatamente iguais em tamanho e genes.", "São completamente homólogos em toda a sua extensão.", "Possuem pequenas regiões homólogas (pseudoautossômicas) que permitem o seu pareamento na meiose.", "O cromossomo Y é uma cópia exata do cromossomo X, mas com cor diferente."], correctIndex: 2, explanation: { correctText: "Embora o X seja grande e o Y muito pequeno, eles têm pontas semelhantes (regiões PAR) que os ajudam a encontrar-se e emparelhar durante a divisão celular da meiose.", otherOptions: ["O X é gigante; o Y é minúsculo.", "Na maior parte são totalmente diferentes.", "Incorreto."] } },
-        { level: "Difícil", text: "Uma mulher daltônica (logo, obrigatoriamente Xd Xd) quer ter filhos com um homem de visão normal (XD Y). Considerando APENAS as crianças do sexo MASCULINO que este casal possa vir a ter, qual será o fenótipo deles?", options: ["100% terão visão normal.", "50% serão daltônicos, 50% terão visão normal.", "100% serão daltônicos.", "Depende se o avô materno era daltônico."], correctIndex: 2, explanation: { correctText: "Os meninos recebem o Y do pai (que não tem o gene de visão). O X deles vem obrigatoriamente da mãe. Como a mãe só tem Xd e Xd, 100% dos filhos homens receberão a doença.", otherOptions: ["Incorreto.", "A mãe não tem o gene dominante normal para lhes passar.", "Já sabemos que a mãe é daltônica."] } },
-        { level: "Médio", text: "A Síndrome de Down é uma aneuploidia numérica extremamente conhecida. Ela interfere com a determinação sexual da criança?", options: ["Sim, pessoas com Síndrome de Down são sempre do sexo masculino.", "Sim, afeta o par cromossômico 23.", "Não, pois trata-se da trissomia do cromossomo 21 (um autossomo), deixando o par sexual 23 intacto.", "Não, pois não existem cromossomos sexuais neste caso."], correctIndex: 2, explanation: { correctText: "Na Síndrome de Down, a falha ocorre no par autossômico 21 (existem 3 cromossomos em vez de 2). O par 23, que define o sexo, continua a operar normalmente como XX ou XY.", otherOptions: ["Afeta homens e mulheres.", "O par 23 não é afetado na base.", "Incorreto."] } },
-        { level: "Difícil", text: "Num estágio no setor de Avicultura do IFCE, um aluno descobriu que nas galinhas e pássaros o sistema que determina o sexo é o sistema ZW. Nesse sistema, ao contrário dos humanos:", options: ["O macho é ZZ (homogamético) e a fêmea é ZW (heterogamética).", "O macho não possui cromossomos sexuais.", "O sexo depende da temperatura em que o ovo é chocado.", "A fêmea é ZZ e o macho é ZW."], correctIndex: 0, explanation: { correctText: "No sistema ZW, as regras invertem-se face ao sistema XY. Nas aves, são as fêmeas que produzem gametas diferentes (Z e W) e determinam o sexo da descendência.", otherOptions: ["Possui o par ZZ.", "Isso ocorre em crocodilos e algumas tartarugas.", "Incorreto."] } },
-        { level: "Difícil", text: "No estudo das probabilidades condicionais da genética ligada ao sexo: Uma mulher portadora para daltonismo (XDXd) e um homem de visão normal (XDY) têm um menino. Sabe-se que esse menino já nasceu e foi testado, tendo uma visão perfeitamente NORMAL. Que cromossomo ele recebeu da mãe?", options: ["O cromossomo Y.", "O cromossomo Xd (com gene do daltonismo).", "O cromossomo XD (gene dominante normal).", "Impossível saber."], correctIndex: 2, explanation: { correctText: "Sendo menino, ele recebeu o Y do pai. Se ele tem a visão NORMAL, a única forma de isso acontecer foi ele ter recebido o XD (o X saudável dominante) da sua mãe portadora.", otherOptions: ["A mãe não tem cromossomo Y.", "Se recebesse o Xd, ele seria daltônico.", "Sabe-se pelo fenótipo manifestado no exame de visão."] } }
+        { level: "Fácil", text: "Numa aula de laboratório no IFCE, os alunos observam bactérias do iogurte ao microscópio. As bactérias são os únicos organismos vivos que pertencem ao Reino:", options: ["Protista", "Fungi", "Monera", "Plantae"], correctIndex: 2, explanation: { correctText: "O Reino Monera é o grupo exclusivo das bactérias, cianobactérias e arqueas. São os únicos seres procariontes conhecidos.", otherOptions: ["Protistas incluem algas e protozoários.", "Fungi incluem cogumelos.", "Plantae são as plantas."] } },
+        { level: "Fácil", text: "Qual é a característica celular FUNDAMENTAL que separa o Reino Monera de todos os outros quatro reinos propostos por Whittaker?", options: ["São todos pluricelulares.", "Fazem fotossíntese.", "São procariontes (não possuem núcleo definido envolvido por membrana).", "Vivem apenas na água."], correctIndex: 2, explanation: { correctText: "Os seres do Reino Monera não têm carioteca (membrana nuclear). O seu DNA está espalhado no citoplasma. Todos os outros reinos são Eucariontes.", otherOptions: ["Bactérias são unicelulares.", "Apenas algumas (cianobactérias) fazem.", "Vivem em quase todos os ambientes do planeta."] } },
+        { level: "Médio", text: "Um aluno de Agropecuária estuda doenças que atacam as plantações. Ele depara-se com o TMV (Vírus do Mosaico do Tabaco). Em qual dos 5 Reinos ele deve classificar este vírus?", options: ["No Reino Monera, junto com as bactérias.", "No Reino Protista.", "No Reino Fungi, pois ataca plantas.", "Em nenhum, pois os vírus são acelulares e não pertencem aos 5 Reinos."], correctIndex: 3, explanation: { correctText: "Os vírus não possuem estrutura celular e não têm metabolismo próprio. Por isso, a biologia moderna não os inclui em nenhum dos 5 reinos clássicos da vida.", otherOptions: ["Vírus não são bactérias.", "Incorreto.", "Incorreto."] } },
+        { level: "Fácil", text: "Na produção industrial de pão e cerveja, utiliza-se a levedura 'Saccharomyces cerevisiae', um organismo unicelular que realiza fermentação. A que Reino pertence a levedura?", options: ["Plantae", "Fungi", "Monera", "Animalia"], correctIndex: 1, explanation: { correctText: "As leveduras (fermentos biológicos) são FUNGOS microscópicos unicelulares. O Reino Fungi inclui bolores, leveduras e cogumelos.", otherOptions: ["Não fazem fotossíntese.", "São eucariontes, logo não são Monera.", "Não ingerem alimentos como os animais."] } },
+        { level: "Médio", text: "Muitos estudantes confundem fungos (como os cogumelos) com plantas, pois ambos crescem fixos na terra. Qual é a grande diferença biológica que impede os fungos de estarem no Reino Plantae?", options: ["Os fungos não têm raiz.", "Os fungos são eucariontes e as plantas procariontes.", "Os fungos são heterotróficos (não fazem fotossíntese) e as plantas são autotróficas.", "Os fungos só vivem no escuro."], correctIndex: 2, explanation: { correctText: "As plantas produzem o seu próprio alimento (Autotróficas via fotossíntese). Os fungos precisam decompor e absorver matéria orgânica do meio (Heterotróficos).", otherOptions: ["Falta de raiz verdadeira ocorre também em plantas como musgos.", "Plantas são eucariontes.", "Muitos fungos crescem à luz do dia."] } },
+        { level: "Fácil", text: "O parasita que causa a doença de Chagas (o Trypanosoma cruzi, transmitido pelo inseto 'barbeiro') é um organismo unicelular, eucarionte e heterotrófico. Trata-se de um protozoário pertencente ao Reino:", options: ["Animalia", "Monera", "Protista", "Fungi"], correctIndex: 2, explanation: { correctText: "Os protozoários (como os causadores de Chagas, Malária, Leishmaniose) são membros clássicos do Reino Protista.", otherOptions: ["Animais são pluricelulares.", "Monera engloba procariontes.", "Fungos não englobam estes parasitas móveis."] } },
+        { level: "Médio", text: "O fitoplâncton oceânico é responsável pela produção da maior parte do oxigénio que respiramos. Ele é formado principalmente por microalgas. Em que Reino as ALGAS estão classificadas atualmente?", options: ["Plantae", "Protista", "Fungi", "Monera"], correctIndex: 1, explanation: { correctText: "Na classificação dos 5 Reinos, todas as algas (sejam unicelulares microscópicas ou as gigantes do mar) foram agrupadas no Reino Protista por não formarem tecidos verdadeiros como as plantas terrestres.", otherOptions: ["As plantas terrestres estão no Reino Plantae.", "Fungos não fazem fotossíntese.", "Monera são apenas bactérias/cianobactérias."] } },
+        { level: "Fácil", text: "Um organismo foi classificado no Reino Animalia (Metazoa). Sem sequer olhar no microscópio, podes afirmar com certeza matemática que ele é:", options: ["Pluricelular e Heterotrófico por ingestão.", "Unicelular e Autotrófico.", "Procarionte e Pluricelular.", "Eucarionte e Autotrófico."], correctIndex: 0, explanation: { correctText: "A definição de um animal é: um ser vivo formado por muitas células (pluricelular) que precisa ingerir outros seres para obter energia (heterotrófico).", otherOptions: ["Animais têm de ter muitas células.", "Nenhum animal é procarionte.", "Nenhum animal faz fotossíntese."] } },
+        { level: "Difícil", text: "A parede celular é um escudo protetor que envolve a célula. Bactérias, fungos e plantas possuem parede celular, mas a substância química de cada uma é diferente. Do que é feita a parede celular do Reino Fungi?", options: ["Celulose", "Quitina", "Peptidoglicano", "Sílica"], correctIndex: 1, explanation: { correctText: "A parede celular dos Fungos é feita de Quitina (o mesmo material encontrado na carapaça de insetos e caranguejos).", otherOptions: ["A Celulose forma a parede das Plantas.", "O Peptidoglicano forma a parede das Bactérias (Monera).", "A Sílica forma a carapaça de algumas algas protistas (Diatomáceas)."] } },
+        { level: "Médio", text: "Um aluno do curso técnico de Meio Ambiente do IFCE encontrou Líquenes nas cascas das árvores. Os líquenes não são um organismo único, mas sim uma relação de simbiose (ajuda mútua) entre seres de dois Reinos diferentes. Quais?", options: ["Fungi (Fungos) e Plantae (Plantas superiores).", "Monera (Bactérias) e Animalia (Insetos).", "Fungi (Fungos) e Protista (Algas) ou Monera (Cianobactérias).", "Plantae (Musgos) e Protista (Amebas)."], correctIndex: 2, explanation: { correctText: "Os líquenes são uma parceria íntima onde um Fungo dá proteção e humidade, enquanto uma Alga (Protista) ou uma Cianobactéria (Monera) faz a fotossíntese e partilha o alimento.", otherOptions: ["Incorreto.", "Incorreto.", "Incorreto."] } },
+        { level: "Fácil", text: "As cianobactérias (antigamente chamadas de 'algas azuis') costumam causar florações esverdeadas em lagoas poluídas. Elas fazem fotossíntese, mas pertencem ao Reino Monera. Porquê?", options: ["Porque as suas células não têm núcleo definido (são procariontes).", "Porque vivem na água doce.", "Porque causam doenças aos peixes.", "Porque têm folhas muito pequenas."], correctIndex: 0, explanation: { correctText: "A regra de ouro da biologia celular: Se é Procarionte, vai direta e unicamente para o Reino Monera, não importa se faz fotossíntese ou não.", otherOptions: ["O habitat não define o Reino.", "Patogenicidade não define Reino.", "Bactérias não têm folhas."] } },
+        { level: "Médio", text: "Sobre o Reino Plantae (Metaphyta), qual é a substância de reserva energética que as plantas armazenam nas suas células (por exemplo, na batata ou na mandioca)?", options: ["Glicogénio", "Amido", "Celulose", "Lípidos animais"], correctIndex: 1, explanation: { correctText: "As plantas armazenam a energia excedente da fotossíntese sob a forma de AMIDO.", otherOptions: ["Glicogénio é a reserva de energia dos Animais e Fungos.", "Celulose é usada para estrutura (parede celular), não como reserva primária rápida.", "Incorreto."] } },
+        { level: "Difícil", text: "Ao estudar Zoologia, um aluno repara que os organismos do Reino Animalia não possuem algo que Plantas, Fungos e Bactérias possuem nas suas células. O que falta aos animais?", options: ["Núcleo", "Membrana Plasmática", "Parede Celular", "Mitocôndrias"], correctIndex: 2, explanation: { correctText: "As células animais não têm Parede Celular. Elas são envoltas apenas pela fina e flexível membrana plasmática, o que permite o movimento e a formação de sistemas nervosos e musculares complexos.", otherOptions: ["Animais são eucariontes (têm núcleo).", "Todas as células têm membrana.", "Animais precisam muito de mitocôndrias para gerar energia."] } },
+        { level: "Médio", text: "A Malária é uma das doenças que mais mata no mundo. É causada pelo Plasmodium, enquanto a Febre Amarela é causada por um Vírus. Ambas são transmitidas por mosquitos. Em relação ao 'agente causador' da Malária, a que reino pertence?", options: ["Reino Animalia (é um pequeno inseto).", "Reino Protista (é um protozoário).", "Reino Monera (é uma bactéria).", "Não pertence a reinos, pois é um vírus."], correctIndex: 1, explanation: { correctText: "O Plasmodium é um protozoário microscópico que destrói os glóbulos vermelhos do sangue. Pertence ao Reino Protista.", otherOptions: ["O mosquito transmissor é o animal, não o causador.", "Não é bactéria.", "O texto diz que a Febre Amarela é vírus, a malária não."] } },
+        { level: "Fácil", text: "Quando comemos uma piza com cogumelos (Champignon) e massa de queijo gorgonzola (que tem bolores verdes), estamos a ingerir diretamente seres do Reino:", options: ["Plantae", "Protista", "Fungi", "Monera"], correctIndex: 2, explanation: { correctText: "Os cogumelos e os bolores (usados em queijos como Roquefort e Gorgonzola) são membros ilustres do Reino Fungi.", otherOptions: ["A massa leva trigo (Plantae), mas o destaque da pergunta são os cogumelos/bolores.", "Incorreto.", "Bactérias fazem parte de outros queijos, mas o bolor visível é fungo."] } },
+        { level: "Médio", text: "A Penicilina foi o primeiro antibiótico descoberto por Alexander Fleming, salvando milhões de vidas. Ela foi extraída a partir de um ser vivo pertencente ao Reino:", options: ["Monera", "Protista", "Fungi", "Plantae"], correctIndex: 2, explanation: { correctText: "A penicilina é produzida pelo bolor 'Penicillium notatum', um fungo. Os fungos segregam substâncias para matar as bactérias ao seu redor e evitar competição por alimento.", otherOptions: ["O antibiótico mata as bactérias (Monera), não é feito por elas.", "Incorreto.", "Incorreto."] } },
+        { level: "Difícil", text: "Os organismos do Reino Protista são considerados um 'grupo caixote de lixo' evolutivo pelos taxonomistas porque:", options: ["São todos procariontes primitivos.", "Têm representantes muito diferentes que não encaixam nos outros Reinos eucariontes (plantas, animais, fungos).", "Todos eles causam doenças fatais.", "Estão todos em via de extinção."], correctIndex: 1, explanation: { correctText: "O Reino Protista agrupa algas (autotróficas que parecem plantas mas não são) e protozoários (heterotróficos que parecem pequenos animais mas são unicelulares). É um grupo altamente diversificado sem uma origem única exclusiva.", otherOptions: ["Eles são eucariontes.", "Muitos são de vida livre e inofensivos.", "Não há risco iminente geral."] } },
+        { level: "Médio", text: "No laboratório de análises clínicas, ao prescrever um Antibiótico, o médico tem como alvo destruir seres do Reino:", options: ["Fungi", "Vírus", "Protista", "Monera"], correctIndex: 3, explanation: { correctText: "Antibióticos são drogas específicas para destruir Bactérias (Reino Monera), atacando principalmente a sua parede celular ou a síntese de proteínas.", otherOptions: ["Remédios para fungos são 'Antifúngicos'.", "Vírus não morrem com antibióticos (usam-se Antivirais).", "Remédios para protozoários são 'Antiparasitários'."] } },
+        { level: "Fácil", text: "O Reino Plantae (Vegetais) é a base das teias alimentares terrestres. Eles conseguem isso graças a uma organela celular verde, essencial para a fotossíntese, chamada:", options: ["Mitocôndria", "Complexo de Golgi", "Cloroplasto", "Ribossomo"], correctIndex: 2, explanation: { correctText: "Os cloroplastos contêm a clorofila, o pigmento verde que capta a luz solar para transformar gás carbônico e água em glicose e oxigénio.", otherOptions: ["Mitocôndria gera energia pela respiração.", "Golgi atua na secreção.", "Ribossomo produz proteínas."] } },
+        { level: "Médio", text: "Num ecossistema, o papel da 'reciclagem' e limpeza dos cadáveres na floresta é feito pelos DECOMPOSITORES. Esta importante função ecológica é desempenhada em equipa por representantes de dois Reinos:", options: ["Plantae e Animalia.", "Fungi e Monera.", "Protista e Plantae.", "Monera e Animalia."], correctIndex: 1, explanation: { correctText: "Fungos e Bactérias (Monera) são os decompositores mestre da natureza. Eles quebram a matéria morta e devolvem os nutrientes essenciais ao solo.", otherOptions: ["Animais são consumidores, plantas produtoras.", "Incorreto.", "Incorreto."] } },
+        { level: "Difícil", text: "Ao contrário das plantas que guardam energia na forma de amido, os fungos e os animais armazenam a sua energia sob a forma de:", options: ["Glicogénio", "Celulose", "Ácido Láctico", "Quitina"], correctIndex: 0, explanation: { correctText: "Tanto Fungos como Animais usam o Glicogénio (um polissacarídeo de reserva) acumulado nas células (nos humanos, fica no fígado e músculos). Isto prova a grande proximidade evolutiva entre Fungos e Animais.", otherOptions: ["Celulose é estrutural em plantas.", "Ácido láctico é produto da fermentação muscular.", "Quitina é estrutural no fungo, não reserva de energia."] } },
+        { level: "Médio", text: "A Maré Vermelha é um desastre ambiental onde o mar fica tingido e tóxico, causando a morte de milhares de peixes. O fenómeno é causado pela proliferação descontrolada de Dinoflagelados. A que Reino pertencem?", options: ["Reino Fungi", "Reino Protista", "Reino Monera", "Reino Plantae"], correctIndex: 1, explanation: { correctText: "Os dinoflagelados são microalgas unicelulares marinhas. Sendo algas, pertencem ao Reino Protista.", otherOptions: ["Não são fungos aquáticos.", "São eucariontes, logo não são Monera.", "Não são plantas terrestres."] } },
+        { level: "Fácil", text: "O Reino Animalia divide-se vulgarmente em dois grandes grupos básicos, dependendo da presença ou ausência de uma coluna vertebral. Quais são?", options: ["Unicelulares e Pluricelulares", "Mamíferos e Répteis", "Vertebrados e Invertebrados", "Aquáticos e Terrestres"], correctIndex: 2, explanation: { correctText: "A divisão mais tradicional nas escolas agrupa os animais em Vertebrados (com coluna vertebral e crânio) e Invertebrados (como insetos, vermes, moluscos).", otherOptions: ["Todos os animais são pluricelulares.", "Isso são apenas grupos de vertebrados.", "Isso é apenas a classificação pelo habitat."] } },
+        { level: "Difícil", text: "As plantas foram os organismos que conquistaram a terra firme. Os Musgos (Briófitas) foram os pioneiros, mas são muito pequenos porque lhes falta algo que as árvores possuem. O que é?", options: ["Vasos condutores de seiva.", "Flores verdadeiras.", "Frutos suculentos.", "Clorofila celular."], correctIndex: 0, explanation: { correctText: "Os musgos são avasculares (não têm tubos para sugar a água da terra até ao topo). Por isso, a água passa de célula a célula lentamente, impedindo que cresçam mais do que alguns centímetros.", otherOptions: ["Samambaias também não têm flores, mas são grandes.", "Incorreto.", "Todos os vegetais têm clorofila."] } },
+        { level: "Médio", text: "Os organismos extremófilos que vivem nas fontes termais de vulcões a 100ºC, ou nos pântanos salgados onde nenhum outro ser vivo sobrevive, são as ARQUEAS. Inicialmente, elas estavam juntas com as bactérias no Reino:", options: ["Protista", "Fungi", "Plantae", "Monera"], correctIndex: 3, explanation: { correctText: "As Arqueas (Archaea) são procariontes e, por muito tempo, foram classificadas dentro do Reino Monera junto com as bactérias vulgares.", otherOptions: ["São procariontes, não protistas.", "Incorreto.", "Incorreto."] } },
+        { level: "Difícil", text: "A nova taxonomia moderna (Carl Woese) dividiu a vida não em 5 Reinos, mas em 3 grandes DOMÍNIOS evolutivos (acima dos reinos). Quais são os 3 Domínios?", options: ["Animalia, Plantae, Fungi.", "Bactéria, Archaea e Eukarya.", "Procarionte, Eucarionte e Vírus.", "Vertebrados, Invertebrados e Plantas."], correctIndex: 1, explanation: { correctText: "O sistema de 3 Domínios separa os procariontes em dois (Bacteria e Archaea) e junta todos os outros seres eucarióticos (Plantas, Animais, Fungos, Protistas) num só domínio gigante: Eukarya.", otherOptions: ["Estes são reinos do sistema Whittaker.", "Vírus não estão na árvore da vida.", "Esta é uma divisão muito básica."] } },
+        { level: "Médio", text: "A doença do 'Pé de Atleta' (frieira) e a 'Candidíase' são micoses bastante comuns no ser humano. São infeções causadas por organismos do Reino:", options: ["Vírus", "Monera", "Fungi", "Protista"], correctIndex: 2, explanation: { correctText: "As micoses são doenças provocadas por Fungos patogénicos que se alimentam da queratina da pele ou proliferam em mucosas húmidas.", otherOptions: ["Vírus causam viroses.", "Bactérias causam infeções bacterianas.", "Protozoários causam doenças como a malária."] } },
+        { level: "Fácil", text: "Se colocarmos fermento biológico na massa de pão e deixarmos repousar num lugar quente, a massa 'cresce'. O que faz a massa crescer?", options: ["O calor que dilata a farinha.", "As bactérias do fermento que produzem água.", "Os fungos do fermento que libertam gás carbónico (CO2) ao respirarem/fermentarem o açúcar.", "Os vírus que se multiplicam dentro da massa."], correctIndex: 2, explanation: { correctText: "As leveduras (Fungi) comem os açúcares da massa e realizam fermentação. Este processo liberta gás carbónico (CO2), cujas bolhas ficam presas, fazendo a massa inchar.", otherOptions: ["A reação química biológica é a principal causa.", "O fermento biológico é um fungo, não uma bactéria.", "Vírus não têm metabolismo celular."] } },
+        { level: "Difícil", text: "As cianobactérias são essenciais para a fertilidade do solo agrícola (Agropecuária IFCE) porque, além da fotossíntese, elas têm a capacidade rara de fixar um gás da atmosfera que as plantas não conseguem usar diretamente. Que gás é esse?", options: ["Oxigénio (O2)", "Gás Carbónico (CO2)", "Nitrogénio / Azoto (N2)", "Metano (CH4)"], correctIndex: 2, explanation: { correctText: "O Nitrogênio (N2) compõe 78% do ar, mas as plantas não o conseguem absorver das folhas. Algumas bactérias e cianobactérias 'fixam' o Nitrogénio atmosférico no solo em forma de nitratos, servindo de fertilizante natural para as raízes.", otherOptions: ["Oxigénio é usado na respiração.", "CO2 é absorvido pelas plantas na fotossíntese.", "Incorreto."] } },
+        { level: "Médio", text: "Para terminar: Uma Amoeba (Ameba) é um ser formado por apenas UMA célula com um núcleo visível. Ela caça bactérias engolindo-as (fagocitose). Por ter núcleo e engolir alimentos, mas ser unicelular, ela entra no Reino:", options: ["Animalia", "Protista", "Fungi", "Monera"], correctIndex: 1, explanation: { correctText: "Eucariontes unicelulares heterotróficos são clássicos Protozoários, pertencentes ao Reino Protista. Animais não podem ser unicelulares.", otherOptions: ["Animais são pluricelulares.", "Fungos absorvem o alimento por fora, não engolem (fagocitam).", "Monera não tem núcleo (é procarionte)."] } }
     ];
 
     /* --- GESTÃO DE ESTADO (STATE) --- */
@@ -485,7 +533,7 @@
         
         function animateFrame() {
             if(window.confetti && typeof confetti === 'function') {
-                const config = { particleCount: 5, spread: 55, colors: ['#10B981', '#047857', '#F59E0B', '#8B5CF6'] };
+                const config = { particleCount: 5, spread: 55, colors: ['#15803D', '#B45309', '#F59E0B', '#0369A1'] };
                 confetti({ ...config, angle: 60, origin: { x: 0, y: 0.6 } });
                 confetti({ ...config, angle: 120, origin: { x: 1, y: 0.6 } });
             }
@@ -598,14 +646,14 @@
         if (isApproved) {
             summaryHTML += `
                 <div class="result-summary-box success">
-                    <strong>🎉 PARABÉNS!</strong> O teu domínio da genética é impressionante. Estás pronto para o exame.
+                    <strong>🎉 EXCELENTE!</strong> O teu domínio sobre os 5 Reinos garante-te uma base fantástica para a biologia do ensino secundário e técnico.
                 </div>
             `;
             actionButtonsContainer.innerHTML = `<button class="btn-action" onclick="resetQuiz()">🔄 REPETIR PARA 100%</button>`;
         } else {
             summaryHTML += `
                 <div class="result-summary-box error">
-                    <strong>⚠️ ATENÇÃO!</strong> Foste avaliado abaixo da meta (80%). Revisa a teoria sobre os cromossomos X e Y e Herança ligada ao Sexo.
+                    <strong>⚠️ ATENÇÃO!</strong> Foste avaliado abaixo da meta (80%). Revisa a teoria sobre procariontes e a diferença entre Fungos e Plantas.
                 </div>
             `;
             actionButtonsContainer.innerHTML = `<button class="btn-action" onclick="resetQuiz()">🔄 REFAZER AVALIAÇÃO</button>`;
