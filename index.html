@@ -51,7 +51,7 @@
             overflow-x: hidden;
         }
 
-        /* --- HEADER (LOGO AUMENTADA) --- */
+        /* --- HEADER E TEXTOS --- */
         .logo-header {
             width: 100%;
             max-width: 600px;
@@ -139,43 +139,37 @@
         .badge-eco { background-color: var(--color-eco); }
         .badge-saude { background-color: var(--color-saude); }
         .badge-cito { background-color: var(--color-cito); }
-        .badge-evogen { background-color: var(--color-evogen); color: #000; } /* Letra preta para contraste no amarelo */
+        .badge-evogen { background-color: var(--color-evogen); color: #000; }
         .badge-fisio { background-color: var(--color-fisio); }
         .badge-taxo { background-color: var(--color-taxo); }
 
-        /* --- BOTÕES DOS TÓPICOS (CARACTERIZADOS) --- */
-        .topic-btn {
+        /* --- ITENS DOS TÓPICOS (COM CHECKBOX E LINK) --- */
+        .topic-item {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            text-decoration: none;
-            color: var(--text-color);
-            padding: 16px 20px;
+            align-items: stretch;
             background-color: var(--white);
             border: 2px solid var(--border-color);
             border-radius: 12px;
             margin-bottom: 12px;
-            font-weight: 600;
-            font-size: 0.95rem;
             box-shadow: 4px 4px 0px var(--border-color);
-            transition: all 0.1s ease;
             position: relative;
             overflow: hidden;
+            transition: all 0.1s ease;
         }
 
-        .topic-btn:hover {
+        .topic-item:hover {
             transform: translate(-2px, -2px);
             box-shadow: 6px 6px 0px var(--border-color);
             background-color: #FAFAFA;
         }
 
-        .topic-btn:active {
+        .topic-item:active {
             transform: translate(2px, 2px);
             box-shadow: 2px 2px 0px var(--border-color);
         }
 
-        /* A Borda Lateral Colorida (Característica) */
-        .topic-btn::before {
+        /* Borda Lateral Colorida */
+        .topic-item::before {
             content: '';
             position: absolute;
             left: 0;
@@ -183,18 +177,59 @@
             bottom: 0;
             width: 10px;
             border-right: 2px solid var(--border-color);
+            z-index: 1;
         }
 
-        /* Cores das laterais por categoria */
-        .btn-eco::before { background-color: var(--bg-eco); }
-        .btn-saude::before { background-color: var(--bg-saude); }
-        .btn-cito::before { background-color: var(--bg-cito); }
-        .btn-evogen::before { background-color: var(--bg-evogen); }
-        .btn-fisio::before { background-color: var(--bg-fisio); }
-        .btn-taxo::before { background-color: var(--bg-taxo); }
+        /* Checkbox Area */
+        .topic-cb-wrapper {
+            display: flex;
+            align-items: center;
+            padding: 0 0 0 24px;
+            z-index: 2;
+        }
+        .topic-cb {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        /* Área do Link Clicável */
+        .topic-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: var(--text-color);
+            padding: 16px 20px 16px 12px;
+            flex-grow: 1;
+            font-weight: 600;
+            font-size: 0.95rem;
+            z-index: 2;
+        }
+
+        /* Cores das laterais e dos checkboxes por categoria */
+        .item-eco::before { background-color: var(--bg-eco); }
+        .item-eco .topic-cb { accent-color: var(--color-eco); }
+
+        .item-saude::before { background-color: var(--bg-saude); }
+        .item-saude .topic-cb { accent-color: var(--color-saude); }
+
+        .item-cito::before { background-color: var(--bg-cito); }
+        .item-cito .topic-cb { accent-color: var(--color-cito); }
+
+        .item-evogen::before { background-color: var(--bg-evogen); }
+        .item-evogen .topic-cb { accent-color: var(--color-evogen); }
+
+        .item-fisio::before { background-color: var(--bg-fisio); }
+        .item-fisio .topic-cb { accent-color: var(--color-fisio); }
+
+        .item-taxo::before { background-color: var(--bg-taxo); }
+        .item-taxo .topic-cb { accent-color: var(--color-taxo); }
 
         .arrow { font-weight: 900; color: #CBD5E0; }
-        .topic-btn:hover .arrow { color: var(--text-color); }
+        .topic-item:hover .arrow { color: var(--text-color); }
 
         /* Mensagem de Não Encontrado */
         #no-results {
@@ -222,7 +257,7 @@
 
     <div class="container">
         <h1>Índice Geral Biologia</h1>
-        <p class="subtitle">Foco Estratégico IFCE</p>
+        <p class="subtitle">Foco Estratégico IFCE - Controle seu progresso</p>
 
         <div class="search-container">
             <span class="search-icon">🔍</span>
@@ -232,65 +267,241 @@
         <!-- MÓDULO 1: ECOLOGIA -->
         <div class="content-group">
             <div class="category-header"><span class="badge badge-eco">🌿 Ecologia e Meio Ambiente</span></div>
-            <a href="conceitos-ecologicos.html" class="topic-btn btn-eco">Habitat, Nicho e Conceitos Básicos <span class="arrow">➜</span></a>
-            <a href="cadeias-teias.html" class="topic-btn btn-eco">Cadeias e Teias Alimentares <span class="arrow">➜</span></a>
-            <a href="fluxo-energia.html" class="topic-btn btn-eco">Fluxo de Energia e Ciclo da Matéria <span class="arrow">➜</span></a>
-            <a href="magnificacao-trofica.html" class="topic-btn btn-eco">Magnificação Trófica <span class="arrow">➜</span></a>
-            <a href="ciclos-biogeoquimicos.html" class="topic-btn btn-eco">Ciclos: Água, Carbono e Nitrogênio <span class="arrow">➜</span></a>
-            <a href="relacoes-ecologicas.html" class="topic-btn btn-eco">Relações Ecológicas <span class="arrow">➜</span></a>
-            <a href="biomas-caatinga.html" class="topic-btn btn-eco">Biomas Brasileiros (Foco Caatinga) <span class="arrow">➜</span></a>
-            <a href="impactos-ambientais.html" class="topic-btn btn-eco">Impactos Ambientais e Antrópicos <span class="arrow">➜</span></a>
+            
+            <div class="topic-item item-eco" data-id="eco-conceitos">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="conceitos-ecologicos.html" class="topic-link">
+                    <span class="topic-title">Habitat, Nicho e Conceitos Básicos</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-eco" data-id="eco-cadeias">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="cadeias-teias.html" class="topic-link">
+                    <span class="topic-title">Cadeias e Teias Alimentares</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-eco" data-id="eco-fluxo">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="fluxo-energia.html" class="topic-link">
+                    <span class="topic-title">Fluxo de Energia e Ciclo da Matéria</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-eco" data-id="eco-magnificacao">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="magnificacao-trofica.html" class="topic-link">
+                    <span class="topic-title">Magnificação Trófica</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-eco" data-id="eco-ciclos">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="ciclos-biogeoquimicos.html" class="topic-link">
+                    <span class="topic-title">Ciclos: Água, Carbono e Nitrogênio</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-eco" data-id="eco-relacoes">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="relacoes-ecologicas.html" class="topic-link">
+                    <span class="topic-title">Relações Ecológicas</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-eco" data-id="eco-biomas">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="biomas-caatinga.html" class="topic-link">
+                    <span class="topic-title">Biomas Brasileiros (Foco Caatinga)</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-eco" data-id="eco-impactos">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="impactos-ambientais.html" class="topic-link">
+                    <span class="topic-title">Impactos Ambientais e Antrópicos</span><span class="arrow">➜</span>
+                </a>
+            </div>
         </div>
 
         <!-- MÓDULO 2: SAÚDE PÚBLICA -->
         <div class="content-group">
             <div class="category-header"><span class="badge badge-saude">🩸 Programas de Saúde Pública</span></div>
-            <a href="vacina-soro.html" class="topic-btn btn-saude">Imunologia: Vacinas vs. Soros <span class="arrow">➜</span></a>
-            <a href="virus-viroses.html" class="topic-btn btn-saude">Vírus, Arboviroses e ISTs <span class="arrow">➜</span></a>
-            <a href="bacterias-bacterioses.html" class="topic-btn btn-saude">Bactérias e Principais Bacterioses <span class="arrow">➜</span></a>
-            <a href="protozooses.html" class="topic-btn btn-saude">Protozooses: Chagas, Malária e Leishmaniose <span class="arrow">➜</span></a>
-            <a href="verminoses.html" class="topic-btn btn-saude">Verminoses (Platelmintos e Nematelmintos) <span class="arrow">➜</span></a>
-            <a href="ciclo-taenia.html" class="topic-btn btn-saude">Teníase e Cisticercose (Diferenciação) <span class="arrow">➜</span></a>
+            
+            <div class="topic-item item-saude" data-id="saude-imuno">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="vacina-soro.html" class="topic-link">
+                    <span class="topic-title">Imunologia: Vacinas vs. Soros</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-saude" data-id="saude-virus">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="virus-viroses.html" class="topic-link">
+                    <span class="topic-title">Vírus, Arboviroses e ISTs</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-saude" data-id="saude-bacterias">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="bacterias-bacterioses.html" class="topic-link">
+                    <span class="topic-title">Bactérias e Principais Bacterioses</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-saude" data-id="saude-proto">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="protozooses.html" class="topic-link">
+                    <span class="topic-title">Protozooses: Chagas, Malária e Leishmaniose</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-saude" data-id="saude-vermes">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="verminoses.html" class="topic-link">
+                    <span class="topic-title">Verminoses (Platelmintos e Nematelmintos)</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-saude" data-id="saude-taenia">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="ciclo-taenia.html" class="topic-link">
+                    <span class="topic-title">Teníase e Cisticercose (Diferenciação)</span><span class="arrow">➜</span>
+                </a>
+            </div>
         </div>
 
         <!-- MÓDULO 3: CITOLOGIA -->
         <div class="content-group">
             <div class="category-header"><span class="badge badge-cito">🔬 Citologia Básica</span></div>
-            <a href="tipos-celulares.html" class="topic-btn btn-cito">Procariontes vs. Eucariontes <span class="arrow">➜</span></a>
-            <a href="animal-vegetal.html" class="topic-btn btn-cito">Célula Animal vs. Célula Vegetal <span class="arrow">➜</span></a>
-            <a href="membrana-transporte.html" class="topic-btn btn-cito">Membrana Plasmática e Transportes <span class="arrow">➜</span></a>
-            <a href="organelas-funcoes.html" class="topic-btn btn-cito">Organelas Citoplasmáticas e Funções <span class="arrow">➜</span></a>
+            
+            <div class="topic-item item-cito" data-id="cito-tipos">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="tipos-celulares.html" class="topic-link">
+                    <span class="topic-title">Procariontes vs. Eucariontes</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-cito" data-id="cito-animveg">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="animal-vegetal.html" class="topic-link">
+                    <span class="topic-title">Célula Animal vs. Célula Vegetal</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-cito" data-id="cito-membrana">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="membrana-transporte.html" class="topic-link">
+                    <span class="topic-title">Membrana Plasmática e Transportes</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-cito" data-id="cito-organelas">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="organelas-funcoes.html" class="topic-link">
+                    <span class="topic-title">Organelas Citoplasmáticas e Funções</span><span class="arrow">➜</span>
+                </a>
+            </div>
         </div>
 
         <!-- MÓDULO 4: FISIOLOGIA HUMANA -->
         <div class="content-group">
             <div class="category-header"><span class="badge badge-fisio">🧠 Fisiologia Humana</span></div>
-            <a href="sistema-digestorio.html" class="topic-btn btn-fisio">Sistema Digestório <span class="arrow">➜</span></a>
-            <a href="sistema-respiratorio.html" class="topic-btn btn-fisio">Sistema Respiratório (Hematose) <span class="arrow">➜</span></a>
-            <a href="sistema-circulatorio.html" class="topic-btn btn-fisio">Sistema Circulatório e Sangue <span class="arrow">➜</span></a>
-            <a href="sistema-nervoso.html" class="topic-btn btn-fisio">Sistema Nervoso e Impulsos <span class="arrow">➜</span></a>
-            <a href="sistema-endocrino.html" class="topic-btn btn-fisio">Sistema Endócrino (Insulina, Adrenalina) <span class="arrow">➜</span></a>
-            <a href="sistema-reprodutor.html" class="topic-btn btn-fisio">Sistema Reprodutor e Métodos Contraceptivos <span class="arrow">➜</span></a>
+            
+            <div class="topic-item item-fisio" data-id="fisio-diges">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="sistema-digestorio.html" class="topic-link">
+                    <span class="topic-title">Sistema Digestório</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-fisio" data-id="fisio-resp">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="sistema-respiratorio.html" class="topic-link">
+                    <span class="topic-title">Sistema Respiratório (Hematose)</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-fisio" data-id="fisio-circ">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="sistema-circulatorio.html" class="topic-link">
+                    <span class="topic-title">Sistema Circulatório e Sangue</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-fisio" data-id="fisio-nerv">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="sistema-nervoso.html" class="topic-link">
+                    <span class="topic-title">Sistema Nervoso e Impulsos</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-fisio" data-id="fisio-endo">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="sistema-endocrino.html" class="topic-link">
+                    <span class="topic-title">Sistema Endócrino (Insulina, Adrenalina)</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-fisio" data-id="fisio-repro">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="sistema-reprodutor.html" class="topic-link">
+                    <span class="topic-title">Sistema Reprodutor e Métodos Contraceptivos</span><span class="arrow">➜</span>
+                </a>
+            </div>
         </div>
 
         <!-- MÓDULO 5: EVOLUÇÃO E GENÉTICA -->
         <div class="content-group">
             <div class="category-header"><span class="badge badge-evogen">🧬 Evolução e Genética</span></div>
-            <a href="lamarck-darwin.html" class="topic-btn btn-evogen">Teorias Evolutivas: Lamarckismo vs. Darwinismo <span class="arrow">➜</span></a>
-            <a href="conceitos-genetica.html" class="topic-btn btn-evogen">Conceitos de Genética (DNA, Gene, Alelo) <span class="arrow">➜</span></a>
-            <a href="genotipo-fenotipo.html" class="topic-btn btn-evogen">Genótipo vs. Fenótipo <span class="arrow">➜</span></a>
-            <a href="primeira-lei-mendel.html" class="topic-btn btn-evogen">1ª Lei de Mendel (Cruzamentos Básicos) <span class="arrow">➜</span></a>
-            <a href="determinacao-sexo.html" class="topic-btn btn-evogen">Determinação do Sexo Cromossômico <span class="arrow">➜</span></a>
+            
+            <div class="topic-item item-evogen" data-id="evogen-teorias">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="lamarck-darwin.html" class="topic-link">
+                    <span class="topic-title">Teorias Evolutivas: Lamarckismo vs. Darwinismo</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-evogen" data-id="evogen-conceitos">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="conceitos-genetica.html" class="topic-link">
+                    <span class="topic-title">Conceitos de Genética (DNA, Gene, Alelo)</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-evogen" data-id="evogen-genofen">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="genotipo-fenotipo.html" class="topic-link">
+                    <span class="topic-title">Genótipo vs. Fenótipo</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-evogen" data-id="evogen-mendel1">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="primeira-lei-mendel.html" class="topic-link">
+                    <span class="topic-title">1ª Lei de Mendel (Cruzamentos Básicos)</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-evogen" data-id="evogen-sexo">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="determinacao-sexo.html" class="topic-link">
+                    <span class="topic-title">Determinação do Sexo Cromossômico</span><span class="arrow">➜</span>
+                </a>
+            </div>
         </div>
 
         <!-- MÓDULO 6: TAXONOMIA E DIVERSIDADE -->
         <div class="content-group">
             <div class="category-header"><span class="badge badge-taxo">🗂️ Taxonomia e Reinos</span></div>
-            <a href="regras-nomenclatura.html" class="topic-btn btn-taxo">Regras de Nomenclatura (Lineu) <span class="arrow">➜</span></a>
-            <a href="os-5-reinos.html" class="topic-btn btn-taxo">Os 5 Reinos (Visão Geral) <span class="arrow">➜</span></a>
-            <a href="reino-plantae.html" class="topic-btn btn-taxo">Reino Plantae (Briófitas a Angiospermas) <span class="arrow">➜</span></a>
-            <a href="reino-animalia-invertebrados.html" class="topic-btn btn-taxo">Reino Animalia: Invertebrados <span class="arrow">➜</span></a>
-            <a href="reino-animalia-vertebrados.html" class="topic-btn btn-taxo">Reino Animalia: Cordados e Vertebrados <span class="arrow">➜</span></a>
+            
+            <div class="topic-item item-taxo" data-id="taxo-regras">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="regras-nomenclatura.html" class="topic-link">
+                    <span class="topic-title">Regras de Nomenclatura (Lineu)</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-taxo" data-id="taxo-reinos">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="os-5-reinos.html" class="topic-link">
+                    <span class="topic-title">Os 5 Reinos (Visão Geral)</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-taxo" data-id="taxo-plantae">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="reino-plantae.html" class="topic-link">
+                    <span class="topic-title">Reino Plantae (Briófitas a Angiospermas)</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-taxo" data-id="taxo-inverte">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="reino-animalia-invertebrados.html" class="topic-link">
+                    <span class="topic-title">Reino Animalia: Invertebrados</span><span class="arrow">➜</span>
+                </a>
+            </div>
+            <div class="topic-item item-taxo" data-id="taxo-verte">
+                <div class="topic-cb-wrapper"><input type="checkbox" class="topic-cb"></div>
+                <a href="reino-animalia-vertebrados.html" class="topic-link">
+                    <span class="topic-title">Reino Animalia: Cordados e Vertebrados</span><span class="arrow">➜</span>
+                </a>
+            </div>
         </div>
 
         <div id="no-results">
@@ -304,35 +515,101 @@
     </footer>
 
     <script>
-        // Lógica de Pesquisa com normalização de acentos
+        // ----------------------------------------------------
+        // SISTEMA DE PROGRESSO (SALVO NO DISPOSITIVO - LOCALSTORAGE)
+        // ----------------------------------------------------
+        // Chave exclusiva para Biologia (diferente da de Química)
+        const STORAGE_KEY = 'biologia_promover_progresso_2026';
+
+        // Puxa o progresso salvo ou cria array vazia
+        function getProgress() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            return data ? JSON.parse(data) : [];
+        }
+
+        // Salva o progresso na memória do navegador
+        function saveProgress(progressArray) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(progressArray));
+        }
+
+        // Ao carregar a página, marca os checkboxes que já foram concluídos
+        document.addEventListener('DOMContentLoaded', () => {
+            const progress = getProgress();
+            
+            progress.forEach(id => {
+                const item = document.querySelector(`.topic-item[data-id="${id}"]`);
+                if (item) {
+                    const cb = item.querySelector('.topic-cb');
+                    if (cb) cb.checked = true;
+                }
+            });
+        });
+
+        // Evento 1: Clicar direto no Checkbox para marcar/desmarcar manualmente
+        document.querySelectorAll('.topic-cb').forEach(cb => {
+            cb.addEventListener('change', function(e) {
+                const item = this.closest('.topic-item');
+                const id = item.getAttribute('data-id');
+                let progress = getProgress();
+
+                if (this.checked) {
+                    if (!progress.includes(id)) progress.push(id);
+                } else {
+                    progress = progress.filter(item => item !== id);
+                }
+                saveProgress(progress);
+            });
+        });
+
+        // Evento 2: Clicar no link do assunto MARCA AUTOMATICAMENTE (Se já não estiver)
+        document.querySelectorAll('.topic-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const item = this.closest('.topic-item');
+                const id = item.getAttribute('data-id');
+                const cb = item.querySelector('.topic-cb');
+                
+                // Marca automaticamente antes de redirecionar para a aula
+                if (!cb.checked) {
+                    cb.checked = true;
+                    let progress = getProgress();
+                    if (!progress.includes(id)) {
+                        progress.push(id);
+                        saveProgress(progress);
+                    }
+                }
+            });
+        });
+
+        // ----------------------------------------------------
+        // LÓGICA DE PESQUISA (Atualizada para a nova estrutura)
+        // ----------------------------------------------------
         const searchInput = document.getElementById('searchInput');
         const contentGroups = document.querySelectorAll('.content-group');
         const noResultsMsg = document.getElementById('no-results');
 
         searchInput.addEventListener('keyup', function(e) {
             const term = e.target.value.toLowerCase();
-            // Normaliza o termo de busca (remove acentos)
             const termNormalized = term.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             let totalVisibleGroups = 0;
 
             contentGroups.forEach(group => {
-                const links = group.querySelectorAll('.topic-btn');
-                let hasVisibleLink = false;
+                const items = group.querySelectorAll('.topic-item');
+                let hasVisibleItem = false;
 
-                links.forEach(link => {
-                    const text = link.textContent.toLowerCase();
-                    // Normaliza o texto do link (remove acentos)
+                items.forEach(item => {
+                    const titleElement = item.querySelector('.topic-title');
+                    const text = titleElement.textContent.toLowerCase();
                     const textNormalized = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                     
                     if (textNormalized.includes(termNormalized)) {
-                        link.style.display = 'flex';
-                        hasVisibleLink = true;
+                        item.style.display = 'flex'; // Mantém o layout alinhado
+                        hasVisibleItem = true;
                     } else {
-                        link.style.display = 'none';
+                        item.style.display = 'none';
                     }
                 });
 
-                if (hasVisibleLink) {
+                if (hasVisibleItem) {
                     group.style.display = 'block';
                     totalVisibleGroups++;
                 } else {
